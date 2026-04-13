@@ -1,0 +1,53 @@
+#
+# For a description of the syntax of this configuration file,
+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+#
+
+if ARCH_BOARD_QEMU_MPS2_AN505
+
+menu "QEMU MPS2 AN505 Board Configuration"
+
+config FLASH_VSTART
+	hex
+	default 0x10000000 if XIP_KERNEL
+	default 0x28000000
+	help
+		Start virtual address of the flash image.
+
+config FLASH_START_ADDR
+	hex
+	default 0x28000000
+	help
+		Start address of the flash image in the QEMU memory map.
+
+config FLASH_VSTART_LOADABLE
+	hex
+	default 0x10000000 if XIP_ELF
+	default 0x28080000
+	help
+		Loadable image execution base used for qemu-mps2-an505 runtime tests.
+
+config FLASH_SIZE
+	int
+	default 4194304
+	help
+		Flash image size in bytes.
+
+config QEMU_MPS2_AN505_TESTFS
+	bool "Reserve board hook for runtime test filesystem setup"
+	default y if QEMU_MPS2_AN505_PROFILE_BK7239N
+	default y
+	---help---
+		Keep the board initialization hook available for the RAM-backed test
+		filesystem plumbing that will be added with the qemu-mps2-an505
+		runtime defconfigs.
+
+config USERFS_MNTPT
+	string
+	default "/mnt" if AUTOMOUNT_USERFS
+	---help---
+		Default mount point for runtime filesystem checks on qemu-mps2-an505.
+
+endmenu # "QEMU MPS2 AN505 Board Configuration"
+
+endif # ARCH_BOARD_QEMU_MPS2_AN505
