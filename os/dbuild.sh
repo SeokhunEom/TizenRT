@@ -27,9 +27,27 @@ CONFIGDIR="${BUILDDIR}/configs"
 DOCKER_IMAGE=
 DOCKER_PUBLIC_IMAGE="tizenrt/tizenrt"
 DOCKER_VERSION="1.5.8"
+DOCKER_VERSION_OVERRIDE=
 
 STATUS_LIST="NOT_CONFIGURED BOARD_CONFIGURED CONFIGURED BUILT PREPARE_DL DOWNLOAD_READY"
 BUILD_CMD=make
+
+HOST_UNAME=$(uname -s 2>/dev/null || echo unknown)
+case "${HOST_UNAME}" in
+MINGW*|MSYS*|CYGWIN*)
+	HOST_IS_WINDOWS_SHELL=true
+	;;
+*)
+	HOST_IS_WINDOWS_SHELL=false
+	;;
+esac
+
+DOCKER_TOPDIR="${TOPDIR}"
+DOCKER_RUN_PREFIX=
+if [ "${HOST_IS_WINDOWS_SHELL}" = "true" ]; then
+	DOCKER_TOPDIR=$(cygpath -m "${TOPDIR}")
+	DOCKER_RUN_PREFIX='MSYS2_ARG_CONV_EXCL="*"'
+fi
 
 # Checking docker is installed
 nodocker() {
@@ -60,6 +78,9 @@ function GET_SPECIFIC_DOCKER_IMAGE()
 			DOCKER_VERSION=${CONFIG_DOCKER_VERSION}
 		fi
 	fi
+	if [ -n "${DOCKER_VERSION_OVERRIDE}" ]; then
+		DOCKER_VERSION=${DOCKER_VERSION_OVERRIDE}
+	fi
 	echo "Check Docker Image"
 	# Try modern Docker format first, fallback to legacy format if it fails (modern Docker format should work with Docker 1.10+)
 	DOCKER_IMAGES=`docker images --format "{{.Repository}}:{{.Tag}}" 2>/dev/null | grep 'tizenrt'`
@@ -89,6 +110,71 @@ function GET_SPECIFIC_DOCKER_IMAGE()
 		# Can add other docker image
 		exit 1
 	fi
+}
+
+function LOAD_DOCKER_VERSION_FROM_DEFCONFIG()
+{
+	local DEFCONFIG_PATH=
+	local DEFCONFIG_DOCKER_VERSION=
+
+	if [ -z "$1" ]; then
+		return
+	fi
+
+	DEFCONFIG_PATH="${CONFIGDIR}/$1/defconfig"
+	if [ ! -f "${DEFCONFIG_PATH}" ]; then
+		return
+	fi
+
+	DEFCONFIG_DOCKER_VERSION=$(grep '^CONFIG_DOCKER_VERSION=' "${DEFCONFIG_PATH}" | cut -d'=' -f2- | sed 's/^"//; s/"$//')
+	if [ -n "${DEFCONFIG_DOCKER_VERSION}" ]; then
+		DOCKER_VERSION_OVERRIDE="${DEFCONFIG_DOCKER_VERSION}"
+		DOCKER_VERSION="${DEFCONFIG_DOCKER_VERSION}"
+	fi
+}
+
+function DISPLAY_CONFIG_ALIAS()
+{
+	local BOARD_NAME=$1
+	local CONFIG_NAME=$2
+
+	case "${BOARD_NAME}/${CONFIG_NAME}" in
+	qemu-virt/flat_dramboot)
+		echo "flat"
+		;;
+	qemu-virt/full_dramboot_xipelf)
+		echo "loadable_xip_elf"
+		;;
+	*)
+		echo "${CONFIG_NAME}"
+		;;
+	esac
+}
+
+function RESOLVE_BOARD_CONFIG_PATH()
+{
+	local BOARD_NAME=$1
+	local CONFIG_NAME=$2
+
+	case "${BOARD_NAME}/${CONFIG_NAME}" in
+	qemu-virt/flat|qemu-virt/flat_dramboot)
+		if [ -d "${CONFIGDIR}/qemu-virt/flat" ]; then
+			echo "qemu-virt/flat"
+		else
+			echo "qemu-virt/flat_dramboot"
+		fi
+		;;
+	qemu-virt/loadable_xip_elf|qemu-virt/full_dramboot_xipelf)
+		if [ -d "${CONFIGDIR}/qemu-virt/loadable_xip_elf" ]; then
+			echo "qemu-virt/loadable_xip_elf"
+		else
+			echo "qemu-virt/full_dramboot_xipelf"
+		fi
+		;;
+	*)
+		echo "${BOARD_NAME}/${CONFIG_NAME}"
+		;;
+	esac
 }
 
 
@@ -216,7 +302,7 @@ function BUILD_TEST()
 {
 	# execute a shell script for build test
 	pushd ${OSDIR} > /dev/null
-	docker run --rm ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} bash -c "./tools/build_test.sh"
+	eval ${DOCKER_RUN_PREFIX} docker run --rm ${DOCKER_OPT} -v ${DOCKER_TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} bash -c "./tools/build_test.sh"
 	popd > /dev/null
 }
 
@@ -301,32 +387,35 @@ function SELECT_BOARD()
 function SELECT_CONFIG()
 {
 	unset CONFIG
+	unset CONFIG_PATH
 	unset SELECTED_CONFIG
-	unset CONFIGNAME_LIST
+	unset CONFIGNAME_STR
+	unset CONFIGNAME_REAL
 
 	# make a list of full paths which includes defconfig inside
 	CONFIGS_FULLPATH_LIST=`find -L ${CONFIGDIR}/${BOARD} -name defconfig`
-	for CONFIGS_FULLPATH_MEMBER in ${CONFIGS_FULLPATH_LIST}; do
-		# extract "configname"s from full paths
-		CONFIGNAME_LIST+=`dirname ${CONFIGS_FULLPATH_MEMBER} | sed -e "s,${CONFIGDIR}/${BOARD}/,,g"`
-		CONFIGNAME_LIST+=" "
-	done
 
 	# print menu
 	IDX=1
 	if [ ! -z "$1" ];then
 		SELECTED_CONFIG=$1
-		for CONFIGNAME_MEMBER in ${CONFIGNAME_LIST}; do
+		for CONFIGS_FULLPATH_MEMBER in ${CONFIGS_FULLPATH_LIST}; do
+			REAL_CONFIGNAME_MEMBER=`dirname ${CONFIGS_FULLPATH_MEMBER} | sed -e "s,${CONFIGDIR}/${BOARD}/,,g"`
+			CONFIGNAME_MEMBER=`DISPLAY_CONFIG_ALIAS "${BOARD}" "${REAL_CONFIGNAME_MEMBER}"`
 			CONFIGNAME_STR[${IDX}]=${CONFIGNAME_MEMBER}
+			CONFIGNAME_REAL[${IDX}]=${REAL_CONFIGNAME_MEMBER}
 			((IDX=IDX+1))
 		done
 	else
 		echo ==================================================
 		echo "  \"Select Configuration of ${BOARD}\""
 		echo ==================================================
-		for CONFIGNAME_MEMBER in ${CONFIGNAME_LIST}; do
+		for CONFIGS_FULLPATH_MEMBER in ${CONFIGS_FULLPATH_LIST}; do
+			REAL_CONFIGNAME_MEMBER=`dirname ${CONFIGS_FULLPATH_MEMBER} | sed -e "s,${CONFIGDIR}/${BOARD}/,,g"`
+			CONFIGNAME_MEMBER=`DISPLAY_CONFIG_ALIAS "${BOARD}" "${REAL_CONFIGNAME_MEMBER}"`
 			echo "  \"${IDX}. ${CONFIGNAME_MEMBER}\""
 			CONFIGNAME_STR[${IDX}]=${CONFIGNAME_MEMBER}
+			CONFIGNAME_REAL[${IDX}]=${REAL_CONFIGNAME_MEMBER}
 			((IDX=IDX+1))
 		done
 		echo "  \"x. EXIT\""
@@ -342,7 +431,7 @@ function SELECT_CONFIG()
 	# treat selected number
 	if [ ! -z ${CONFIGNAME_STR[${SELECTED_CONFIG}]} ]; then
 		CONFIG=${CONFIGNAME_STR[${SELECTED_CONFIG}]}
-		
+		CONFIG_PATH=${CONFIGNAME_REAL[${SELECTED_CONFIG}]}
 	fi
 
 	# treat given config string
@@ -351,7 +440,12 @@ function SELECT_CONFIG()
 		for CONFIGNAME_MEMBER in ${CONFIGNAME_STR[@]}; do
 			if [ "${SELECTED_CONFIG}" == "${CONFIGNAME_MEMBER}" ]; then
 				CONFIG=${CONFIGNAME_MEMBER}
+				CONFIG_PATH=${CONFIGNAME_REAL[${IDX}]}
+			elif [ "${SELECTED_CONFIG}" == "${CONFIGNAME_REAL[${IDX}]}" ]; then
+				CONFIG=${CONFIGNAME_MEMBER}
+				CONFIG_PATH=${CONFIGNAME_REAL[${IDX}]}
 			fi
+			((IDX=IDX+1))
 		done
 	fi
 
@@ -362,7 +456,13 @@ function SELECT_CONFIG()
 
 	echo "${CONFIG} is selected"
 
-	CONFIGURE ${BOARD}/${CONFIG} || exit 1
+	if [ -z "${CONFIG_PATH}" ]; then
+		CONFIG_PATH="${CONFIG}"
+	fi
+
+	RESOLVED_BOARD_CONFIG=`RESOLVE_BOARD_CONFIG_PATH "${BOARD}" "${CONFIG_PATH}"`
+	LOAD_DOCKER_VERSION_FROM_DEFCONFIG "${RESOLVED_BOARD_CONFIG}"
+	CONFIGURE ${RESOLVED_BOARD_CONFIG} || exit 1
 }
 
 function get_selected_board
@@ -462,16 +562,64 @@ function SELECT_DL
 function CONFIGURE()
 {
 	${OSDIR}/tools/configure.sh $1 || exit 1
+	REFRESH_INCLUDE_MIRRORS || exit 1
+	# These objects are architecture-specific and can survive distclean when
+	# switching boards locally. Force them to rebuild for the selected target.
+	rm -f "${OSDIR}/userspace/"*.o "${OSDIR}/userspace/"*.a 2>/dev/null || true
 	UPDATE_STATUS
+}
+
+function REFRESH_INCLUDE_MIRRORS()
+{
+	local CONFIG_ARCH_NAME=
+	local CONFIG_CHIP_NAME=
+	local CONFIG_BOARD_NAME=
+
+	if [ ! -f "${CONFIGFILE}" ]; then
+		return 0
+	fi
+
+	CONFIG_ARCH_NAME=$(grep '^CONFIG_ARCH=' "${CONFIGFILE}" | cut -d'=' -f2- | sed 's/^"//; s/"$//')
+	CONFIG_CHIP_NAME=$(grep '^CONFIG_ARCH_CHIP=' "${CONFIGFILE}" | cut -d'=' -f2- | sed 's/^"//; s/"$//')
+	CONFIG_BOARD_NAME=$(grep '^CONFIG_ARCH_BOARD=' "${CONFIGFILE}" | cut -d'=' -f2- | sed 's/^"//; s/"$//')
+
+	local ARCH_SRC="${OSDIR}/arch/${CONFIG_ARCH_NAME}/include"
+	local CHIP_SRC="${ARCH_SRC}/${CONFIG_CHIP_NAME}"
+	local BOARD_SRC="${OSDIR}/board/${CONFIG_BOARD_NAME}/include"
+
+	if [ ! -d "${ARCH_SRC}" ] || [ ! -d "${CHIP_SRC}" ] || [ ! -d "${BOARD_SRC}" ]; then
+		echo "Failed to refresh include mirrors: missing source include directories"
+		echo "  arch:  ${ARCH_SRC}"
+		echo "  chip:  ${CHIP_SRC}"
+		echo "  board: ${BOARD_SRC}"
+		return 1
+	fi
+
+	"${OSDIR}/tools/copydir.sh" "${ARCH_SRC}" "${OSDIR}/include/arch" || return 1
+	"${OSDIR}/tools/copydir.sh" "${CHIP_SRC}" "${OSDIR}/include/chip" || return 1
+	"${OSDIR}/tools/copydir.sh" "${BOARD_SRC}" "${OSDIR}/include/board" || return 1
 }
 
 function DOWNLOAD()
 {
+	local DOWNLOAD_STATUS=0
+	UDEV_MOUNT="-v /run/udev:/run/udev:ro"
+	if [ "${HOST_IS_WINDOWS_SHELL}" = "true" ]; then
+		UDEV_MOUNT=
+	fi
+
+	if [ -t 0 ] && [ -t 1 ]; then
+		DOWNLOAD_OPT="-it"
+	else
+		DOWNLOAD_OPT="-i"
+	fi
+
 	# Currently supports ALL only, later this will have a menu
 	pushd ${OSDIR} > /dev/null
-	docker run --rm -it ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -v /run/udev:/run/udev:ro -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
+	eval ${DOCKER_RUN_PREFIX} docker run --rm ${DOWNLOAD_OPT} ${DOCKER_OPT} -v ${DOCKER_TOPDIR}:/root/tizenrt ${UDEV_MOUNT} -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
+	DOWNLOAD_STATUS=$?
 	popd > /dev/null
-
+	return ${DOWNLOAD_STATUS}
 }
 
 function UPDATE_STATUS()
@@ -492,6 +640,8 @@ function UPDATE_STATUS()
 
 function BUILD()
 {
+	local BUILD_STATUS=0
+
 	if [ -f build.log ]; then
 		mv build.log build.log.old
 	fi
@@ -504,8 +654,18 @@ function BUILD()
 
 	HOSTNAME="-h=`git config user.name | tr -d ' '`" # set github username instead of hostname, "-h=`hostname`"
 	LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
-	
-	docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} $1 2>&1 | tee build.log
+	if [ "${HOST_IS_WINDOWS_SHELL}" = "true" ]; then
+		LOCALTIME=
+	fi
+
+	set -o pipefail
+	eval ${DOCKER_RUN_PREFIX} docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${DOCKER_TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} $1 2>&1 | tee build.log
+	BUILD_STATUS=$?
+	set +o pipefail
+	if [ ${BUILD_STATUS} -ne 0 ]; then
+		return ${BUILD_STATUS}
+	fi
+
 	UPDATE_STATUS
 }
 
@@ -535,10 +695,52 @@ function MENU()
 	done
 }
 
+if [ "$1" == "configure" ]; then
+	if [ $# -lt 3 ]; then
+		echo "Usage: ./dbuild.sh configure <board> <config>"
+		exit 1
+	fi
+
+	RESOLVED_BOARD_CONFIG=`RESOLVE_BOARD_CONFIG_PATH "$2" "$3"`
+	LOAD_DOCKER_VERSION_FROM_DEFCONFIG "${RESOLVED_BOARD_CONFIG}"
+	UPDATE_STATUS
+	if [ "${STATUS}" == "CONFIGURED" -o "${STATUS}" == "BUILT" ]; then
+		BUILD distclean || exit 1
+	fi
+
+	STATUS=NOT_CONFIGURED
+	SELECT_BOARD "$2"
+	SELECT_CONFIG "$3"
+	exit 0
+fi
+
+if [ "$1" == "build" ]; then
+	UPDATE_STATUS
+	if [ "${STATUS}" == "NOT_CONFIGURED" -o "${STATUS}" == "BOARD_CONFIGURED" ]; then
+		echo "Error!! Need to configure"
+		exit 1
+	fi
+
+	BUILD || exit 1
+	exit 0
+fi
+
+if [ "$1" == "download" ]; then
+	UPDATE_STATUS
+	if [ "${STATUS}" != "BUILT" ]; then
+		echo "No output file"
+		exit 1
+	fi
+
+	shift
+	DOWNLOAD "$1" "$2" "$3" "$4" "$5" "$6" || exit 1
+	exit 0
+fi
+
 UPDATE_STATUS
 if [ -z "$1" ]; then
 	if [ "$STATUS" != "NOT_CONFIGURED" ]; then
-		BUILD
+		BUILD || exit 1
 		exit 0
 	else
 		echo "Error!! Need to configure"
