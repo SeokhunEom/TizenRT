@@ -30,3 +30,11 @@ tags
 *.tmp.*
 *.log
 *.log.old
+test-results/
+runtime-results/
+qemu_flash.bin
+qemu_flash2.bin
+disk.raw
+run_qemu.sh
+!build/configs/qemu-virt/tools/run_qemu.sh
+!build/configs/qemu-mps2-an505/tools/run_qemu.sh
