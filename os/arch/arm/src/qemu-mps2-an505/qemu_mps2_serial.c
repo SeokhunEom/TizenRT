@@ -147,6 +147,17 @@ static inline void cmsdk_clear_interrupts(FAR struct cmsdk_uart_port_s *priv,
 	priv->regs->intclear = mask;
 }
 
+static inline uint8_t cmsdk_read_data(FAR struct cmsdk_uart_port_s *priv)
+{
+	return *(FAR volatile uint8_t *)&priv->regs->data;
+}
+
+static inline void cmsdk_write_data(FAR struct cmsdk_uart_port_s *priv,
+				    uint8_t value)
+{
+	*(FAR volatile uint8_t *)&priv->regs->data = value;
+}
+
 static inline uint32_t cmsdk_calc_bauddiv(FAR struct cmsdk_uart_port_s *priv,
 					  uint32_t baud)
 {
@@ -168,15 +179,20 @@ static inline uint32_t cmsdk_irq_mask(bool enable, uint32_t bit)
 static int cmsdk_irq_handler(int irq, FAR void *context, FAR void *arg)
 {
 	FAR struct uart_dev_s *dev = arg;
+	FAR struct cmsdk_uart_port_s *priv = dev->priv;
+	uint32_t intstatus;
 
-	UNUSED(irq);
 	UNUSED(context);
 
-	if (cmsdk_rxavailable(dev)) {
+	intstatus = priv->regs->intstatus;
+
+	if ((irq == (int)priv->rxirq || (intstatus & CMSDK_UART_INT_RX) != 0) &&
+	    cmsdk_rxavailable(dev)) {
 		uart_recvchars(dev);
 	}
 
-	if (cmsdk_txready(dev)) {
+	if ((irq == (int)priv->txirq || (intstatus & CMSDK_UART_INT_TX) != 0) &&
+	    cmsdk_txready(dev)) {
 		uart_xmitchars(dev);
 	}
 
@@ -260,10 +276,12 @@ static int cmsdk_ioctl(FAR struct uart_dev_s *dev, int cmd, unsigned long arg)
 static int cmsdk_receive(FAR struct uart_dev_s *dev, FAR unsigned int *status)
 {
 	FAR struct cmsdk_uart_port_s *priv = dev->priv;
+	uint8_t value;
 
 	*status = priv->regs->state;
+	value = cmsdk_read_data(priv);
 	cmsdk_clear_interrupts(priv, CMSDK_UART_INT_RX);
-	return priv->regs->data & 0xff;
+	return value;
 }
 
 static void cmsdk_rxint(FAR struct uart_dev_s *dev, bool enable)
@@ -296,7 +314,7 @@ static void cmsdk_send(FAR struct uart_dev_s *dev, int ch)
 	}
 
 	cmsdk_clear_interrupts(priv, CMSDK_UART_INT_TX);
-	priv->regs->data = (uint32_t)ch & 0xff;
+	cmsdk_write_data(priv, (uint8_t)ch);
 }
 
 static void cmsdk_txint(FAR struct uart_dev_s *dev, bool enable)
@@ -309,12 +327,17 @@ static void cmsdk_txint(FAR struct uart_dev_s *dev, bool enable)
 
 	regval = priv->regs->ctrl;
 	regval &= ~(CMSDK_UART_CTRL_TXIRQEN | CMSDK_UART_CTRL_TXOVRIRQEN);
-	regval |= cmsdk_irq_mask(enable, CMSDK_UART_CTRL_TXIRQEN);
 	priv->regs->ctrl = regval;
 
 	spin_unlock_irqrestore(&priv->lock, flags);
 
 	if (enable) {
+		/* QEMU drains the CMSDK UART byte synchronously and raises TX IRQ
+		 * before the serial upper half advances its ring-buffer tail.
+		 * Keep hardware TX IRQ disabled and drain from this kick instead
+		 * to avoid re-entering uart_xmitchars() on the same byte.
+		 */
+
 		uart_xmitchars(dev);
 	} else {
 		cmsdk_clear_interrupts(priv, CMSDK_UART_INT_TX);

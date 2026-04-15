@@ -39,7 +39,6 @@ class SanitizedTranscriptWriter:
         self._handle = handle
         self._line: list[str] = []
         self._col = 0
-        self._pending_cr = False
         self._last_blank = False
 
     def _emit_line(self) -> None:
@@ -53,21 +52,11 @@ class SanitizedTranscriptWriter:
     def write(self, data: str) -> int:
         written = 0
         for ch in data:
-            if self._pending_cr:
-                if ch == "\n":
-                    self._emit_line()
-                    self._pending_cr = False
-                    written += 1
-                    continue
-
-                self._line = []
-                self._col = 0
-                self._pending_cr = False
-
             if ch == "\x00":
                 continue
             if ch == "\r":
-                self._pending_cr = True
+                self._col = 0
+                written += 1
                 continue
             if ch == "\n":
                 self._emit_line()
@@ -83,9 +72,9 @@ class SanitizedTranscriptWriter:
         return written
 
     def flush(self) -> None:
-        if self._pending_cr:
-            self._emit_line()
-            self._pending_cr = False
+        self._handle.flush()
+
+    def finish(self) -> None:
         if self._line:
             self._emit_line()
         self._handle.flush()
@@ -442,7 +431,7 @@ def main() -> int:
                     child.terminate(force=True)
                 except Exception:
                     pass
-            transcript_writer.flush()
+            transcript_writer.finish()
 
     metadata = platform.metadata
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
