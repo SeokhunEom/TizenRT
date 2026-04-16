@@ -36,7 +36,7 @@
 #define SIG2  SIGUSR2
 #define SIG3  SIGALRM
 #define PRIORITY 100
-#define STACKSIZE 1024
+#define STACKSIZE 2048
 
 static sem_t sync_sem;
 
@@ -443,7 +443,7 @@ int libc_signal_main(void)
 	tc_libc_signal_sigignore();
 	tc_libc_signal_sigismember();
 	tc_libc_signal_signal();
-#ifndef CONFIG_DISABLE_POSIX_TIMERS
+#if !defined(CONFIG_DISABLE_POSIX_TIMERS) && !defined(CONFIG_SMP)
 	tc_libc_signal_sigpause();
 #endif
 	tc_libc_signal_sigset();

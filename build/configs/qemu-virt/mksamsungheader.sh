@@ -32,21 +32,11 @@ BUILD_DIR="${OS_DIR}/../build"
 OUTPUT_DIR="${BUILD_DIR}/output/bin"
 
 CFG_PATH="${OS_DIR}/.config"
-BININFO_PATH="${OS_DIR}/.bininfo"
 PYTHON_BIN="${PYTHON:-python}"
 
-# ---------------------------------------------------------------------------
-# Resolve kernel binary name (fallback to tinyara.bin)
-# ---------------------------------------------------------------------------
-kernel_bin_name="tinyara.bin"
-if [ -f "${BININFO_PATH}" ]; then
-    # shellcheck disable=SC1090
-    source "${BININFO_PATH}"
-    if [ -n "${KERNEL_BIN_NAME:-}" ]; then
-        kernel_bin_name="${KERNEL_BIN_NAME}"
-    fi
-fi
-binary_path="${OUTPUT_DIR}/${kernel_bin_name}"
+# Samsung headers are generated before set_bininfo.py/convert_binary.py rename
+# the kernel image to the final TRPK name, so the post-build input is fixed.
+binary_path="${OUTPUT_DIR}/tinyara.bin"
 
 # ---------------------------------------------------------------------------
 # Paths to the helper Python tools

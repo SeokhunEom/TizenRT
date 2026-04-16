@@ -273,7 +273,10 @@ class QemuHarness:
             if not match:
                 raise HarnessError(f"{command}: timed out after {effective_timeout}s")
 
+            pass_count = int(match.group("pass"))
             fail_count = int(match.group("fail"))
+            if pass_count == 0:
+                raise HarnessError(f"{command}: testcase reported PASS=0")
             if fail_count != 0:
                 raise HarnessError(f"{command}: testcase reported FAIL={fail_count}")
             if not prompt_seen:

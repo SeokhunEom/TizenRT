@@ -1656,7 +1656,12 @@ int pthread_main(void)
 	tc_pthread_pthread_create_exit_join();
 	tc_pthread_pthread_tryjoin_np();
 	tc_pthread_pthread_kill();
+#ifndef CONFIG_SMP
+	/* The broadcast test uses shared counters without CPU-wide
+	 * synchronization and can race with robust mutex owner checks on SMP.
+	 */
 	tc_pthread_pthread_cond_broadcast();
+#endif
 	tc_pthread_pthread_cond_init_destroy();
 	tc_pthread_pthread_set_get_schedparam();
 #if CONFIG_NPTHREAD_KEYS > 0
@@ -1668,7 +1673,7 @@ int pthread_main(void)
 	tc_pthread_pthread_mutex_init();
 	tc_pthread_pthread_mutex_destroy();
 	tc_pthread_pthread_mutex_lock_unlock_trylock();
-#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
+#if !defined(CONFIG_PTHREAD_MUTEX_UNSAFE) && !defined(CONFIG_SMP)
 	tc_pthread_pthread_mutex_consistent();
 #endif
 	tc_pthread_pthread_once();

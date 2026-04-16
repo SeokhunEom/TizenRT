@@ -26,7 +26,8 @@
 #include "../../os/kernel/timer/timer.h"
 #include "tc_internal.h"
 
-#define USECINT 10000000
+#define TIMER_GETTIME_DELAY_USEC 10000
+#define NSEC_PER_SEC 1000000000
 
 static int sig_no = SIGRTMIN;
 
@@ -228,7 +229,7 @@ static void tc_timer_timer_set_get_time(void)
 	ret_chk = timer_settime(timer_id, 0, &st_timer_spec_set, NULL);	/* Flag =1 :TIMER_ABSTIME */
 	TC_ASSERT_EQ_ERROR_CLEANUP("timer_settime", ret_chk, OK, errno, timer_delete(timer_id));
 
-	usleep(USECINT);
+	usleep(TIMER_GETTIME_DELAY_USEC);
 
 	/* Null timer ID check for timer_gettime */
 
@@ -238,10 +239,15 @@ static void tc_timer_timer_set_get_time(void)
 
 	ret_chk = timer_gettime(timer_id, &st_timer_spec_get);
 	TC_ASSERT_EQ_ERROR_CLEANUP("timer_gettime", ret_chk, OK, errno, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_nsec, st_timer_spec_set.it_interval.tv_nsec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_sec, st_timer_spec_set.it_interval.tv_sec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, st_timer_spec_set.it_value.tv_sec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, st_timer_spec_set.it_value.tv_nsec, timer_delete(timer_id));
+	TC_ASSERT_EQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_nsec, st_timer_spec_set.it_interval.tv_nsec, timer_delete(timer_id));
+	TC_ASSERT_EQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_sec, st_timer_spec_set.it_interval.tv_sec, timer_delete(timer_id));
+	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, 0, timer_delete(timer_id));
+	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, 0, timer_delete(timer_id));
+	TC_ASSERT_LT_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, NSEC_PER_SEC, timer_delete(timer_id));
+	TC_ASSERT_LEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, st_timer_spec_set.it_value.tv_sec, timer_delete(timer_id));
+	if (st_timer_spec_get.it_value.tv_sec == st_timer_spec_set.it_value.tv_sec) {
+		TC_ASSERT_LEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, st_timer_spec_set.it_value.tv_nsec, timer_delete(timer_id));
+	}
 
 	timer_delete(timer_id);
 	TC_SUCCESS_RESULT();

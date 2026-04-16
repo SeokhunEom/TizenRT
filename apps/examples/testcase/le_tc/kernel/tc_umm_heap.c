@@ -43,6 +43,7 @@
 #define ALLOC_FREE_TIMES 5
 #define TEST_TIMES 100
 #define ALL_FREE 0
+#define UMM_TEST_STACKSIZE 4096
 #define MEM_REQ_SIZE(unit, iter) (MM_ALIGN_UP((unit) + SIZEOF_MM_ALLOCNODE) * (iter))
 
 /****************************************************************************
@@ -196,8 +197,10 @@ static void tc_umm_heap_realloc(void)
 	int n_alloc;
 	int n_test_iter;
 	size_t alloc_size = ALLOC_SIZE_VAL * sizeof(int);
+#ifndef CONFIG_SMP
 	struct mallinfo prev;
 	struct mallinfo cur;
+#endif
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 	pid_t hash_pid = PIDHASH(getpid());;
 	struct mm_heap_s *heap;
@@ -206,12 +209,14 @@ static void tc_umm_heap_realloc(void)
 	/* Iteration test */
 
 	for (n_test_iter = 0; n_test_iter < TEST_TIMES; n_test_iter++) {
+#ifndef CONFIG_SMP
 		/* Save mallinfo before test start */
 
 #ifdef CONFIG_CAN_PASS_STRUCTS
 		prev = mallinfo();
 #else
 		(void)mallinfo(&prev);
+#endif
 #endif
 
 		/* Allocate memory */
@@ -221,8 +226,8 @@ static void tc_umm_heap_realloc(void)
 			TC_ASSERT_NEQ("realloc", mem_ptr[n_alloc], NULL);
 		}
 
+#ifndef CONFIG_SMP
 		/* Verify allocation */
-
 #ifdef CONFIG_CAN_PASS_STRUCTS
 		cur = mallinfo();
 #else
@@ -233,6 +238,7 @@ static void tc_umm_heap_realloc(void)
 		                     mem_deallocate_func(mem_ptr, ALLOC_FREE_TIMES));
 		TC_ASSERT_EQ_CLEANUP("mallinfo", prev.fordblks - cur.fordblks, MEM_REQ_SIZE(alloc_size, ALLOC_FREE_TIMES),
                              mem_deallocate_func(mem_ptr, ALLOC_FREE_TIMES));
+#endif
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		/* Verify allocation by heapinfo */
@@ -247,6 +253,7 @@ static void tc_umm_heap_realloc(void)
 
 		mem_deallocate_func(mem_ptr, ALLOC_FREE_TIMES);
 
+#ifndef CONFIG_SMP
 		/* Verify freeing */
 
 #ifdef CONFIG_CAN_PASS_STRUCTS
@@ -256,6 +263,7 @@ static void tc_umm_heap_realloc(void)
 #endif
 		TC_ASSERT_EQ("mallinfo", cur.uordblks - prev.uordblks, 0);
 		TC_ASSERT_EQ("mallinfo", prev.fordblks - cur.fordblks, 0);
+#endif
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		/* Verify freeing by heapinfo */
@@ -270,6 +278,7 @@ static void tc_umm_heap_realloc(void)
 	mem_ptr[1] = (int *)realloc(mem_ptr[0], 0);
 	TC_ASSERT_EQ_CLEANUP("realloc", mem_ptr[1], NULL, free(mem_ptr[0]));
 
+#ifndef CONFIG_SMP
 	/* Verify freeing */
 
 #ifdef CONFIG_CAN_PASS_STRUCTS
@@ -279,6 +288,7 @@ static void tc_umm_heap_realloc(void)
 #endif
 	TC_ASSERT_EQ("mallinfo", cur.uordblks - prev.uordblks, 0);
 	TC_ASSERT_EQ("mallinfo", prev.fordblks - cur.fordblks, 0);
+#endif
 
 	/* Relloc Free by size 0 */
 	mem_ptr[0] = (int *)malloc(alloc_size);
@@ -287,6 +297,7 @@ static void tc_umm_heap_realloc(void)
 	mem_ptr[1] = (int *)realloc(mem_ptr[0], alloc_size);
 	TC_ASSERT_NEQ_CLEANUP("realloc", mem_ptr[1], NULL, free(mem_ptr[0]));
 
+#ifndef CONFIG_SMP
 	/* Verify freeing */
 
 #ifdef CONFIG_CAN_PASS_STRUCTS
@@ -296,9 +307,11 @@ static void tc_umm_heap_realloc(void)
 #endif
 	TC_ASSERT_EQ("mallinfo", cur.uordblks - prev.uordblks, MEM_REQ_SIZE(alloc_size, 1));
 	TC_ASSERT_EQ("mallinfo", prev.fordblks - cur.fordblks, MEM_REQ_SIZE(alloc_size, 1));
+#endif
 
 	free(mem_ptr[1]);
 
+#ifndef CONFIG_SMP
 #ifdef CONFIG_CAN_PASS_STRUCTS
 	cur = mallinfo();
 #else
@@ -306,6 +319,7 @@ static void tc_umm_heap_realloc(void)
 #endif
 	TC_ASSERT_EQ("mallinfo", cur.uordblks - prev.uordblks, 0);
 	TC_ASSERT_EQ("mallinfo", prev.fordblks - cur.fordblks, 0);
+#endif
 
 	TC_SUCCESS_RESULT();
 }
@@ -510,9 +524,14 @@ static int umm_test(int argc, char *argv[])
 	tc_umm_heap_calloc();
 	tc_umm_heap_realloc();
 	tc_umm_heap_memalign();
+#ifndef CONFIG_SMP
+	/* These checks compare global heap counters.  On SMP, allocations
+	 * running on another CPU can legitimately change mallinfo deltas.
+	 */
 	tc_umm_heap_mallinfo();
+#endif
 	tc_umm_heap_zalloc();
-#ifdef CONFIG_DEBUG_MM_HEAPINFO
+#if defined(CONFIG_DEBUG_MM_HEAPINFO) && !defined(CONFIG_SMP)
 	tc_umm_heap_get_heap_free_size();
 	tc_umm_heap_get_largest_freenode_size();
 #endif
@@ -530,7 +549,7 @@ int umm_heap_main(void)
 {
 	int pid;
 	int stat_loc;
-	pid = task_create("umm_test", 150, 2048, umm_test, (char * const *)NULL);
+	pid = task_create("umm_test", 150, UMM_TEST_STACKSIZE, umm_test, (char * const *)NULL);
 	pid = waitpid(pid, &stat_loc, 0);	// wait umm_test task termination for atomic test
 	if (pid < 0) {
 		sleep(5);

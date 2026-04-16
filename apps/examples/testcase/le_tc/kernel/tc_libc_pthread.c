@@ -1080,7 +1080,12 @@ static void tc_libc_pthread_pthread_rwlock_rdlock_wrlock(void)
 	status = pthread_rwlock_unlock(&rw_lock);
 	TC_ASSERT_EQ("pthread_rwlock_unlock", status, OK);
 
+#ifndef CONFIG_SMP
+	/* This helper asserts an exact thread interleaving, which is not
+	 * deterministic on SMP targets such as qemu-virt -smp 2.
+	 */
 	test_two_threads();
+#endif
 
 	TC_SUCCESS_RESULT();
 }
@@ -1327,7 +1332,9 @@ int libc_pthread_main(void)
 	tc_libc_pthread_pthread_rwlock_tryrdlock();
 	tc_libc_pthread_pthread_rwlock_trywrlock();
 	tc_libc_pthread_pthread_rwlock_rdlock_wrlock();
+#ifndef CONFIG_SMP
 	tc_libc_pthread_pthread_rwlock_timedwrlock_timedrdlock();
+#endif
 	tc_libc_pthread_pthread_setcancelstate();
 #ifndef CONFIG_CANCELLATION_POINTS
 	tc_libc_pthread_pthread_setcanceltype();

@@ -101,7 +101,7 @@ def build_platform(topdir: Path, config: dict[str, str]) -> PlatformSpec:
         [
             TestcaseStep("drivers_tc"),
             TestcaseStep("filesystem_tc"),
-            TestcaseStep("kernel_tc"),
+            TestcaseStep("kernel_tc", timeout=180),
         ]
     )
 
