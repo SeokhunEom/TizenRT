@@ -97,7 +97,7 @@
 #ifdef CONFIG_EXAMPLES_OSTEST_STACKSIZE
 #define STACKSIZE CONFIG_EXAMPLES_OSTEST_STACKSIZE
 #else
-#define STACKSIZE 1024
+#define STACKSIZE CONFIG_PTHREAD_STACK_DEFAULT
 #endif
 /**************************************************************************
 * Private Types

@@ -23,6 +23,7 @@
 #include <tinyara/config.h>
 #include <tinyara/arch.h>
 #include <tinyara/irq.h>
+#include <tinyara/kmalloc.h>
 #include <tinyara/semaphore.h>
 #include <stdint.h>
 #include <string.h>
@@ -38,9 +39,32 @@
 #define VIRTIO_BLK_QUEUE_NUM 8
 #define VIRTIO_MMIO_IRQ_BASE 48
 
+struct virtio_blk_request_s {
+	struct virtio_blk_req_hdr_s hdr;
+	struct virtio_blk_req_footer_s footer;
+};
+
 /****************************************************************************
  * Private Functions
  ****************************************************************************/
+
+static struct virtio_blk_request_s *virtio_blk_alloc_request(void)
+{
+	struct virtio_blk_request_s *req;
+
+	/* Protected/XIP syscalls can execute on a user stack, so the request
+	 * metadata must live in kernel-owned memory until the device completes.
+	 */
+
+	req = kmm_malloc(sizeof(*req));
+	if (!req) {
+		return NULL;
+	}
+
+	memset(req, 0, sizeof(*req));
+	req->footer.status = 0xff;
+	return req;
+}
 
 static int virtio_blk_interrupt(int irq, FAR void *context, FAR void *arg)
 {
@@ -255,21 +279,24 @@ void virtio_blk_deinit(virtio_blk_dev_t *dev)
 int virtio_blk_read(virtio_blk_dev_t *dev, uint64_t sector, void *buffer, size_t nsectors)
 {
 	struct virtq_desc desc[3];
-	struct virtio_blk_req_hdr_s hdr;
-	struct virtio_blk_req_footer_s footer;
+	struct virtio_blk_request_s *req;
 	int ret;
 
 	if (!dev || !dev->ready || !buffer || nsectors == 0) {
 		return -EINVAL;
 	}
 
-	memset(&footer, 0xff, sizeof(footer));
-	hdr.type = VIRTIO_BLK_T_IN;
-	hdr.reserved = 0;
-	hdr.sector = sector;
+	req = virtio_blk_alloc_request();
+	if (!req) {
+		return -ENOMEM;
+	}
 
-	desc[0].addr = (uint64_t)(uintptr_t)&hdr;
-	desc[0].len = sizeof(hdr);
+	req->hdr.type = VIRTIO_BLK_T_IN;
+	req->hdr.reserved = 0;
+	req->hdr.sector = sector;
+
+	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
+	desc[0].len = sizeof(req->hdr);
 	desc[0].flags = 0;
 	desc[0].next = 0;
 
@@ -278,13 +305,14 @@ int virtio_blk_read(virtio_blk_dev_t *dev, uint64_t sector, void *buffer, size_t
 	desc[1].flags = VIRTQ_DESC_F_WRITE;
 	desc[1].next = 0;
 
-	desc[2].addr = (uint64_t)(uintptr_t)&footer;
-	desc[2].len = sizeof(footer);
+	desc[2].addr = (uint64_t)(uintptr_t)&req->footer;
+	desc[2].len = sizeof(req->footer);
 	desc[2].flags = VIRTQ_DESC_F_WRITE;
 	desc[2].next = 0;
 
 	ret = virtq_add_buffer(&dev->vq, desc, 1, 2, NULL);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
@@ -292,30 +320,36 @@ int virtio_blk_read(virtio_blk_dev_t *dev, uint64_t sector, void *buffer, size_t
 
 	ret = virtio_blk_wait_for_completion(dev);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
-	return footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	ret = req->footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	kmm_free(req);
+	return ret;
 }
 
 int virtio_blk_write(virtio_blk_dev_t *dev, uint64_t sector, const void *buffer, size_t nsectors)
 {
 	struct virtq_desc desc[3];
-	struct virtio_blk_req_hdr_s hdr;
-	struct virtio_blk_req_footer_s footer;
+	struct virtio_blk_request_s *req;
 	int ret;
 
 	if (!dev || !dev->ready || !buffer || nsectors == 0) {
 		return -EINVAL;
 	}
 
-	memset(&footer, 0xff, sizeof(footer));
-	hdr.type = VIRTIO_BLK_T_OUT;
-	hdr.reserved = 0;
-	hdr.sector = sector;
+	req = virtio_blk_alloc_request();
+	if (!req) {
+		return -ENOMEM;
+	}
 
-	desc[0].addr = (uint64_t)(uintptr_t)&hdr;
-	desc[0].len = sizeof(hdr);
+	req->hdr.type = VIRTIO_BLK_T_OUT;
+	req->hdr.reserved = 0;
+	req->hdr.sector = sector;
+
+	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
+	desc[0].len = sizeof(req->hdr);
 	desc[0].flags = 0;
 	desc[0].next = 0;
 
@@ -324,13 +358,14 @@ int virtio_blk_write(virtio_blk_dev_t *dev, uint64_t sector, const void *buffer,
 	desc[1].flags = 0;
 	desc[1].next = 0;
 
-	desc[2].addr = (uint64_t)(uintptr_t)&footer;
-	desc[2].len = sizeof(footer);
+	desc[2].addr = (uint64_t)(uintptr_t)&req->footer;
+	desc[2].len = sizeof(req->footer);
 	desc[2].flags = VIRTQ_DESC_F_WRITE;
 	desc[2].next = 0;
 
 	ret = virtq_add_buffer(&dev->vq, desc, 2, 1, NULL);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
@@ -338,17 +373,19 @@ int virtio_blk_write(virtio_blk_dev_t *dev, uint64_t sector, const void *buffer,
 
 	ret = virtio_blk_wait_for_completion(dev);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
-	return footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	ret = req->footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	kmm_free(req);
+	return ret;
 }
 
 int virtio_blk_flush(virtio_blk_dev_t *dev)
 {
 	struct virtq_desc desc[2];
-	struct virtio_blk_req_hdr_s hdr;
-	struct virtio_blk_req_footer_s footer;
+	struct virtio_blk_request_s *req;
 	int ret;
 
 	if (!dev || !dev->ready) {
@@ -359,23 +396,28 @@ int virtio_blk_flush(virtio_blk_dev_t *dev)
 		return OK;
 	}
 
-	memset(&footer, 0xff, sizeof(footer));
-	hdr.type = VIRTIO_BLK_T_FLUSH;
-	hdr.reserved = 0;
-	hdr.sector = 0;
+	req = virtio_blk_alloc_request();
+	if (!req) {
+		return -ENOMEM;
+	}
 
-	desc[0].addr = (uint64_t)(uintptr_t)&hdr;
-	desc[0].len = sizeof(hdr);
+	req->hdr.type = VIRTIO_BLK_T_FLUSH;
+	req->hdr.reserved = 0;
+	req->hdr.sector = 0;
+
+	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
+	desc[0].len = sizeof(req->hdr);
 	desc[0].flags = 0;
 	desc[0].next = 0;
 
-	desc[1].addr = (uint64_t)(uintptr_t)&footer;
-	desc[1].len = sizeof(footer);
+	desc[1].addr = (uint64_t)(uintptr_t)&req->footer;
+	desc[1].len = sizeof(req->footer);
 	desc[1].flags = VIRTQ_DESC_F_WRITE;
 	desc[1].next = 0;
 
 	ret = virtq_add_buffer(&dev->vq, desc, 1, 1, NULL);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
@@ -383,10 +425,13 @@ int virtio_blk_flush(virtio_blk_dev_t *dev)
 
 	ret = virtio_blk_wait_for_completion(dev);
 	if (ret != OK) {
+		kmm_free(req);
 		return ret;
 	}
 
-	return footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	ret = req->footer.status == VIRTIO_BLK_S_OK ? OK : -EIO;
+	kmm_free(req);
+	return ret;
 }
 
 uint64_t virtio_blk_get_capacity(virtio_blk_dev_t *dev)

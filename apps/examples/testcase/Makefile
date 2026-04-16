@@ -162,7 +162,7 @@ ifeq ($(CONFIG_EXAMPLES_TESTCASE_FILESYSTEM),y)
 	$(Q) $(call REGISTER,filesystem_tc,tc_filesystem_main,TASH_EXECMD_ASYNC,100,4096)
 endif
 ifeq ($(CONFIG_EXAMPLES_TESTCASE_KERNEL),y)
-	$(Q) $(call REGISTER,kernel_tc,tc_kernel_main,TASH_EXECMD_ASYNC,180,4096)
+	$(Q) $(call REGISTER,kernel_tc,tc_kernel_main,TASH_EXECMD_ASYNC,180,8192)
 endif
 ifeq ($(CONFIG_ARCH_BOARD_QEMU_VIRT)$(CONFIG_QEMU_VIRT_VIRTIO_BLK),yy)
 	$(Q) $(call REGISTER,virtio_blk_test,virtio_blk_test_main,TASH_EXECMD_SYNC,100,2048)

@@ -97,11 +97,13 @@ static void tc_libc_stdio_flush(void)
 static void tc_libc_stdio_vasprintf(const char *format, ...)
 {
 	int ret_chk;
-	char *buffer;
+	char *buffer = NULL;
 	va_list args;
+
 	va_start(args, format);
 	ret_chk = vasprintf(&buffer, format, args);
 	va_end(args);
+	TC_ASSERT_GEQ("avsprintf", ret_chk, 0);
 	TC_ASSERT_NEQ("avsprintf", buffer, NULL);
 	TC_ASSERT_EQ_CLEANUP("avsprintf",
 						 ret_chk, strlen(printable_chars),
@@ -623,10 +625,11 @@ static void tc_libc_stdio_vfprintf(const char *format, ...)
 static void tc_libc_stdio_asprintf(void)
 {
 	int ret_chk;
-	char *buffer;
+	char *buffer = NULL;
 
 	ret_chk = asprintf(&buffer, "%s", printable_chars);
 
+	TC_ASSERT_GEQ("asprintf", ret_chk, 0);
 	TC_ASSERT_NEQ("asprintf", buffer, NULL);
 	TC_ASSERT_EQ_CLEANUP("asprintf",
 						 ret_chk, strlen(printable_chars),

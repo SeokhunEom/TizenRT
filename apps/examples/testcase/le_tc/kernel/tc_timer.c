@@ -21,8 +21,10 @@
 #include <tinyara/config.h>
 #include <stdio.h>
 #include <errno.h>
+#include <stdint.h>
 #include <sys/ioctl.h>
 #include <tinyara/os_api_test_drv.h>
+#include <tinyara/clock.h>
 #include "../../os/kernel/timer/timer.h"
 #include "tc_internal.h"
 
@@ -30,6 +32,11 @@
 #define NSEC_PER_SEC 1000000000
 
 static int sig_no = SIGRTMIN;
+
+static uint64_t tc_timer_timespec_to_nsec(FAR const struct timespec *ts)
+{
+	return (uint64_t)ts->tv_sec * NSEC_PER_SEC + (uint64_t)ts->tv_nsec;
+}
 
 #ifndef CONFIG_BUILD_PROTECTED
 /**
@@ -244,10 +251,10 @@ static void tc_timer_timer_set_get_time(void)
 	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, 0, timer_delete(timer_id));
 	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, 0, timer_delete(timer_id));
 	TC_ASSERT_LT_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, NSEC_PER_SEC, timer_delete(timer_id));
-	TC_ASSERT_LEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, st_timer_spec_set.it_value.tv_sec, timer_delete(timer_id));
-	if (st_timer_spec_get.it_value.tv_sec == st_timer_spec_set.it_value.tv_sec) {
-		TC_ASSERT_LEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, st_timer_spec_set.it_value.tv_nsec, timer_delete(timer_id));
-	}
+	TC_ASSERT_LEQ_CLEANUP("timer_gettime",
+		tc_timer_timespec_to_nsec(&st_timer_spec_get.it_value),
+		tc_timer_timespec_to_nsec(&st_timer_spec_set.it_value) + NSEC_PER_TICK,
+		timer_delete(timer_id));
 
 	timer_delete(timer_id);
 	TC_SUCCESS_RESULT();
