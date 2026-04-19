@@ -368,6 +368,7 @@ static void tc_libc_signal_psignal(void)
 * @return               :void
 */
 
+#if !defined(CONFIG_BUILD_PROTECTED)
 static int sigwait_receiver(int argc, FAR char *arvg[])
 {
 	sigset_t set = 1 << SIG3;
@@ -427,6 +428,7 @@ static void tc_libc_signal_sigwait(void)
 	sem_destroy(&sync_sem);
 	TC_SUCCESS_RESULT();
 }
+#endif
 
 /****************************************************************************
  * Name: libc_signal
@@ -447,7 +449,9 @@ int libc_signal_main(void)
 	tc_libc_signal_sigpause();
 #endif
 	tc_libc_signal_sigset();
+#if !defined(CONFIG_BUILD_PROTECTED)
 	tc_libc_signal_sigwait();
+#endif
 
 	return 0;
 }

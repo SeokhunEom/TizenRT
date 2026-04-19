@@ -25,7 +25,7 @@
 #include <pthread.h>
 #include <fcntl.h>
 #include <errno.h>
-#if !defined(CONFIG_DISABLE_POLL)
+#if !defined(CONFIG_DISABLE_POLL) && !defined(CONFIG_BUILD_PROTECTED)
 #include <sys/select.h>
 #endif
 #ifdef CONFIG_SECURED_TASH
@@ -45,7 +45,7 @@ enum tash_input_state_e {
 #define TASH_TOKEN_MAX        (32)
 #ifdef CONFIG_TASH
 #define TASH_TRY_MAXCNT       (5)
-#if !defined(CONFIG_DISABLE_POLL)
+#if !defined(CONFIG_DISABLE_POLL) && !defined(CONFIG_BUILD_PROTECTED)
 #define SELECT_TIMEOUT_SECS   (6)
 #define SELECT_TIMEOUT_USECS  (0)
 #endif
@@ -137,7 +137,7 @@ char *tash_read_input_line(int fd)
 	char direction;
 	int prev_cmd_len = 0;
 #endif
-#if !defined(CONFIG_DISABLE_POLL)
+#if !defined(CONFIG_DISABLE_POLL) && !defined(CONFIG_BUILD_PROTECTED)
 	fd_set tfd;
 	struct timeval stimeout;
 	stimeout.tv_sec = SELECT_TIMEOUT_SECS;
@@ -153,7 +153,7 @@ char *tash_read_input_line(int fd)
 	memset(buffer, 0x0, bufsize);
 
 	do {
-#if !defined(CONFIG_DISABLE_POLL)
+#if !defined(CONFIG_DISABLE_POLL) && !defined(CONFIG_BUILD_PROTECTED)
 		FD_ZERO(&tfd);
 		FD_SET(fd, &tfd);
 
@@ -297,7 +297,7 @@ char *tash_read_input_line(int fd)
 				is_direction_pressed = false;
 			}
 #endif
-#if !defined(CONFIG_DISABLE_POLL)
+#if !defined(CONFIG_DISABLE_POLL) && !defined(CONFIG_BUILD_PROTECTED)
 		}
 #endif
 	} while (PREV_CHAR != ASCII_LF);

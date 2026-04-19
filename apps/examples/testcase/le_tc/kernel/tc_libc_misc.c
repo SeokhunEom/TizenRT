@@ -431,7 +431,7 @@ static void tc_libc_misc_lib_dumpbuffer(void)
 {
 	const char *msg = "tc_libc_misc_lib_dumpbuffer";
 	unsigned char buffer[] = {'S', 'A', 'M', 'S', 'U', 'N', 'G', '-', 'T', 'i', 'z', 'e', 'n', 'R', 'T'};
-	unsigned char *buf = NULL;
+	unsigned char buf[BUFF_SIZE];
 	int idx;
 
 	/* To guarantee flushing other printf messages before using lowsyslog */
@@ -448,16 +448,10 @@ static void tc_libc_misc_lib_dumpbuffer(void)
 	lib_dumpbuffer(msg, buffer, sizeof(buffer));
 
 	/* Case-2 */
-	buf = (unsigned char *)malloc(BUFF_SIZE);
-	TC_ASSERT_NEQ("malloc", buf, NULL);
-
 	for (idx = 0; idx < BUFF_SIZE; idx++) {
 		buf[idx] = 0xA;
 	}
 	lib_dumpbuffer(msg, buf, BUFF_SIZE);
-
-	free(buf);
-	buf = NULL;
 
 	TC_SUCCESS_RESULT();
 }
