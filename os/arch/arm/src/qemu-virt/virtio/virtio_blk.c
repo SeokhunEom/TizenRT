@@ -66,6 +66,19 @@ static struct virtio_blk_request_s *virtio_blk_alloc_request(void)
 	return req;
 }
 
+static void virtio_blk_prepare_completion(virtio_blk_dev_t *dev)
+{
+	/* Drain stale completions before queueing a new request. If we clear the
+	 * semaphore after notifying the device, a fast completion can be consumed
+	 * as "stale" and the caller will wait forever.
+	 */
+
+	while (sem_trywait(&dev->completion_sem) == OK) {
+	}
+
+	dev->completion_received = false;
+}
+
 static int virtio_blk_interrupt(int irq, FAR void *context, FAR void *arg)
 {
 	virtio_blk_dev_t *dev = (virtio_blk_dev_t *)arg;
@@ -147,14 +160,10 @@ static int virtio_blk_wait_for_completion(virtio_blk_dev_t *dev)
 {
 	int ret;
 
-	while (sem_trywait(&dev->completion_sem) == OK) {
-	}
-
-	dev->completion_received = false;
-	for (;;) {
+	while (!dev->completion_received) {
 		ret = sem_wait(&dev->completion_sem);
 		if (ret == OK) {
-			break;
+			continue;
 		}
 
 		if (errno != EINTR) {
@@ -162,6 +171,7 @@ static int virtio_blk_wait_for_completion(virtio_blk_dev_t *dev)
 		}
 	}
 
+	dev->completion_received = false;
 	if (virtq_get_buffer(&dev->vq, NULL) == -EAGAIN) {
 		return -EIO;
 	}
@@ -294,6 +304,7 @@ int virtio_blk_read(virtio_blk_dev_t *dev, uint64_t sector, void *buffer, size_t
 	req->hdr.type = VIRTIO_BLK_T_IN;
 	req->hdr.reserved = 0;
 	req->hdr.sector = sector;
+	virtio_blk_prepare_completion(dev);
 
 	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
 	desc[0].len = sizeof(req->hdr);
@@ -347,6 +358,7 @@ int virtio_blk_write(virtio_blk_dev_t *dev, uint64_t sector, const void *buffer,
 	req->hdr.type = VIRTIO_BLK_T_OUT;
 	req->hdr.reserved = 0;
 	req->hdr.sector = sector;
+	virtio_blk_prepare_completion(dev);
 
 	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
 	desc[0].len = sizeof(req->hdr);
@@ -404,6 +416,7 @@ int virtio_blk_flush(virtio_blk_dev_t *dev)
 	req->hdr.type = VIRTIO_BLK_T_FLUSH;
 	req->hdr.reserved = 0;
 	req->hdr.sector = 0;
+	virtio_blk_prepare_completion(dev);
 
 	desc[0].addr = (uint64_t)(uintptr_t)&req->hdr;
 	desc[0].len = sizeof(req->hdr);
