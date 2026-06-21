@@ -6,6 +6,7 @@
 config LOG_DICTIONARY
 	bool "Dictionary based logging"
 	default n
+	depends on !WINDOWS_NATIVE
 	---help---
 		Replace selected log format strings with compact log records and
 		generate a host-side dictionary for decoding.

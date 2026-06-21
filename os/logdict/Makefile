@@ -18,6 +18,8 @@
 
 -include $(TOPDIR)/Make.defs
 
+CFLAGS += -I$(TOPDIR)/../lib/libc
+
 ASRCS =
 
 ifeq ($(CONFIG_LOG_DICTIONARY),y)

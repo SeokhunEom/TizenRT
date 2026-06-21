@@ -29,6 +29,9 @@ ARG_STRING = 8
 ARG_CHAR = 9
 ARG_SIZE = 10
 ARG_SSIZE = 11
+ARG_INTMAX = 12
+ARG_UINTMAX = 13
+ARG_STRPREC = 14
 
 UNSUPPORTED = object()
 
@@ -258,14 +261,19 @@ def parse_format(fmt):
             pos += 1
 
         if pos < length and fmt[pos] == "*":
-            return UNSUPPORTED
-        pos = skip_number(fmt, pos)
+            args.append(ARG_INT)
+            pos += 1
+        else:
+            pos = skip_number(fmt, pos)
 
+        precision_star = False
         if pos < length and fmt[pos] == ".":
             pos += 1
             if pos < length and fmt[pos] == "*":
-                return UNSUPPORTED
-            pos = skip_number(fmt, pos)
+                precision_star = True
+                pos += 1
+            else:
+                pos = skip_number(fmt, pos)
 
         modifier = ""
         if pos + 1 < length and fmt[pos:pos + 2] in ("hh", "ll"):
@@ -281,19 +289,26 @@ def parse_format(fmt):
         conv = fmt[pos]
         pos += 1
 
+        if precision_star:
+            args.append(ARG_STRPREC if conv == "s" else ARG_INT)
+
         if conv in "di":
-            if modifier == "ll":
+            if modifier == "j":
+                args.append(ARG_INTMAX)
+            elif modifier == "ll":
                 args.append(ARG_LONGLONG)
-            elif modifier in ("l", "j", "t"):
+            elif modifier in ("l", "t"):
                 args.append(ARG_LONG)
             elif modifier == "z":
                 args.append(ARG_SSIZE)
             else:
                 args.append(ARG_INT)
         elif conv in "uoxX":
-            if modifier == "ll":
+            if modifier == "j":
+                args.append(ARG_UINTMAX)
+            elif modifier == "ll":
                 args.append(ARG_ULONGLONG)
-            elif modifier in ("l", "j", "t"):
+            elif modifier in ("l", "t"):
                 args.append(ARG_ULONG)
             elif modifier == "z":
                 args.append(ARG_SIZE)
@@ -351,6 +366,12 @@ def finalize(args):
                 "entries": [],
             }, f, indent=2, sort_keys=True)
         return 0
+
+    if site_sec is not None and meta_sec is None:
+        if os.path.exists(args.out):
+            return 0
+        raise ElfError(".logdict_site exists without .logdict_meta; "
+                       "dictionary output is missing")
 
     if site_sec is None or meta_sec is None:
         raise ElfError(".logdict_site and .logdict_meta must both exist")

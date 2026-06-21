@@ -158,19 +158,24 @@ int get_errno(void);
 #ifdef LOGDICT_DEBUG_ENABLED
 #define dbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_ERR, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define dbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_ERR, \
 		     format, ##__VA_ARGS__)
 
+#ifdef CONFIG_ARCH_LOWPUTC
 #define lldbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_ERR, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define lldbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_ERR, \
 		     format, ##__VA_ARGS__)
+#else
+#define lldbg(...)
+#define lldbg_noarg(...)
+#endif
 
 #elif defined(CONFIG_LOGM)
 #define dbg(format, ...) \
@@ -227,19 +232,24 @@ int get_errno(void);
 #ifdef LOGDICT_DEBUG_ENABLED
 #define wdbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_WARNING, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define wdbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_WARNING, \
 		     format, ##__VA_ARGS__)
 
+#ifdef CONFIG_ARCH_LOWPUTC
 #define llwdbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_WARNING, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define llwdbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_WARNING, \
 		     format, ##__VA_ARGS__)
+#else
+#define llwdbg(...)
+#define llwdbg_noarg(...)
+#endif
 
 #elif defined(CONFIG_LOGM)
 #define wdbg(format, ...) \
@@ -295,19 +305,24 @@ int get_errno(void);
 #ifdef LOGDICT_DEBUG_ENABLED
 #define vdbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_INFO, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define vdbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_INFO, \
 		     format, ##__VA_ARGS__)
 
+#ifdef CONFIG_ARCH_LOWPUTC
 #define llvdbg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_INFO, \
-		     format, ##__VA_ARGS__)
+		     EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
 #define llvdbg_noarg(format, ...) \
 	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_INFO, \
 		     format, ##__VA_ARGS__)
+#else
+#define llvdbg(...)
+#define llvdbg_noarg(...)
+#endif
 
 #elif defined(CONFIG_LOGM)
 #define vdbg(format, ...) \

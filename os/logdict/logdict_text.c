@@ -21,7 +21,11 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
+#ifdef CONFIG_LOGM
+#include <tinyara/logm.h>
+#endif
 
+#include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -31,6 +35,9 @@
 #include <syslog.h>
 
 #include "logdict.h"
+#ifndef CONFIG_LOGM
+#include "syslog/syslog.h"
+#endif
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -45,6 +52,31 @@
 #endif
 
 #define LOGDICT_MAX_ARGS 16
+
+#ifdef CONFIG_SMALL_MEMORY
+#if UINT16_MAX <= INT_MAX
+#define LOGDICT_VA_ARG_SIZE(ap) ((unsigned long)va_arg(ap, int))
+#else
+#define LOGDICT_VA_ARG_SIZE(ap) ((unsigned long)va_arg(ap, unsigned int))
+#endif
+#define LOGDICT_VA_ARG_SSIZE(ap) ((long)va_arg(ap, int))
+#else
+#define LOGDICT_VA_ARG_SIZE(ap) ((unsigned long)va_arg(ap, size_t))
+#define LOGDICT_VA_ARG_SSIZE(ap) ((long)va_arg(ap, ssize_t))
+#endif
+
+#ifdef __INT64_DEFINED
+#define LOGDICT_INTMAX_FMT "%lld"
+#define LOGDICT_UINTMAX_FMT "%llu"
+#define LOGDICT_VA_ARG_INTMAX(ap) ((long long)va_arg(ap, intmax_t))
+#define LOGDICT_VA_ARG_UINTMAX(ap) \
+	((unsigned long long)va_arg(ap, uintmax_t))
+#else
+#define LOGDICT_INTMAX_FMT "%ld"
+#define LOGDICT_UINTMAX_FMT "%lu"
+#define LOGDICT_VA_ARG_INTMAX(ap) ((long)va_arg(ap, intmax_t))
+#define LOGDICT_VA_ARG_UINTMAX(ap) ((unsigned long)va_arg(ap, uintmax_t))
+#endif
 
 /****************************************************************************
  * Private Functions
@@ -77,16 +109,21 @@ static size_t logdict_append(char *buf, size_t buflen, size_t pos,
 }
 
 static size_t logdict_append_escaped(char *buf, size_t buflen, size_t pos,
-				     const char *str)
+				     const char *str, size_t maxlen,
+				     bool mark_truncated)
 {
 	static const char hex[] = "0123456789ABCDEF";
 	size_t count = 0;
+
+	if (maxlen == 0) {
+		return pos;
+	}
 
 	if (!str) {
 		return logdict_append(buf, buflen, pos, "(null)");
 	}
 
-	while (*str != '\0' && count < CONFIG_LOG_DICTIONARY_MAX_STRLEN) {
+	while (count < maxlen && *str != '\0') {
 		unsigned char ch = (unsigned char)*str++;
 
 		if (ch <= 0x20 || ch == '%' || ch == '|' || ch >= 0x7f) {
@@ -108,16 +145,37 @@ static size_t logdict_append_escaped(char *buf, size_t buflen, size_t pos,
 		count++;
 	}
 
-	if (*str != '\0') {
+	if (mark_truncated && *str != '\0') {
 		pos = logdict_append(buf, buflen, pos, "%%2E%%2E%%2E");
 	}
 
 	return pos;
 }
 
+static size_t logdict_string_limit(int precision)
+{
+	if (precision >= 0 &&
+	    precision < CONFIG_LOG_DICTIONARY_MAX_STRLEN) {
+		return (size_t)precision;
+	}
+
+	return CONFIG_LOG_DICTIONARY_MAX_STRLEN;
+}
+
 static int logdict_write_frame(const struct logdict_site_s *site,
 			       const char *buf)
 {
+	if ((site->flags & LOGDICT_FLAG_PRINTF) != 0) {
+		return printf("%s", buf);
+	}
+
+#ifdef CONFIG_LOGM
+	if ((site->flags & LOGDICT_FLAG_LOWPUT) != 0) {
+		return logm(LOGM_LOWPUT, LOGM_UNKNOWN, site->priority, "%s", buf);
+	}
+
+	return logm(LOGM_NORMAL, LOGM_UNKNOWN, site->priority, "%s", buf);
+#else
 	if ((site->flags & LOGDICT_FLAG_LOWPUT) != 0) {
 #ifdef CONFIG_ARCH_LOWPUTC
 		return lowsyslog(site->priority, "%s", buf);
@@ -127,6 +185,26 @@ static int logdict_write_frame(const struct logdict_site_s *site,
 	}
 
 	return syslog(site->priority, "%s", buf);
+#endif
+}
+
+static bool logdict_should_emit(const struct logdict_site_s *site)
+{
+	if ((site->flags & LOGDICT_FLAG_PRINTF) != 0) {
+		return true;
+	}
+
+	if ((site->flags & LOGDICT_FLAG_LOWPUT) != 0) {
+#ifndef CONFIG_ARCH_LOWPUTC
+		return false;
+#endif
+	}
+
+#ifdef CONFIG_LOGM
+	return true;
+#else
+	return (g_syslog_mask & LOG_MASK(site->priority)) != 0;
+#endif
 }
 
 static unsigned int logdict_arg_type(uint64_t argdesc, unsigned int index)
@@ -144,8 +222,13 @@ int logdict_text_emit(const struct logdict_site_s *site, va_list ap)
 	uint64_t argdesc;
 	size_t pos;
 	unsigned int index;
+	int string_precision = -1;
 
 	if (!site || site->magic != LOGDICT_SITE_MAGIC) {
+		return 0;
+	}
+
+	if (!logdict_should_emit(site)) {
 		return 0;
 	}
 
@@ -200,7 +283,11 @@ int logdict_text_emit(const struct logdict_site_s *site, va_list ap)
 			break;
 		case LOGDICT_ARG_STRING:
 			pos = logdict_append_escaped(buf, sizeof(buf), pos,
-						     va_arg(ap, const char *));
+						     va_arg(ap, const char *),
+						     logdict_string_limit(
+							     string_precision),
+						     string_precision < 0);
+			string_precision = -1;
 			break;
 		case LOGDICT_ARG_CHAR:
 			pos = logdict_append(buf, sizeof(buf), pos, "%d",
@@ -208,11 +295,26 @@ int logdict_text_emit(const struct logdict_site_s *site, va_list ap)
 			break;
 		case LOGDICT_ARG_SIZE:
 			pos = logdict_append(buf, sizeof(buf), pos, "%lu",
-					     (unsigned long)va_arg(ap, size_t));
+					     LOGDICT_VA_ARG_SIZE(ap));
 			break;
 		case LOGDICT_ARG_SSIZE:
 			pos = logdict_append(buf, sizeof(buf), pos, "%ld",
-					     (long)va_arg(ap, ssize_t));
+					     LOGDICT_VA_ARG_SSIZE(ap));
+			break;
+		case LOGDICT_ARG_INTMAX:
+			pos = logdict_append(buf, sizeof(buf), pos,
+					     LOGDICT_INTMAX_FMT,
+					     LOGDICT_VA_ARG_INTMAX(ap));
+			break;
+		case LOGDICT_ARG_UINTMAX:
+			pos = logdict_append(buf, sizeof(buf), pos,
+					     LOGDICT_UINTMAX_FMT,
+					     LOGDICT_VA_ARG_UINTMAX(ap));
+			break;
+		case LOGDICT_ARG_STRPREC:
+			string_precision = va_arg(ap, int);
+			pos = logdict_append(buf, sizeof(buf), pos, "%d",
+					     string_precision);
 			break;
 		default:
 			pos = logdict_append(buf, sizeof(buf), pos, "?");

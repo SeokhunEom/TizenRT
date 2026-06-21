@@ -57,6 +57,9 @@
 #define LOGDICT_ARG_CHAR       9
 #define LOGDICT_ARG_SIZE       10
 #define LOGDICT_ARG_SSIZE      11
+#define LOGDICT_ARG_INTMAX     12
+#define LOGDICT_ARG_UINTMAX    13
+#define LOGDICT_ARG_STRPREC    14
 
 #define LOGDICT_STRINGIFY_INTERNAL(x) #x
 #define LOGDICT_STRINGIFY(x) LOGDICT_STRINGIFY_INTERNAL(x)
@@ -131,7 +134,7 @@ int logdict_emit_site(const struct logdict_site_s *site, ...);
 
 #else
 
-#define logdict_printf(format, ...) printf(format, ##__VA_ARGS__)
+#define logdict_printf printf
 
 #endif
 

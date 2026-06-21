@@ -70,12 +70,18 @@ def convert_format(fmt):
 
         while pos < length and fmt[pos] in "#0- +'":
             pos += 1
-        while pos < length and fmt[pos].isdigit():
+        if pos < length and fmt[pos] == "*":
             pos += 1
-        if pos < length and fmt[pos] == ".":
-            pos += 1
+        else:
             while pos < length and fmt[pos].isdigit():
                 pos += 1
+        if pos < length and fmt[pos] == ".":
+            pos += 1
+            if pos < length and fmt[pos] == "*":
+                pos += 1
+            else:
+                while pos < length and fmt[pos].isdigit():
+                    pos += 1
 
         if pos + 1 < length and fmt[pos:pos + 2] in ("hh", "ll"):
             pos += 2
@@ -103,7 +109,7 @@ def coerce_args(types, values):
     coerced = []
     for typ, value in zip(types, values):
         value = unescape(value)
-        if typ in (1, 2, 3, 4, 5, 6, 10, 11):
+        if typ in (1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14):
             coerced.append(int(value, 0))
         elif typ == 7:
             coerced.append(value)
@@ -118,10 +124,13 @@ def coerce_args(types, values):
 
 
 def decode_line(entries, line):
-    if not line.startswith(PREFIX + "|"):
+    prefix_pos = line.find(PREFIX + "|")
+    if prefix_pos < 0:
         return line
 
-    parts = line.rstrip("\n").split("|")
+    line_prefix = line[:prefix_pos]
+    frame = line[prefix_pos:]
+    parts = frame.rstrip("\n").split("|")
     if len(parts) < 7:
         return line
 
@@ -146,9 +155,10 @@ def decode_line(entries, line):
 
     try:
         fmt = convert_format(entry["format"])
-        rendered = fmt % coerce_args(types, values)
+        rendered = line_prefix + (fmt % coerce_args(types, values))
     except Exception:
-        rendered = "%s %s" % (entry["format"], " ".join(values))
+        rendered = "%s%s %s" % (line_prefix, entry["format"],
+                                " ".join(values))
 
     return rendered
 
