@@ -27,6 +27,7 @@
 #include <tinyara/binary_manager.h>
 #include <tinyara/fs/fs.h>
 #include <tinyara/fs/mtd.h>
+#include <tinyara/log_dictionary.h>
 
 #ifdef CONFIG_RESOURCE_BINARY_SIGNING
 #include <tinyara/signature.h>
@@ -411,11 +412,11 @@ int binary_manager_mount_resource(void)
 				resource_info.inuse_idx = inuse_idx;
 				resource_info.version = header_data.version;
 				resource_info.is_mounted = true;
-				printf("%s is mounted successfully @ %s \n", fs_devpath, RESOURCE_MOUNTPT);
+				logdict_printf("%s is mounted successfully @ %s \n", fs_devpath, RESOURCE_MOUNTPT);
 				bmdbg("Mount resource success! [Version: %d] [Partition: %s] \n", resource_info.version, GET_PARTNAME(inuse_idx));
 				break;
 			} else {
-				printf("ROMFS ERROR: resourcefs %s mount failed, errno %d\n", fs_devpath, get_errno());
+				logdict_printf("ROMFS ERROR: resourcefs %s mount failed, errno %d\n", fs_devpath, get_errno());
 #ifdef CONFIG_BINMGR_READ_DECRYPTED_BINARY 
 				resource_unregister_decblk(inuse_idx);
 #endif

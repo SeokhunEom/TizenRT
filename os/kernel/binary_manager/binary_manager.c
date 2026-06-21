@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include <tinyara/binary_manager.h>
+#include <tinyara/log_dictionary.h>
 #ifdef CONFIG_BOARDCTL_RESET
 #include <sys/boardctl.h>
 #endif
@@ -259,30 +260,30 @@ int binary_manager(int argc, char *argv[])
 	return 0;
 errout_with_nobinary:
 	while (1) {
-		printf("Partition Info : \n");
-		printf("Partition types: %s\n", CONFIG_FLASH_PART_TYPE);
-		printf("Partition sizes: %s\n", CONFIG_FLASH_PART_SIZE);
+		logdict_printf("Partition Info : \n");
+		logdict_printf("Partition types: %s\n", CONFIG_FLASH_PART_TYPE);
+		logdict_printf("Partition sizes: %s\n", CONFIG_FLASH_PART_SIZE);
 #ifdef CONFIG_MTD_PARTITION_NAMES
-		printf("Partition names: %s\n", CONFIG_FLASH_PART_NAME);
+		logdict_printf("Partition names: %s\n", CONFIG_FLASH_PART_NAME);
 #endif
-		printf("=============== !!ERROR!! ============== \n");
+		logdict_printf("=============== !!ERROR!! ============== \n");
 #ifdef CONFIG_USE_BP
 		if (!is_found_bootparam) {
-			printf("ERROR!! Not found user partitions because parsing a partition list is failed.\n");
-			printf("Please check whether the partition 'bootparam' exists in CONFIG_FLASH_PART_TYPE with 8K size.\n");
+			logdict_printf("ERROR!! Not found user partitions because parsing a partition list is failed.\n");
+			logdict_printf("Please check whether the partition 'bootparam' exists in CONFIG_FLASH_PART_TYPE with 8K size.\n");
 		}
 #endif
 #ifdef CONFIG_APP_BINARY_SEPARATION
 		if (!is_found_ubin) {
-			printf("ERROR!! Not found user partitions because parsing a partition list is failed.\n");
-			printf("Please check logs from configure_mtd_partitions and whether the partition 'bin' exists in CONFIG_FLASH_PART_TYPE.\n");
+			logdict_printf("ERROR!! Not found user partitions because parsing a partition list is failed.\n");
+			logdict_printf("Please check logs from configure_mtd_partitions and whether the partition 'bin' exists in CONFIG_FLASH_PART_TYPE.\n");
 		}
 #endif
 		if (!is_found_kpart) {
-			printf("ERROR!! Not found kernel partitions because parsing a partition list is failed.\n");
-			printf("Please check logs from configure_mtd_partitions and whether the partition 'kernel' exists in CONFIG_FLASH_PART_TYPE.\n");
+			logdict_printf("ERROR!! Not found kernel partitions because parsing a partition list is failed.\n");
+			logdict_printf("Please check logs from configure_mtd_partitions and whether the partition 'kernel' exists in CONFIG_FLASH_PART_TYPE.\n");
 		}
-		printf("Enable CONFIG_DEBUG_BINMGR_ERROR if you want to know exact reason.\n\n");
+		logdict_printf("Enable CONFIG_DEBUG_BINMGR_ERROR if you want to know exact reason.\n\n");
 		sleep(10);
 	}
 }

@@ -76,6 +76,12 @@
 
 #include <syslog.h>
 
+#if defined(CONFIG_LOG_DICTIONARY) && defined(LOGDICT_DOMAIN) && \
+	defined(CONFIG_CPP_HAVE_VARARGS)
+#include <tinyara/log_dictionary.h>
+#define LOGDICT_DEBUG_ENABLED 1
+#endif
+
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -149,7 +155,24 @@ int get_errno(void);
 #define LOGM_IDX (0)
 
 #ifdef CONFIG_DEBUG_ERROR
-#ifdef CONFIG_LOGM
+#ifdef LOGDICT_DEBUG_ENABLED
+#define dbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_ERR, \
+		     format, ##__VA_ARGS__)
+
+#define dbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_ERR, \
+		     format, ##__VA_ARGS__)
+
+#define lldbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_ERR, \
+		     format, ##__VA_ARGS__)
+
+#define lldbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_ERR, \
+		     format, ##__VA_ARGS__)
+
+#elif defined(CONFIG_LOGM)
 #define dbg(format, ...) \
 	logm(LOGM_NORMAL, LOGM_IDX, LOGM_ERR, EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
@@ -201,7 +224,24 @@ int get_errno(void);
 #endif
 
 #ifdef CONFIG_DEBUG_WARN
-#ifdef CONFIG_LOGM
+#ifdef LOGDICT_DEBUG_ENABLED
+#define wdbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_WARNING, \
+		     format, ##__VA_ARGS__)
+
+#define wdbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_WARNING, \
+		     format, ##__VA_ARGS__)
+
+#define llwdbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_WARNING, \
+		     format, ##__VA_ARGS__)
+
+#define llwdbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_WARNING, \
+		     format, ##__VA_ARGS__)
+
+#elif defined(CONFIG_LOGM)
 #define wdbg(format, ...) \
 	logm(LOGM_NORMAL, LOGM_IDX, LOGM_WRN, EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 
@@ -252,7 +292,24 @@ int get_errno(void);
 #endif
 
 #ifdef CONFIG_DEBUG_VERBOSE
-#ifdef CONFIG_LOGM
+#ifdef LOGDICT_DEBUG_ENABLED
+#define vdbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_INFO, \
+		     format, ##__VA_ARGS__)
+
+#define vdbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_NORMAL, LOGDICT_DOMAIN, LOG_INFO, \
+		     format, ##__VA_ARGS__)
+
+#define llvdbg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_INFO, \
+		     format, ##__VA_ARGS__)
+
+#define llvdbg_noarg(format, ...) \
+	LOGDICT_EMIT(LOGDICT_FLAG_LOWPUT, LOGDICT_DOMAIN, LOG_INFO, \
+		     format, ##__VA_ARGS__)
+
+#elif defined(CONFIG_LOGM)
 #define vdbg(format, ...) \
 	logm(LOGM_NORMAL, LOGM_IDX, LOGM_INF, EXTRA_FMT format EXTRA_ARG, ##__VA_ARGS__)
 

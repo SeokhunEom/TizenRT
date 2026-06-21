@@ -36,6 +36,7 @@
 #endif
 #include <tinyara/mm/mm.h>
 #include <tinyara/binary_manager.h>
+#include <tinyara/log_dictionary.h>
 #include <tinyara/reboot_reason.h>
 #ifdef CONFIG_BINARY_SIGNING
 #include <tinyara/signature.h>
@@ -369,7 +370,7 @@ int binary_manager_check_update(void)
 
 reboot:
 	/* No, Reboot for kernel update */
-	printf("==> [REBOOT] Board will be rebooted for new binary loading");
+	logdict_printf("==> [REBOOT] Board will be rebooted for new binary loading");
 	binary_manager_reset_board(REBOOT_SYSTEM_BINARY_UPDATE);
 
 	return BINMGR_OK;

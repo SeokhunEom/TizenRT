@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <tinyara/mm/mm.h>
 #include <tinyara/mm/heap_regioninfo.h>
+#include <tinyara/log_dictionary.h>
 #include <arch/chip/memory_region.h>
 #include <tinyara/binfmt/elf.h>
 
@@ -323,14 +324,14 @@ static void print_mem_hex_dump(void *addr, size_t alloc_size)
 	size_t dump_size = (alloc_size < MEM_DUMP_MAX_BYTES) ? alloc_size : MEM_DUMP_MAX_BYTES;
 	size_t i;
 
-	printf("[DATA] ");
+	logdict_printf("[DATA] ");
 	for (i = 0; i < dump_size; i++) {
-		printf("%02x ", ptr[i]);
+		logdict_printf("%02x ", ptr[i]);
 		if ((i + 1) % 16 == 0 && (i + 1) < dump_size) {
-			printf("\n       ");
+			logdict_printf("\n       ");
 		}
 	}
-	printf("\n");
+	logdict_printf("\n");
 }
 
 static void print_info(struct mm_heap_s *heap, int leak_cnt, int broken_cnt)
@@ -339,8 +340,8 @@ static void print_info(struct mm_heap_s *heap, int leak_cnt, int broken_cnt)
 	uint32_t owner_addr;	
 
 	if (leak_cnt > 0 || broken_cnt > 0) {
-		printf("Type   |    Addr    | Size(byte) |    Owner   | PID \n");
-		printf("---------------------------------------------------\n");
+		logdict_printf("Type   |    Addr    | Size(byte) |    Owner   | PID \n");
+		logdict_printf("---------------------------------------------------\n");
 
 		mm_takesemaphore(heap);
 
@@ -371,19 +372,19 @@ static void print_info(struct mm_heap_s *heap, int leak_cnt, int broken_cnt)
 						*/
 						pid = (-1) * pid;
 					}
-					printf("LEAK   | %10p |  %8d  | %10p | %d\n", (void *)((char *)node + SIZEOF_MM_ALLOCNODE), node->size - SIZEOF_MM_ALLOCNODE, owner_addr, pid);
+					logdict_printf("LEAK   | %10p |  %8d  | %10p | %d\n", (void *)((char *)node + SIZEOF_MM_ALLOCNODE), node->size - SIZEOF_MM_ALLOCNODE, owner_addr, pid);
 					print_mem_hex_dump((void *)((char *)node + SIZEOF_MM_ALLOCNODE), node->size - SIZEOF_MM_ALLOCNODE);
 				} else if (node->memory_state == MM_MEMORY_STATE_BROKEN) {
-					printf("BROKEN | %p\n", node);
+					logdict_printf("BROKEN | %p\n", node);
 				}
 			}
 		}
 
 		mm_givesemaphore(heap);
 
-		printf("*** %d LEAKS, %d BROKENS.\n", leak_cnt, broken_cnt);
+		logdict_printf("*** %d LEAKS, %d BROKENS.\n", leak_cnt, broken_cnt);
 	} else {
-		printf("*** NO MEMORY LEAK.\n");
+		logdict_printf("*** NO MEMORY LEAK.\n");
 	}
 }
 
@@ -404,23 +405,23 @@ int run_mem_leak_checker(int checker_pid, char *bin_name)
 #endif
 
 	if (!heap) {
-		printf("Can't found heap, bin name: %s", bin_name);
+		logdict_printf("Can't found heap, bin name: %s", bin_name);
 		return ERROR;
 	}
 
 	node_cnt = get_node_cnt(heap);
 	if (MAX_ALLOC_COUNT < node_cnt) {
-		printf("Available buffer size (%d) is small.\nPlease increase CONFIG_MEM_LEAK_CHECKER_MAX_ALLOC_COUNT value more than %d.\n", MAX_ALLOC_COUNT, node_cnt);
+		logdict_printf("Available buffer size (%d) is small.\nPlease increase CONFIG_MEM_LEAK_CHECKER_MAX_ALLOC_COUNT value more than %d.\n", MAX_ALLOC_COUNT, node_cnt);
 		return ERROR;
 	}
 
 	if (g_hash_table || g_node_info) {
-		printf("mem_leak_checker is already running.\n");
+		logdict_printf("mem_leak_checker is already running.\n");
 		return ERROR;
 	}
 
 	if (hash_init() != OK) {
-		printf("hash table memory alloc is failed.\n");
+		logdict_printf("hash table memory alloc is failed.\n");
 		return ERROR;
 	}
 
@@ -438,7 +439,7 @@ int run_mem_leak_checker(int checker_pid, char *bin_name)
 int run_all_mem_leak_checker(int checker_pid)
 {
 	int ret;
-	printf("\nKernel :\n");
+	logdict_printf("\nKernel :\n");
 	ret = run_mem_leak_checker(checker_pid, "kernel");
 
 	if (ret != OK) {
@@ -446,22 +447,22 @@ int run_all_mem_leak_checker(int checker_pid)
 	}
 
 #ifdef CONFIG_APP_BINARY_SEPARATION
-	printf("\nBelow are text addresses of loadable apps (and common binary if enabled) :\n");
-	printf("The pc value of the allocation can be obtained by subtracting the text start address of the appropriate binary\n\n");
+	logdict_printf("\nBelow are text addresses of loadable apps (and common binary if enabled) :\n");
+	logdict_printf("The pc value of the allocation can be obtained by subtracting the text start address of the appropriate binary\n\n");
 	bin_addr_info_t *bin_addr_info = (bin_addr_info_t *)get_bin_addr_list();
 	int bin_idx;
 	for (bin_idx = 0; bin_idx <= CONFIG_NUM_APPS; bin_idx++) {
 		if (bin_addr_info[bin_idx].text_addr != 0) {
-			printf("[%s] Text Addr : %p, Text Size : %u\n", BIN_NAME(bin_idx), bin_addr_info[bin_idx].text_addr, bin_addr_info[bin_idx].text_size);
+			logdict_printf("[%s] Text Addr : %p, Text Size : %u\n", BIN_NAME(bin_idx), bin_addr_info[bin_idx].text_addr, bin_addr_info[bin_idx].text_size);
 		}
 	}
-	printf("\n");
+	logdict_printf("\n");
 	/* bin_idx value zero is always reserved for common binary, so
 	 * skip checking common binary and start checking from index one
 	 */
 	for (bin_idx = 1; bin_idx <= CONFIG_NUM_APPS; bin_idx++) {
 		if (bin_addr_info[bin_idx].text_addr != 0) {
-			printf("%s :\n", BIN_NAME(bin_idx));
+			logdict_printf("%s :\n", BIN_NAME(bin_idx));
 			ret = run_mem_leak_checker(checker_pid, BIN_NAME(bin_idx));
 			if (ret != OK) {
 				return ERROR;

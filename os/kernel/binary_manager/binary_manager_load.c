@@ -41,6 +41,7 @@
 #include <tinyara/sched.h>
 #include <tinyara/init.h>
 #include <tinyara/kthread.h>
+#include <tinyara/log_dictionary.h>
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
 #include <tinyara/binfmt/binfmt.h>
 #endif
@@ -632,7 +633,7 @@ static int update_thread(int argc, char *argv[])
 	}
 
 #ifdef CONFIG_BINMGR_RELOAD_REBOOT // Board Reset for binary reloading
-	printf("==> [REBOOT] Board will be rebooted for new binary loading");
+	logdict_printf("==> [REBOOT] Board will be rebooted for new binary loading");
 	binary_manager_reset_board(REBOOT_SYSTEM_BINARY_UPDATE);
 #else
 	/* Else, Reload all binaries */
