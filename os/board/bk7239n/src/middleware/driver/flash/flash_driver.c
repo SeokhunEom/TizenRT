@@ -190,6 +190,7 @@ static PM_STATUS flash_ps_status;
 static flash_protect_type_t s_flash_runtime_protect_type = FLASH_PROTECT_NONE;
 static flash_ps_callback_t s_flash_ps_suspend_cb = NULL;
 static flash_ps_callback_t s_flash_ps_resume_cb = NULL;
+static volatile bool s_flash_bootloader_update_allowed = false;
 
 #define FLASH_MAX_WAIT_CB_CNT (4)
 static flash_wait_callback_t s_flash_wait_cb[FLASH_MAX_WAIT_CB_CNT] = {NULL};
@@ -722,7 +723,13 @@ static void flash_read_word_common(uint32_t *buffer, uint32_t address, uint32_t 
 #if (CONFIG_SPE == 0)
 // #define CONFIG_SECONDARY_ALL_PHY_PARTITION_OFFSET     0x120000 // Already defined elsewhere
 // #define CONFIG_SECONDARY_ALL_PHY_PARTITION_SIZE       0x100000 // Already defined elsewhere
+#define FLASH_BOOTLOADER_PROTECT_END                  0x11000
 #endif
+
+void bk_flash_set_bootloader_update_allowed(bool allowed)
+{
+	s_flash_bootloader_update_allowed = allowed;
+}
 
 //extern part_flag update_part_flag;
 bool flash_is_area_write_disable(uint32_t addr)
@@ -738,7 +745,7 @@ bool flash_is_area_write_disable(uint32_t addr)
 	}
 	#if defined(CONFIG_FLASH_FORBID_OPERATE_BOOTLADER)
 	uint32_t firmware_area_end_address = flash_pt->partition_start_addr + flash_pt->partition_length;
-	if (addr < firmware_area_end_address) {
+	if (!s_flash_bootloader_update_allowed && addr < firmware_area_end_address) {
 		FLASH_LOGE("valid write/erase start address = 0x%x, but current address = 0x%x.\r\n", firmware_area_end_address, addr);
 		BK_ASSERT(addr >= firmware_area_end_address);
 		return true;
@@ -750,6 +757,12 @@ bool flash_is_area_write_disable(uint32_t addr)
 		return true;
 	}
 
+	#if defined(CONFIG_FLASH_FORBID_OPERATE_BOOTLADER)
+	if (!s_flash_bootloader_update_allowed && addr < FLASH_BOOTLOADER_PROTECT_END) {
+		FLASH_LOGE("valid write/erase start address = 0x%x, but current address = 0x%x.\r\n", FLASH_BOOTLOADER_PROTECT_END, addr);
+		return true;
+	}
+	#endif
 #endif
 	return false;
 }

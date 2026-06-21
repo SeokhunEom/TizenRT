@@ -219,6 +219,13 @@ bk_err_t bk_flash_write_bytes(uint32_t address, const uint8_t *user_buf, uint32_
 bk_err_t bk_flash_read_bytes(uint32_t address, uint8_t *user_buf, uint32_t size);
 
 /**
+ * @brief     Temporarily allow writes to the bootloader flash area
+ *
+ * @param allowed true to allow bootloader area updates, false to restore guard
+ */
+void bk_flash_set_bootloader_update_allowed(bool allowed);
+
+/**
  * @brief     Read data from flas
  *
  * @param address address to read
@@ -456,5 +463,4 @@ int bk_security_flash_read_instruction(uint32_t address, uint8_t *user_buf, uint
 #ifdef __cplusplus
 }
 #endif
-
 
