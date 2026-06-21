@@ -1297,6 +1297,8 @@ endif #DEBUG_SYSTEM
 
 endif #DEBUG
 
+source logdict/Kconfig
+
 comment "Stack Debug Options"
 
 config ARCH_HAVE_STACKCHECK

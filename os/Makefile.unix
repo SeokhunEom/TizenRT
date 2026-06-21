@@ -481,6 +481,9 @@ pass2deps: pass2dep $(TINYARALIBS)
 
 pass2: pass2deps
 	$(Q) $(MAKE) -C $(ARCH_SRC) TOPDIR="$(TOPDIR)" OUTBIN_DIR="$(OUTBIN_DIR)" LIBRARIES_DIR="$(LIBRARIES_DIR)" EXTRA_OBJS="$(EXTRA_OBJS)" LINKLIBS="$(LINKLIBS)" EXTRADEFINES=$(KDEFINE) $(BIN)
+ifeq ($(CONFIG_LOG_DICTIONARY),y)
+	$(Q) python3 $(TOPDIR)/tools/logdict.py finalize --elf $(BIN) --objcopy "$(OBJCOPY)" --out $(OUTBIN_DIR)/logdict/log_dictionary.json
+endif
 	$(Q) if [ -w /tftpboot ] ; then \
 		cp -f $(BIN) /tftpboot/$(BIN_EXE).${CONFIG_ARCH}; \
 	fi

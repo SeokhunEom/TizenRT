@@ -117,6 +117,10 @@ ifeq ($(CONFIG_LOGM),y)
 TINYARALIBS += $(LIBRARIES_DIR)$(DELIM)liblogm$(LIBEXT)
 endif
 
+ifeq ($(CONFIG_LOG_DICTIONARY),y)
+TINYARALIBS += $(LIBRARIES_DIR)$(DELIM)liblogdict$(LIBEXT)
+endif
+
 # Add libraries for file system support
 
 ifeq ($(CONFIG_NFILE_DESCRIPTORS),0)

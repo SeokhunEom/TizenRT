@@ -105,6 +105,12 @@ logm$(DELIM)liblogm$(LIBEXT): context
 $(LIBRARIES_DIR)$(DELIM)liblogm$(LIBEXT): logm$(DELIM)liblogm$(LIBEXT)
 	$(Q) install logm$(DELIM)liblogm$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)liblogm$(LIBEXT)
 
+logdict$(DELIM)liblogdict$(LIBEXT): context
+	$(Q) $(MAKE) $(JOBS) -C logdict TOPDIR="$(TOPDIR)" liblogdict$(LIBEXT) KERNEL=y EXTRADEFINES=$(KDEFINE)
+
+$(LIBRARIES_DIR)$(DELIM)liblogdict$(LIBEXT): logdict$(DELIM)liblogdict$(LIBEXT)
+	$(Q) install logdict$(DELIM)liblogdict$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)liblogdict$(LIBEXT)
+
 fs$(DELIM)libfs$(LIBEXT): context
 	$(Q) $(MAKE) $(JOBS) -C fs TOPDIR="$(TOPDIR)" libfs$(LIBEXT) KERNEL=y EXTRADEFINES=$(KDEFINE)
 
@@ -273,4 +279,3 @@ $(ARCH_SRC)$(DELIM)libarch$(LIBEXT): context
 
 $(LIBRARIES_DIR)$(DELIM)libarch$(LIBEXT): $(ARCH_SRC)$(DELIM)libarch$(LIBEXT)
 	$(Q) install $(ARCH_SRC)$(DELIM)libarch$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)libarch$(LIBEXT)
-

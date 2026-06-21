@@ -1,0 +1,43 @@
+#
+# For a description of the syntax of this configuration file,
+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+#
+
+config LOG_DICTIONARY
+	bool "Dictionary based logging"
+	default n
+	---help---
+		Replace selected log format strings with compact log records and
+		generate a host-side dictionary for decoding.
+
+if LOG_DICTIONARY
+
+config LOG_DICTIONARY_KERNEL
+	bool "Enable dictionary logging for os/kernel"
+	default n
+	---help---
+		Apply dictionary logging to debug macros and selected printf calls
+		compiled from os/kernel.
+
+config LOG_DICTIONARY_MAX_STRLEN
+	int "Maximum string argument length"
+	default 64
+	---help---
+		Maximum number of bytes copied from a %s argument into one encoded
+		log frame.
+
+config LOG_DICTIONARY_TEXT_BUFSIZE
+	int "Text frame buffer size"
+	default 256
+	---help---
+		Stack buffer size used when emitting the initial text log frame.
+
+config LOG_DICTIONARY_BINARY_FRAME
+	bool "Binary dictionary log frame"
+	default n
+	depends on BROKEN
+	---help---
+		Reserved for the binary frame encoder. The record layout and host
+		dictionary schema are kept compatible with this future encoder.
+
+endif # LOG_DICTIONARY

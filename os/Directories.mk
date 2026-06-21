@@ -269,6 +269,11 @@ KERNDEPDIRS += logm
 endif
 CLEANDIRS += logm
 
+ifeq ($(CONFIG_LOG_DICTIONARY),y)
+KERNDEPDIRS += logdict
+endif
+CLEANDIRS += logdict
+
 ifeq ($(CONFIG_SE),y)
 KERNDEPDIRS += se
 endif
