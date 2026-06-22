@@ -61,6 +61,7 @@ DEPPATH = --dep-path .
 include init/Make.defs
 include irq/Make.defs
 include paging/Make.defs
+include uaccess/Make.defs
 include group/Make.defs
 include sched/Make.defs
 include task/Make.defs
