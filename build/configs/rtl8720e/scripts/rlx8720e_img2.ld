@@ -135,7 +135,7 @@ __kr4_start_table_backup_addr__ = ORIGIN(KR4_BOOT_RAM_BACKUP);
 /*__audio_buffer_start__ = ORIGIN(AUDIO_BUFFER);*/
 
 _stext_flash = __km4_flash_text_start__;
-_etext_flash = LENGTH(KM4_IMG2_XIP);
+_etext_flash = _stext_flash;
 __flash_text_start__ = _stext_flash;
 __flash_text_end__ = _etext_flash;
 
@@ -225,6 +225,8 @@ SECTIONS
 		__fini_array_end = .;	
 
 		/*-----------------*/	
+		_etext_flash = ABSOLUTE(.);
+		__flash_text_end__ = .;
 		_etext_ram = ABSOLUTE(.);	
 		__image2_backtrace_end__ = .;
 	
