@@ -52,6 +52,20 @@
 #define SLSI_DHCP_MAGIC_OFFSET 272
 #define SLSI_DHCP_MESSAGE_TYPE_ACK 0x05
 
+static bool slsi_cdev_mib_buffer_invalid(struct slsi_dev *sdev, const char *cmd,
+										 int mib_data_length, int mib_data_size)
+{
+	if (mib_data_length < 0 || mib_data_size <= 0 ||
+		mib_data_length > mib_data_size ||
+		mib_data_size > MAX_MIB_DATA_LENGTH) {
+		SLSI_ERR(sdev, "%s: Invalid MIB data length:%d size:%d\n",
+				 cmd, mib_data_length, mib_data_size);
+		return true;
+	}
+
+	return false;
+}
+
 /**
  * Control character device for debug
  * ==================================
@@ -368,8 +382,23 @@ static ssize_t slsi_cdev_write(FAR struct file *filep, FAR const char *p, size_t
 		return -EINVAL;
 	}
 	mbuf = slsi_mbuf_alloc(len);
+	if (!mbuf) {
+		SLSI_ERR(sdev, "Failed to allocate UDI request mbuf\n");
+		return -ENOMEM;
+	}
+
 	data = mbuf_put(mbuf, len);
-	memcpy(data, p, len);
+	if (!data) {
+		SLSI_ERR(sdev, "Failed to reserve UDI request mbuf data\n");
+		slsi_kfree_mbuf(mbuf);
+		return -ENOMEM;
+	}
+
+	if (copy_from_user(data, p, len)) {
+		SLSI_ERR(sdev, "Failed to copy UDI request from user\n");
+		slsi_kfree_mbuf(mbuf);
+		return -EFAULT;
+	}
 
 	mbuf->fapi.sig_length = fapi_get_expected_size(mbuf);
 	mbuf->fapi.data_length = mbuf->data_len;
@@ -438,11 +467,17 @@ static int slsi_cdev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 	switch (cmd) {
 	case UNIFI_GET_UDI_ENABLE:
 		int_param = client->log_enabled;
-		*(int *)arg = int_param;
+		if (copy_to_user((void *)arg, &int_param, sizeof(int_param))) {
+			SLSI_ERR(sdev, "UNIFI_GET_UDI_ENABLE: Failed to copy to userspace\n");
+			return -EFAULT;
+		}
 		break;
 
 	case UNIFI_SET_UDI_ENABLE:
-		int_param = *(int *)arg;
+		if (copy_from_user(&int_param, (void *)arg, sizeof(int_param))) {
+			SLSI_ERR(sdev, "UNIFI_SET_UDI_ENABLE: Failed to copy from userspace\n");
+			return -EFAULT;
+		}
 		if (int_param) {
 			slsi_log_client_register(sdev, client, udi_log_event, NULL, 0, 0);
 			client->log_enabled = 1;
@@ -466,6 +501,14 @@ static int slsi_cdev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 			r = -EFAULT;
 			break;
 		}
+
+		if (filter.signal_ids_n > ARRAY_SIZE(filter.signal_ids)) {
+			SLSI_ERR(sdev, "UNIFI_SET_UDI_LOG_MASK: Invalid signal count:%u\n",
+					 filter.signal_ids_n);
+			r = -EINVAL;
+			break;
+		}
+
 		if (filter.signal_ids_n) {
 			char *signal_filter_index;
 			int max;
@@ -534,7 +577,18 @@ static int slsi_cdev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 			break;
 		}
 
+		if (slsi_cdev_mib_buffer_invalid(sdev, "UNIFI_SET_MIB",
+										 mib_data_length, mib_data_size)) {
+			r = -EINVAL;
+			break;
+		}
+
 		mib_data = kmm_malloc(mib_data_size);
+		if (!mib_data) {
+			SLSI_ERR(sdev, "UNIFI_SET_MIB: Failed to allocate MIB data\n");
+			r = -ENOMEM;
+			break;
+		}
 
 		/* Read the rest of the Mib Data */
 		if (copy_from_user((void *)mib_data, (void *)(arg + 10), mib_data_length)) {
@@ -589,7 +643,18 @@ static int slsi_cdev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 			break;
 		}
 
+		if (slsi_cdev_mib_buffer_invalid(sdev, "UNIFI_GET_MIB",
+										 mib_data_length, mib_data_size)) {
+			r = -EINVAL;
+			break;
+		}
+
 		mib_data = kmm_malloc(mib_data_size);
+		if (!mib_data) {
+			SLSI_ERR(sdev, "UNIFI_GET_MIB: Failed to allocate MIB data\n");
+			r = -ENOMEM;
+			break;
+		}
 
 		/* Read the rest of the Mib Data */
 		if (copy_from_user((void *)mib_data, (void *)(arg + 10), mib_data_length)) {
@@ -618,7 +683,7 @@ static int slsi_cdev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 		SLSI_MUTEX_UNLOCK(sdev->netdev_add_remove_mutex);
 
 		/* Check the buffer is big enough */
-		if (mib_data_length > mib_data_size) {
+		if (mib_data_length < 0 || mib_data_length > mib_data_size) {
 			SLSI_ERR(sdev, "UNIFI_GET_MIB: Mib result data is to long. (%d bytes when the max is %d bytes)\n", mib_data_length, mib_data_size);
 			kmm_free(mib_data);
 			r = -EINVAL;

@@ -109,15 +109,3 @@ void reinit_completion(struct completion *x)
 {
 	init_completion(x);
 }
-
-void *copy_to_user(void *dest, const void *src, size_t n)
-{
-	memcpy(dest, src, n);
-	return 0;
-}
-
-void *copy_from_user(void *dest, const void *src, size_t n)
-{
-	memcpy(dest, src, n);
-	return 0;
-}
