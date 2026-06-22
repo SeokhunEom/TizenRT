@@ -18,6 +18,8 @@
 #ifndef __NUTTX_WRAPPER_H__
 #define __NUTTX_WRAPPER_H__
 
+#include <tinyara/uaccess.h>
+
 #define ERESTARTSYS                     (512)
 
 struct completion {
@@ -31,6 +33,4 @@ void complete(struct completion *x);
 void complete_all(struct completion *x);
 void init_completion(struct completion *x);
 void reinit_completion(struct completion *x);
-void *copy_to_user(void *dest, const void *src, size_t n);
-void *copy_from_user(void *dest, const void *src, size_t n);
 #endif
