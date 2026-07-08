@@ -2,6 +2,9 @@
 
 QEMU is a generic and open source machine emulator and virtualizer.
 
+For the role split between this legacy LM3S6965 target and the ARMv8-M QEMU
+target, see [QEMU Target Roles](../qemu-targets.md).
+
 ## Information
 
 Targets Supported:

@@ -7,7 +7,6 @@
 
 | Config | 빌드 모델 | 런타임 이미지 구성 |
 | --- | --- | --- |
-| `kernel_tc` | 기존 kernel TC용 flat 커널 이미지 | 커널 이미지만 사용 |
 | `hello` | TASH와 `kernel_tc`가 커널에 포함된 flat 빌드 | 커널 이미지만 사용 |
 | `loadable_all` | protected 빌드와 loadable ELF 앱 패키지 | 커널 이미지 + `app1` |
 | `loadable_apps` | XIP 커널과 loadable ELF 앱 패키지 | 커널 이미지 + `app1` |
@@ -60,7 +59,6 @@ make
 다른 config를 빌드하려면 `hello` 대신 원하는 config를 지정합니다.
 
 ```sh
-./tools/configure.sh qemu-armv8m/kernel_tc
 ./tools/configure.sh qemu-armv8m/loadable_all
 ./tools/configure.sh qemu-armv8m/loadable_apps
 ./tools/configure.sh qemu-armv8m/xip_all
@@ -217,7 +215,6 @@ printf 'ps\n' > /dev/pts/7
 최종 검증 결과는 다음과 같습니다.
 
 ```text
-qemu-armv8m/kernel_tc     Kernel TC End [PASS : 449, FAIL : 0]
 qemu-armv8m/hello         Kernel TC End [PASS : 449, FAIL : 0]
 qemu-armv8m/loadable_all  Kernel TC End [PASS : 447, FAIL : 0]
 qemu-armv8m/loadable_apps Kernel TC End [PASS : 447, FAIL : 0]
@@ -249,7 +246,7 @@ flat 구성과 protected/loadable 구성의 PASS 개수가 다른 이유는 빌�
 QEMU에서 `kernel_tc`를 실행합니다.
 
 ```text
-kernel_tc, hello, loadable_all, loadable_apps, xip_all
+hello, loadable_all, loadable_apps, xip_all
 ```
 
 CI는 `tizenrt/tizenrt:1.5.8` 빌드 이미지를 사용하고 runner에

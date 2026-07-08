@@ -2,11 +2,13 @@
 
 This target boots TizenRT on QEMU's `mps2-an505` Cortex-M33 machine.
 
+For the role split between this ARMv8-M target and the legacy LM3S6965 QEMU
+target, see [QEMU Target Roles](../qemu-targets.md).
+
 The QEMU ARMv8-M target supports the following configurations:
 
 | Configuration | Build model | Runtime image layout |
 | --- | --- | --- |
-| `kernel_tc` | Flat kernel image for the original kernel TC smoke target | Kernel image only |
 | `hello` | Flat build with TASH and `kernel_tc` built into the kernel image | Kernel image only |
 | `loadable_all` | Protected build with a loadable ELF app package | Kernel image plus `app1` package |
 | `loadable_apps` | XIP kernel with a loadable ELF app package | Kernel image plus `app1` package |
@@ -63,7 +65,6 @@ make
 Replace `hello` with any supported configuration:
 
 ```sh
-./tools/configure.sh qemu-armv8m/kernel_tc
 ./tools/configure.sh qemu-armv8m/loadable_all
 ./tools/configure.sh qemu-armv8m/loadable_apps
 ./tools/configure.sh qemu-armv8m/xip_all
@@ -219,11 +220,10 @@ Replace `/dev/pts/7` with the actual path printed by QEMU.
 The verified results for the supported configurations are:
 
 ```text
-qemu-armv8m/kernel_tc    Kernel TC End [PASS : 429, FAIL : 0]
-qemu-armv8m/hello         Kernel TC End [PASS : 427, FAIL : 0]
-qemu-armv8m/loadable_all  Kernel TC End [PASS : 421, FAIL : 0]
-qemu-armv8m/loadable_apps Kernel TC End [PASS : 421, FAIL : 0]
-qemu-armv8m/xip_all       Kernel TC End [PASS : 421, FAIL : 0]
+qemu-armv8m/hello         Kernel TC End [PASS : 449, FAIL : 0]
+qemu-armv8m/loadable_all  Kernel TC End [PASS : 447, FAIL : 0]
+qemu-armv8m/loadable_apps Kernel TC End [PASS : 447, FAIL : 0]
+qemu-armv8m/xip_all       Kernel TC End [PASS : 447, FAIL : 0]
 ```
 
 The pass count differs between the flat and protected/loadable configurations
@@ -235,7 +235,7 @@ The `qemu-armv8m` GitHub Actions workflow builds every supported defconfig and
 runs `kernel_tc` on QEMU:
 
 ```text
-kernel_tc, hello, loadable_all, loadable_apps, xip_all
+hello, loadable_all, loadable_apps, xip_all
 ```
 
 The workflow uses the `tizenrt/tizenrt:1.5.8` build image, installs
