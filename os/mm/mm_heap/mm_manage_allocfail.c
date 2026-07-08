@@ -40,7 +40,9 @@
 #endif
 
 #if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__) && defined(CONFIG_DEBUG_MM_HEAPINFO)
+#ifdef CONFIG_BINARY_MANAGER
 #include "binary_manager/binary_manager_internal.h"
+#endif
 #include "sched/sched.h"
 #include <tinyara/binfmt/binfmt.h>
 #endif
@@ -159,15 +161,42 @@ void mm_manage_alloc_fail_dump(struct mm_heap_s *heap, int startidx, int endidx,
 	}
 
 #ifdef CONFIG_APP_BINARY_SEPARATION
-	for (int index = 1; index <= CONFIG_NUM_APPS; index++) {
-		if (index != cur_app_idx) {
-			mfdbg("*************************************************************************************\n");
-			mfdbg("                      Summary of app%d heap memory usage                             \n", index);
-			mfdbg("*************************************************************************************\n\n");
-			struct mm_heap_s *app_heap = BIN_BINARY_HEAP_PTR(index);
-			for (int idx = HEAP_START_IDX; idx <= HEAP_END_IDX; idx++) {
-				heapinfo_parse_heap(&app_heap[idx], HEAPINFO_SIMPLE, HEAPINFO_PID_ALL);
-			}
+		for (int index = 1; index <= CONFIG_NUM_APPS; index++) {
+			if (index != cur_app_idx) {
+				mfdbg("*************************************************************************************\n");
+				mfdbg("                      Summary of app%d heap memory usage                             \n", index);
+				mfdbg("*************************************************************************************\n\n");
+#ifdef CONFIG_BINARY_MANAGER
+				struct mm_heap_s *app_heap = BIN_BINARY_HEAP_PTR(index);
+#else
+				const char *app_name = NULL;
+				switch (index) {
+#ifdef CONFIG_APP1_INFO
+				case 1:
+					app_name = CONFIG_APP1_BIN_NAME;
+					break;
+#endif
+#ifdef CONFIG_APP2_INFO
+				case 2:
+					app_name = CONFIG_APP2_BIN_NAME;
+					break;
+#endif
+				default:
+					break;
+				}
+
+				if (!app_name) {
+					continue;
+				}
+
+				struct mm_heap_s *app_heap = mm_get_app_heap_with_name((char *)app_name);
+				if (!app_heap) {
+					continue;
+				}
+#endif
+				for (int idx = HEAP_START_IDX; idx <= HEAP_END_IDX; idx++) {
+					heapinfo_parse_heap(&app_heap[idx], HEAPINFO_SIMPLE, HEAPINFO_PID_ALL);
+				}
 		}
 	}
 	if (heap_type != KERNEL_HEAP) {
