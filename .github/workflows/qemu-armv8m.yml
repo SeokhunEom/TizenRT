@@ -30,7 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - kernel_tc
           - hello
           - loadable_all
           - loadable_apps

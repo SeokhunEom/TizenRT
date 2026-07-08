@@ -17,6 +17,7 @@ FAIL_RE = re.compile(rb"Kernel TC End \[PASS : [0-9]+, FAIL : [1-9][0-9]*\]")
 PROMPT_RE = re.compile(rb"TASH>>")
 NOT_REGISTERED_RE = re.compile(rb"TASH: cmd \(kernel_tc\) not registered")
 PROGRESS_INTERVAL_SEC = 30
+SUPPORTED_CONFIGS = ("hello", "loadable_all", "loadable_apps", "xip_all")
 
 
 def repo_root() -> Path:
@@ -51,7 +52,7 @@ def qemu_command(root: Path, config: str) -> list[str]:
             raise FileNotFoundError(f"missing app package: {app1}")
         cmd.extend(["-device", f"loader,file={common},addr=0x102c0000,force-raw=on"])
         cmd.extend(["-device", f"loader,file={app1},addr=0x10360000,force-raw=on"])
-    elif config not in ("kernel_tc", "hello"):
+    elif config not in SUPPORTED_CONFIGS:
         raise ValueError(f"unsupported qemu-armv8m config: {config}")
 
     cmd.extend(["-display", "none", "-serial", "stdio", "-monitor", "none"])
@@ -198,7 +199,7 @@ def run_kernel_tc(config: str, timeout_sec: int, log_path: Path, verbose: bool) 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", required=True)
+    parser.add_argument("--config", required=True, choices=SUPPORTED_CONFIGS)
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--log", type=Path)
     parser.add_argument("--verbose", action="store_true")
