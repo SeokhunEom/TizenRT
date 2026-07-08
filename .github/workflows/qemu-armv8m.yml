@@ -1,0 +1,82 @@
+name: qemu-armv8m
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/qemu-armv8m-kernel-tc.py"
+      - ".github/workflows/qemu-armv8m.yml"
+      - "apps/examples/testcase/**"
+      - "build/configs/qemu-armv8m/**"
+      - "lib/libc/math/**"
+      - "os/**"
+  push:
+    branches:
+      - master
+      - "codex/**"
+    paths:
+      - ".github/scripts/qemu-armv8m-kernel-tc.py"
+      - ".github/workflows/qemu-armv8m.yml"
+      - "apps/examples/testcase/**"
+      - "build/configs/qemu-armv8m/**"
+      - "lib/libc/math/**"
+      - "os/**"
+
+jobs:
+  build-and-kernel-tc:
+    name: ${{ matrix.config }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - kernel_tc
+          - hello
+          - loadable_all
+          - loadable_apps
+          - xip_all
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-arm
+          qemu-system-arm -machine help | grep -q mps2-an505
+
+      - name: Pull TizenRT build image
+        run: docker pull tizenrt/tizenrt:1.5.8
+
+      - name: Build qemu-armv8m/${{ matrix.config }}
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace/os \
+            tizenrt/tizenrt:1.5.8 \
+            bash -lc '
+              set -euo pipefail
+              mkdir -p /tmp/tizenrt-ci-bin
+              ln -sf "$(command -v python3)" /tmp/tizenrt-ci-bin/python
+              export PATH="/tmp/tizenrt-ci-bin:$PATH"
+              make distclean || true
+              ./tools/configure.sh qemu-armv8m/${{ matrix.config }}
+              make
+            '
+
+      - name: Run kernel_tc on QEMU
+        run: |
+          python3 .github/scripts/qemu-armv8m-kernel-tc.py \
+            --config "${{ matrix.config }}" \
+            --timeout 600
+
+      - name: Upload QEMU log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qemu-armv8m-${{ matrix.config }}-kernel-tc-log
+          path: build/qemu-armv8m/${{ matrix.config }}-kernel-tc.log
+          if-no-files-found: ignore
