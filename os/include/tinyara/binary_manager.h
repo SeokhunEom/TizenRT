@@ -28,6 +28,13 @@
 #include <limits.h>
 #include <stdbool.h>
 
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
+
+/* The maximum length of binary name */
+#define BIN_NAME_MAX                     16
+
 #ifdef CONFIG_BINARY_MANAGER
 /****************************************************************************
  * Pre-processor Definitions
@@ -47,9 +54,6 @@
 
 /* Message queue name Length */
 #define BIN_PRIVMQ_LEN                   16
-
-/* The maximum length of binary name */
-#define BIN_NAME_MAX                     16
 
 /* The number of User binaries */
 #ifdef CONFIG_NUM_APPS
@@ -138,6 +142,8 @@ enum binmgr_result_type {
 };
 typedef enum binmgr_result_type binmgr_result_type_e;
 
+#endif
+
 /****************************************************************************
  * Public Data
  ****************************************************************************/
@@ -187,6 +193,8 @@ struct resource_binary_header_s {
 	uint32_t bin_size;
 } __attribute__((__packed__));
 typedef struct resource_binary_header_s resource_binary_header_t;
+
+#ifdef CONFIG_BINARY_MANAGER
 
 /* The structure of binary update information for kernel or user binaries */
 struct binary_setbp_result_s {

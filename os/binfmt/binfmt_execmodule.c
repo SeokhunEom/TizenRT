@@ -305,13 +305,15 @@ int exec_module(FAR struct binary_s *binp)
 	newtcb->cmn.uspace = binp->sections[BIN_TEXT] + 4;
 	newtcb->cmn.uheap = (uint32_t)binp->uheap;
 
-#ifdef CONFIG_BINARY_MANAGER
+#ifdef CONFIG_APP_BINARY_SEPARATION
 	newtcb->cmn.app_id = binp->binary_idx;
 
 	/* Set task name as binary name */
 	strncpy(newtcb->cmn.name, binp->bin_name, CONFIG_TASK_NAME_SIZE);
 	newtcb->cmn.name[CONFIG_TASK_NAME_SIZE] = '\0';
+#endif
 
+#ifdef CONFIG_BINARY_MANAGER
 	newtcb->cmn.group->tg_binidx = binary_idx;
 	binary_manager_add_binlist(&newtcb->cmn);
 

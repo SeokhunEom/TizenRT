@@ -244,7 +244,7 @@ config APPS_RAM_REGION_SHAREABLE
 config SUPPORT_COMMON_BINARY
 	bool "Support Common Binary"
 	default n
-	depends on FS_SMARTFS
+	depends on FS_SMARTFS || (ARCH_BOARD_QEMU_ARMV8M && FS_TMPFS)
 	select LIB_HASHMAP
 	---help---
 		This config indicates whether we support common binary. The common binary will

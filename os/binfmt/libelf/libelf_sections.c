@@ -74,6 +74,28 @@
 #ifdef CONFIG_APP_BINARY_SEPARATION
 /* The list for a common binary and user binaries(CONFIG_NUM_APPS) */
 static bin_addr_info_t g_bin_addr_list[CONFIG_NUM_APPS + 1];
+
+static FAR const char *elf_get_bin_name(uint8_t bin_idx)
+{
+#ifdef CONFIG_BINARY_MANAGER
+	return BIN_NAME(bin_idx);
+#else
+	if (bin_idx == 0) {
+		return "kernel";
+	}
+#ifdef CONFIG_APP1_BIN_NAME
+	if (bin_idx == 1) {
+		return CONFIG_APP1_BIN_NAME;
+	}
+#endif
+#ifdef CONFIG_APP2_BIN_NAME
+	if (bin_idx == 2) {
+		return CONFIG_APP2_BIN_NAME;
+	}
+#endif
+	return "app";
+#endif
+}
 #endif
 /****************************************************************************
  * Pre-processor Definitions
@@ -264,7 +286,7 @@ void elf_show_all_bin_section_addr(void)
 	lldbg_noarg("===========================================================\n");	
 	for (bin_idx = 0; bin_idx <= CONFIG_NUM_APPS; bin_idx++) {
 		if (g_bin_addr_list[bin_idx].text_addr != 0) {
-			lldbg("[%s] Text Addr : %p, Text Size : %u\n", BIN_NAME(bin_idx), g_bin_addr_list[bin_idx].text_addr, g_bin_addr_list[bin_idx].text_size);
+			lldbg("[%s] Text Addr : %p, Text Size : %u\n", elf_get_bin_name(bin_idx), g_bin_addr_list[bin_idx].text_addr, g_bin_addr_list[bin_idx].text_size);
 		}
 	}
 }

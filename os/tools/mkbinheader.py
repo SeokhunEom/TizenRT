@@ -23,6 +23,7 @@ import sys
 import struct
 import string
 import shutil
+import subprocess
 import config_util as util
 
 cfg_path = os.path.dirname(__file__) + '/../.config'
@@ -52,8 +53,15 @@ def get_static_ram_size(bin_type):
     bsssize = 0
     if bin_type == ELF :
         # Static RAM size : Extract from readelf command in linux(ONLY for elf)
-        os.system('readelf -S ' + file_path + '_dbg > ' + STATIC_RAM_ESTIMATION)
-        ram_fp = open(STATIC_RAM_ESTIMATION, 'rb')
+        readelf = shutil.which('readelf') or shutil.which('arm-none-eabi-readelf')
+        if readelf is None:
+            print("Error : readelf command is not found.")
+            sys.exit(1)
+
+        with open(STATIC_RAM_ESTIMATION, 'w') as ram_fp:
+            subprocess.check_call([readelf, '-S', file_path + '_dbg'], stdout=ram_fp)
+
+        ram_fp = open(STATIC_RAM_ESTIMATION, 'r')
         line = ram_fp.readline()
         while line:
             words = line.split('.')
@@ -297,7 +305,7 @@ def make_user_binary_header():
         fp.write(struct.pack('B', main_priority))
         fp.write(struct.pack('B', loading_priority))
         fp.write(struct.pack('I', file_size))
-        fp.write('{:{}{}.{}}'.format(binary_name, '<', SIZE_OF_BINNAME, SIZE_OF_BINNAME - 1).replace(' ','\0'))
+        fp.write(('{:{}{}.{}}'.format(binary_name, '<', SIZE_OF_BINNAME, SIZE_OF_BINNAME - 1).replace(' ','\0')).encode('ascii'))
         fp.write(struct.pack('I', int(binary_ver)))
         fp.write(struct.pack('I', binary_ram_size))
         fp.write(struct.pack('I', int(main_stack_size)))
@@ -458,4 +466,3 @@ elif binary_type == 'resource' :
 else : # Not supported.
     print("Error : Not supported Binary Type")
     sys.exit(1)
-

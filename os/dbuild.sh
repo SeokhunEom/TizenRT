@@ -143,6 +143,7 @@ function FIND_BINFILE()
 function SELECT_OPTION()
 {
 	unset SELECTED_START
+	unset SELECTED_START_LOWER
 
 	if [ -f ${OSDIR}/.config ]; then
 		if [ ! -z "$1" ];then
@@ -166,7 +167,8 @@ function SELECT_OPTION()
 			read SELECTED_START
 		fi
 
-		case ${SELECTED_START,,} in
+		SELECTED_START_LOWER=$(printf '%s' "${SELECTED_START}" | tr '[:upper:]' '[:lower:]')
+		case ${SELECTED_START_LOWER} in
 		1|build)
 			BUILD
 			;;
