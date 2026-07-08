@@ -30,8 +30,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sched.h>
+#include <sys/ioctl.h>
 #include <sys/wait.h>
 #include <tinyara/mm/mm.h>
+#include <tinyara/os_api_test_drv.h>
 #include <tinyara/sched.h>
 #include "tc_internal.h"
 
@@ -522,6 +524,18 @@ static int umm_test(int argc, char *argv[])
 	return 0;
 }
 
+#if defined(CONFIG_BUILD_PROTECTED) && defined(CONFIG_DRIVERS_OS_API_TEST)
+static void tc_kmm_heap_test(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST, 0);
+	TC_ASSERT_EQ("kmm_heap", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+
 /****************************************************************************
  * Public functions
  ****************************************************************************/
@@ -530,6 +544,11 @@ int umm_heap_main(void)
 {
 	int pid;
 	int stat_loc;
+
+#if defined(CONFIG_BUILD_PROTECTED) && defined(CONFIG_DRIVERS_OS_API_TEST)
+	tc_kmm_heap_test();
+#endif
+
 	pid = task_create("umm_test", 150, 2048, umm_test, (char * const *)NULL);
 	pid = waitpid(pid, &stat_loc, 0);	// wait umm_test task termination for atomic test
 	if (pid < 0) {

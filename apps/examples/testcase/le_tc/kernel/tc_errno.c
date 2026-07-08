@@ -24,6 +24,8 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
+#include <tinyara/os_api_test_drv.h>
 #include "tc_internal.h"
 
 #define ERROR_NUM_START 1
@@ -70,12 +72,23 @@ static void tc_errno_set_get_errno(void)
 	TC_SUCCESS_RESULT();
 }
 
+static void tc_errno_kernel(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_ERRNO_TEST, 0);
+	TC_ASSERT_EQ("errno", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
 /****************************************************************************
  * Name: errno
  ****************************************************************************/
 
 int errno_main(void)
 {
+	tc_errno_kernel();
 	tc_errno_set_get_errno();
 
 	return 0;

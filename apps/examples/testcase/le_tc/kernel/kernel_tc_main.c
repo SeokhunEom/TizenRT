@@ -65,6 +65,14 @@ int tc_kernel_main(int argc, char *argv[])
 	clock_main();
 #endif
 
+#ifdef CONFIG_TC_KERNEL_BINFMT
+	binfmt_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_BINARY_MANAGER
+	binary_manager_main();
+#endif
+
 #ifdef CONFIG_TC_KERNEL_ENVIRON
 	environ_main();
 #endif
@@ -78,6 +86,10 @@ int tc_kernel_main(int argc, char *argv[])
 #error CONFIG_SCHED_HAVE_PARENT and CONFIG_SCHED_CHILD_STATUS are needed for testing GROUP TC
 #endif
 	group_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_LOG_DUMP
+	log_dump_main();
 #endif
 
 #ifdef CONFIG_TC_KERNEL_LIBC_FIXEDMATH
@@ -151,8 +163,28 @@ int tc_kernel_main(int argc, char *argv[])
 	mqueue_main();
 #endif
 
+#ifdef CONFIG_TC_KERNEL_NET_PBUF
+	kernel_net_pbuf_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_PIPE
+	pipe_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_PM
+	pm_tc_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_PROCFS
+	procfs_main();
+#endif
+
 #ifdef CONFIG_TC_KERNEL_PTHREAD
 	pthread_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_RTC
+	rtc_main();
 #endif
 
 #ifdef CONFIG_TC_KERNEL_SCHED
@@ -183,6 +215,14 @@ int tc_kernel_main(int argc, char *argv[])
 	timer_tc_main();
 #endif
 
+#ifdef CONFIG_TC_KERNEL_VFS
+	vfs_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_WDOG
+	wdog_main();
+#endif
+
 #ifdef CONFIG_TC_KERNEL_UMM_HEAP
 	umm_heap_main();
 #endif
@@ -198,6 +238,15 @@ int tc_kernel_main(int argc, char *argv[])
 #ifdef CONFIG_TC_KERNEL_IRQ
 	irq_main();
 #endif
+
+#ifdef CONFIG_TC_KERNEL_MEM_LEAK_CHECKER
+	mem_leak_checker_main();
+#endif
+
+#ifdef CONFIG_TC_KERNEL_REBOOT_REASON
+	reboot_reason_main();
+#endif
+
 #ifdef CONFIG_ITC_KERNEL_ENVIRON
 	itc_environ_main();
 #endif

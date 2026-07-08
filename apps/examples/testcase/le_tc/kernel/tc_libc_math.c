@@ -3891,13 +3891,13 @@ static void tc_libc_math_tanf(void)
 {
 	const float in_val[] = { M_PI_4, 0.50, -0.50, 5, 10, -5, -10, ZERO, INFINITY, -INFINITY, NAN };
 	const float sol_val[] = { 1, 0.54630248984379, -0.54630248984379, -3.3805160522461, 0.6483603715897, 3.3805131912231, -0.6483607292175, ZERO, NAN, NAN, NAN };
-	float ret_val[SIZE(in_val, double)];
+	float ret_val[SIZE(in_val, float)];
 	int tanf_idx;
 	float compute_val;
 
 	/* Returns the tangent of an angle x */
 
-	for (tanf_idx = 0; tanf_idx < SIZE(in_val, double); tanf_idx++) {
+	for (tanf_idx = 0; tanf_idx < SIZE(in_val, float); tanf_idx++) {
 		ret_val[tanf_idx] = tanf(in_val[tanf_idx]);
 		compute_val = fabsf(sol_val[tanf_idx] - ret_val[tanf_idx]);
 
@@ -3957,13 +3957,13 @@ static void tc_libc_math_tanhf(void)
 {
 	const float in_val[] = { M_PI_4, 0.50, -0.50, 5, 10, -5, -10, ZERO,  INFINITY, -INFINITY, NAN };
 	const float sol_val[] = { 0.65579420263267, 0.46211715726001, -0.46211715726001, 0.9999092042626, 0.99999999587769, -0.9999092042626, -0.99999999587769, ZERO, 1.0, -1.0, NAN };
-	float ret_val[SIZE(in_val, double)];
+	float ret_val[SIZE(in_val, float)];
 	int tanhf_idx;
 	float compute_val;
 
 	/* Returns the hyperbolic tangent of an angle x */
 
-	for (tanhf_idx = 0; tanhf_idx < SIZE(in_val, double); tanhf_idx++) {
+	for (tanhf_idx = 0; tanhf_idx < SIZE(in_val, float); tanhf_idx++) {
 		ret_val[tanhf_idx] = tanhf(in_val[tanhf_idx]);
 		compute_val = fabsf(sol_val[tanhf_idx] - ret_val[tanhf_idx]);
 

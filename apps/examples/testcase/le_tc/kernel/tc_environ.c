@@ -29,6 +29,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <sys/ioctl.h>
+#include <tinyara/os_api_test_drv.h>
 #include "tc_internal.h"
 
 #define ENV_TEST_MAX_NUM 10
@@ -222,12 +224,23 @@ static void tc_environ_get_environ_ptr(void)
 	TC_SUCCESS_RESULT();
 }
 
+static void tc_environ_kernel(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_ENVIRON_TEST, 0);
+	TC_ASSERT_EQ("environ", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
 /****************************************************************************
  * Name: environ
  ****************************************************************************/
 
 int environ_main(void)
 {
+	tc_environ_kernel();
 	tc_environ_setenv_getenv_unsetenv();
 	tc_environ_clearenv();
 	tc_environ_putenv();

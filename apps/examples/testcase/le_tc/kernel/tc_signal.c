@@ -31,7 +31,9 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <tinyara/os_api_test_drv.h>
+#ifndef CONFIG_BUILD_PROTECTED
 #include "../../os/kernel/signal/signal.h"
+#endif
 #include "tc_internal.h"
 
 #define SIGHUP 1
@@ -162,14 +164,21 @@ static void tc_signal_sigaction(void)
 	int ret_chk = ERROR;
 	struct sigaction st_act;
 	struct sigaction st_oact;
+#ifndef CONFIG_BUILD_PROTECTED
 	FAR sigactq_t *sigact_before;
 	FAR sigactq_t *sigact_after;
+#endif
 	int fd;
 	fd = tc_get_drvfd();
 
 	/* save orginal action */
+#ifdef CONFIG_BUILD_PROTECTED
+	ret_chk = ioctl(fd, TESTIOC_SIG_FINDACTION_NULL_TEST, SIGINT);
+	TC_ASSERT_EQ("sig_findaction", ret_chk, OK);
+#else
 	sigact_before = (FAR sigactq_t *)ioctl(fd, TESTIOC_GET_SIG_FINDACTION_ADD, SIGINT);
 	TC_ASSERT_EQ("sig_findaction", sigact_before, NULL);
+#endif
 	st_act.sa_handler = sigaction_handler;
 	st_act.sa_flags = 0;
 	sigemptyset(&st_act.sa_mask);
@@ -185,9 +194,14 @@ static void tc_signal_sigaction(void)
 	TC_ASSERT_EQ("sigaction", st_act.sa_handler, sigaction_handler);
 
 	/* make sure action is not changed */
+#ifdef CONFIG_BUILD_PROTECTED
+	ret_chk = ioctl(fd, TESTIOC_SIG_FINDACTION_NULL_TEST, SIGINT);
+	TC_ASSERT_EQ("sig_findaction", ret_chk, OK);
+#else
 	sigact_after = (FAR sigactq_t *)ioctl(fd, TESTIOC_GET_SIG_FINDACTION_ADD, SIGINT);
 	TC_ASSERT_EQ("sig_findaction", sigact_after, NULL);
 	TC_ASSERT_EQ("sig_findaction", sigact_before, sigact_after);
+#endif
 
 	TC_SUCCESS_RESULT();
 }
@@ -454,28 +468,40 @@ static void tc_signal_sig_pending_procmask_emptyset_addset(void)
 	sigaddset(&st_newmask, SIGQUIT);
 
 	ret_chk = sigprocmask(SIG_BLOCK, &st_newmask, &st_oldmask);
-	TC_ASSERT_GEQ("sigprocmask", ret_chk, 0);
+	TC_ASSERT_GEQ_CLEANUP("sigprocmask", ret_chk, 0, sigaction(SIGQUIT, &st_oact, NULL));
 
 	nanosleep(&st_timespec, NULL);
 
 	kill(pid, SIGQUIT);
 	/* to call the handler function for verifying the sigpromask */
-	ret_chk = sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
-	TC_ASSERT_GEQ("sigprocmask", ret_chk, 0);
+	ret_chk = sigprocmask(SIG_UNBLOCK, &st_newmask, NULL);
+	TC_ASSERT_GEQ_CLEANUP("sigprocmask", ret_chk, 0, {
+		sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
+		sigaction(SIGQUIT, &st_oact, NULL);
+	});
 
 	st_timespec.tv_sec = 1;
 
 	nanosleep(&st_timespec, NULL);
 
-	ret_chk = sigprocmask(SIG_UNBLOCK, &st_oldmask, NULL);
-	TC_ASSERT_GEQ("sigprocmask", ret_chk, 0);
+	ret_chk = sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
+	TC_ASSERT_GEQ_CLEANUP("sigprocmask", ret_chk, 0, {
+		sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
+		sigaction(SIGQUIT, &st_oact, NULL);
+	});
 
 	ret_chk = sigpending(&st_pendmask);
-	TC_ASSERT_GEQ("sigpending", ret_chk, 0);
+	TC_ASSERT_GEQ_CLEANUP("sigpending", ret_chk, 0, {
+		sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
+		sigaction(SIGQUIT, &st_oact, NULL);
+	});
 
 	nanosleep(&st_timespec, NULL);
 
-	TC_ASSERT_EQ("nanosleep", g_sig_handle, true);
+	TC_ASSERT_EQ_CLEANUP("nanosleep", g_sig_handle, true, {
+		sigprocmask(SIG_SETMASK, &st_oldmask, NULL);
+		sigaction(SIGQUIT, &st_oact, NULL);
+	});
 
 	TC_ASSERT_EQ("sigaction", sigaction(SIGQUIT, &st_oact, NULL), OK);
 
@@ -508,11 +534,13 @@ static void tc_signal_sigqueue(void)
 
 	union sigval mysigval;
 	mysigval.sival_int = VAL_100;
-	TC_ASSERT_NEQ("sigqueue", sigqueue(getpid(), SIGINT, mysigval), ERROR);
+	TC_ASSERT_NEQ_CLEANUP("sigqueue", sigqueue(getpid(), SIGINT, mysigval), ERROR,
+						  sigaction(SIGINT, &st_oact, NULL));
 
 	sleep(SEC_1);
 
-	TC_ASSERT_EQ("sigqueue", g_sig_handle, true);
+	TC_ASSERT_EQ_CLEANUP("sigqueue", g_sig_handle, true,
+						 sigaction(SIGINT, &st_oact, NULL));
 
 	TC_ASSERT_NEQ("sigaction", sigaction(SIGINT, &st_oact, NULL), ERROR);
 
@@ -611,6 +639,16 @@ static void tc_signal_sighold_sigrelse(void)
 	TC_SUCCESS_RESULT();
 }
 
+static void tc_signal_kernel_pendingset(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_SIG_PENDINGSET_TEST, 0);
+	TC_ASSERT_EQ("sig_pendingset", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
 /****************************************************************************
  * Name: signal
  ****************************************************************************/
@@ -627,6 +665,7 @@ int signal_main(void)
 	tc_signal_sigtimedwait();
 	tc_signal_sigwaitinfo();
 	tc_signal_sighold_sigrelse();
+	tc_signal_kernel_pendingset();
 
 	return 0;
 }

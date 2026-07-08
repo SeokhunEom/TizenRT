@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright 2016 Samsung Electronics All Rights Reserved.
+ * Copyright 2026 Samsung Electronics All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,46 +16,42 @@
  *
  ****************************************************************************/
 
-/// @file tc_termios.c
+/// @file tc_wdog.c
 
-/// @brief Test Case Example for Termios API
+/// @brief Test Case Example for Watchdog API
 
 /****************************************************************************
  * Included Files
  ****************************************************************************/
-#include <tinyara/config.h>
 
+#include <tinyara/config.h>
+#include <errno.h>
+#include <stdio.h>
 #include <sys/ioctl.h>
 
 #include <tinyara/os_api_test_drv.h>
 
 #include "tc_internal.h"
 
-/**
-* @fn                   :tc_termios_tcsetattr_tcgetattr
-* @brief                :Check serial termios ioctl path in kernel
-* API's covered         :TCGETS, TCSETS, TCSETSW, TCSETSF, TCFLSH,
-*                       :FIONREAD, FIONWRITE
-* Preconditions         :CONFIG_SERIAL_TERMIOS
-* Postconditions        :none
-* @return               :void
-*/
-static void tc_termios_tcsetattr_tcgetattr(void)
+/****************************************************************************
+ * Private Functions
+ ****************************************************************************/
+
+static void tc_wdog_kernel(void)
 {
-	int ret_chk;
+	int ret;
 
-	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_TERMIOS_TEST, 0);
-	TC_ASSERT_EQ("termios", ret_chk, OK);
-
+	ret = ioctl(tc_get_drvfd(), TESTIOC_WDOG_TEST, 0);
+	TC_ASSERT_EQ("wdog", ret, OK);
 	TC_SUCCESS_RESULT();
 }
 
 /****************************************************************************
- * Name: termios
+ * Public Functions
  ****************************************************************************/
 
-int termios_main(void)
+int wdog_main(void)
 {
-	tc_termios_tcsetattr_tcgetattr();
+	tc_wdog_kernel();
 	return 0;
 }

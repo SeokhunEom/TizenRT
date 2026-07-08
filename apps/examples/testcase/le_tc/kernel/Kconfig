@@ -19,19 +19,23 @@ config DEBUG_TC_KN
 config TC_KN_ALL
 	bool "All"
 	default y
+	select TC_KERNEL_BINFMT if BINFMT_ENABLE
+	select TC_KERNEL_BINARY_MANAGER if BINARY_MANAGER
 	select TC_KERNEL_CLOCK
-	select TC_KERNEL_ENVIRON
+	select TC_KERNEL_ENVIRON if !DISABLE_ENVIRON
 	select TC_KERNEL_ERRNO
+	select TC_KERNEL_GROUP if SCHED_HAVE_PARENT && SCHED_CHILD_STATUS
 	select TC_KERNEL_LIBC_FIXEDMATH if LIBM
+	select TC_KERNEL_LOG_DUMP if LOG_DUMP
 	select TC_KERNEL_LIBC_INTTYPES
 	select TC_KERNEL_LIBC_LIBGEN
 	select TC_KERNEL_LIBC_MATH if LIBM
 	select TC_KERNEL_LIBC_MISC
-	select TC_KERNEL_LIBC_PTHREAD
+	select TC_KERNEL_LIBC_PTHREAD if !DISABLE_PTHREAD
 	select TC_KERNEL_LIBC_QUEUE
 	select TC_KERNEL_LIBC_SCHED
 	select TC_KERNEL_LIBC_SEMAPHORE
-	select TC_KERNEL_LIBC_SIGNAL
+	select TC_KERNEL_LIBC_SIGNAL if !DISABLE_SIGNALS && !DISABLE_POSIX_TIMERS
 	select TC_KERNEL_LIBC_STDIO
 	select TC_KERNEL_LIBC_STDLIB
 	select TC_KERNEL_LIBC_STRING
@@ -39,31 +43,51 @@ config TC_KN_ALL
 	select TC_KERNEL_LIBC_TIMER
 	select TC_KERNEL_LIBC_UNISTD
 	select TC_KERNEL_MQUEUE if !DISABLE_MQUEUE
-	select TC_KERNEL_PTHREAD
+	select TC_KERNEL_NET_PBUF if NET_LWIP
+	select TC_KERNEL_PIPE if PIPES
+	select TC_KERNEL_PM if PM
+	select TC_KERNEL_PROCFS if FS_PROCFS && !FS_PROCFS_EXCLUDE_UPTIME && !FS_PROCFS_EXCLUDE_VERSION
+	select TC_KERNEL_PTHREAD if !DISABLE_PTHREAD
+	select TC_KERNEL_RTC if RTC_DRIVER
 	select TC_KERNEL_SCHED
 	select TC_KERNEL_SEMAPHORE
-	select TC_KERNEL_SIGNAL
+	select TC_KERNEL_SIGNAL if !DISABLE_SIGNALS
 	select TC_KERNEL_SYSTEM_DEBUG if DEBUG_SYSTEM
 	select TC_KERNEL_TASK
-	select TC_KERNEL_TIMER
+	select TC_KERNEL_TIMER if !DISABLE_POSIX_TIMERS
+	select TC_KERNEL_VFS
+	select TC_KERNEL_WDOG if WATCHDOG
 	select TC_KERNEL_UMM_HEAP
-	select TC_KERNEL_WORK_QUEUE if SCHED_WORKQUEUE
-	select TC_KERNEL_IRQ if TIMER
-	select ITC_KERNEL_ENVIRON
-	select ITC_KERNEL_LIBC_PTHREAD
+	select TC_KERNEL_WORK_QUEUE if SCHED_WORKQUEUE && (SCHED_HPWORK || SCHED_LPWORK)
+	select TC_KERNEL_IRQ
+	select TC_KERNEL_MEM_LEAK_CHECKER if MEM_LEAK_CHECKER
+	select TC_KERNEL_REBOOT_REASON if SYSTEM_REBOOT_REASON
+	select ITC_KERNEL_ENVIRON if !DISABLE_ENVIRON
+	select ITC_KERNEL_LIBC_PTHREAD if !DISABLE_PTHREAD
 	select ITC_KERNEL_LIBC_SEMAPHORE
 	select ITC_KERNEL_SEMAPHORE
 	select ITC_KERNEL_SCHED
-	select ITC_KERNEL_TIMER
-	select ITC_KERNEL_PTHREAD
+	select ITC_KERNEL_TIMER if !DISABLE_POSIX_TIMERS
+	select ITC_KERNEL_PTHREAD if !DISABLE_PTHREAD
 
 config TC_KERNEL_CLOCK
 	bool "Clock"
 	default n
 
+config TC_KERNEL_BINFMT
+	bool "Binfmt"
+	default n
+	depends on BINFMT_ENABLE
+
+config TC_KERNEL_BINARY_MANAGER
+	bool "Binary Manager"
+	default n
+	depends on BINARY_MANAGER
+
 config TC_KERNEL_ENVIRON
 	bool "Environ"
 	default n
+	depends on !DISABLE_ENVIRON
 
 config TC_KERNEL_ERRNO
 	bool "Errno"
@@ -72,8 +96,13 @@ config TC_KERNEL_ERRNO
 config TC_KERNEL_GROUP
 	bool "Group"
 	default n
-	select SCHED_HAVE_PARENT
-	select SCHED_CHILD_STATUS
+	depends on SCHED_HAVE_PARENT
+	depends on SCHED_CHILD_STATUS
+
+config TC_KERNEL_LOG_DUMP
+	bool "Log Dump"
+	default n
+	depends on LOG_DUMP
 
 config TC_KERNEL_LIBC_FIXEDMATH
 	bool "Libc FixedMath"
@@ -100,6 +129,7 @@ config TC_KERNEL_LIBC_MISC
 config TC_KERNEL_LIBC_PTHREAD
 	bool "Libc Pthread"
 	default n
+	depends on !DISABLE_PTHREAD
 	select MUTEX_TYPES
 
 config TC_KERNEL_LIBC_QUEUE
@@ -117,6 +147,8 @@ config TC_KERNEL_LIBC_SEMAPHORE
 config TC_KERNEL_LIBC_SIGNAL
 	bool "Libc Signal"
 	default n
+	depends on !DISABLE_SIGNALS
+	depends on !DISABLE_POSIX_TIMERS
 
 config TC_KERNEL_LIBC_STDIO
 	bool "Libc Stdio"
@@ -147,10 +179,38 @@ config TC_KERNEL_MQUEUE
 	default n
 	depends on !DISABLE_MQUEUE
 
+config TC_KERNEL_NET_PBUF
+	bool "Net Pbuf"
+	default n
+	depends on NET_LWIP
+
+config TC_KERNEL_PIPE
+	bool "Pipe"
+	default n
+	depends on PIPES
+
+config TC_KERNEL_PM
+	bool "PM"
+	default n
+	depends on PM
+
+config TC_KERNEL_PROCFS
+	bool "ProcFS"
+	default n
+	depends on FS_PROCFS
+	depends on !FS_PROCFS_EXCLUDE_UPTIME
+	depends on !FS_PROCFS_EXCLUDE_VERSION
+
 config TC_KERNEL_PTHREAD
 	bool "Pthread"
 	default n
+	depends on !DISABLE_PTHREAD
 	select MUTEX_TYPES
+
+config TC_KERNEL_RTC
+	bool "RTC"
+	default n
+	depends on RTC_DRIVER
 
 config TC_KERNEL_SCHED
 	bool "Sched"
@@ -164,6 +224,7 @@ config TC_KERNEL_SEMAPHORE
 config TC_KERNEL_SIGNAL
 	bool "Signal"
 	default n
+	depends on !DISABLE_SIGNALS
 
 config TC_KERNEL_SYSTEM_DEBUG
 	bool "System Debug"
@@ -177,10 +238,21 @@ config TC_KERNEL_TASK
 config TC_KERNEL_TERMIOS
 	bool "Termios"
 	default n
+	depends on SERIAL_TERMIOS
 
 config TC_KERNEL_TIMER
 	bool "Timer"
 	default n
+	depends on !DISABLE_POSIX_TIMERS
+
+config TC_KERNEL_VFS
+	bool "VFS"
+	default n
+
+config TC_KERNEL_WDOG
+	bool "Wdog"
+	default n
+	depends on WATCHDOG
 
 config TC_KERNEL_UMM_HEAP
 	bool "Umm Heap"
@@ -198,20 +270,32 @@ config TC_KERNEL_WORK_QUEUE
 	bool "wqueue"
 	default n
 	depends on SCHED_WORKQUEUE
+	depends on SCHED_HPWORK || SCHED_LPWORK
 
 config TC_KERNEL_MEMORY_SAFETY
 	bool "Memory Safety"
 	default n
 	depends on !DISABLE_MQUEUE
+	depends on !DISABLE_PTHREAD
 
 config TC_KERNEL_IRQ
 	bool "irq"
 	default n
-	depends on TIMER
+
+config TC_KERNEL_MEM_LEAK_CHECKER
+	bool "Mem Leak Checker"
+	default n
+	depends on MEM_LEAK_CHECKER
+
+config TC_KERNEL_REBOOT_REASON
+	bool "Reboot Reason"
+	default n
+	depends on SYSTEM_REBOOT_REASON
 
 config ITC_KERNEL_ENVIRON
 	bool "ITC Environ"
 	default n
+	depends on !DISABLE_ENVIRON
 
 if ITC_KERNEL_ENVIRON
 config ITC_ENV_LOOP_SIZE
@@ -222,6 +306,7 @@ endif
 config ITC_KERNEL_LIBC_PTHREAD
 	bool "ITC libc Pthread"
 	default n
+	depends on !DISABLE_PTHREAD
 if ITC_KERNEL_LIBC_PTHREAD
 config ITC_LIBC_PTHREAD_LOOP_SIZE
 	int "Iterator Count"
@@ -248,10 +333,12 @@ config ITC_KERNEL_SCHED
 config ITC_KERNEL_TIMER
 	bool "ITC Timer"
 	default n
+	depends on !DISABLE_POSIX_TIMERS
 
 config ITC_KERNEL_PTHREAD
 	bool "ITC Pthread"
 	default n
+	depends on !DISABLE_PTHREAD
 	select MUTEX_TYPES
 if ITC_KERNEL_PTHREAD
 config ITC_KERN_PTHREAD_LOOP_SIZE
@@ -261,4 +348,3 @@ endif
 
 
 endif #EXAMPLES_TESTCASE_KERNEL
-

@@ -348,9 +348,9 @@ static void tc_memory_safety_with_mqueue(void)
 	g_exit = 1;
 	
 #ifndef CONFIG_DISABLE_SIGNALS
-	/* Wake up the receiver thread with a signal */
+	/* Wake up the receiver thread with a signal to interrupt mq_receive */
 
-	pthread_kill(receiver, 9);
+	pthread_kill(receiver, SIGUSR1);
 
 	/* Wait a bit to see if the thread exits on its own */
 
