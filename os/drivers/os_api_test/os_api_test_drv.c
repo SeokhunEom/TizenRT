@@ -92,8 +92,10 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 		break;
 #ifndef CONFIG_DISABLE_SIGNALS
 	case TESTIOC_GET_SIG_FINDACTION_ADD:
+	case TESTIOC_SIG_FINDACTION_NULL_TEST:
 	case TESTIOC_SIGNAL_PAUSE:
 	case TESTIOC_GET_TCB_SIGPROCMASK:
+	case TESTIOC_SIG_PENDINGSET_TEST:
 		ret = test_signal(cmd, arg);
 		break;
 #endif
@@ -101,15 +103,113 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_IS_ALIVE_THREAD:
 	case TESTIOC_GET_TCB_ADJ_STACK_SIZE:
 	case TESTIOC_SCHED_FOREACH:
+	case TESTIOC_SCHED_FOREACH_TEST:
+	case TESTIOC_TASK_SETCANCELSTATE_TEST:
+	case TESTIOC_SCHED_AFFINITY_TEST:
+	case TESTIOC_SCHED_STATE_TEST:
+#ifdef CONFIG_CANCELLATION_POINTS
+	case TESTIOC_TASK_SETCANCELTYPE_TEST:
+#endif
 		ret = test_sched(cmd, arg);
 		break;
 	case TESTIOC_CLOCK_ABSTIME2TICKS_TEST:
+	case TESTIOC_CLOCK_CONVERSION_TEST:
 		ret = test_clock(cmd, arg);
 		break;
+#ifndef CONFIG_DISABLE_POSIX_TIMERS
 	case TESTIOC_TIMER_INITIALIZE_TEST:
+	case TESTIOC_TIMER_CREATE_DELETE_TEST:
+	case TESTIOC_TIMER_DELETEALL_TEST:
 		ret = test_timer(cmd, arg);
 		break;
+#endif
+#ifdef CONFIG_WATCHDOG
+	case TESTIOC_WDOG_TEST:
+		ret = test_wdog(cmd, arg);
+		break;
+#endif
+	case TESTIOC_WORK_QUEUE_TEST:
+		ret = test_wqueue(cmd, arg);
+		break;
+	case TESTIOC_KMM_HEAP_TEST:
+		ret = test_kmm(cmd, arg);
+		break;
+#ifndef CONFIG_DISABLE_ENVIRON
+	case TESTIOC_ENVIRON_TEST:
+		ret = test_environ(cmd, arg);
+		break;
+#endif
+	case TESTIOC_ERRNO_TEST:
+		ret = test_errno(cmd, arg);
+		break;
+#ifndef CONFIG_DISABLE_PTHREAD
+	case TESTIOC_PTHREAD_TEST:
+		ret = test_pthread(cmd, arg);
+		break;
+#endif
+	case TESTIOC_IRQ_TEST:
+		ret = test_irq(cmd, arg);
+		break;
+#ifdef CONFIG_BINFMT_ENABLE
+	case TESTIOC_BINFMT_TEST:
+		ret = test_binfmt(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_LOG_DUMP
+	case TESTIOC_LOG_DUMP_TEST:
+		ret = test_log_dump(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_BINARY_MANAGER
+	case TESTIOC_BINARY_MANAGER_TEST:
+		ret = test_binary_manager(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_MEM_LEAK_CHECKER
+	case TESTIOC_MEM_LEAK_CHECKER_TEST:
+		ret = test_mem_leak_checker(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_SYSTEM_REBOOT_REASON
+	case TESTIOC_REBOOT_REASON_TEST:
+		ret = test_reboot_reason(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_PM
+	case TESTIOC_PM_TEST:
+		ret = test_pm(cmd, arg);
+		break;
+#endif
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_UPTIME) && !defined(CONFIG_FS_PROCFS_EXCLUDE_VERSION)
+	case TESTIOC_PROCFS_TEST:
+		ret = test_procfs(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_RTC_DRIVER
+	case TESTIOC_RTC_TEST:
+		ret = test_rtc(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_PIPES
+	case TESTIOC_PIPE_TEST:
+		ret = test_pipe(cmd, arg);
+		break;
+#endif
+	case TESTIOC_VFS_TEST:
+		ret = test_vfs(cmd, arg);
+		break;
+#ifdef CONFIG_SERIAL_TERMIOS
+	case TESTIOC_TERMIOS_TEST:
+		ret = test_termios(cmd, arg);
+		break;
+#endif
+#ifndef CONFIG_DISABLE_MQUEUE
+	case TESTIOC_MQUEUE_TEST:
+		ret = test_mqueue(cmd, arg);
+		break;
+#endif
 	case TESTIOC_SEM_TICK_WAIT_TEST:
+	case TESTIOC_SEM_KERNEL_TEST:
 		ret = test_sem(cmd, arg);
 		break;
 #if defined(CONFIG_SCHED_HAVE_PARENT) && defined(CONFIG_SCHED_CHILD_STATUS)
@@ -117,11 +217,18 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_GROUP_ALLOC_FREE_TEST:
 	case TESTIOC_GROUP_EXIT_CHILD_TEST:
 	case TESTIOC_GROUP_REMOVECHILDREN_TEST:
+#ifndef CONFIG_DISABLE_SIGNALS
+	case TESTIOC_GROUP_SIGNAL_TEST:
+#endif
 		ret = test_group(cmd, arg);
 		break;
 #endif
 	case TESTIOC_TASK_REPARENT:
 	case TESTIOC_TASK_INIT_TEST:
+	case TESTIOC_TASK_LIFECYCLE_TEST:
+#ifdef CONFIG_SCHED_STARTHOOK
+	case TESTIOC_TASK_STARTHOOK_TEST:
+#endif
 		ret = test_task(cmd, arg);
 		break;
 #ifdef CONFIG_TC_COMPRESS_READ
@@ -134,7 +241,7 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_MEM_PROTECTTEST:
 		ret = OK;
 		struct mem_protecttest_arg_s *obj = (struct mem_protecttest_arg_s*)arg;
-		
+
 		if (!obj) {
 			return -EINVAL;
 		}
@@ -185,7 +292,7 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 		break;
 #endif
 
-#ifdef CONFIG_TC_NET_PBUF
+#if defined(CONFIG_TC_NET_PBUF) || defined(CONFIG_TC_KERNEL_NET_PBUF)
 	/* Run the test case for pbuf   */
 	case TESTIOC_NET_PBUF:
 		ret = test_net_pbuf(cmd, arg);
@@ -195,7 +302,7 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_GET_FS_PARTNO:
 		ret = test_fs_get_devname();
 		break;
-#endif		
+#endif
 	default:
 		vdbg("Unrecognized cmd: %d arg: %ld\n", cmd, arg);
 		break;

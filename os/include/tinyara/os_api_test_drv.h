@@ -30,6 +30,10 @@
 #include <tinyara/config.h>
 #include <tinyara/fs/ioctl.h>
 
+#if defined(CONFIG_TC_NET_PBUF)
+#include <lwip/pbuf.h>
+#endif
+
 #ifdef CONFIG_DRIVERS_OS_API_TEST
 
 /****************************************************************************
@@ -81,14 +85,67 @@
 #ifdef CONFIG_EXAMPLES_STACK_PROTECTION
 #define TESTIOC_KTHREAD_STACK_PROTECTION_TEST	_TESTIOC(22)
 #endif
-#ifdef CONFIG_TC_NET_PBUF
+#if defined(CONFIG_TC_NET_PBUF) || defined(CONFIG_TC_KERNEL_NET_PBUF)
 #define TESTIOC_NET_PBUF			_TESTIOC(23)
 #endif
 #if defined(CONFIG_AUTOMOUNT_USERFS) && defined(CONFIG_EXAMPLES_TESTCASE_FILESYSTEM)
 #define TESTIOC_GET_FS_PARTNO			_TESTIOC(24)
 #endif
+#define TESTIOC_TIMER_CREATE_DELETE_TEST	_TESTIOC(25)
+#define TESTIOC_TASK_SETCANCELSTATE_TEST	_TESTIOC(26)
+#ifdef CONFIG_CANCELLATION_POINTS
+#define TESTIOC_TASK_SETCANCELTYPE_TEST		_TESTIOC(27)
+#endif
+#define TESTIOC_WORK_QUEUE_TEST			_TESTIOC(28)
+#define TESTIOC_KMM_HEAP_TEST			_TESTIOC(29)
+#define TESTIOC_TASK_LIFECYCLE_TEST		_TESTIOC(30)
+#define TESTIOC_SCHED_FOREACH_TEST		_TESTIOC(31)
+#define TESTIOC_SIG_FINDACTION_NULL_TEST	_TESTIOC(32)
+#define TESTIOC_CLOCK_CONVERSION_TEST		_TESTIOC(33)
+#define TESTIOC_TIMER_DELETEALL_TEST		_TESTIOC(34)
+#define TESTIOC_WDOG_TEST			_TESTIOC(35)
+#define TESTIOC_MQUEUE_TEST			_TESTIOC(36)
+#define TESTIOC_SEM_KERNEL_TEST			_TESTIOC(37)
+#define TESTIOC_ENVIRON_TEST			_TESTIOC(38)
+#define TESTIOC_ERRNO_TEST			_TESTIOC(39)
+#ifndef CONFIG_DISABLE_PTHREAD
+#define TESTIOC_PTHREAD_TEST			_TESTIOC(40)
+#endif
+#define TESTIOC_IRQ_TEST			_TESTIOC(41)
+#define TESTIOC_LOG_DUMP_TEST			_TESTIOC(42)
+#define TESTIOC_BINARY_MANAGER_TEST		_TESTIOC(43)
+#define TESTIOC_MEM_LEAK_CHECKER_TEST		_TESTIOC(44)
+#define TESTIOC_REBOOT_REASON_TEST		_TESTIOC(45)
+#define TESTIOC_PM_TEST				_TESTIOC(46)
+#define TESTIOC_PROCFS_TEST			_TESTIOC(47)
+#define TESTIOC_RTC_TEST			_TESTIOC(48)
+#define TESTIOC_PIPE_TEST			_TESTIOC(49)
+#define TESTIOC_BINFMT_TEST			_TESTIOC(50)
+#define TESTIOC_VFS_TEST			_TESTIOC(51)
+#define TESTIOC_TERMIOS_TEST			_TESTIOC(52)
+#define TESTIOC_SCHED_AFFINITY_TEST		_TESTIOC(53)
+#if defined(CONFIG_SCHED_HAVE_PARENT) && defined(CONFIG_SCHED_CHILD_STATUS) && !defined(CONFIG_DISABLE_SIGNALS)
+#define TESTIOC_GROUP_SIGNAL_TEST		_TESTIOC(54)
+#endif
+#ifdef CONFIG_SCHED_STARTHOOK
+#define TESTIOC_TASK_STARTHOOK_TEST		_TESTIOC(55)
+#endif
+#define TESTIOC_SCHED_STATE_TEST		_TESTIOC(56)
+#define TESTIOC_SIG_PENDINGSET_TEST		_TESTIOC(57)
 
 #define OS_API_TEST_DRVPATH	"/dev/os_api_test"
+
+/****************************************************************************
+ * Public Types
+ ****************************************************************************/
+
+#if defined(CONFIG_TC_NET_PBUF)
+struct pbuf_test_args {
+	pbuf_layer layer;
+	u16_t len;
+	pbuf_type type;
+};
+#endif
 
 /****************************************************************************
  * Public Data

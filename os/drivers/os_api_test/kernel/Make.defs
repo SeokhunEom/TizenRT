@@ -22,9 +22,77 @@ ifeq ($(CONFIG_DRIVERS_OS_API_TEST),y)
 CSRCS += test_task.c
 CSRCS += test_sched.c
 CSRCS += test_clock.c
-CSRCS += test_timer.c
 CSRCS += test_sem.c
 CSRCS += test_group.c
+CSRCS += test_wqueue.c
+CSRCS += test_kmm.c
+CSRCS += test_errno.c
+CSRCS += test_irq.c
+CSRCS += test_vfs.c
+
+ifneq ($(CONFIG_DISABLE_PTHREAD),y)
+CSRCS += test_pthread.c
+endif
+
+ifeq ($(CONFIG_SERIAL_TERMIOS),y)
+CSRCS += test_termios.c
+endif
+
+ifneq ($(CONFIG_DISABLE_POSIX_TIMERS),y)
+CSRCS += test_timer.c
+endif
+
+ifeq ($(CONFIG_WATCHDOG),y)
+CSRCS += test_wdog.c
+endif
+
+ifeq ($(CONFIG_BINFMT_ENABLE),y)
+CSRCS += test_binfmt.c
+endif
+
+ifneq ($(CONFIG_DISABLE_ENVIRON),y)
+CSRCS += test_environ.c
+endif
+
+ifneq ($(CONFIG_DISABLE_MQUEUE),y)
+CSRCS += test_mqueue.c
+endif
+
+ifeq ($(CONFIG_LOG_DUMP),y)
+CSRCS += test_log_dump.c
+endif
+
+ifeq ($(CONFIG_BINARY_MANAGER),y)
+CSRCS += test_binary_manager.c
+endif
+
+ifeq ($(CONFIG_MEM_LEAK_CHECKER),y)
+CSRCS += test_mem_leak_checker.c
+endif
+
+ifeq ($(CONFIG_SYSTEM_REBOOT_REASON),y)
+CSRCS += test_reboot_reason.c
+endif
+
+ifeq ($(CONFIG_PM),y)
+CSRCS += test_pm.c
+endif
+
+ifeq ($(CONFIG_FS_PROCFS),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_UPTIME),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_VERSION),y)
+CSRCS += test_procfs.c
+endif
+endif
+endif
+
+ifeq ($(CONFIG_RTC_DRIVER),y)
+CSRCS += test_rtc.c
+endif
+
+ifeq ($(CONFIG_PIPES),y)
+CSRCS += test_pipe.c
+endif
 
 ifneq ($(CONFIG_DISABLE_SIGNALS),y)
 CSRCS += test_signal.c
