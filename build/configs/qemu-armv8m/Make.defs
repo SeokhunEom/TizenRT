@@ -1,0 +1,143 @@
+###########################################################################
+#
+# Copyright 2026 Samsung Electronics All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+###########################################################################
+
+include ${TOPDIR}/.config
+include ${TOPDIR}/tools/Config.mk
+ARCH_FAMILY = $(patsubst "%",%,$(CONFIG_ARCH_FAMILY))
+include ${TOPDIR}/arch/$(CONFIG_ARCH)/src/$(ARCH_FAMILY)/Toolchain.defs
+
+ifeq ($(WINTOOL),y)
+  DIRLINK = $(TOPDIR)/tools/copydir.sh
+  DIRUNLINK = $(TOPDIR)/tools/unlink.sh
+  MKDEP = $(TOPDIR)/tools/mknulldeps.sh
+  ARCHINCLUDES = -I. -isystem "${shell cygpath -w $(TOPDIR)/include}" -isystem "${shell cygpath -w $(TOPDIR)/../framework/include}" -isystem "${shell cygpath -w $(TOPDIR)/../external/include}"
+  ARCHXXINCLUDES = -I. -isystem "${shell cygpath -w $(TOPDIR)/include}" -isystem "${shell cygpath -w $(TOPDIR)/../framework/include}" -isystem "${shell cygpath -w $(TOPDIR)/../external/include}" -isystem "${shell cygpath -w $(TOPDIR)/../external/include/libcxx}"
+  ARCHSCRIPT = -T "${shell cygpath -w $(TOPDIR)/../build/configs/qemu-armv8m/scripts/mps2-an505.ld}"
+else
+  MKDEP = $(TOPDIR)/tools/mkdeps.sh
+  ARCHINCLUDES = -I. -isystem $(TOPDIR)/include -isystem $(TOPDIR)/../framework/include -isystem $(TOPDIR)/../external/include
+  ARCHXXINCLUDES = -I. -isystem $(TOPDIR)/include -isystem $(TOPDIR)/../framework/include -isystem $(TOPDIR)/../external/include -isystem $(TOPDIR)/../external/include/libcxx
+  ARCHSCRIPT = -T$(TOPDIR)/../build/configs/qemu-armv8m/scripts/mps2-an505.ld
+endif
+
+CC = $(CROSSDEV)gcc
+CXX = $(CROSSDEV)g++
+CPP = $(CROSSDEV)gcc -E
+LD = $(CROSSDEV)ld
+AR = $(CROSSDEV)ar rcs
+NM = $(CROSSDEV)nm
+OBJCOPY = $(CROSSDEV)objcopy
+OBJDUMP = $(CROSSDEV)objdump
+STRIP = $(CROSSDEV)strip
+
+ARCHCCVERSION = ${shell $(CC) -v 2>&1 | sed -n '/^gcc version/p' | sed -e 's/^gcc version \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q'}
+ARCHCCMAJOR = ${shell echo $(ARCHCCVERSION) | cut -d'.' -f1}
+ARCHCCMINOR = ${shell echo $(ARCHCCVERSION) | cut -d'.' -f2}
+
+ifeq ($(CONFIG_DEBUG_SYMBOLS),y)
+  ARCHOPTIMIZATION = -g
+endif
+
+ifneq ($(CONFIG_DEBUG_NOOPT),y)
+  ARCHOPTIMIZATION += $(MAXOPTIMIZATION) -fno-strict-aliasing -fno-strength-reduce -fomit-frame-pointer
+endif
+
+ARCHCFLAGS = -fno-builtin -fno-common
+ARCHCXXFLAGS = -fno-builtin -fno-rtti
+ARCHWARNINGS = -Wall -Wstrict-prototypes -Wshadow -Wundef
+ARCHWARNINGS += -Wno-implicit-function-declaration -Wno-unused-function
+ARCHWARNINGS += -Wno-unused-but-set-variable -Wno-misleading-indentation
+ARCHWARNINGS += -Wno-unused-variable -Wno-address -Wno-maybe-uninitialized
+ARCHWARNINGSXX = -Wall -Wshadow
+ARCHDEFINES =
+ARCHPICFLAGS = -fpic -msingle-pic-base -mpic-register=r10
+
+ifeq ($(CONFIG_CXX_VERSION_17),y)
+  ARCHCXXFLAGS += -std=c++17
+else ifeq ($(CONFIG_CXX_VERSION_14),y)
+  ARCHCXXFLAGS += -std=c++14
+else
+  ARCHCXXFLAGS += -std=c++11
+endif
+
+ARCHWARNINGSXX += -Wno-sign-compare
+
+CFLAGS = $(ARCHCFLAGS) $(ARCHWARNINGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRADEFINES) -pipe
+CPICFLAGS = $(ARCHPICFLAGS) $(CFLAGS)
+CXXFLAGS = $(ARCHCXXFLAGS) $(ARCHWARNINGSXX) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHXXINCLUDES) $(ARCHDEFINES) $(EXTRADEFINES) -pipe
+CXXFLAGS += -D__TINYARA__ -fno-builtin -fno-exceptions -fcheck-new
+CXXFLAGS += -D_DEBUG -D_LIBCPP_BUILD_STATIC -D_LIBCPP_NO_EXCEPTIONS -ffunction-sections -fdata-sections
+CPPFLAGS = $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRADEFINES)
+AFLAGS = $(CFLAGS) -D__ASSEMBLY__
+
+OBJEXT = .o
+LIBEXT = .a
+EXEEXT =
+
+ifeq ($(CONFIG_DEBUG_SYMBOLS),y)
+  LDFLAGS += -g
+endif
+
+LDFLAGS += --defsym=CONFIG_IDLETHREAD_STACKSIZE=$(CONFIG_IDLETHREAD_STACKSIZE)
+
+ifeq ($(CONFIG_APP_BINARY_SEPARATION),y)
+CELFFLAGS = $(CFLAGS) -mlong-calls
+CXXELFFLAGS = $(CXXFLAGS) -mlong-calls
+
+LDELFFLAGS = -r -e main
+
+ifeq ($(CONFIG_XIP_ELF),y)
+ifeq ($(WINTOOL),y)
+  LDELFFLAGS += -T "${shell cygpath -w $(TOPDIR)/../build/configs/qemu-armv8m/scripts/xipelf/userspace_all.ld}"
+else
+  LDELFFLAGS += -T $(TOPDIR)/../build/configs/qemu-armv8m/scripts/xipelf/userspace_all.ld
+endif
+else
+ifeq ($(WINTOOL),y)
+  LDELFFLAGS += -T "${shell cygpath -w $(TOPDIR)/userspace/userspace_apps.ld}"
+else
+  LDELFFLAGS += -T $(TOPDIR)/userspace/userspace_apps.ld
+endif
+endif
+endif
+
+HOSTCC = gcc
+HOSTINCLUDES = -I.
+HOSTCFLAGS = -Wall -Wstrict-prototypes -Wshadow -g -pipe
+HOSTLDFLAGS =
+
+ifeq ($(CONFIG_XIP_ELF),y)
+define DOWNLOAD
+	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara \
+		-device loader,file=$(TOPDIR)/../build/output/bin/common,addr=0x102c0000,force-raw=on \
+		-device loader,file=$(TOPDIR)/../build/output/bin/app1,addr=0x10360000,force-raw=on \
+		-nographic
+endef
+else
+ifeq ($(CONFIG_APP_BINARY_SEPARATION),y)
+define DOWNLOAD
+	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara \
+		-device loader,file=$(TOPDIR)/../build/output/bin/app1,addr=0x10300000,force-raw=on \
+		-nographic
+endef
+else
+define DOWNLOAD
+	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara -nographic
+endef
+endif
+endif
