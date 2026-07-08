@@ -72,7 +72,10 @@ union ldshape {
 
 long double truncl(long double x)
 {
-	union ldshape u = { x };
+#if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+	return (long double)trunc((double)x);
+#else
+	union ldshape u = { .f = x };
 	int e = u.i.se & 0x7fff;
 	int s = u.i.se >> 15;
 	long double y;
@@ -103,5 +106,6 @@ long double truncl(long double x)
 
 	x += y;
 	return s ? -x : x;
+#endif
 }
 #endif
