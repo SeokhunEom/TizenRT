@@ -106,6 +106,30 @@ else
   INCDIR = "$(TOPDIR)/tools/incdir.sh"
 endif
 
+# TOOLCHAIN_ARTIFACT_ROOT - Optional root for full toolchain artifacts
+
+TIZENRT_FULL_ARTIFACTS ?=
+TOOLCHAIN_ARTIFACT_ROOT ?= $(TOPDIR)/../build/output/toolchain-artifacts
+
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+define TOOLCHAIN_ARTIFACT_PATHS
+	repo_root=`cd "$(TOPDIR)/.." && pwd -P`; \
+	artifact_src="$(strip $1)"; \
+	artifact_obj="$(strip $2)"; \
+	src_dirname=`dirname "$$artifact_src"`; \
+	src_name=`basename "$$artifact_src"`; \
+	src_abs_dir=`cd "$$src_dirname" && pwd -P`; \
+	src_rel=`printf '%s\n' "$$src_abs_dir/$$src_name" | sed -e "s#^$$repo_root/##" -e 's#^/##'`; \
+	src_dir=`dirname "$$src_rel"`; \
+	obj_base=`basename "$$artifact_obj" $(OBJEXT)`; \
+	compile_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/compile/$$src_dir"; \
+	assemble_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/assemble/$$src_dir"; \
+	archive_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/archive"; \
+	link_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/link"; \
+	mkdir -p "$$compile_dir" "$$assemble_dir" "$$archive_dir" "$$link_dir"
+endef
+endif
+
 # PREPROCESS - Default macro to run the C pre-processor
 # Example: $(call PREPROCESS, in-file, out-file)
 #
@@ -129,10 +153,21 @@ endef
 #   CC - The command to invoke the C compiler
 #   CFLAGS - Options to pass to the C compiler
 
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+define COMPILE
+	@echo "CC: $1"
+	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
+	$(CC) -E $(CFLAGS) $1 -o "$$compile_dir/$$obj_base.i" && \
+	$(CC) -S $(CFLAGS) $1 -o "$$compile_dir/$$obj_base.s" && \
+	$(CC) -c $(CFLAGS) -MMD -MP -MF "$$compile_dir/$$obj_base.d" -Wa,-adhln="$$compile_dir/$$obj_base.lst" $1 -o $2 && \
+	cp $2 "$$compile_dir/$$obj_base$(OBJEXT)"
+endef
+else
 define COMPILE
 	@echo "CC: $1"
 	$(Q) $(CC) -c $(CFLAGS) $1 -o $2
 endef
+endif
 
 # COMPILEXX - Default macro to compile one C++ file
 # Example: $(call COMPILEXX, in-file, out-file)
@@ -143,10 +178,21 @@ endef
 #   CXX - The command to invoke the C++ compiler
 #   CXXFLAGS - Options to pass to the C++ compiler
 
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+define COMPILEXX
+	@echo "CXX: $1"
+	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
+	$(CXX) -E $(CXXFLAGS) $1 -o "$$compile_dir/$$obj_base.ii" && \
+	$(CXX) -S $(CXXFLAGS) $1 -o "$$compile_dir/$$obj_base.s" && \
+	$(CXX) -c $(CXXFLAGS) -MMD -MP -MF "$$compile_dir/$$obj_base.d" -Wa,-adhln="$$compile_dir/$$obj_base.lst" $1 -o $2 && \
+	cp $2 "$$compile_dir/$$obj_base$(OBJEXT)"
+endef
+else
 define COMPILEXX
 	@echo "CXX: $1"
 	$(Q) $(CXX) -c $(CXXFLAGS) $1 -o $2
 endef
+endif
 
 # ASSEMBLE - Default macro to assemble one assembly language file
 # Example: $(call ASSEMBLE, in-file, out-file)
@@ -164,10 +210,20 @@ endef
 #        files
 #   AFLAGS - Options to pass to the C+compiler
 
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+define ASSEMBLE
+	@echo "AS: $1"
+	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
+	$(CC) -E $(AFLAGS) $1 -o "$$assemble_dir/$$obj_base.preprocessed.s" && \
+	$(CC) -c $(AFLAGS) -MMD -MP -MF "$$assemble_dir/$$obj_base.d" -Wa,-adhln="$$assemble_dir/$$obj_base.lst" $1 -o $2 && \
+	cp $2 "$$assemble_dir/$$obj_base$(OBJEXT)"
+endef
+else
 define ASSEMBLE
 	@echo "AS: $1"
 	$(Q) $(CC) -c $(AFLAGS) $1 -o $2
 endef
+endif
 
 # MOVEOBJ - Default macro to move an object file to the correct location
 # Example: $(call MOVEOBJ, prefix, directory)
@@ -209,10 +265,23 @@ define ARCHIVE
 	$(Q) $(LOCK_AR) $(AR) $1 $(2)
 endef
 else
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+define ARCHIVE
+	@echo "AR: $2"
+	$(Q) $(LOCK_AR) $(AR) $1 $(2) || { echo "$(AR) $1 FAILED!" ; exit 1 ; }; \
+	archive_file="$(strip $1)"; \
+	archive_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/archive"; \
+	archive_key=`printf '%s\n' "$$archive_file" | sed -e 's#^\./##' -e 's#[/\\:]#_#g'`; \
+	mkdir -p "$$archive_dir"; \
+	{ printf 'ARCHIVE\t%s\n' "$$archive_file"; $(firstword $(AR)) t "$$archive_file"; } > "$$archive_dir/$$archive_key.contents" || { echo "$(firstword $(AR)) t $$archive_file FAILED!" ; exit 1 ; }; \
+	cp "$$archive_file" "$$archive_dir/$$archive_key" || { echo "copy $$archive_file FAILED!" ; exit 1 ; }
+endef
+else
 define ARCHIVE
 	@echo "AR: $2"
 	$(Q) $(LOCK_AR) $(AR) $1 $(2) || { echo "$(AR) $1 FAILED!" ; exit 1 ; }
 endef
+endif
 endif
 
 # PRELINK - Prelink a list of files

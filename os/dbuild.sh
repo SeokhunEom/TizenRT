@@ -166,9 +166,13 @@ function SELECT_OPTION()
 			read SELECTED_START
 		fi
 
-		case ${SELECTED_START,,} in
+		SELECTED_START_LOWER=`echo ${SELECTED_START} | tr '[:upper:]' '[:lower:]'`
+		case ${SELECTED_START_LOWER} in
 		1|build)
 			BUILD
+			;;
+		artifactbuild)
+			TIZENRT_FULL_ARTIFACTS=1 BUILD
 			;;
 		2|configure)
 			if [ "${STATUS}" == "BUILT" ]; then
@@ -504,6 +508,9 @@ function BUILD()
 
 	HOSTNAME="-h=`git config user.name | tr -d ' '`" # set github username instead of hostname, "-h=`hostname`"
 	LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
+	if [ "${TIZENRT_FULL_ARTIFACTS}" == "1" ]; then
+		DOCKER_OPT="${DOCKER_OPT} -e TIZENRT_FULL_ARTIFACTS=1"
+	fi
 	
 	docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} $1 2>&1 | tee build.log
 	UPDATE_STATUS

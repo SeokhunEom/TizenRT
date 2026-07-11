@@ -140,6 +140,15 @@ BIN  = libarch$(LIBEXT)
 
 LDFLAGS += $(ARCHSCRIPT)
 
+TIZENRT_FULL_ARTIFACTS ?=
+TOOLCHAIN_ARTIFACT_ROOT ?= $(TOPDIR)/../build/output/toolchain-artifacts
+
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+  LINK_MAP_FLAGS = -Map $(TOPDIR)/../build/output/bin/tinyara.map --cref
+else
+  LINK_MAP_FLAGS = -Map $(TOPDIR)/../build/output/bin/tinyara.map
+endif
+
 # Override in Make.defs if linker is not 'ld'
 
 LDSTARTGROUP ?= --start-group
@@ -207,11 +216,20 @@ $(OUTBIN_DIR)/tinyara$(EXEEXT): $(HEAD_OBJ) board/libboard$(LIBEXT)
 	$(Q) echo "LD: tinyara"
 	$(Q) $(LD) --entry=__start $(LDFLAGS) $(LIBPATHS) $(EXTRA_LIBPATHS) \
 		-o $(TINYARA) $(HEAD_OBJ) $(EXTRA_OBJS) \
-		--start-group $(LDLIBS) $(EXTRA_LIBS) $(LIBGCC) --end-group -Map $(TOPDIR)/../build/output/bin/tinyara.map
+		--start-group $(LDLIBS) $(EXTRA_LIBS) $(LIBGCC) --end-group $(LINK_MAP_FLAGS)
 ifneq ($(CONFIG_WINDOWS_NATIVE),y)
 	$(Q) $(NM) -l $(TINYARA) | \
 	grep -v '\(compiled\)\|\(\$(OBJEXT)$$\)\|\( [aUw] \)\|\(\.\.ng$$\)\|\(LASH[RL]DI\)' | \
 	sort > $(TOPDIR)/$(OUTBIN_DIR)/System.map
+endif
+ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+	$(Q) mkdir -p "$(TOOLCHAIN_ARTIFACT_ROOT)/link"
+	$(Q) if [ -n "$(NM)" ]; then $(NM) -l $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.nm"; fi
+	$(Q) if [ -n "$(OBJDUMP)" ]; then $(OBJDUMP) -d -S -l $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.objdump"; fi
+	$(Q) if [ -n "$(READELF)" ]; then $(READELF) -a $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.readelf"; fi
+	$(Q) if [ -n "$(CC_SIZE)" ]; then $(CC_SIZE) -A --radix=16 $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.size"; fi
+	$(Q) if [ -f "$(TOPDIR)/../build/output/bin/tinyara.map" ]; then cp -f "$(TOPDIR)/../build/output/bin/tinyara.map" "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.map"; fi
+	$(Q) if [ -f "$(TOPDIR)/$(OUTBIN_DIR)/System.map" ]; then cp -f "$(TOPDIR)/$(OUTBIN_DIR)/System.map" "$(TOOLCHAIN_ARTIFACT_ROOT)/link/System.map"; fi
 endif
 
 # This is part of the top-level export target
