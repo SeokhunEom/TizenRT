@@ -201,27 +201,6 @@ function remove_large_binary_temp()
 	rm $BINDIR/tinyara.axf.bin
 }
 
-function collect_toolchain_artifacts()
-{
-	if [ "${TIZENRT_FULL_ARTIFACTS}" != "1" ];then
-		return
-	fi
-
-	ARTIFACT_PKG_DIR=${TOP_PATH}/build/output/toolchain-artifacts/package
-	mkdir -p "${ARTIFACT_PKG_DIR}"
-
-	for artifact_file in \
-		target_img2.axf target_pure_img2.axf target_img2.map target_img2.asm \
-		km0_km4_ap_image_all.hex; do
-		for matched_file in "${BINDIR}"/${artifact_file}; do
-			if [ -f "${matched_file}" ];then
-				cp -f "${matched_file}" "${ARTIFACT_PKG_DIR}/"
-			fi
-		done
-	done
-}
-
-
 copy_bootloader;
 copy_flashloader;
 copy_km0_km4_image;
@@ -234,5 +213,4 @@ else
 	concatenate_binary_without_signing;
 fi
 remove_large_binary_temp;
-collect_toolchain_artifacts;
  

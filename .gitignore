@@ -30,3 +30,4 @@ tags
 *.tmp.*
 *.log
 *.log.old
+build/output/toolchain-artifacts/

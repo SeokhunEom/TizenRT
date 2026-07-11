@@ -143,7 +143,7 @@ LDFLAGS += $(ARCHSCRIPT)
 TIZENRT_FULL_ARTIFACTS ?=
 TOOLCHAIN_ARTIFACT_ROOT ?= $(TOPDIR)/../build/output/toolchain-artifacts
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
   LINK_MAP_FLAGS = -Map $(TOPDIR)/../build/output/bin/tinyara.map --cref
 else
   LINK_MAP_FLAGS = -Map $(TOPDIR)/../build/output/bin/tinyara.map
@@ -222,7 +222,7 @@ ifneq ($(CONFIG_WINDOWS_NATIVE),y)
 	grep -v '\(compiled\)\|\(\$(OBJEXT)$$\)\|\( [aUw] \)\|\(\.\.ng$$\)\|\(LASH[RL]DI\)' | \
 	sort > $(TOPDIR)/$(OUTBIN_DIR)/System.map
 endif
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 	$(Q) mkdir -p "$(TOOLCHAIN_ARTIFACT_ROOT)/link"
 	$(Q) if [ -n "$(NM)" ]; then $(NM) -l $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.nm"; fi
 	$(Q) if [ -n "$(OBJDUMP)" ]; then $(OBJDUMP) -d -S -l $(TINYARA) > "$(TOOLCHAIN_ARTIFACT_ROOT)/link/tinyara.objdump"; fi

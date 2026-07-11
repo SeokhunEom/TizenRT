@@ -111,7 +111,7 @@ endif
 TIZENRT_FULL_ARTIFACTS ?=
 TOOLCHAIN_ARTIFACT_ROOT ?= $(TOPDIR)/../build/output/toolchain-artifacts
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 define TOOLCHAIN_ARTIFACT_PATHS
 	repo_root=`cd "$(TOPDIR)/.." && pwd -P`; \
 	artifact_src="$(strip $1)"; \
@@ -121,7 +121,9 @@ define TOOLCHAIN_ARTIFACT_PATHS
 	src_abs_dir=`cd "$$src_dirname" && pwd -P`; \
 	src_rel=`printf '%s\n' "$$src_abs_dir/$$src_name" | sed -e "s#^$$repo_root/##" -e 's#^/##'`; \
 	src_dir=`dirname "$$src_rel"`; \
-	obj_base=`basename "$$artifact_obj" $(OBJEXT)`; \
+	obj_rel=`printf '%s\n' "$$artifact_obj" | sed -e 's#^\./##'`; \
+	obj_name="$${obj_rel%$(OBJEXT)}"; \
+	obj_base=`printf '%s\n' "$$obj_name" | sed -e 's#[/\\:]#_#g'`; \
 	compile_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/compile/$$src_dir"; \
 	assemble_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/assemble/$$src_dir"; \
 	archive_dir="$(TOOLCHAIN_ARTIFACT_ROOT)/archive"; \
@@ -153,7 +155,7 @@ endef
 #   CC - The command to invoke the C compiler
 #   CFLAGS - Options to pass to the C compiler
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 define COMPILE
 	@echo "CC: $1"
 	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
@@ -178,7 +180,7 @@ endif
 #   CXX - The command to invoke the C++ compiler
 #   CXXFLAGS - Options to pass to the C++ compiler
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 define COMPILEXX
 	@echo "CXX: $1"
 	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
@@ -210,7 +212,7 @@ endif
 #        files
 #   AFLAGS - Options to pass to the C+compiler
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 define ASSEMBLE
 	@echo "AS: $1"
 	$(Q) $(call TOOLCHAIN_ARTIFACT_PATHS,$1,$2); \
@@ -265,7 +267,7 @@ define ARCHIVE
 	$(Q) $(LOCK_AR) $(AR) $1 $(2)
 endef
 else
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 define ARCHIVE
 	@echo "AR: $2"
 	$(Q) $(LOCK_AR) $(AR) $1 $(2) || { echo "$(AR) $1 FAILED!" ; exit 1 ; }; \

@@ -593,7 +593,7 @@ ifeq ($(CONFIG_FLASH_PARTITION),y)
 	$(Q) python ./tools/validate_output.py
 endif
 
-ifneq ($(TIZENRT_FULL_ARTIFACTS),)
+ifeq ($(TIZENRT_FULL_ARTIFACTS),1)
 	$(Q) mkdir -p "$(TOPDIR)/../build/output/toolchain-artifacts/package"
 	$(Q) for artifact_file in target_img2.axf target_pure_img2.axf target_img2.map target_img2.asm app1_dbg common_dbg bootparam.bin km0_km4_ap_image_all.hex kernel_*.trpk app1_*.trpk common_*.trpk; do \
 		for matched_file in "$(OUTBIN_DIR)"/$$artifact_file; do \

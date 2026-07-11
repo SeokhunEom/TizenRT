@@ -7,8 +7,8 @@ normal build 기준이며, full toolchain artifact 요약은 2026-07-11 최종 �
 ## Build result
 
 - 대상: `rtl8730e/loadable_apps`
-- 런북: `/Users/seokhun/Projects/TizenRT/AI_Build_Runbook.md`
-- 작업 위치: `/Users/seokhun/Projects/TizenRT/master`
+- 런북: TizenRT workspace의 `AI_Build_Runbook.md`
+- 작업 위치: repository root
 - Docker image: `tizenrt/tizenrt:2.0.0`
 - 최종 결과: normal build PASS, full toolchain artifact build PASS
 - 최종 로그: `os/build.log`
@@ -112,14 +112,14 @@ normal build에서는 이 directory를 만들지 않고, `clean`/`distclean`에�
 
 | class | files | generated when | representative outputs |
 | --- | ---: | --- | --- |
-| `compile` | 9,580 | 각 C/C++ source가 object로 컴파일될 때 | `.i`, `.ii`, `.s`, `.d`, `.lst`, `.o` |
-| `assemble` | 84 | 각 assembly source가 object로 assemble될 때 | `.preprocessed.s`, `.d`, `.lst`, `.o` |
+| `compile` | 12,305 | 각 C/C++ source가 object로 컴파일될 때 | `.i`, `.ii`, `.s`, `.d`, `.lst`, `.o` |
+| `assemble` | 88 | 각 assembly source가 object로 assemble될 때 | `.preprocessed.s`, `.d`, `.lst`, `.o` |
 | `archive` | 56 | `ar`가 subsystem archive를 만들 때 | `lib*.a`, `*.contents` |
 | `link` | 6 | kernel ELF link 직후 | `System.map`, `tinyara.map`, `tinyara.nm`, `tinyara.objdump`, `tinyara.readelf`, `tinyara.size` |
 | `package` | 11 | board postbuild와 final package 단계 | debug ELF, final `.trpk`, `bootparam.bin`, `target_*`, `km0_km4_ap_image_all.hex` |
 
 `manifest.tsv`는 package copy까지 끝난 뒤 생성된다. `manifest.tsv` 자신은 목록에서
-제외하며, 최종 검증 기준 manifest entry 수는 9,737개이다.
+제외하며, 최종 검증 기준 manifest entry 수는 12,466개이다.
 
 ### Artifact tree relationship
 
@@ -148,6 +148,10 @@ build/output/toolchain-artifacts/
   manifest.tsv
 ```
 
+`<object-base>`는 object 상대경로에서 `/`, `\`, `:`을 `_`로 치환한 값이다. 예를
+들어 protected build의 `ubin/lib_fileno.o`와 `kbin/lib_fileno.o`는 각각
+`ubin_lib_fileno.*`, `kbin_lib_fileno.*`로 저장되어 서로 덮어쓰지 않는다.
+
 package class의 최종 파일 크기:
 
 | artifact | size | relation |
@@ -156,10 +160,10 @@ package class의 최종 파일 크기:
 | `app1_rtl8730e_190412.trpk` | 449 | final app1 package |
 | `bootparam.bin` | 8,192 | BP1/BP2 boot parameter image |
 | `common_dbg` | 1,507,276 | common debug ELF |
-| `common_rtl8730e_200204.trpk` | 147,270 | final common package |
+| `common_rtl8730e_200204.trpk` | 147,266 | final common package |
 | `kernel_rtl8730e_200204.trpk` | 1,543,562 | final kernel package |
 | `km0_km4_ap_image_all.hex` | 4,341,715 | Intel HEX conversion of kernel image |
-| `target_img2.asm` | 10,687,124 | Realtek disassembly output |
+| `target_img2.asm` | 10,687,065 | Realtek disassembly output |
 | `target_img2.axf` | 7,576,504 | Realtek postbuild ELF |
 | `target_img2.map` | 231,017 | Realtek image map |
 | `target_pure_img2.axf` | 1,043,796 | stripped image ELF |
@@ -222,8 +226,8 @@ package class의 최종 파일 크기:
 | `build/output/bin/common_dbg` | 2026-07-11 01:15:31 | 1,507,276 | common debug ELF |
 | `build/output/bin/common.bin` | 2026-07-11 01:15:31 | 147,254 | common raw binary |
 | `build/output/bin/common_without_header` | 2026-07-11 01:15:32 | 147,254 | common raw copy before package header |
-| `build/output/bin/common` | 2026-07-11 01:15:32 | 147,270 | common package with header |
-| `build/output/bin/user/common` | 2026-07-11 01:15:32 | 147,270 | user-visible copy of common package |
+| `build/output/bin/common` | 2026-07-11 01:15:32 | 147,266 | common package with header |
+| `build/output/bin/user/common` | 2026-07-11 01:15:32 | 147,266 | user-visible copy of common package |
 
 ### kernel link and Realtek postbuild
 
@@ -234,7 +238,7 @@ package class의 최종 파일 크기:
 | `build/output/bin/System.map` | 2026-07-11 01:15:30 | 451,383 | kernel symbol map |
 | `build/output/bin/target_img2.axf` | 2026-07-11 01:15:32 | 7,576,424 | Realtek postbuild copy of `tinyara.axf` |
 | `build/output/bin/target_img2.map` | 2026-07-11 01:15:32 | 231,017 | Realtek image map |
-| `build/output/bin/target_img2.asm` | 2026-07-11 01:15:35 | 10,687,124 | Realtek disassembly output |
+| `build/output/bin/target_img2.asm` | 2026-07-11 01:15:35 | 10,687,065 | Realtek disassembly output |
 | `build/output/bin/target_pure_img2.axf` | 2026-07-11 01:15:36 | 1,043,796 | stripped image ELF |
 | `build/output/bin/APP.trace` | 2026-07-11 01:15:36 | 59,879 | Bluetooth trace section dump |
 | `build/output/bin/ram_2.bin` | 2026-07-11 01:15:36 | 15,588 | RAM image section |
@@ -262,7 +266,7 @@ package class의 최종 파일 크기:
 | `build/output/bin/km0_km4_ap_image_all.bin` | 2026-07-11 01:15:56 | 1,543,562 | kernel image with package header |
 | `build/output/bin/kernel_rtl8730e_200204.trpk` | 2026-07-11 01:15:56 | 1,543,562 | final kernel package copied from `km0_km4_ap_image_all.bin` |
 | `build/output/bin/app1_rtl8730e_190412.trpk` | 2026-07-11 01:15:56 | 449 | final app1 package copied from `app1` |
-| `build/output/bin/common_rtl8730e_200204.trpk` | 2026-07-11 01:15:56 | 147,270 | final common package copied from `common` |
+| `build/output/bin/common_rtl8730e_200204.trpk` | 2026-07-11 01:15:56 | 147,266 | final common package copied from `common` |
 | `build/output/bin/km0_km4_ap_image_all.hex` | 2026-07-11 01:15:56 | 4,341,715 | Intel HEX conversion of kernel image |
 | `build/output/bin/bootparam.bin` | 2026-07-11 01:15:57 | 8,192 | BP1/BP2 boot parameter image |
 | `build/output/bin/tinyara_binarysize.txt` | 2026-07-11 01:15:57 | 74 | latest size-check report line |
@@ -284,7 +288,7 @@ normal build와 full toolchain artifact build를 모두 검증했다.
 Partition verification SUCCESS!! The setting of all partitions is OK.
 KERNEL | 1,543,562 bytes | 1,888,256 bytes | 81.75% | PASS
 APP1   | 449 bytes       | 1,417,216 bytes | 0.03%  | PASS
-COMMON | 147,270 bytes   | 3,112,960 bytes | 4.73%  | PASS
+COMMON | 147,266 bytes   | 3,112,960 bytes | 4.73%  | PASS
 Size verification SUCCESS!! The size of all binaries are OK.
 Header verification SUCCESS!!  # common
 Header verification SUCCESS!!  # kernel
@@ -294,7 +298,7 @@ Header verification SUCCESS!!  # app1
 `tinyara_binarysize.txt`는 마지막으로 기록된 common 검증 줄만 보관한다.
 
 ```text
-COMMON | 147,270 bytes | 3,112,960 bytes | 4.73% | :heavy_check_mark:PASS
+COMMON | 147,266 bytes | 3,112,960 bytes | 4.73% | :heavy_check_mark:PASS
 ```
 
 ## Short dependency graph
