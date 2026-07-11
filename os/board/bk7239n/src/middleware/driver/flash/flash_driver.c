@@ -190,6 +190,7 @@ static PM_STATUS flash_ps_status;
 static flash_protect_type_t s_flash_runtime_protect_type = FLASH_PROTECT_NONE;
 static flash_ps_callback_t s_flash_ps_suspend_cb = NULL;
 static flash_ps_callback_t s_flash_ps_resume_cb = NULL;
+static volatile bool s_flash_bootloader_update_allowed = false;
 
 #define FLASH_MAX_WAIT_CB_CNT (4)
 static flash_wait_callback_t s_flash_wait_cb[FLASH_MAX_WAIT_CB_CNT] = {NULL};
@@ -719,10 +720,10 @@ static void flash_read_word_common(uint32_t *buffer, uint32_t address, uint32_t 
 	}
 }
 
-#if (CONFIG_SPE == 0)
-// #define CONFIG_SECONDARY_ALL_PHY_PARTITION_OFFSET     0x120000 // Already defined elsewhere
-// #define CONFIG_SECONDARY_ALL_PHY_PARTITION_SIZE       0x100000 // Already defined elsewhere
-#endif
+void bk_flash_set_bootloader_update_allowed(bool allowed)
+{
+	s_flash_bootloader_update_allowed = allowed;
+}
 
 //extern part_flag update_part_flag;
 bool flash_is_area_write_disable(uint32_t addr)
@@ -738,7 +739,7 @@ bool flash_is_area_write_disable(uint32_t addr)
 	}
 	#if defined(CONFIG_FLASH_FORBID_OPERATE_BOOTLADER)
 	uint32_t firmware_area_end_address = flash_pt->partition_start_addr + flash_pt->partition_length;
-	if (addr < firmware_area_end_address) {
+	if (!s_flash_bootloader_update_allowed && addr < firmware_area_end_address) {
 		FLASH_LOGE("valid write/erase start address = 0x%x, but current address = 0x%x.\r\n", firmware_area_end_address, addr);
 		BK_ASSERT(addr >= firmware_area_end_address);
 		return true;
@@ -750,6 +751,33 @@ bool flash_is_area_write_disable(uint32_t addr)
 		return true;
 	}
 
+	#if defined(CONFIG_FLASH_FORBID_OPERATE_BOOTLADER)
+	bk_logic_partition_t * flash_pt = NULL;
+	uint32_t partition_start_addr;
+	uint32_t partition_length;
+	uint32_t firmware_area_end_address;
+
+	flash_pt = bk_flash_partition_get_info(BK_PARTITION_BOOTLOADER);
+	if(!flash_pt)
+	{
+		FLASH_LOGE("get partition ota fail\r\n");
+		return true;
+	}
+	partition_start_addr = flash_pt->partition_start_addr;
+	partition_length = flash_pt->partition_length;
+	if (partition_start_addr == UINT32_MAX || partition_length == UINT32_MAX ||
+		partition_length == 0 || partition_start_addr > UINT32_MAX - partition_length) {
+		FLASH_LOGE("get partition ota fail\r\n");
+		return true;
+	}
+	firmware_area_end_address = partition_start_addr + partition_length;
+	if (!s_flash_bootloader_update_allowed &&
+		addr >= partition_start_addr &&
+		addr < firmware_area_end_address) {
+		FLASH_LOGE("valid write/erase start address = 0x%x, but current address = 0x%x.\r\n", firmware_area_end_address, addr);
+		return true;
+	}
+	#endif
 #endif
 	return false;
 }

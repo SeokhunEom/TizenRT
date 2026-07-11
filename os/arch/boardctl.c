@@ -62,6 +62,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <assert.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <tinyara/board.h>
@@ -69,8 +70,165 @@
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
 #include <tinyara/reboot_reason.h>
 #endif
+#ifdef CONFIG_ARCH_BOARD_BK7239N
+#include <driver/flash.h>
+#include <driver/flash_partition.h>
+#include "partitions_gen_ns.h"
+#endif
 
 #ifdef CONFIG_LIB_BOARDCTL
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
+#if defined(CONFIG_ARCH_BOARD_BK7239N) && defined(CONFIG_BOARDCTL_RESET)
+#define BK7239N_BOOTLOADER_ERASE_SIZE    0x1000
+#define BK7239N_BOOTLOADER_WRITE_SIZE    256
+#define BK7239N_BOOTLOADER_MARKER_OFFSET 0x100
+#define BK7239N_BOOTLOADER_MARKER        "BEKEN"
+#define BK7239N_BOOTLOADER_MARKER_SIZE   (sizeof(BK7239N_BOOTLOADER_MARKER) - 1)
+#endif
+
+/****************************************************************************
+ * Private Functions
+ ****************************************************************************/
+#if defined(CONFIG_ARCH_BOARD_BK7239N) && defined(CONFIG_BOARDCTL_RESET)
+static int boardctl_bk7239n_flash_error(bk_err_t err)
+{
+	lldbg("bootloader download flash error: %d\n", err);
+	return -EIO;
+}
+
+static int boardctl_bk7239n_download_bootloader(void)
+{
+	bk_logic_partition_t *partition;
+	uint8_t write_buf[BK7239N_BOOTLOADER_WRITE_SIZE];
+	uint8_t verify_buf[BK7239N_BOOTLOADER_WRITE_SIZE];
+	uint8_t marker_buf[BK7239N_BOOTLOADER_MARKER_SIZE];
+	uint32_t partition_start_addr;
+	uint32_t partition_length;
+	uint32_t first_chunk;
+	uint32_t offset;
+	int ret;
+	bool staged = false;
+
+	ret = bk_flash_driver_init();
+	if (ret != BK_OK) {
+		return boardctl_bk7239n_flash_error(ret);
+	}
+
+	partition = bk_flash_partition_get_info(BK_PARTITION_BOOTLOADER);
+	if (partition == NULL) {
+		lldbg("bootloader partition is unavailable\n");
+		return -EINVAL;
+	}
+
+	partition_start_addr = partition->partition_start_addr;
+	partition_length = partition->partition_length;
+	if (partition_start_addr != 0 || partition_length == 0 ||
+		partition_length < BK7239N_BOOTLOADER_MARKER_OFFSET +
+		BK7239N_BOOTLOADER_MARKER_SIZE ||
+		partition_length > CONFIG_APP1_PHY_PARTITION_SIZE) {
+		lldbg("bootloader partition invalid: start=0x%x size=0x%x\n",
+			  partition_start_addr, partition_length);
+		return -EINVAL;
+	}
+
+	first_chunk = partition_length;
+	if (first_chunk > BK7239N_BOOTLOADER_WRITE_SIZE) {
+		first_chunk = BK7239N_BOOTLOADER_WRITE_SIZE;
+	}
+
+	ret = bk_flash_read_bytes(CONFIG_APP1_PHY_PARTITION_OFFSET, write_buf,
+							  first_chunk);
+	if (ret != BK_OK) {
+		return boardctl_bk7239n_flash_error(ret);
+	}
+
+	for (offset = 0; offset < first_chunk; offset++) {
+		if (write_buf[offset] != 0xff) {
+			staged = true;
+			break;
+		}
+	}
+
+	if (!staged) {
+		lldbg("bootloader App1 staged area is empty\n");
+		return OK;
+	}
+
+	ret = bk_flash_read_bytes(CONFIG_APP1_PHY_PARTITION_OFFSET +
+							  BK7239N_BOOTLOADER_MARKER_OFFSET,
+							  marker_buf, BK7239N_BOOTLOADER_MARKER_SIZE);
+	if (ret != BK_OK) {
+		return boardctl_bk7239n_flash_error(ret);
+	}
+
+	if (memcmp(marker_buf, BK7239N_BOOTLOADER_MARKER,
+			   BK7239N_BOOTLOADER_MARKER_SIZE) != 0) {
+		lldbg("bootloader App1 staged image invalid\n");
+		return OK;
+	}
+
+	bk_flash_set_bootloader_update_allowed(true);
+
+	for (offset = 0; offset < partition_length;
+		 offset += BK7239N_BOOTLOADER_ERASE_SIZE) {
+		ret = bk_flash_erase_sector(partition_start_addr + offset);
+		if (ret != BK_OK) {
+			ret = boardctl_bk7239n_flash_error(ret);
+			goto errout_with_permission;
+		}
+	}
+
+	for (offset = 0; offset < partition_length;
+		 offset += BK7239N_BOOTLOADER_WRITE_SIZE) {
+		uint32_t chunk = partition_length - offset;
+
+		if (chunk > BK7239N_BOOTLOADER_WRITE_SIZE) {
+			chunk = BK7239N_BOOTLOADER_WRITE_SIZE;
+		}
+
+		if (offset != 0) {
+			ret = bk_flash_read_bytes(CONFIG_APP1_PHY_PARTITION_OFFSET + offset,
+									  write_buf, chunk);
+			if (ret != BK_OK) {
+				ret = boardctl_bk7239n_flash_error(ret);
+				goto errout_with_permission;
+			}
+		}
+
+		ret = bk_flash_write_bytes(partition_start_addr + offset, write_buf,
+								   chunk);
+		if (ret != BK_OK) {
+			ret = boardctl_bk7239n_flash_error(ret);
+			goto errout_with_permission;
+		}
+
+		ret = bk_flash_read_bytes(partition_start_addr + offset, verify_buf,
+								  chunk);
+		if (ret != BK_OK) {
+			ret = boardctl_bk7239n_flash_error(ret);
+			goto errout_with_permission;
+		}
+
+		if (memcmp(write_buf, verify_buf, chunk) != 0) {
+			lldbg("bootloader verify failed at 0x%x\n", offset);
+			ret = -EIO;
+			goto errout_with_permission;
+		}
+	}
+
+	bk_flash_set_bootloader_update_allowed(false);
+	lldbg("bootloader App1 staged copy complete: %u bytes\n",
+		  partition_length);
+	return OK;
+
+errout_with_permission:
+	bk_flash_set_bootloader_update_allowed(false);
+	return ret;
+}
+#endif
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -155,6 +313,13 @@ int boardctl(unsigned int cmd, uintptr_t arg)
 		/* Add 100ms delay for flushing another logs like printf. */
 		up_mdelay(100);
 		lldbg("Board will Reboot now. pid: %d\n", getpid());
+#ifdef CONFIG_ARCH_BOARD_BK7239N
+		ret = boardctl_bk7239n_download_bootloader();
+		if (ret < 0) {
+			sched_unlock();
+			break;
+		}
+#endif
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
 		if (!up_reboot_reason_is_written()) {
 			for (int i = 0; i < 10; i++) {
