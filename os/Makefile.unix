@@ -751,6 +751,7 @@ clean: subdir_clean
 	$(call DELFILE, tinyara-export*)
 	$(call DELFILE, tinyara_user*)
 	$(call DELFILE, build.log*)
+	$(call DELFILE, app_size_file)
 	$(call CLEAN)
 
 subdir_distclean:
