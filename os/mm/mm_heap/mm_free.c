@@ -68,6 +68,7 @@
 #include <tinyara/arch.h>
 #include <sys/prctl.h>
 #include "mm_node.h"
+#include "mm_smallpool.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -123,6 +124,7 @@ static void mm_free_internal(FAR struct mm_heap_s *heap, FAR void *mem, mmaddres
 	FAR struct mm_freenode_s *node;
 	FAR struct mm_freenode_s *prev;
 	FAR struct mm_freenode_s *next;
+	FAR void *slab_to_free = NULL;
 	char task_name[CONFIG_TASK_NAME_SIZE + 1];
 
 	mvdbg("Freeing %p\n", mem);
@@ -155,6 +157,15 @@ static void mm_free_internal(FAR struct mm_heap_s *heap, FAR void *mem, mmaddres
 #else
 		mm_add_delaylist(heap, mem);
 #endif
+		return;
+	}
+
+	if (mm_smallpool_free_locked(heap, mem, free_call_addr, free_call_pid, &slab_to_free)) {
+		mm_givesemaphore(heap);
+		if (slab_to_free) {
+			mm_free(heap, slab_to_free);
+		}
+
 		return;
 	}
 

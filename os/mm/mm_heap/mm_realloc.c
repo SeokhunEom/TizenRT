@@ -65,6 +65,7 @@
 #endif
 #include <tinyara/mm/mm.h>
 #include "mm_node.h"
+#include "mm_smallpool.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -115,10 +116,34 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 	size_t nextsize = 0;
 #endif
 	FAR void *newmem;
+	size_t slot_size;
+	size_t new_slot_size;
+	size_t copy_size;
 	/* If oldmem is NULL, then realloc is equivalent to malloc */
 
 	if (!oldmem) {
 		return mm_malloc(heap, size, caller_retaddr);
+	}
+
+	if (size == 0) {
+		mm_free(heap, oldmem);
+		return NULL;
+	}
+
+	if (mm_smallpool_get_slot_size(heap, oldmem, &slot_size)) {
+		new_slot_size = mm_smallpool_get_class_size(size);
+		if (new_slot_size == slot_size) {
+			return oldmem;
+		}
+
+		newmem = (FAR void *)mm_malloc(heap, size, caller_retaddr);
+		if (newmem) {
+			copy_size = slot_size < size ? slot_size : size;
+			memcpy(newmem, oldmem, copy_size);
+			mm_free(heap, oldmem);
+		}
+
+		return newmem;
 	}
 
 	if (size > MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) {

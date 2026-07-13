@@ -29,6 +29,9 @@
 #ifdef CONFIG_APP_BINARY_SEPARATION
 #include <tinyara/binary_manager.h>
 #endif
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+#include "mm_smallpool.h"
+#endif
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -70,6 +73,9 @@ void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name)
 		if (node->heap == heap) {
 			/* Remove and free the matching node */
 			node->is_active = true;
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+			mm_smallpool_enable(heap);
+#endif
 			return;
 		}
 
@@ -90,6 +96,9 @@ void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name)
 
 	/* Add the new heap node to the head of the list*/
 	dq_addfirst((dq_entry_t *)node, &app_heap_q);
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+	mm_smallpool_enable(heap);
+#endif
 }
 
 void mm_remove_app_heap_list(struct mm_heap_s *heap)
@@ -100,6 +109,9 @@ void mm_remove_app_heap_list(struct mm_heap_s *heap)
 	while (node) {
 		if (node->heap == heap) {
 			/* Remove and free the matching node */
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+			mm_smallpool_disable(heap);
+#endif
 			dq_rem((dq_entry_t *)node, &app_heap_q);
 			kmm_free(node);
 			return;
@@ -117,6 +129,9 @@ void mm_disable_app_heap_list(struct mm_heap_s *heap)
 	while (node) {
 		if (node->heap == heap) {
 			/* Disable the matching node */
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+			mm_smallpool_disable(heap);
+#endif
 			node->is_active = false;
 			return;
 		}

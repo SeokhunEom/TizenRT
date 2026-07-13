@@ -135,6 +135,33 @@ config MM_DUMP_CORRPUTED_HEAP
 		When we find a heap corruption, we can dump the entire heap, so that
 		it can be manually analyzed to find more information about the corruption.
 
+config MM_SMALL_ALLOC_POOL
+	bool "Enable small allocation pools"
+	default n
+	---help---
+		Enable fixed-size pools for small allocations on heaps that explicitly
+		turn the pool on.
+
+config MM_SMALL_ALLOC_POOL_16
+	bool "Enable 16-byte small allocation pool"
+	default n
+	depends on MM_SMALL_ALLOC_POOL
+
+config MM_SMALL_ALLOC_POOL_32
+	bool "Enable 32-byte small allocation pool"
+	default n
+	depends on MM_SMALL_ALLOC_POOL
+
+config MM_SMALL_ALLOC_POOL_64
+	bool "Enable 64-byte small allocation pool"
+	default n
+	depends on MM_SMALL_ALLOC_POOL
+
+config MM_SMALL_ALLOC_POOL_CHUNK_SIZE
+	int "Small allocation pool chunk size"
+	default 1024
+	depends on MM_SMALL_ALLOC_POOL
+
 config MM_ALLOC_LARGE_FROM_BACK
 	bool "Allocate large chunks from the back of free chunks"
 	default n

@@ -356,6 +356,10 @@ struct mm_alloc_fail_s {
 
 /* This describes one heap (possibly with multiple regions) */
 
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+struct mm_smallpool_slab_s;
+#endif
+
 struct mm_heap_s {
 	/* Mutually exclusive access to this data set is enforced with
 	 * the following un-named semaphore.
@@ -399,6 +403,13 @@ struct mm_heap_s {
 	*/
 
 	FAR struct mm_delaynode_s *mm_delaylist[CONFIG_SMP_NCPUS];
+
+#ifdef CONFIG_MM_SMALL_ALLOC_POOL
+	bool mm_smallpool_enabled;
+	FAR struct mm_smallpool_slab_s *mm_smallpool_slab16;
+	FAR struct mm_smallpool_slab_s *mm_smallpool_slab32;
+	FAR struct mm_smallpool_slab_s *mm_smallpool_slab64;
+#endif
 
 };
 

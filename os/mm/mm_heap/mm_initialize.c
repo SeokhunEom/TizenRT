@@ -64,6 +64,8 @@
 #include <tinyara/sched.h>
 #include <tinyara/mm/mm.h>
 
+#include "mm_smallpool.h"
+
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -239,6 +241,7 @@ int mm_initialize(FAR struct mm_heap_s *heap, FAR void *heapstart, size_t heapsi
 	/* Set up global variables */
 
 	heap->mm_heapsize = 0;
+	mm_smallpool_initialize(heap);
 
 #if (CONFIG_KMM_REGIONS > 1) || (defined(CONFIG_MM_KERNEL_HEAP) && (CONFIG_KMM_REGIONS > 1))
 	heap->mm_nregions = 0;

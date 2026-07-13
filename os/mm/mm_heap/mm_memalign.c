@@ -90,6 +90,116 @@
  * Private Functions
  ****************************************************************************/
 
+static FAR void *mm_memalign_normal_malloc(FAR struct mm_heap_s *heap, size_t size, mmaddress_t caller_retaddr)
+{
+	FAR struct mm_freenode_s *node;
+	void *ret = NULL;
+	int ndx;
+	bool gc_done = false;
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	size_t gc_before_size;
+#endif
+
+	if (size > MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) {
+		mdbg("Because of mm_allocnode, %u cannot be allocated. The maximum \
+			 allocable size is (MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) \
+			 : %u\n.", size, (MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE));
+		return NULL;
+	}
+
+	size = MM_ALIGN_UP(size + SIZEOF_MM_ALLOCNODE);
+
+retry_after_gc:
+	mm_takesemaphore(heap);
+
+	ndx = mm_size2ndx(size);
+
+	node = heap->mm_nodelist[ndx].flink;
+	if (!(node && node->size >= size)) {
+		while (++ndx < MM_NNODES && !(node = heap->mm_nodelist[ndx].flink));
+	}
+
+	FAR struct mm_freenode_s *prev = &heap->mm_nodelist[ndx];
+	for (; node && node->size > size; prev = node, node = node->flink);
+	if (!(node && node->size == size)) {
+		node = prev;
+	}
+
+	if (node->size) {
+		FAR struct mm_allocnode_s *allocnode = (FAR struct mm_allocnode_s *)node;
+		FAR struct mm_freenode_s *remainder;
+		FAR struct mm_freenode_s *next;
+		size_t remaining;
+
+		DEBUGASSERT_MM_FREE_NODE(heap, node);
+		REMOVE_NODE_FROM_LIST(node);
+
+		remaining = node->size - size;
+		if (remaining >= SIZEOF_MM_FREENODE) {
+			next = (FAR struct mm_freenode_s *)(((char *)node) + node->size);
+
+#ifdef CONFIG_MM_ALLOC_LARGE_FROM_BACK
+			if (size >= CONFIG_MM_LARGE_ALLOC_THRESHOLD) {
+				allocnode = (FAR struct mm_allocnode_s *)(((char *)node) + remaining);
+				allocnode->size = size;
+				allocnode->preceding = remaining;
+
+				node->size = remaining;
+				next->preceding = size | (next->preceding & MM_ALLOC_BIT);
+
+				mm_addfreechunk(heap, node);
+			} else
+#endif
+			{
+				remainder = (FAR struct mm_freenode_s *)(((char *)node) + size);
+				remainder->size = remaining;
+				remainder->preceding = size;
+#ifdef CONFIG_DEBUG_MM_FREEINFO
+				remainder->free_call_addr = MM_REMAINDER_FREE_CALL_ADDR;
+				remainder->free_call_pid = MM_REMAINDER_FREE_CALL_PID;
+#endif
+
+				node->size = size;
+				next->preceding = remaining | (next->preceding & MM_ALLOC_BIT);
+
+				mm_addfreechunk(heap, remainder);
+			}
+		}
+
+		allocnode->preceding |= MM_ALLOC_BIT;
+
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+		heapinfo_update_node(allocnode, caller_retaddr);
+		heapinfo_add_size(heap, allocnode->pid, allocnode->size);
+		heapinfo_update_total_size(heap, allocnode->size, allocnode->pid);
+#endif
+		ret = (void *)((char *)allocnode + SIZEOF_MM_ALLOCNODE);
+	}
+
+	mm_givesemaphore(heap);
+
+	if (!ret && gc_done == false) {
+		mdbg("Allocation failed!!! We dont have enough memory. Try to free dead task stack areas\n");
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+		gc_before_size = heap->total_alloc_size;
+#endif
+		sched_garbagecollection();
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+		if (gc_before_size > heap->total_alloc_size) {
+			mdbg("GC freed %u bytes\n", gc_before_size - heap->total_alloc_size);
+		}
+#endif
+		gc_done = true;
+		goto retry_after_gc;
+	}
+
+	if (ret) {
+		mvdbg("Allocated %p, size %u\n", ret, size);
+	}
+
+	return ret;
+}
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -122,11 +232,11 @@ FAR void *mm_memalign(FAR struct mm_heap_s *heap, size_t alignment, size_t size,
 #endif
 
 	/* If this requested alinement's less than or equal to the natural alignment
-	 * of malloc, then just let malloc do the work.
+	 * of malloc, use the normal free-list path without small-pool routing.
 	 */
 
 	if (alignment <= MM_MIN_CHUNK) {
-		return mm_malloc(heap, size, caller_retaddr);
+		return mm_memalign_normal_malloc(heap, size, caller_retaddr);
 	}
 
 	if (size > MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) {

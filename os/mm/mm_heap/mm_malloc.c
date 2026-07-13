@@ -66,6 +66,7 @@
 #include <tinyara/arch.h>
 
 #include "mm_node.h"
+#include "mm_smallpool.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -163,6 +164,12 @@ FAR void *mm_malloc(FAR struct mm_heap_s *heap, size_t size, mmaddress_t caller_
 			 allocable size is (MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) \
 			 : %u\n.", size, (MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE));
 		return NULL;
+	}
+
+	ret = mm_smallpool_malloc(heap, size, caller_retaddr);
+	if (ret) {
+		mvdbg("Allocated %p, size %u\n", ret, size);
+		return ret;
 	}
 
 	/* Adjust the size to account for (1) the size of the allocated node and
