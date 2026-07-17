@@ -22,7 +22,15 @@ TOOLDIR=`test -d ${0%/*} && cd ${0%/*}; pwd`
 OSDIR="${TOOLDIR}/.."
 OUTPUT_DIR="${TOOLDIR}/build_test/"
 
-BUILD_CMD=make
+BUILD_JOBS=${TIZENRT_BUILD_JOBS:-0}
+if [ "${BUILD_JOBS}" == "0" ]; then
+	BUILD_JOBS=`nproc`
+fi
+if ! [[ "${BUILD_JOBS}" =~ ^[1-9][0-9]*$ ]] || [ "${BUILD_JOBS}" -gt 128 ]; then
+	echo "Invalid build job count: ${BUILD_JOBS}"
+	exit 1
+fi
+BUILD_CMD="make CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS}"
 CLEAN_CMD="${BUILD_CMD} distclean"
 
 build_targets=(

@@ -24,9 +24,11 @@ TOPDIR="${OSDIR}/.."
 BUILDDIR="${TOPDIR}/build"
 BINDIR="${BUILDDIR}/output/bin"
 CONFIGDIR="${BUILDDIR}/configs"
-DOCKER_IMAGE=
+DOCKER_IMAGE_REF=
 DOCKER_PUBLIC_IMAGE="tizenrt/tizenrt"
-DOCKER_VERSION="1.5.8"
+DOCKER_DEFAULT_VERSION="1.5.8"
+DOCKER_ARM64_IMAGE="tizenrt/tizenrt:2.0.1-arm64-local"
+BUILD_JOBS=
 
 STATUS_LIST="NOT_CONFIGURED BOARD_CONFIGURED CONFIGURED BUILT PREPARE_DL DOWNLOAD_READY"
 BUILD_CMD=make
@@ -51,43 +53,73 @@ fi
 # check docker image and pull docker image
 function GET_SPECIFIC_DOCKER_IMAGE()
 {
+	local docker_arch
+	local docker_version=${DOCKER_DEFAULT_VERSION}
+	local requested_image
 
-	unset CONFIG_DOCKER_VERSION
-	# check existing docker image for specified version
-	if [  -f ${CONFIGFILE} ]; then
-		source ${CONFIGFILE}
-		if [ -n "$CONFIG_DOCKER_VERSION" ]; then
-			DOCKER_VERSION=${CONFIG_DOCKER_VERSION}
-		fi
+	if ! docker_arch=`docker info --format '{{.Architecture}}' 2>/dev/null`; then
+		echo "failed to inspect Docker architecture"
+		return 1
 	fi
+
+	if [ -n "${TIZENRT_DOCKER_IMAGE:-}" ]; then
+		requested_image=${TIZENRT_DOCKER_IMAGE}
+	elif [ "${docker_arch}" == "aarch64" ] || [ "${docker_arch}" == "arm64" ]; then
+		requested_image=${DOCKER_ARM64_IMAGE}
+	else
+		unset CONFIG_DOCKER_VERSION
+		if [ -f ${CONFIGFILE} ]; then
+			source ${CONFIGFILE}
+			if [ -n "${CONFIG_DOCKER_VERSION:-}" ]; then
+				docker_version=${CONFIG_DOCKER_VERSION}
+			fi
+		fi
+		requested_image=${DOCKER_PUBLIC_IMAGE}:${docker_version}
+	fi
+
 	echo "Check Docker Image"
-	# Try modern Docker format first, fallback to legacy format if it fails (modern Docker format should work with Docker 1.10+)
-	DOCKER_IMAGES=`docker images --format "{{.Repository}}:{{.Tag}}" 2>/dev/null | grep 'tizenrt'`
-	if [ $? -ne 0 ] || [ -z "$DOCKER_IMAGES" ]; then
-		DOCKER_IMAGES=`docker images | grep 'tizenrt' | awk '{print $1":"$2}'`
+	if docker image inspect "${requested_image}" > /dev/null 2>&1; then
+		DOCKER_IMAGE_REF=${requested_image}
+		return 0
 	fi
-	for im in ${DOCKER_IMAGES}; do
-		# check public image first
-		if [ "$im" == "$DOCKER_PUBLIC_IMAGE:$DOCKER_VERSION" ]; then
-			DOCKER_IMAGE=$DOCKER_PUBLIC_IMAGE
-			DOCKER_IMAGE_EXIST="true"
-			break
-		fi
-		# Can add other docker image
-	done
 
-	# pull the docker image with specified version
-	if [ "$DOCKER_IMAGE_EXIST" != "true" ]; then
-		# try to get public image first
-		docker pull ${DOCKER_PUBLIC_IMAGE}:${DOCKER_VERSION}
-		if [ $? -eq 0 ]; then
-			echo "success to pull docker image: ${DOCKER_PUBLIC_IMAGE}:${DOCKER_VERSION}"
-			DOCKER_IMAGE=$DOCKER_PUBLIC_IMAGE
-			return
+	if [ "${requested_image}" == "${DOCKER_ARM64_IMAGE}" ]; then
+		echo "Missing local ARM64 image: ${requested_image}"
+		echo "Build it from ${TOPDIR}/tools/docker/tizenrt-2.0.1-arm64"
+		return 1
+	fi
+
+	if docker pull "${requested_image}"; then
+		echo "success to pull docker image: ${requested_image}"
+		DOCKER_IMAGE_REF=${requested_image}
+		return 0
+	fi
+
+	echo "failed to pull docker image: ${requested_image}"
+	return 1
+}
+
+function GET_BUILD_JOBS()
+{
+	local configured_jobs=0
+
+	if [ -f ${CONFIGFILE} ]; then
+		unset CONFIG_BUILD_PARALLEL_JOBS
+		source ${CONFIGFILE}
+		configured_jobs=${CONFIG_BUILD_PARALLEL_JOBS:-0}
+	fi
+
+	BUILD_JOBS=${TIZENRT_BUILD_JOBS:-${configured_jobs}}
+	if [ -z "${BUILD_JOBS}" ] || [ "${BUILD_JOBS}" == "0" ]; then
+		if ! BUILD_JOBS=`docker info --format '{{.NCPU}}' 2>/dev/null`; then
+			echo "failed to inspect Docker CPU count"
+			return 1
 		fi
-		echo "failed to pull docker image: ${DOCKER_PUBLIC_IMAGE}:${DOCKER_VERSION}"
-		# Can add other docker image
-		exit 1
+	fi
+
+	if ! [[ "${BUILD_JOBS}" =~ ^[1-9][0-9]*$ ]] || [ "${BUILD_JOBS}" -gt 128 ]; then
+		echo "Invalid build job count: ${BUILD_JOBS}"
+		return 1
 	fi
 }
 
@@ -214,10 +246,17 @@ function SELECT_OPTION()
 
 function BUILD_TEST()
 {
+	local run_status
+
+	GET_BUILD_JOBS || exit 1
 	# execute a shell script for build test
 	pushd ${OSDIR} > /dev/null
-	docker run --rm ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} bash -c "./tools/build_test.sh"
+	docker run --rm ${DOCKER_OPT} -e TIZENRT_BUILD_JOBS=${BUILD_JOBS} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" bash -c "./tools/build_test.sh"
+	run_status=$?
 	popd > /dev/null
+	if [ ${run_status} -ne 0 ]; then
+		exit ${run_status}
+	fi
 }
 
 function SELECT_BOARD()
@@ -269,7 +308,7 @@ function SELECT_BOARD()
 	# treat "test"
 	if [ "${SELECTED_BOARD}" == "t" -o "${SELECTED_BOARD}" == "test" -o "${SELECTED_BOARD}" == "TEST" ]; then
 		BUILD_TEST
-		exit 1
+		exit $?
 	fi
 
 	# treat "exit"
@@ -467,10 +506,16 @@ function CONFIGURE()
 
 function DOWNLOAD()
 {
+	local run_status
+
 	# Currently supports ALL only, later this will have a menu
 	pushd ${OSDIR} > /dev/null
-	docker run --rm -it ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -v /run/udev:/run/udev:ro -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
+	docker run --rm -it ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -v /run/udev:/run/udev:ro -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
+	run_status=$?
 	popd > /dev/null
+	if [ ${run_status} -ne 0 ]; then
+		exit ${run_status}
+	fi
 
 }
 
@@ -486,26 +531,38 @@ function UPDATE_STATUS()
 			STATUS=CONFIGURED
 		fi
 	fi
-	GET_SPECIFIC_DOCKER_IMAGE
-	echo "Docker Image Version : ${DOCKER_IMAGE}:${DOCKER_VERSION}"
+	GET_SPECIFIC_DOCKER_IMAGE || exit 1
+	echo "Docker Image : ${DOCKER_IMAGE_REF}"
 }
 
 function BUILD()
 {
+	local make_target=()
+	local run_status
+
 	if [ -f build.log ]; then
 		mv build.log build.log.old
 	fi
 
-	if [ "$1" == "menuconfig" ]; then
+	if [ "${1:-}" == "menuconfig" ]; then
 		DOCKER_OPT="-it -e COLUMNS=$(tput cols) -e LINES=$(tput lines)"
 	else
 		DOCKER_OPT="-i"
 	fi
+	if [ -n "${1:-}" ]; then
+		make_target+=("$1")
+	fi
+	GET_BUILD_JOBS || exit 1
 
 	HOSTNAME="-h=`git config user.name | tr -d ' '`" # set github username instead of hostname, "-h=`hostname`"
 	LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
-	
-	docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged ${DOCKER_IMAGE}:${DOCKER_VERSION} ${BUILD_CMD} $1 2>&1 | tee build.log
+
+	echo "Build Jobs : ${BUILD_JOBS}"
+	docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "${make_target[@]}" 2>&1 | tee build.log
+	run_status=${PIPESTATUS[0]}
+	if [ ${run_status} -ne 0 ]; then
+		exit ${run_status}
+	fi
 	UPDATE_STATUS
 }
 
