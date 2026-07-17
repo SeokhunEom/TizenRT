@@ -20,6 +20,7 @@ However, if your development systems are not eligible for running the Docker con
 Please refer to [Manual Setup Build Environment](docs/HowToSetEnv.md).
 
 For more information of libraries in the TizenRT Docker Image, see https://hub.docker.com/r/tizenrt/tizenrt/.
+For Apple Silicon, build the local ARM64 compatibility image by following [the ARM64 Docker runbook](tools/docker/tizenrt-2.0.1-arm64/README.md).
 
 ### 1. Install Docker
 
