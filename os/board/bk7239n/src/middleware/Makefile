@@ -171,7 +171,7 @@ $(libfile): $(OBJS)
 # 	$(Q) cp $< $(LIBDIR)
 
 .depend: Makefile $(CSRCS)
-	$(Q) $(MKDEP) $(DEPPATH) $(CC) -- $(CFLAGS) -- $(CSRCS) >Make.dep
+	$(Q) $(MKDEP) $(patsubst %,--dep-path %,$(subst :, ,$(VPATH))) $(CC) -- $(CFLAGS) -- $(CSRCS) >Make.dep
 	$(Q) touch $@
 
 depend: .depend
