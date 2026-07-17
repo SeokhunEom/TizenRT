@@ -74,6 +74,7 @@ tfm_firmware_dir_name := tfm_loadable_build
 endif
 
 # Add the TFM component directory to the build
+DEPPATH += --dep-path components/tfm
 ifneq ($(wildcard components/tfm/tfm/CMakeLists.txt),)
 DEPPATH += --dep-path components/tfm/tfm/interface/src
 VPATH += :components/tfm

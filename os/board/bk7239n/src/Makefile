@@ -325,8 +325,14 @@ ifneq ($(wildcard components/tfm/tfm/CMakeLists.txt),)
 	$(Q) $(MAKE) -C components/tfm TOPDIR="$(TOPDIR)"
 endif
 	$(Q) if [ -d "$(tfm_firmware_dir)" ]; then \
-		cp -rf "$(tfm_firmware_dir)" "$(TOPDIR)/../build/output/bin/tfm_build"; \
-	else \
+			archive=$$(mktemp) || exit 1; \
+			tar --exclude='._*' -C "$(tfm_firmware_dir)" -cf "$$archive" . && \
+				mkdir -p "$(TOPDIR)/../build/output/bin/tfm_build" && \
+				tar -C "$(TOPDIR)/../build/output/bin/tfm_build" -xf "$$archive"; \
+			status=$$?; \
+			rm -f "$$archive"; \
+			[ $$status -eq 0 ] || exit $$status; \
+		else \
 		echo "tfm_firmware_dir $(tfm_firmware_dir) directory not found, please run 'make tfm' first	"; \
 	fi
 endif
@@ -356,9 +362,9 @@ submodules_depend:
 	$(Q) for module in $(submodules); do \
 		$(MAKE) -C $$module TOPDIR="$(TOPDIR)" depend; \
 	done
-	ifneq ($(wildcard $(properties_file)),)
+ifneq ($(wildcard $(properties_file)),)
 	$(Q) $(MAKE) -C properties TOPDIR="$(TOPDIR)" depend
-	endif
+endif
 
 CDEPFLAGS := $(subst ",\",$(CFLAGS))
 .depend: Makefile $(SRCS)
