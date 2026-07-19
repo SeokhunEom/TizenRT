@@ -194,6 +194,13 @@ config ENABLE_KILLALL
 	---help---
 		Send a signal to all processes running any of the specified commands
 
+config ENABLE_PROC_DUMP
+	bool "proc dump"
+	default y
+	depends on FS_PROCFS && !FS_PROCFS_EXCLUDE_PROCESS
+	---help---
+		Dump process information from procfs
+
 config ENABLE_PS
 	bool "ps"
 	default y

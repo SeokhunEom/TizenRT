@@ -16,6 +16,7 @@ Most of the commands support *--help* option to show how to use.
 |                    | [heapinfo](#heapinfo)                           | [mkdir](#mkdir)         |
 |                    | [irqinfo](#irqinfo)                             | [mv](#mv)               |
 |                    | [kill/killall](#killkillall)                    | [mount](#mount)         |
+|                    | [proc_dump](#proc_dump)                         |                         |
 |                    | [prodconfig](#prodconfig)                       | [umount](#umount)       |
 |                    | [ps](#ps)                                       | [pwd](#pwd)             |
 |                    | [reboot](#reboot)                               | [rm](#rm)               |
@@ -791,6 +792,33 @@ Enable *CONFIG_ENABLE_PS* to use this command on menuconfig as shown below:
 ```
 Application Configuration -> System Libraries and Add-Ons -> [*] Kernel shell commands -> [*] ps
 ```
+
+## proc_dump
+This command recursively prints the regular files discovered under one or all per-PID procfs directories. Discovery is dynamic, so regular files added below per-PID directories in the future are included without updating a filename list.
+
+```
+Usage:
+       proc_dump
+       proc_dump <pid>
+       proc_dump pid
+```
+
+`proc_dump` with no argument prints this help, returns successfully, and does not access procfs. `proc_dump <pid>` accepts only a strict decimal PID from 0 through 32767, including 0. For example:
+
+```bash
+TASH>>proc_dump 3
+=== PID 3 ===
+--- /proc/3/<relative-path> ---
+<file contents>
+```
+
+Each PID begins with the exact header `=== PID <n> ===`, and each discovered file begins with `--- /proc/<n>/<relative-path> ---`. A separator newline follows each file's contents. `proc_dump pid` repeatedly takes best-effort procfs snapshots and dumps each discovered numeric PID value at most once. It stops after two consecutive scans discover no previously undumped PID. This is a non-atomic live view: tasks can start or exit while the command is running, so a short-lived task may be missed and a PID's output may change or be truncated. Transient task-exit errors do not stop the all-PID dump; invalid arguments, an unavailable requested PID, and other access or read failures are reported concisely and cause an error result.
+
+### How to Enable
+Enable *CONFIG_ENABLE_PROC_DUMP* to use this command. Its configuration is `default y` when its dependencies are met.
+
+#### Dependency
+Enable *CONFIG_FS_PROCFS* and disable *CONFIG_FS_PROCFS_EXCLUDE_PROCESS* (`FS_PROCFS && !FS_PROCFS_EXCLUDE_PROCESS`).
 
 ## pwd
 This shows current working directory.

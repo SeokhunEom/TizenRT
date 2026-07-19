@@ -145,6 +145,10 @@ else ifeq ($(CONFIG_ENABLE_KILLALL),y)
 CSRCS += utils_kill.c
 endif
 
+ifeq ($(CONFIG_ENABLE_PROC_DUMP),y)
+CSRCS += utils_proc_dump.c
+endif
+
 ifeq ($(CONFIG_ENABLE_PS),y)
 CSRCS += utils_ps.c
 endif
@@ -161,15 +165,7 @@ ifeq ($(CONFIG_ENABLE_TZSELECT),y)
 CSRCS += utils_tzselect.c
 endif
 
-ifeq ($(CONFIG_ENABLE_CPULOAD),y)
-CSRCS += utils_proc.c
-else ifeq ($(CONFIG_ENABLE_PS),y)
-CSRCS += utils_proc.c
-else ifeq ($(CONFIG_ENABLE_STACKMONITOR),y)
-CSRCS += utils_proc.c
-else ifeq ($(CONFIG_ENABLE_HEAPINFO),y)
-CSRCS += utils_proc.c
-else ifeq ($(CONFIG_ENABLE_KILLALL),y)
+ifneq ($(filter y,$(CONFIG_ENABLE_CPULOAD) $(CONFIG_ENABLE_PS) $(CONFIG_ENABLE_STACKMONITOR) $(CONFIG_ENABLE_HEAPINFO) $(CONFIG_ENABLE_KILLALL) $(CONFIG_ENABLE_PROC_DUMP)),)
 CSRCS += utils_proc.c
 endif
 
