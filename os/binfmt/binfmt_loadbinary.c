@@ -108,7 +108,7 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 		if (!bin->data_backup) {
 			errcode = -EINVAL;
 			berr("ERROR: Failed to find copy of data section from previous load\n");
-			goto errout_with_bin;
+			goto errout_with_retained;
 		}
 
 		memcpy((void *)bin->sections[BIN_DATA], (const void *)bin->data_backup, bin->sizes[BIN_DATA]);
@@ -215,11 +215,21 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 		errcode = pid;
 		berr("ERROR: Failed to execute program '%s': %d\n", filename, errcode);
 		elf_delete_bin_section_addr(bin->binary_idx);
+#ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
+		if (load_attr->binp != NULL) {
+			goto errout_with_retained;
+		}
+#endif
 		goto errout_with_unload;
 	}
 
 	return pid;
 
+#ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
+errout_with_retained:
+	bin->reload = true;
+	goto errout;
+#endif
 errout_with_unload:
 	(void)unload_module(bin);
 errout_with_bin:

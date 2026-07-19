@@ -179,6 +179,7 @@ int unload_module(FAR struct binary_s *binp)
 			void *start_addr = elf_find_start_section_addr(binp);
 			binfo("Freeing section memory: %p\n", start_addr);
 			kmm_free(start_addr);
+			binp->ramstart = 0;
 #else
 			/* Each loading section is allocated respectively.
 			 * They need to be freed each.

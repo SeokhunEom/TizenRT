@@ -77,6 +77,7 @@
 #endif
 
 #include "sched/sched.h"
+#include "task/task.h"
 #include "binfmt.h"
 
 #ifdef CONFIG_BINFMT_ENABLE
@@ -232,6 +233,18 @@ int exec_module(FAR struct binary_s *binp)
 		goto errout_with_stack;
 	}
 
+#ifdef CONFIG_BINARY_MANAGER
+	strncpy(newtcb->cmn.name, binp->bin_name, CONFIG_TASK_NAME_SIZE);
+	newtcb->cmn.name[CONFIG_TASK_NAME_SIZE] = '\0';
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+	ret = task_cmdline_setup(newtcb);
+	if (ret < 0) {
+		berr("task_cmdline_setup() failed: %d\n", ret);
+		goto errout_with_stack;
+	}
+#endif
+#endif
+
 #if defined(CONFIG_DEBUG_MM_HEAPINFO)
 	/* Re-initialize the binary heap alloc list information.
 	 * Loading thread uses the binary's heap for loading,
@@ -308,10 +321,6 @@ int exec_module(FAR struct binary_s *binp)
 #ifdef CONFIG_BINARY_MANAGER
 	newtcb->cmn.app_id = binp->binary_idx;
 
-	/* Set task name as binary name */
-	strncpy(newtcb->cmn.name, binp->bin_name, CONFIG_TASK_NAME_SIZE);
-	newtcb->cmn.name[CONFIG_TASK_NAME_SIZE] = '\0';
-
 	newtcb->cmn.group->tg_binidx = binary_idx;
 	binary_manager_add_binlist(&newtcb->cmn);
 
@@ -345,7 +354,6 @@ int exec_module(FAR struct binary_s *binp)
 	return (int)pid;
 
 errout_with_appheap:
-	mm_remove_app_heap_list(binp->uheap);
 errout_with_tcbinit:
 	if (newtcb != NULL) {
 #ifdef CONFIG_BINARY_MANAGER
@@ -355,13 +363,28 @@ errout_with_tcbinit:
 		BIN_LOADINFO(binary_idx) = NULL;
 		binary_manager_remove_binlist(&newtcb->cmn);
 #endif
+		newtcb->bininfo = NULL;
+		task_abortsetup(&newtcb->cmn);
 		sched_releasetcb(&newtcb->cmn, TCB_FLAG_TTYPE_TASK);
 	}
-	return ret;
+	goto errout_with_loader;
 
 errout_with_stack:
+	task_abortsetup(&newtcb->cmn);
+
+	newtcb->cmn.stack_alloc_ptr = NULL;
+	sched_releasetcb(&newtcb->cmn, TCB_FLAG_TTYPE_TASK);
 	kumm_free(stack);
-	kmm_free(newtcb);
+
+errout_with_loader:
+	mm_remove_app_heap_list(binp->uheap);
+	rtcb->uheap = 0;
+#ifdef CONFIG_ARM_MPU
+	memset(rtcb->mpu_regs, 0, sizeof(rtcb->mpu_regs));
+#endif
+#ifdef CONFIG_ARCH_USE_MMU
+	rtcb->pgtbl = mmu_get_os_l1_pgtbl();
+#endif
 	return ret;
 }
 
