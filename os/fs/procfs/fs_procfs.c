@@ -630,7 +630,34 @@ static int procfs_readdir(struct inode *mountpt, struct fs_dirent_s *dir)
 		/* Have we reached the end of the PID information */
 
 		index = priv->index;
-		if (index >= priv->nentries) {
+#ifndef CONFIG_FS_PROCFS_EXCLUDE_PROCESS
+		while (index < priv->nentries) {
+			/* Verify that the pid still refers to an active task/thread */
+
+			pid = level0->pid[index];
+
+			flags = enter_critical_section();
+			tcb = sched_gettcb(pid);
+			leave_critical_section(flags);
+
+			index++;
+			level0->base.index = index;
+
+			if (!tcb) {
+				fdbg("ERROR: PID %d is no longer valid\n", (int)pid);
+				continue;
+			}
+
+			/* Save the filename=pid and file type=directory */
+
+			dir->fd_dir.d_type = DTYPE_DIRECTORY;
+			snprintf(dir->fd_dir.d_name, NAME_MAX + 1, "%d", (int)pid);
+			ret = OK;
+			break;
+		}
+#endif
+
+		if (index >= priv->nentries && ret != OK) {
 			/* We must report the next static entry ... no more PID entries.
 			 * skip any entries with wildcards in the first segment of the
 			 * directory name.
@@ -706,34 +733,6 @@ static int procfs_readdir(struct inode *mountpt, struct fs_dirent_s *dir)
 				ret = OK;
 			}
 		}
-#ifndef CONFIG_FS_PROCFS_EXCLUDE_PROCESS
-		else {
-			/* Verify that the pid still refers to an active task/thread */
-
-			pid = level0->pid[index];
-
-			flags = enter_critical_section();
-			tcb = sched_gettcb(pid);
-			leave_critical_section(flags);
-
-			if (!tcb) {
-				fdbg("ERROR: PID %d is no longer valid\n", (int)pid);
-				return -ENOENT;
-			}
-
-			/* Save the filename=pid and file type=directory */
-
-			dir->fd_dir.d_type = DTYPE_DIRECTORY;
-			snprintf(dir->fd_dir.d_name, NAME_MAX + 1, "%d", (int)pid);
-
-			/* Set up the next directory entry offset.  NOTE that we could use the
-			 * standard f_pos instead of our own private index.
-			 */
-
-			level0->base.index = index + 1;
-			ret = OK;
-		}
-#endif							/* CONFIG_FS_PROCFS_EXCLUDE_PROCESS */
 	}
 
 	/* Are we reading an intermediate subdirectory? */

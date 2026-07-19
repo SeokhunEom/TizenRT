@@ -688,70 +688,49 @@ static ssize_t proc_entry_cmdline(FAR struct proc_file_s *procfile, FAR struct t
 {
 	FAR struct task_tcb_s *ttcb;
 	FAR const char *name;
-	FAR char **argv;
-	size_t remaining;
 	size_t linesize;
-	size_t copysize;
-	size_t totalsize;
 
-	remaining = buflen;
-	totalsize = 0;
-
-	/* Show the task name */
+	(void)procfile;
 
 #if CONFIG_TASK_NAME_SIZE > 0
 	name = tcb->name;
 #else
 	name = "<noname>";
 #endif
-	linesize = strlen(name);
-	memcpy(procfile->line, name, linesize);
-	copysize = procfs_memcpy(procfile->line, linesize, buffer, remaining, &offset);
-
-	totalsize += copysize;
-	buffer += copysize;
-	remaining -= copysize;
-
-	if (totalsize >= buflen) {
-		return totalsize;
-	}
 #ifndef CONFIG_DISABLE_PTHREAD
 	/* Show the pthread argument */
 
 	if ((tcb->flags & TCB_FLAG_TTYPE_MASK) == TCB_FLAG_TTYPE_PTHREAD) {
 		FAR struct pthread_tcb_s *ptcb = (FAR struct pthread_tcb_s *)tcb;
+		size_t copysize;
+		size_t remaining = buflen;
+		size_t totalsize;
 
-		linesize = snprintf(procfile->line, STATUS_LINELEN, " 0x%p", ptcb->arg);
-		copysize = procfs_memcpy(procfile->line, linesize, buffer, remaining, &offset);
-
-		totalsize += copysize;
+		linesize = strlen(name);
+		copysize = procfs_memcpy(name, linesize, buffer, remaining, &offset);
+		totalsize = copysize;
 		buffer += copysize;
 		remaining -= copysize;
-
 		if (totalsize >= buflen) {
 			return totalsize;
 		}
+
+		snprintf(procfile->line, STATUS_LINELEN, " 0x%p", ptcb->arg);
+		linesize = strlen(procfile->line);
+		copysize = procfs_memcpy(procfile->line, linesize, buffer, remaining, &offset);
+
+		totalsize += copysize;
+		return totalsize;
 	}
 #endif
 
-	/* Show the task argument list (skipping over the name) */
-
 	ttcb = (FAR struct task_tcb_s *)tcb;
-
-	for (argv = ttcb->argv + 1; *argv; argv++) {
-		linesize = snprintf(procfile->line, STATUS_LINELEN, " %s", *argv);
-		copysize = procfs_memcpy(procfile->line, linesize, buffer, remaining, &offset);
-
-		totalsize += copysize;
-		buffer += copysize;
-		remaining -= copysize;
-
-		if (totalsize >= buflen) {
-			return totalsize;
-		}
+	if (ttcb->cmdline != NULL) {
+		return procfs_memcpy(ttcb->cmdline, ttcb->cmdline_len, buffer, buflen, &offset);
 	}
 
-	return totalsize;
+	linesize = strlen(name);
+	return procfs_memcpy(name, linesize, buffer, buflen, &offset);
 }
 
 /****************************************************************************
