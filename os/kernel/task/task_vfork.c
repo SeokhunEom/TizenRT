@@ -194,13 +194,24 @@ static inline int vfork_stackargsetup(FAR struct tcb_s *parent, FAR struct task_
 
 static inline int vfork_argsetup(FAR struct tcb_s *parent, FAR struct task_tcb_s *child)
 {
+	int ret;
+
 	/* Clone the task name */
 
 	vfork_namesetup(parent, child);
 
 	/* Adjust and copy the argv[] array. */
 
-	return vfork_stackargsetup(parent, child);
+	ret = vfork_stackargsetup(parent, child);
+	if (ret < 0) {
+		return ret;
+	}
+
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+	return task_cmdline_clone(child, parent);
+#else
+	return OK;
+#endif
 }
 
 /****************************************************************************
@@ -455,7 +466,7 @@ void task_vforkabort(FAR struct task_tcb_s *child, int errcode)
 {
 	/* The TCB was added to the active task list by task_schedsetup() */
 
-	dq_rem((FAR dq_entry_t *)child, (dq_queue_t *)&g_inactivetasks);
+	task_abortsetup((FAR struct tcb_s *)child);
 
 	/* Release the TCB */
 

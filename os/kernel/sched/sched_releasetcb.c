@@ -157,6 +157,22 @@ int sched_releasetcb(FAR struct tcb_s *tcb, uint8_t ttype)
 			sched_releasepid(tcb->pid);
 		}
 
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+#ifndef CONFIG_DISABLE_PTHREAD
+		if ((ttype & TCB_FLAG_TTYPE_MASK) != TCB_FLAG_TTYPE_PTHREAD)
+#endif
+		{
+			FAR struct task_tcb_s *ttcb = (FAR struct task_tcb_s *)tcb;
+			FAR char *cmdline = ttcb->cmdline;
+
+			if (cmdline != NULL) {
+				ttcb->cmdline = NULL;
+				ttcb->cmdline_len = 0;
+				sched_kfree(cmdline);
+			}
+		}
+#endif
+
 		/* Delete the thread's stack if one has been allocated */
 
 		if (tcb->stack_alloc_ptr) {

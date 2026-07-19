@@ -101,7 +101,12 @@ struct onexit_s {
 
 void task_start(void);
 int task_schedsetup(FAR struct task_tcb_s *tcb, int priority, start_t start, main_t main, uint8_t ttype);
+void task_abortsetup(FAR struct tcb_s *tcb);
 int task_argsetup(FAR struct task_tcb_s *tcb, FAR const char *name, FAR char *const argv[]);
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+int task_cmdline_setup(FAR struct task_tcb_s *tcb);
+int task_cmdline_clone(FAR struct task_tcb_s *child, FAR struct tcb_s *parent);
+#endif
 
 /* Task exit */
 

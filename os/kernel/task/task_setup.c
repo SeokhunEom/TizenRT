@@ -65,6 +65,9 @@
 
 #include <tinyara/arch.h>
 #include <tinyara/irq.h>
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+#include <tinyara/kmalloc.h>
+#endif
 #ifdef CONFIG_SCHED_CPULOAD
 #include <tinyara/clock.h>
 #endif
@@ -336,6 +339,67 @@ static inline void task_saveparent(FAR struct tcb_s *tcb, uint8_t ttype)
 #endif
 
 /****************************************************************************
+ * Name: task_abortparent
+ *
+ * Description:
+ *   Reverse the parent bookkeeping performed by task_saveparent() for a task
+ *   that will not be activated.
+ *
+ * Assumptions:
+ *   The caller holds a critical section and the TCB has not been activated.
+ *
+ ****************************************************************************/
+
+#ifdef CONFIG_SCHED_HAVE_PARENT
+static inline void task_abortparent(FAR struct tcb_s *tcb)
+{
+	FAR struct task_group_s *pgrp = NULL;
+#ifndef HAVE_GROUP_MEMBERS
+	FAR struct tcb_s *ptcb;
+#endif
+
+	DEBUGASSERT(tcb != NULL && tcb->group != NULL);
+
+#ifndef CONFIG_DISABLE_PTHREAD
+	if ((tcb->flags & TCB_FLAG_TTYPE_MASK) == TCB_FLAG_TTYPE_PTHREAD) {
+		return;
+	}
+#endif
+
+#ifdef HAVE_GROUP_MEMBERS
+	pgrp = group_findbygid(tcb->group->tg_pgid);
+#else
+	ptcb = sched_gettcb(tcb->group->tg_ppid);
+	if (ptcb != NULL) {
+		pgrp = ptcb->group;
+	}
+#endif
+
+	/* The parent's group can already be gone.  Its group teardown owns any
+	 * child status entry that was still attached to it.
+	 */
+
+	if (pgrp != NULL) {
+#ifdef CONFIG_SCHED_CHILD_STATUS
+		FAR struct child_status_s *child;
+
+		child = group_removechild(pgrp, tcb->pid);
+		if (child != NULL) {
+			group_freechild(child);
+		}
+#else
+		DEBUGASSERT(pgrp->tg_nchildren > 0);
+		if (pgrp->tg_nchildren > 0) {
+			pgrp->tg_nchildren--;
+		}
+#endif
+	}
+}
+#else
+#define task_abortparent(tcb)
+#endif
+
+/****************************************************************************
  * Name: task_dupdspace
  *
  * Description:
@@ -535,6 +599,30 @@ static int thread_schedsetup(FAR struct tcb_s *tcb, int priority, start_t start,
 }
 
 /****************************************************************************
+ * Name: task_abortsetup
+ *
+ * Description:
+ *   Abort a completed task_schedsetup() before task activation.  This removes
+ *   the unpublished task from the inactive list and reverses the parent-side
+ *   child bookkeeping before the child group, PID, or TCB is released.
+ *
+ ****************************************************************************/
+
+void task_abortsetup(FAR struct tcb_s *tcb)
+{
+	irqstate_t flags;
+
+	DEBUGASSERT(tcb != NULL);
+
+	flags = enter_critical_section();
+	if (tcb->task_state == TSTATE_TASK_INACTIVE) {
+		task_abortparent(tcb);
+		sched_removeblocked(tcb);
+	}
+	leave_critical_section(flags);
+}
+
+/****************************************************************************
  * Name: task_namesetup
  *
  * Description:
@@ -593,9 +681,13 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 	FAR char **stackargv;
 	FAR const char *name;
 	FAR char *str;
+	FAR char *strstart;
+	size_t arglen;
+	size_t namelen;
+	size_t remaining;
 	size_t strtablen;
 	size_t argvlen;
-	int nbytes;
+	size_t nbytes;
 	int argc;
 	int i;
 
@@ -609,7 +701,15 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 
 	/* Get the size of the task name (including the NUL terminator) */
 
-	strtablen = (strlen(name) + 1);
+	namelen = strlen(name);
+	if (namelen == SIZE_MAX) {
+		return -EOVERFLOW;
+	}
+
+	strtablen = namelen + 1;
+	if (strtablen >= tcb->cmn.adj_stack_size) {
+		return -ENAMETOOLONG;
+	}
 
 	/* Count the number of arguments and get the accumulated size of the
 	 * argument strings (including the null terminators).  The argument count
@@ -626,7 +726,16 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 			 * size of the allocated stack.
 			 */
 
-			strtablen += (strlen(argv[argc]) + 1);
+			arglen = strnlen(argv[argc], tcb->cmn.adj_stack_size);
+			if (arglen == tcb->cmn.adj_stack_size) {
+				return -ENAMETOOLONG;
+			}
+
+			if (strtablen > SIZE_MAX - arglen - 1) {
+				return -EOVERFLOW;
+			}
+
+			strtablen += arglen + 1;
 			if (strtablen >= tcb->cmn.adj_stack_size) {
 				return -ENAMETOOLONG;
 			}
@@ -648,7 +757,15 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 	 * task name plus a NULL argv[] entry to terminate the list.
 	 */
 
-	argvlen = (argc + 2) * sizeof(FAR char *);
+	if ((size_t)(argc + 2) > SIZE_MAX / sizeof(FAR char *)) {
+		return -EOVERFLOW;
+	}
+
+	argvlen = (size_t)(argc + 2) * sizeof(FAR char *);
+	if (argvlen > SIZE_MAX - strtablen) {
+		return -EOVERFLOW;
+	}
+
 	stackargv = (FAR char **)up_stack_frame(&tcb->cmn, argvlen + strtablen);
 
 	DEBUGASSERT(stackargv != NULL);
@@ -661,14 +778,15 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 	 */
 
 	str = (FAR char *)stackargv + argvlen;
+	strstart = str;
 
 	/* Copy the task name.  Increment str to skip over the task name and its
 	 * NUL terminator in the string buffer.
 	 */
 
 	stackargv[0] = str;
-	nbytes = strlen(name) + 1;
-	strncpy(str, name, nbytes);
+	nbytes = namelen + 1;
+	memcpy(str, name, nbytes);
 	str += nbytes;
 
 	/* Copy each argument */
@@ -679,9 +797,19 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 		 * argument and its NUL terminator in the string buffer.
 		 */
 
+		remaining = strtablen - (size_t)(str - strstart);
+		if (argv[i] == NULL) {
+			return -EOVERFLOW;
+		}
+
+		arglen = strnlen(argv[i], remaining);
+		if (arglen == remaining) {
+			return -EOVERFLOW;
+		}
+
 		stackargv[i + 1] = str;
-		nbytes = strlen(argv[i]) + 1;
-		strncpy(str, argv[i], nbytes);
+		nbytes = arglen + 1;
+		memcpy(str, argv[i], nbytes);
 		str += nbytes;
 	}
 
@@ -695,6 +823,121 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 
 	return OK;
 }
+
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+int task_cmdline_setup(FAR struct task_tcb_s *tcb)
+{
+	FAR char *cmdline;
+	FAR char *oldcmdline;
+	FAR const char *name;
+	irqstate_t flags;
+	size_t allocsize;
+	size_t arglen;
+	size_t namelen;
+	size_t remaining;
+	size_t total;
+	size_t used;
+	int argc;
+	int i;
+
+#if CONFIG_TASK_NAME_SIZE > 0
+	name = tcb->cmn.name;
+#else
+	name = (FAR const char *)g_noname;
+#endif
+
+	namelen = strlen(name);
+	total = namelen;
+	argc = 1;
+
+	if (tcb->argv != NULL) {
+		while (tcb->argv[argc] != NULL) {
+			if (argc > MAX_STACK_ARGS) {
+				return -E2BIG;
+			}
+
+			arglen = strlen(tcb->argv[argc]);
+			if (total == SIZE_MAX || arglen > SIZE_MAX - total - 1) {
+				return -EOVERFLOW;
+			}
+
+			total += arglen + 1;
+			argc++;
+		}
+	}
+
+	allocsize = total > 0 ? total : 1;
+	cmdline = (FAR char *)kmm_malloc(allocsize);
+	if (cmdline == NULL) {
+		return -ENOMEM;
+	}
+
+	memcpy(cmdline, name, namelen);
+	used = namelen;
+
+	for (i = 1; i < argc; i++) {
+		remaining = total - used;
+		if (tcb->argv[i] == NULL || remaining == 0) {
+			kmm_free(cmdline);
+			return -EOVERFLOW;
+		}
+
+		arglen = strnlen(tcb->argv[i], remaining);
+		if (arglen >= remaining) {
+			kmm_free(cmdline);
+			return -EOVERFLOW;
+		}
+
+		cmdline[used++] = ' ';
+		memcpy(cmdline + used, tcb->argv[i], arglen);
+		used += arglen;
+	}
+
+	flags = enter_critical_section();
+	oldcmdline = tcb->cmdline;
+	tcb->cmdline = cmdline;
+	tcb->cmdline_len = used;
+	leave_critical_section(flags);
+
+	if (oldcmdline != NULL) {
+		kmm_free(oldcmdline);
+	}
+
+	return OK;
+}
+
+int task_cmdline_clone(FAR struct task_tcb_s *child, FAR struct tcb_s *parent)
+{
+	FAR struct task_tcb_s *ptcb;
+	FAR char *cmdline;
+	irqstate_t flags;
+	size_t allocsize;
+
+#ifndef CONFIG_DISABLE_PTHREAD
+	if ((parent->flags & TCB_FLAG_TTYPE_MASK) == TCB_FLAG_TTYPE_PTHREAD) {
+		return task_cmdline_setup(child);
+	}
+#endif
+
+	ptcb = (FAR struct task_tcb_s *)parent;
+	if (ptcb->cmdline == NULL) {
+		return task_cmdline_setup(child);
+	}
+
+	allocsize = ptcb->cmdline_len > 0 ? ptcb->cmdline_len : 1;
+	cmdline = (FAR char *)kmm_malloc(allocsize);
+	if (cmdline == NULL) {
+		return -ENOMEM;
+	}
+
+	memcpy(cmdline, ptcb->cmdline, ptcb->cmdline_len);
+	flags = enter_critical_section();
+	child->cmdline = cmdline;
+	child->cmdline_len = ptcb->cmdline_len;
+	leave_critical_section(flags);
+	return OK;
+}
+#endif
 
 /****************************************************************************
  * Public Functions
@@ -729,7 +972,6 @@ static inline int task_stackargsetup(FAR struct task_tcb_s *tcb, FAR char *const
 int task_schedsetup(FAR struct task_tcb_s *tcb, int priority, start_t start, main_t main, uint8_t ttype)
 {
 	int ret;
-
 	/* Perform common thread setup */
 
 	ret = thread_schedsetup((FAR struct tcb_s *)tcb, priority, start, (CODE void *)main, ttype);
@@ -808,6 +1050,8 @@ int pthread_schedsetup(FAR struct pthread_tcb_s *tcb, int priority, start_t star
 
 int task_argsetup(FAR struct task_tcb_s *tcb, FAR const char *name, FAR char *const argv[])
 {
+	int ret;
+
 	/* Setup the task name */
 
 	task_namesetup(tcb, name);
@@ -817,5 +1061,14 @@ int task_argsetup(FAR struct task_tcb_s *tcb, FAR const char *name, FAR char *co
 	 * privilege mode the task runs in.
 	 */
 
-	return task_stackargsetup(tcb, argv);
+	ret = task_stackargsetup(tcb, argv);
+	if (ret < 0) {
+		return ret;
+	}
+
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+	return task_cmdline_setup(tcb);
+#else
+	return OK;
+#endif
 }

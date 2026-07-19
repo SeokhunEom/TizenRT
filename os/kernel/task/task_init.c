@@ -139,6 +139,11 @@ int task_init(FAR struct tcb_s *tcb, const char *name, int priority, FAR uint32_
 	DEBUGASSERT(tcb && (tcb->flags & TCB_FLAG_TTYPE_MASK) != TCB_FLAG_TTYPE_PTHREAD);
 #endif
 
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+	ttcb->cmdline = NULL;
+	ttcb->cmdline_len = 0;
+#endif
+
 	/* Create a new task group */
 
 #ifdef HAVE_TASK_GROUP
@@ -174,7 +179,11 @@ int task_init(FAR struct tcb_s *tcb, const char *name, int priority, FAR uint32_
 
 	/* Setup to pass parameters to the new task */
 
-	(void)task_argsetup(ttcb, name, argv);
+	ret = task_argsetup(ttcb, name, argv);
+	if (ret < 0) {
+		errcode = -ret;
+		goto errout_with_setup;
+	}
 
 	/* Now we have enough in place that we can join the group */
 
@@ -187,10 +196,8 @@ int task_init(FAR struct tcb_s *tcb, const char *name, int priority, FAR uint32_
 #endif
 	return OK;
 
-#ifdef HAVE_TASK_GROUP
 errout_with_setup:
-	sched_removeblocked((struct tcb_s *)ttcb);
-#endif
+	task_abortsetup((FAR struct tcb_s *)ttcb);
 
 errout_with_group:
 #ifdef HAVE_TASK_GROUP

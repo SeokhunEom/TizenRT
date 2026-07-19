@@ -703,6 +703,10 @@ struct task_tcb_s {
 
 	uint8_t init_priority;		/* Initial priority of the task        */
 	FAR char **argv;			/* Name+start-up parameters            */
+#if defined(CONFIG_FS_PROCFS) && !defined(CONFIG_FS_PROCFS_EXCLUDE_PROCESS)
+	FAR char *cmdline;			/* Immutable initial command line      */
+	size_t cmdline_len;			/* Command line length (without NUL)   */
+#endif
 };
 
 /* struct pthread_tcb_s **********************************************************/

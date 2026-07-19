@@ -33,6 +33,7 @@
 #include <tinyara/os_api_test_drv.h>
 
 #include "sched/sched.h"
+#include "task/task.h"
 #ifdef CONFIG_SCHED_HAVE_PARENT
 #include "group/group.h"
 #endif
@@ -132,12 +133,15 @@ static int test_task_init(main_t entry)
 	return ret;
 
 errout_with_task:
-	sched_removeblocked((struct tcb_s *)tcb);
+	task_abortsetup((struct tcb_s *)tcb);
 	sched_releasetcb(&tcb->cmn, TCB_FLAG_TTYPE_TASK);
 	return ret;
 
 errout_with_stack:
+	tcb->cmn.stack_alloc_ptr = NULL;
+	sched_releasetcb(&tcb->cmn, TCB_FLAG_TTYPE_TASK);
 	kumm_free(stack);
+	return ret;
 
 errout_with_tcb:
 	kmm_free(tcb);

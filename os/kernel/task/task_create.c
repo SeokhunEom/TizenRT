@@ -200,7 +200,11 @@ static int thread_create(FAR const char *name, uint8_t ttype, int priority, int 
 
 	/* Setup to pass parameters to the new task */
 
-	(void)task_argsetup(tcb, name, argv);
+	ret = task_argsetup(tcb, name, argv);
+	if (ret < 0) {
+		errcode = -ret;
+		goto errout_with_tcb;
+	}
 
 	/* Now we have enough in place that we can join the group */
 
@@ -234,6 +238,8 @@ static int thread_create(FAR const char *name, uint8_t ttype, int priority, int 
 	return pid;
 
 errout_with_tcb:
+	task_abortsetup((FAR struct tcb_s *)tcb);
+
 	sched_releasetcb((FAR struct tcb_s *)tcb, ttype);
 
 errout:
