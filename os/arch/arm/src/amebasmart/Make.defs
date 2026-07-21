@@ -119,6 +119,9 @@ ifeq ($(CONFIG_SCHED_BACKTRACE),y)
 endif
 
 CMN_ASRCS += vfork.S
+ifeq ($(CONFIG_MEM_LEAK_CHECKER),y)
+CMN_ASRCS += arm_mem_leak_capture.S
+endif
 
 ifeq ($(CONFIG_ARCH_HAVE_TESTSET),y)
   ifeq ($(CONFIG_ARCH_ARMV6M),)

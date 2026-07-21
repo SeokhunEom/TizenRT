@@ -139,12 +139,56 @@
 #define INTSTACK_COLOR 0xdeadbeef
 #define HEAP_COLOR     'h'
 
+#ifdef CONFIG_MEM_LEAK_CHECKER
+#define UP_MEM_LEAK_CAPTURE_MAGIC          0x4d4c4352
+#define UP_MEM_LEAK_CAPTURE_VERSION        1
+#define UP_MEM_LEAK_CAPTURE_WORDS          18
+#define UP_MEM_LEAK_CAPTURE_FLAG_TASK      (1 << 0)
+#define UP_MEM_LEAK_CAPTURE_FLAG_EXCEPTION (1 << 1)
+#define UP_MEM_LEAK_CAPTURE_FLAG_ARMV7_M   (1 << 8)
+#define UP_MEM_LEAK_CAPTURE_FLAG_ARMV7_A   (1 << 9)
+#define UP_MEM_LEAK_CAPTURE_CALLEE_MASK    0xff
+
+#define UP_MEM_LEAK_CAPTURE_MAGIC_OFFSET       0
+#define UP_MEM_LEAK_CAPTURE_VERSION_OFFSET     4
+#define UP_MEM_LEAK_CAPTURE_WORDS_OFFSET       6
+#define UP_MEM_LEAK_CAPTURE_FLAGS_OFFSET       8
+#define UP_MEM_LEAK_CAPTURE_CALLEE_OFFSET      12
+#define UP_MEM_LEAK_CAPTURE_SP_OFFSET          44
+#define UP_MEM_LEAK_CAPTURE_BOUNDARY_OFFSET    48
+#define UP_MEM_LEAK_CAPTURE_STATUS_OFFSET      52
+#define UP_MEM_LEAK_CAPTURE_EXCEPTION_OFFSET   56
+#define UP_MEM_LEAK_CAPTURE_CPU_OFFSET         60
+#define UP_MEM_LEAK_CAPTURE_TCB_OFFSET         64
+#define UP_MEM_LEAK_CAPTURE_MASK_OFFSET        68
+#define UP_MEM_LEAK_CAPTURE_SIZE               72
+#define UP_MEM_LEAK_PRCTL_OPTION               17
+#endif
+
 /****************************************************************************
  * Public Types
  ****************************************************************************/
 #ifndef __ASSEMBLY__
 typedef CODE void (*sig_deliver_t)(FAR struct tcb_s *tcb);
 typedef CODE void (*phy_enable_t)(bool enable);
+
+#ifdef CONFIG_MEM_LEAK_CHECKER
+struct up_mem_leak_capture_s {
+	uint32_t magic;
+	uint16_t version;
+	uint16_t words;
+	uint32_t flags;
+	uint32_t callee_saved[8];
+	uint32_t stack_pointer;
+	uint32_t caller_boundary;
+	uint32_t status;
+	uint32_t exception;
+	uint32_t cpu;
+	uint32_t tcb;
+	uint32_t callee_saved_mask;
+};
+
+#endif
 
 /****************************************************************************
  * Public Variables
@@ -214,6 +258,10 @@ EXTERN volatile bool g_rtc_enabled;
  ****************************************************************************/
 
 void up_initialize(void);
+
+#ifdef CONFIG_MEM_LEAK_CHECKER
+void up_mem_leak_capture_current(FAR struct up_mem_leak_capture_s *capture);
+#endif
 
 /****************************************************************************
  * Name: board_initialize
@@ -2020,6 +2068,11 @@ int up_cpu_pause(int cpu);
  ****************************************************************************/
 
 bool up_cpu_pausereq(int cpu);
+
+#ifdef CONFIG_MEM_LEAK_CHECKER
+int up_mem_leak_pause_request(int cpu);
+uint64_t up_mem_leak_monotonic_usec(void);
+#endif
 
 /****************************************************************************
  * Name: up_is_cpu_paused

@@ -303,7 +303,7 @@ struct xcptcontext {
 #ifdef CONFIG_ARCH_ADDRENV
 #ifdef CONFIG_ARCH_STACK_DYNAMIC
 	/* This array holds the physical address of the level 2 page table used
-	 * to map the thread's stack memory.  This array will initially be of Zeroes 
+	 * to map the thread's stack memory.  This array will initially be of Zeroes
 	 * and would be backed-up up with pages during page fault exception
 	 * handling to support dynamically sized stacks for each thread.
 	 */
@@ -361,6 +361,11 @@ static inline irqstate_t irqstate(void)
 	return cpsr;
 }
 
+static inline bool up_irq_saved_enabled(irqstate_t flags)
+{
+	return (flags & (1 << 7)) == 0;
+}
+
 /* Disable IRQs and return the previous IRQ state */
 
 static inline irqstate_t irqsave(void)
@@ -387,7 +392,7 @@ static inline irqstate_t irqsave(void)
 static inline irqstate_t up_irq_enable(void)
 {
 	unsigned int cpsr;
-	
+
 	__asm__ __volatile__
 	(
 		"\tmrs    %0, cpsr\n"

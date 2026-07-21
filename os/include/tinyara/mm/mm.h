@@ -70,6 +70,7 @@
 #endif
 
 #include <tinyara/sched.h>
+#include <tinyara/mm/mm_alloc_padding.h>
 /****************************************************************************
  * Pre-Processor Definitions
  ****************************************************************************/
@@ -115,13 +116,13 @@
  * UINTPTR_MAX > UINT32_MAX effects the size of mmsize_t and pointer size
 | HEAPINFO | FREEINFO | 64-bit | mmsize_t | pointer | sizeof(mm_allocnode_s) | sizeof(mm_freenode_s) | MM_MIN_SHIFT
 | OFF      | OFF      | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 16 bytes              | 4
-| OFF      | OFF      | ON     | 8 bytes  | 8 bytes | 16 bytes               | 32 bytes              | 5 
-| OFF      | ON       | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 24 bytes              | 5 
-| OFF      | ON       | ON     | 8 bytes  | 8 bytes | 16 bytes               | 44 bytes              | 6 
-| ON       | OFF      | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 24 bytes              | 5 
-| ON       | OFF      | ON     | 8 bytes  | 8 bytes | 28 bytes               | 44 bytes              | 6 
-| ON       | ON       | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 32 bytes              | 5 
-| ON       | ON       | ON     | 8 bytes  | 8 bytes | 28 bytes               | 56 bytes              | 6 
+| OFF      | OFF      | ON     | 8 bytes  | 8 bytes | 16 bytes               | 32 bytes              | 5
+| OFF      | ON       | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 24 bytes              | 5
+| OFF      | ON       | ON     | 8 bytes  | 8 bytes | 16 bytes               | 44 bytes              | 6
+| ON       | OFF      | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 24 bytes              | 5
+| ON       | OFF      | ON     | 8 bytes  | 8 bytes | 28 bytes               | 44 bytes              | 6
+| ON       | ON       | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 32 bytes              | 5
+| ON       | ON       | ON     | 8 bytes  | 8 bytes | 28 bytes               | 56 bytes              | 6
  */
 
 /* Base minimum shift value (16 bytes) */
@@ -234,11 +235,6 @@ typedef void *mmaddress_t;             /* 32 bit address space */
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 #define SIZEOF_MM_MALLOC_DEBUG_INFO (sizeof(mmaddress_t) + sizeof(pid_t) + sizeof(uint16_t))
 
-/* Memory state values */
-#define MM_MEMORY_STATE_UNUSED   0  /* Initial state */
-#define MM_MEMORY_STATE_USED     1  /* Memory is referenced */
-#define MM_MEMORY_STATE_LEAK     2  /* Potential memory leak */
-#define MM_MEMORY_STATE_BROKEN   3  /* Heap corruption detected */
 #else
 #define SIZEOF_MM_MALLOC_DEBUG_INFO 0
 #endif
@@ -259,7 +255,7 @@ struct mm_allocnode_s {
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 	mmaddress_t alloc_call_addr;			/* malloc call address */
 	pid_t pid;					/* PID info */
-	uint16_t memory_state;				/* Memory state for leak detection. */
+	uint16_t alloc_padding;				/* Payload capacity beyond the requested size. */
 #endif
 	mmsize_t size;					/* Size of this chunk */
 
@@ -280,7 +276,7 @@ struct mm_freenode_s {
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 	mmaddress_t alloc_call_addr;			/* malloc call address */
 	pid_t pid;					/* PID info */
-	uint16_t memory_state;				/* Memory state for leak detection. */
+	uint16_t alloc_padding;				/* Payload capacity beyond the requested size. */
 #endif
 	mmsize_t size;				/* Size of this chunk */
 	FAR struct mm_freenode_s *flink;	/* Supports a doubly linked list */
@@ -302,8 +298,56 @@ struct mm_freenode_s {
 #define CHECK_FREENODE_SIZE \
 	DEBUGASSERT(sizeof(struct mm_freenode_s) == SIZEOF_MM_FREENODE)
 
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+#define MM_MALLOC_PADDING_MAX MM_ALLOC_PADDING_MALLOC_BOUND(MM_MIN_CHUNK, SIZEOF_MM_FREENODE)
+#define MM_MEMALIGN_PADDING_MAX MM_ALLOC_PADDING_MEMALIGN_BOUND(MM_MIN_CHUNK, SIZEOF_MM_FREENODE)
+#define MM_REALLOC_PADDING_MAX MM_ALLOC_PADDING_REALLOC_BOUND(MM_MIN_CHUNK, SIZEOF_MM_FREENODE)
+#define MM_ALLOC_PADDING_MAX MM_REALLOC_PADDING_MAX
+#ifdef __cplusplus
+static_assert(MM_MALLOC_PADDING_MAX <= UINT16_MAX,
+		"malloc padding bound exceeds uint16_t");
+static_assert(MM_MEMALIGN_PADDING_MAX <= UINT16_MAX,
+		"memalign padding bound exceeds uint16_t");
+static_assert(MM_REALLOC_PADDING_MAX <= UINT16_MAX,
+		"allocation padding bound exceeds uint16_t");
+#else
+_Static_assert(MM_MALLOC_PADDING_MAX <= UINT16_MAX,
+		"malloc padding bound exceeds uint16_t");
+_Static_assert(MM_MEMALIGN_PADDING_MAX <= UINT16_MAX,
+		"memalign padding bound exceeds uint16_t");
+_Static_assert(MM_REALLOC_PADDING_MAX <= UINT16_MAX,
+		"allocation padding bound exceeds uint16_t");
+#endif
+
+static inline bool mm_allocnode_set_padding(FAR struct mm_allocnode_s *node,
+		size_t requested)
+{
+	size_t capacity;
+
+	if (node == NULL || node->size < SIZEOF_MM_ALLOCNODE) {
+		return false;
+	}
+
+	capacity = node->size - SIZEOF_MM_ALLOCNODE;
+	return mm_alloc_padding_from_sizes(capacity, requested, &node->alloc_padding);
+}
+
+static inline bool mm_allocnode_get_requested_size(FAR const struct mm_allocnode_s *node,
+		size_t *requested)
+{
+	size_t capacity;
+
+	if (node == NULL || node->size < SIZEOF_MM_ALLOCNODE) {
+		return false;
+	}
+
+	capacity = node->size - SIZEOF_MM_ALLOCNODE;
+	return mm_requested_size_from_padding(capacity, node->alloc_padding, requested);
+}
+#endif
+
 /*
- *	This structure is used in the free delay list. 
+ *	This structure is used in the free delay list.
  *	When a user attempts to free a memory address, this structure is used to store the relevant information for delayed freeing.
  *	It is designed to occupy the space corresponding to the size difference between mm_freenode_s and mm_allocnode_s.
  */
@@ -393,7 +437,7 @@ struct mm_heap_s {
 	 */
 
 	struct mm_freenode_s mm_nodelist[MM_NNODES + 1];
-	
+
 	/* Free delay list, for some situations where we can't do free
 	* immdiately.
 	*/
@@ -496,6 +540,7 @@ int kmm_addregion(FAR void *heapstart, size_t heapsize);
 void mm_seminitialize(FAR struct mm_heap_s *heap);
 bool mm_takesemaphore(FAR struct mm_heap_s *heap);
 int mm_trysemaphore(FAR struct mm_heap_s *heap);
+int mm_trysemaphore_fresh(FAR struct mm_heap_s *heap);
 void mm_givesemaphore(FAR struct mm_heap_s *heap);
 
 /* Functions contained in umm_sem.c ****************************************/
@@ -696,12 +741,69 @@ size_t mm_get_heap_free_size(void);
 #endif
 
 #if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+#define MM_LOADABLE_DOMAIN_NAME_MAX 32
+#define MM_LOADABLE_DOMAIN_WRITABLE_MAX 2
+#ifdef CONFIG_NUM_APPS
+#define MM_LOADABLE_DOMAIN_CAPACITY (CONFIG_NUM_APPS + 1)
+#else
+#define MM_LOADABLE_DOMAIN_CAPACITY 8
+#endif
+
+struct mm_loadable_mapping_s {
+	uintptr_t start;
+	size_t size;
+	uintptr_t container;
+	size_t container_size;
+};
+
+typedef bool (*mm_loadable_domain_ready_t)(FAR void *descriptor);
+
+struct mm_loadable_domain_registration_s {
+	unsigned int slot;
+	FAR struct mm_heap_s *heap;
+	FAR void *descriptor;
+	FAR void *descriptor_container;
+	size_t descriptor_container_size;
+	FAR const char *name;
+	mm_loadable_domain_ready_t ready;
+	uintptr_t text_start;
+	size_t text_size;
+	struct mm_loadable_mapping_s writable[MM_LOADABLE_DOMAIN_WRITABLE_MAX];
+	size_t writable_count;
+};
+
+struct mm_loadable_domain_pin_s {
+	unsigned int slot;
+	uint32_t generation;
+	FAR struct mm_heap_s *heap;
+	FAR void *descriptor;
+	FAR void *descriptor_container;
+	size_t descriptor_container_size;
+	char name[MM_LOADABLE_DOMAIN_NAME_MAX];
+	uintptr_t text_start;
+	size_t text_size;
+	struct mm_loadable_mapping_s writable[MM_LOADABLE_DOMAIN_WRITABLE_MAX];
+	size_t writable_count;
+};
+
 void mm_initialize_app_heap_q(void);
+void mm_loadable_domain_initialize(void);
 void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name);
 void mm_remove_app_heap_list(struct mm_heap_s *heap);
 void mm_disable_app_heap_list(struct mm_heap_s *heap);
 struct mm_heap_s *mm_get_app_heap_with_name(char *app_name);
 char *mm_get_app_heap_name(void *address);
+int mm_loadable_domain_register(
+		FAR const struct mm_loadable_domain_registration_s *registration);
+int mm_loadable_domain_activate(FAR void *descriptor);
+int mm_loadable_domain_abort(FAR void *descriptor);
+int mm_loadable_domain_disable_and_wait(FAR void *descriptor);
+int mm_loadable_domain_reactivate(FAR void *descriptor);
+int mm_loadable_domain_finish_unload(FAR void *descriptor);
+int mm_loadable_domain_try_pin_all(FAR struct mm_loadable_domain_pin_s *pins,
+		size_t capacity, FAR size_t *count);
+int mm_loadable_domain_unpin_all(
+		FAR const struct mm_loadable_domain_pin_s *pins, size_t count);
 #endif
 
 struct mm_heap_s *umm_get_heap(void *address);
@@ -765,7 +867,7 @@ void sched_garbagecollection(void);
  *   If there is no enough space to allocate, it will return NULL.
  * @param[in] heap_index Index of specific heap
  * @param[in] size size (in bytes) of the memory region to be allocated
- * 
+ *
  * @return On success, the address of the allocated memory is returned. On failure, NULL is returned.
  * @since TizenRT v2.1 PRE
  */
@@ -778,7 +880,7 @@ void *malloc_at(int heap_index, size_t size);
  * @param[in] heap_index Index of specific heap
  * @param[in] n the number of elements to be allocated
  * @param[in] elem_size the size of elements
- * 
+ *
  * @return On success, the address of the allocated memory is returned. On failure, NULL is returned.
  * @since TizenRT v2.1 PRE
  */
@@ -791,7 +893,7 @@ void *calloc_at(int heap_index, size_t n, size_t elem_size);
  * @param[in] heap_index Index of specific heap
  * @param[in] alignment A power of two for alignment
  * @param[in] size Allocated memory size
- * 
+ *
  * @return On success, the address of the allocated memory is returned. On failure, NULL is returned.
  * @since TizenRT v2.1 PRE
  */
@@ -804,7 +906,7 @@ void *memalign_at(int heap_index, size_t alignment, size_t size);
  * @param[in] heap_index Index of specific heap
  * @param[in] oldmem the pointer to a memory block previously allocated
  * @param[in] size the new size for the memory block
- * 
+ *
  * @return On success, the address of the allocated memory is returned. On failure, NULL is returned.
  * @since TizenRT v2.1 PRE
  */
@@ -816,7 +918,7 @@ void *realloc_at(int heap_index, void *oldmem, size_t size);
  *   If there is no enough space to allocate, it will return NULL.
  * @param[in] heap_index Index of specific heap
  * @param[in] size size (in bytes) of the memory region to be allocated
- * 
+ *
  * @return On success, the address of the allocated memory is returned. On failure, NULL is returned.
  * @since TizenRT v2.1 PRE
  */

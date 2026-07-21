@@ -52,6 +52,7 @@
 
 CSRCS += irq_initialize.c irq_attach.c irq_dispatch.c irq_unexpectedisr.c
 CSRCS += fin_wait.c fin_notify.c
+CSRCS += irq_trycritical.c
 
 ifeq ($(CONFIG_SMP), y)
 CSRCS += irq_spinlock.c

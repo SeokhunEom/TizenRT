@@ -132,6 +132,39 @@ int mm_trysemaphore(FAR struct mm_heap_s *heap)
 	}
 }
 
+int mm_trysemaphore_fresh(FAR struct mm_heap_s *heap)
+{
+	pid_t my_pid = getpid();
+	pid_t holder = heap->mm_holder;
+	int count = heap->mm_counts_held;
+	int error;
+
+	if (holder == my_pid && count > 0) {
+		return -EALREADY;
+	}
+
+	if (holder >= 0 && holder != my_pid && count > 0) {
+		return -EBUSY;
+	}
+
+	if (holder != -1 || count != 0) {
+		return -EUCLEAN;
+	}
+
+	if (heap->mm_semaphore.semcount > 1) {
+		return -EUCLEAN;
+	}
+
+	if (sem_trywait(&heap->mm_semaphore) != 0) {
+		error = get_errno();
+		return error == EAGAIN ? -EBUSY : -error;
+	}
+
+	heap->mm_holder = my_pid;
+	heap->mm_counts_held = 1;
+	return OK;
+}
+
 /****************************************************************************
  * Name: mm_takesemaphore
  *

@@ -33,6 +33,9 @@
 #include <tinyara/sched.h>
 #include <tinyara/binfmt/binfmt.h>
 #include <tinyara/binary_manager.h>
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+#include <tinyara/spinlock.h>
+#endif
 
 #ifdef CONFIG_SAVE_BIN_SECTION_ADDR
 #include "libelf/libelf.h"
@@ -48,7 +51,56 @@
 
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
 struct binary_s *g_lib_binp;
-uint32_t *g_umm_app_id;
+static FAR uint32_t *g_umm_app_id;
+static spinlock_t g_umm_app_id_lock;
+
+FAR uint32_t *binfmt_exchange_umm_app_id(FAR uint32_t *address)
+{
+	FAR uint32_t *previous;
+	irqstate_t flags = spin_lock_irqsave(&g_umm_app_id_lock);
+
+	previous = g_umm_app_id;
+	g_umm_app_id = address;
+	spin_unlock_irqrestore(&g_umm_app_id_lock, flags);
+	return previous;
+}
+
+int binfmt_umm_app_id_is(FAR uint32_t *address)
+{
+	irqstate_t flags = spin_lock_irqsave(&g_umm_app_id_lock);
+	int matches = g_umm_app_id == address;
+
+	spin_unlock_irqrestore(&g_umm_app_id_lock, flags);
+	return matches;
+}
+
+void binfmt_update_umm_app_id(uint32_t app_id)
+{
+	irqstate_t flags = spin_lock_irqsave(&g_umm_app_id_lock);
+
+	if (g_umm_app_id != NULL) {
+		*g_umm_app_id = app_id;
+	}
+	spin_unlock_irqrestore(&g_umm_app_id_lock, flags);
+}
+#endif
+
+#if defined(CONFIG_SUPPORT_COMMON_BINARY) && \
+	defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+static bool binfmt_common_domain_ready(FAR void *descriptor)
+{
+	FAR struct binary_s *bin = descriptor;
+	int index = bin->binary_idx;
+
+	return g_lib_binp == bin &&
+		binfmt_umm_app_id_is((uint32_t *)(bin->sections[BIN_DATA] + 4)) &&
+		BIN_STATE(index) == BINARY_RUNNING &&
+		BIN_LOADVER(index) == bin->bin_ver && BIN_LOADINFO(index) == bin &&
+		BIN_LOAD_ATTR(index).bin_size == bin->filelen &&
+		BIN_LOAD_ATTR(index).offset == bin->offset &&
+		BIN_NAME(index)[0] != '\0' && bin->sections[BIN_TEXT] != 0 &&
+		bin->sizes[BIN_TEXT] != 0 && bin->sections[BIN_DATA] != 0;
+}
 #endif
 
 /****************************************************************************
@@ -86,6 +138,12 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 	int pid;
 	int errcode;
 	int ret;
+#if defined(CONFIG_SUPPORT_COMMON_BINARY) && \
+	defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	int cleanup_ret;
+	bool common_domain_prepared = false;
+	bool common_domain_active = false;
+#endif
 
 	/* Sanity check */
 	if (!load_attr) {
@@ -134,13 +192,13 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
 			if (binary_idx == BM_CMNLIB_IDX) {
 				bin->islibrary = true;
+				bin->binary_idx = binary_idx;
 				bin->filelen = load_attr->bin_size;
 				bin->offset = load_attr->offset;
 				bin->bin_ver = load_attr->bin_ver;
 #ifdef CONFIG_HAVE_CXX
 				bin->run_library_ctors = true;
 #endif
-				g_lib_binp = bin;
 			} else
 #endif
 			{
@@ -194,12 +252,75 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
 	if (bin->islibrary) {
-		g_umm_app_id = (uint32_t *)(bin->sections[BIN_DATA] + 4);
+		g_lib_binp = bin;
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+		struct mm_loadable_domain_registration_s domain;
+		uintptr_t writable_container;
+		size_t writable_container_size;
+
+		memset(&domain, 0, sizeof(domain));
+#ifdef CONFIG_XIP_ELF
+		writable_container = bin->ram_region_start;
+		writable_container_size = bin->ram_region_end -
+			bin->ram_region_start;
+#elif defined(CONFIG_OPTIMIZE_APP_RELOAD_TIME) && \
+	defined(CONFIG_BINFMT_SECTION_UNIFIED_MEMORY)
+		writable_container = bin->ramstart;
+		writable_container_size = bin->sizes[BIN_TEXT] +
+			bin->sizes[BIN_RO] + bin->ramsize;
+#elif defined(CONFIG_OPTIMIZE_APP_RELOAD_TIME)
+		writable_container = bin->sections[BIN_DATA];
+		writable_container_size = bin->ramsize;
+#else
+		writable_container = bin->ramstart;
+		writable_container_size = bin->ramsize;
+#endif
+		domain.slot = binary_idx;
+		domain.descriptor = bin;
+		domain.descriptor_container = bin;
+		domain.descriptor_container_size = sizeof(*bin);
+		domain.name = filename;
+		domain.ready = binfmt_common_domain_ready;
+		domain.text_start = bin->sections[BIN_TEXT];
+		domain.text_size = bin->sizes[BIN_TEXT];
+		if (bin->sizes[BIN_DATA] != 0) {
+			domain.writable[domain.writable_count].start = bin->sections[BIN_DATA];
+			domain.writable[domain.writable_count].size = bin->sizes[BIN_DATA];
+			domain.writable_count++;
+		}
+		if (bin->sizes[BIN_BSS] != 0) {
+			domain.writable[domain.writable_count].start = bin->sections[BIN_BSS];
+			domain.writable[domain.writable_count].size = bin->sizes[BIN_BSS];
+			domain.writable_count++;
+		}
+		for (size_t index = 0; index < domain.writable_count; index++) {
+			domain.writable[index].container = writable_container;
+			domain.writable[index].container_size = writable_container_size;
+		}
+		ret = mm_loadable_domain_register(&domain);
+		if (ret < 0) {
+			errcode = ret;
+			goto errout_with_unload;
+		}
+		common_domain_prepared = true;
+#endif
+		(void)binfmt_exchange_umm_app_id(
+			(uint32_t *)(bin->sections[BIN_DATA] + 4));
 
 		/* Update binary table */
 		BIN_STATE(binary_idx) = BINARY_RUNNING;
 		BIN_LOADVER(binary_idx) = bin->bin_ver;
 		BIN_LOADINFO(binary_idx) = bin;
+		BIN_LOAD_ATTR(binary_idx) = *load_attr;
+		strncpy(BIN_NAME(binary_idx), load_attr->bin_name, BIN_NAME_MAX);
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+		ret = mm_loadable_domain_activate(bin);
+		if (ret < 0) {
+			errcode = ret;
+			goto errout_with_unload;
+		}
+		common_domain_active = true;
+#endif
 		return OK;
 	}
 	/* If we support common binary, then we need to place a pointer to the app's heap object
@@ -221,6 +342,31 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 	return pid;
 
 errout_with_unload:
+
+#if defined(CONFIG_SUPPORT_COMMON_BINARY) && \
+	defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	if (common_domain_active) {
+		cleanup_ret = mm_loadable_domain_disable_and_wait(bin);
+		if (cleanup_ret == OK) {
+			cleanup_ret = mm_loadable_domain_finish_unload(bin);
+		}
+	} else if (common_domain_prepared) {
+		cleanup_ret = mm_loadable_domain_abort(bin);
+	} else {
+		cleanup_ret = OK;
+	}
+	if (cleanup_ret != OK) {
+		berr("ERROR: common domain cleanup failed: %d\n", cleanup_ret);
+		PANIC();
+		set_errno(cleanup_ret);
+		return ERROR;
+	}
+	if (bin != NULL && bin->islibrary) {
+		(void)binfmt_exchange_umm_app_id(NULL);
+		BIN_STATE(binary_idx) = BINARY_INACTIVE;
+		BIN_LOADINFO(binary_idx) = NULL;
+	}
+#endif
 	(void)unload_module(bin);
 errout_with_bin:
 	kmm_free(bin);

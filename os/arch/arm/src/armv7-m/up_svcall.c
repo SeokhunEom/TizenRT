@@ -95,9 +95,6 @@
 #endif
 
 uint32_t user_assert_location;
-#ifdef CONFIG_SUPPORT_COMMON_BINARY
-extern uint32_t *g_umm_app_id;
-#endif
 /****************************************************************************
  * Private Data
  ****************************************************************************/

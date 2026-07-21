@@ -147,6 +147,9 @@ FAR void *mm_malloc(FAR struct mm_heap_s *heap, size_t size, mmaddress_t caller_
 {
 	FAR struct mm_freenode_s *node;
 	void *ret = NULL;
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	size_t requested_size = size;
+#endif
 	int ndx;
 	bool gc_done = false;
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
@@ -285,6 +288,8 @@ retry_after_gc:
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		heapinfo_update_node(allocnode, caller_retaddr);
+		ASSERT(mm_allocnode_set_padding(allocnode, requested_size));
+		ASSERT(allocnode->alloc_padding <= MM_MALLOC_PADDING_MAX);
 		heapinfo_add_size(heap, allocnode->pid, allocnode->size);
 		heapinfo_update_total_size(heap, allocnode->size, allocnode->pid);
 #endif

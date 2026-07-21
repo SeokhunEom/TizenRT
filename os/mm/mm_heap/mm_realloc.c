@@ -64,6 +64,7 @@
 #include <tinyara/sched.h>
 #endif
 #include <tinyara/mm/mm.h>
+#include "mm_realloc_logic.h"
 #include "mm_node.h"
 
 /****************************************************************************
@@ -110,6 +111,8 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 #endif
 	size_t newsize;
 	size_t oldsize;
+	size_t old_payload_size;
+	struct mm_realloc_plan_s plan;
 #ifndef CONFIG_REALLOC_DISABLE_NEIGHBOR_EXTENSION
 	size_t prevsize = 0;
 	size_t nextsize = 0;
@@ -119,6 +122,10 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 
 	if (!oldmem) {
 		return mm_malloc(heap, size, caller_retaddr);
+	}
+	if (size == 0) {
+		mm_free(heap, oldmem);
+		return NULL;
 	}
 
 	if (size > MM_ALIGN_DOWN(MMSIZE_MAX) - SIZEOF_MM_ALLOCNODE) {
@@ -145,8 +152,10 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 	/* Check if this is a request to reduce the size of the allocation. */
 
 	oldsize = oldnode->size;
+	old_payload_size = oldsize - SIZEOF_MM_ALLOCNODE;
 
 	if (newsize <= oldsize) {
+		ASSERT(mm_realloc_plan(oldsize, newsize, 0, 0, SIZEOF_MM_FREENODE, &plan));
 		/* Handle the special case where we are not going to change the size
 		 * of the allocation.
 		 */
@@ -167,6 +176,12 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 			heapinfo_update_total_size(heap, oldnode->size, oldnode->pid);
 #endif
 		}
+
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+		ASSERT(mm_realloc_publish_padding(oldnode->size, SIZEOF_MM_ALLOCNODE,
+				size, &oldnode->alloc_padding));
+		ASSERT(oldnode->alloc_padding <= MM_REALLOC_PADDING_MAX);
+#endif
 
 		/* Then return the original address */
 
@@ -192,62 +207,21 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 
 	/* Now, check if we can extend the current allocation or not */
 
-	if (nextsize + prevsize + oldsize >= newsize) {
-		size_t needed   = newsize - oldsize;
-		size_t takeprev = 0;
-		size_t takenext = 0;
+	if (!mm_realloc_plan(oldsize, newsize, prevsize, nextsize,
+			SIZEOF_MM_FREENODE, &plan)) {
+		mm_givesemaphore(heap);
+		return NULL;
+	}
+
+	if (plan.branch != MM_REALLOC_BRANCH_MOVE) {
+		size_t takeprev = plan.take_previous;
+		size_t takenext = plan.take_next;
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		/* modify the current allocated size of old node */
 		heapinfo_subtract_size(heap, oldnode->pid, oldsize);
 		heapinfo_update_total_size(heap, (-1) * oldsize, oldnode->pid);
 #endif
-
-		/* Check if we can extend into the previous chunk and if the
-		 * previous chunk is smaller than the next chunk.
-		 */
-
-		if (prevsize > 0 && (nextsize >= prevsize || nextsize < 1)) {
-			/* Can we get everything we need from the previous chunk? */
-
-			if (needed > prevsize) {
-				/* No, take the whole previous chunk and get the
-				 * rest that we need from the next chunk.
-				 */
-
-				takeprev = prevsize;
-				takenext = needed - prevsize;
-			} else {
-				/* Yes, take what we need from the previous chunk */
-
-				takeprev = needed;
-				takenext = 0;
-			}
-
-			needed = 0;
-		}
-
-		/* Check if we can extend into the next chunk and if we still need
-		 * more memory.
-		 */
-
-		if (nextsize > 0 && needed) {
-			/* Can we get everything we need from the next chunk? */
-
-			if (needed > nextsize) {
-				/* No, take the whole next chunk and get the rest that we
-				 * need from the previous chunk.
-				 */
-
-				takeprev = needed - nextsize;
-				takenext = nextsize;
-			} else {
-				/* Yes, take what we need from the previous chunk */
-
-				takeprev = 0;
-				takenext = needed;
-			}
-		}
 
 		/* Extend into the previous free chunk */
 
@@ -289,12 +263,8 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 			oldnode = newnode;
 			oldsize = newnode->size;
 
-			/* Now we have to move the user contents 'down' in memory.  memcpy should
-			 * should be save for this.
-			 */
-
 			newmem = (FAR void *)((FAR char *)newnode + SIZEOF_MM_ALLOCNODE);
-			memcpy(newmem, oldmem, oldsize - SIZEOF_MM_ALLOCNODE);
+			mm_realloc_copy(newmem, oldmem, old_payload_size, size);
 		}
 
 		/* Extend into the next free chunk */
@@ -338,9 +308,13 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 				andbeyond->preceding = oldnode->size | (andbeyond->preceding & MM_ALLOC_BIT);
 			}
 		}
+		ASSERT(oldnode->size == plan.final_size);
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		/* update the chunk to realloc task information */
 		heapinfo_update_node(oldnode, caller_retaddr);
+		ASSERT(mm_realloc_publish_padding(oldnode->size, SIZEOF_MM_ALLOCNODE,
+				size, &oldnode->alloc_padding));
+		ASSERT(oldnode->alloc_padding <= MM_REALLOC_PADDING_MAX);
 
 		heapinfo_add_size(heap, oldnode->pid, oldnode->size);
 		heapinfo_update_total_size(heap, oldnode->size, oldnode->pid);
@@ -361,7 +335,7 @@ FAR void *mm_realloc(FAR struct mm_heap_s *heap, FAR void *oldmem, size_t size, 
 		mm_givesemaphore(heap);
 		newmem = (FAR void *)mm_malloc(heap, size, caller_retaddr);
 		if (newmem) {
-			memcpy(newmem, oldmem, oldsize - SIZEOF_MM_ALLOCNODE);
+			mm_realloc_copy(newmem, oldmem, old_payload_size, size);
 			mm_free(heap, oldmem);
 		}
 

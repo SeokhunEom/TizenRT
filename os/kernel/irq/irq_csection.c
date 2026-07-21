@@ -26,6 +26,7 @@
 
 #include <sys/types.h>
 #include <assert.h>
+#include <errno.h>
 
 #include <tinyara/init.h>
 #include <tinyara/spinlock.h>
@@ -34,6 +35,9 @@
 
 #include "sched/sched.h"
 #include "irq/irq.h"
+#ifdef CONFIG_MEM_LEAK_CHECKER
+#include "debug/mem_leak_checker_pause.h"
+#endif
 
 #ifdef CONFIG_IRQCOUNT
 
@@ -106,24 +110,41 @@ volatile uint8_t g_cpu_nestcount[CONFIG_SMP_NCPUS];
  ****************************************************************************/
 
 #ifdef CONFIG_SMP
-static bool irq_waitlock(int cpu)
+static bool irq_waitlock(int cpu, irqstate_t saved)
 {
+	bool checker_pause;
+
+#ifndef CONFIG_MEM_LEAK_CHECKER
+	(void)saved;
+#endif
+
 #ifdef CONFIG_SCHED_INSTRUMENTATION_SPINLOCKS
 	FAR struct tcb_s *tcb = current_task(cpu);
 
 	/* Notify that we are waiting for a spinlock */
 
-	sched_note_spinlock(tcb, &g_cpu_irqlock);
+	sched_note_spinlock(tcb, &g_cpu_irqlock, NOTE_SPINLOCK_LOCK);
 #endif
 
 	/* Duplicate the spin_lock() logic from spinlock.c, but adding the check
 	 * for the deadlock condition.
 	 */
 
+#ifdef CONFIG_MEM_LEAK_CHECKER
+	if (mlc_pause_poll_pending(cpu, (uintptr_t)saved)) {
+		return false;
+	}
+#endif
+
 	while (spin_trylock_wo_note(&g_cpu_irqlock) == SP_LOCKED) {
 		/* Is a pause request pending? */
 
-		if (up_cpu_pausereq(cpu)
+#ifdef CONFIG_MEM_LEAK_CHECKER
+		checker_pause = mlc_pause_poll_pending(cpu, (uintptr_t)saved);
+#else
+		checker_pause = false;
+#endif
+		if (checker_pause || up_cpu_pausereq(cpu)
 #ifdef CONFIG_CPU_HOTPLUG
 		|| up_cpu_hotplugreq(cpu)
 #endif
@@ -135,7 +156,8 @@ static bool irq_waitlock(int cpu)
 #ifdef CONFIG_SCHED_INSTRUMENTATION_SPINLOCKS
 			/* Notify that we have aborted the wait for the spinlock */
 
-			sched_note_spinabort(tcb, &g_cpu_irqlock);
+			sched_note_spinlock(tcb, &g_cpu_irqlock,
+					NOTE_SPINLOCK_ABORT);
 #endif
 
 			return false;
@@ -147,7 +169,7 @@ static bool irq_waitlock(int cpu)
 #ifdef CONFIG_SCHED_INSTRUMENTATION_SPINLOCKS
 	/* Notify that we have the spinlock */
 
-	sched_note_spinlocked(tcb, &g_cpu_irqlock);
+	sched_note_spinlock(tcb, &g_cpu_irqlock, NOTE_SPINLOCK_LOCKED);
 #endif
 
 	return true;
@@ -167,6 +189,88 @@ static bool irq_waitlock(int cpu)
  *   disabled and to support nested calls to enter_critical_section().
  *
  ****************************************************************************/
+
+int irq_try_enter_critical_fresh(irqstate_t *flags)
+{
+	FAR struct tcb_s *rtcb;
+	irqstate_t saved;
+
+	if (flags == NULL) {
+		return -EINVAL;
+	}
+
+	if (up_interrupt_context()) {
+		return -EPERM;
+	}
+	if (g_os_initstate < OSINIT_TASKLISTS) {
+		return -EPERM;
+	}
+
+	/* irqsave() is the migration-safe boundary.  Do not cache the CPU or
+	 * current TCB before local interrupts are disabled: a runnable task may
+	 * migrate between an earlier identity read and this boundary.  The saved
+	 * flags are also the only reliable statement of the caller's initial IRQ
+	 * state.
+	 */
+
+	saved = irqsave();
+	if (!up_irq_saved_enabled(saved)) {
+		irqrestore(saved);
+		return -EALREADY;
+	}
+
+#ifdef CONFIG_SMP
+	int cpu = this_cpu();
+
+	rtcb = current_task(cpu);
+#else
+	rtcb = this_task();
+#endif
+	if (rtcb == NULL) {
+		irqrestore(saved);
+		return -EPERM;
+	}
+	if (rtcb->irqcount != 0) {
+		irqrestore(saved);
+		return -EALREADY;
+	}
+
+#ifdef CONFIG_SMP
+	if (spin_trylock_wo_note(&g_cpu_irqlock) == SP_LOCKED) {
+		irqrestore(saved);
+		return -EBUSY;
+	}
+
+	if (spin_trylock_wo_note(&g_cpu_irqsetlock) == SP_LOCKED) {
+		spin_unlock_wo_note(&g_cpu_irqlock);
+		irqrestore(saved);
+		return -EBUSY;
+	}
+
+	DEBUGASSERT((g_cpu_irqset & (1 << cpu)) == 0 && rtcb->irqcount == 0);
+	g_cpu_irqset |= (1 << cpu);
+
+#ifdef CONFIG_SCHED_INSTRUMENTATION_SPINLOCKS
+	sched_note_spinlock(rtcb, &g_cpu_irqlock, NOTE_SPINLOCK_LOCK);
+	sched_note_spinlock(rtcb, &g_cpu_irqlock, NOTE_SPINLOCK_LOCKED);
+	sched_note_spinlock(rtcb, &g_cpu_irqsetlock, NOTE_SPINLOCK_LOCK);
+	sched_note_spinlock(rtcb, &g_cpu_irqsetlock, NOTE_SPINLOCK_LOCKED);
+	sched_note_spinlock(rtcb, &g_cpu_irqlock, NOTE_SPINLOCK_LOCKED);
+	sched_note_spinlock(rtcb, &g_cpu_irqsetlock, NOTE_SPINLOCK_UNLOCK);
+#endif
+
+	spin_unlock_wo_note(&g_cpu_irqsetlock);
+#endif
+
+	rtcb->irqcount = 1;
+
+#ifdef CONFIG_SCHED_INSTRUMENTATION_CSECTION
+	sched_note_csection(rtcb, true);
+#endif
+
+	*flags = saved;
+	return 0;
+}
 
 #ifdef CONFIG_SMP
 irqstate_t enter_critical_section(void)
@@ -263,7 +367,7 @@ try_again:
 				 */
 
 try_again_in_irq:
-				if (!irq_waitlock(cpu)) {
+				if (!irq_waitlock(cpu, ret)) {
 					/* We are in a deadlock condition due to a pending
 					 * pause request interrupt.  Break the deadlock by
 					 * handling the pause request now.
@@ -352,7 +456,7 @@ try_again_in_irq:
 
 			DEBUGASSERT((g_cpu_irqset & (1 << cpu)) == 0);
 
-			if (!irq_waitlock(cpu)) {
+			if (!irq_waitlock(cpu, ret)) {
 				/* We are in a deadlock condition due to a pending pause
 				 * request interrupt.  Re-enable interrupts on this CPU
 				 * and try again.  Briefly re-enabling interrupts should
@@ -360,6 +464,12 @@ try_again_in_irq:
 				 * request.
 				 */
 
+#ifdef CONFIG_MEM_LEAK_CHECKER
+				if (mlc_pause_poll_pending(cpu, (uintptr_t)ret)) {
+					DEBUGVERIFY(mlc_pause_service_poll(cpu,
+						(uintptr_t)ret));
+				}
+#endif
 				irqrestore(ret);
 				goto try_again;
 			}
@@ -374,7 +484,7 @@ try_again_in_irq:
 			 * like lockcount:  Both will disable pre-emption.
 			 */
 
-			spin_setbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock, 
+			spin_setbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock,
 					&g_cpu_irqlock);
 			rtcb->irqcount = 1;
 
@@ -477,7 +587,7 @@ void leave_critical_section(irqstate_t flags)
 				DEBUGASSERT(rtcb != NULL);
 
 				if (rtcb->irqcount <= 0) {
-					spin_clrbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock, 
+					spin_clrbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock,
 							&g_cpu_irqlock);
 				}
 
@@ -517,7 +627,7 @@ void leave_critical_section(irqstate_t flags)
 				 */
 
 
-				DEBUGASSERT(spin_islocked(&g_cpu_irqlock) && 
+				DEBUGASSERT(spin_islocked(&g_cpu_irqlock) &&
 						(g_cpu_irqset & (1 << cpu)) != 0);
 
 				/* Check if releasing the lock held by this CPU will unlock the
@@ -532,7 +642,7 @@ void leave_critical_section(irqstate_t flags)
 					 * section then.
 					 */
 
-					if (g_pendingtasks.head != NULL && 
+					if (g_pendingtasks.head != NULL &&
 						!sched_islocked_global()) {
 						/* Release any ready-to-run tasks that have collected
 						 * in g_pendingtasks.  NOTE: This operation has a very
@@ -550,7 +660,7 @@ void leave_critical_section(irqstate_t flags)
 				 */
 
 				rtcb->irqcount = 0;
-				spin_clrbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock, 
+				spin_clrbit(&g_cpu_irqset, cpu, &g_cpu_irqsetlock,
 						&g_cpu_irqlock);
 
 				/* Have all CPUs released the lock? */

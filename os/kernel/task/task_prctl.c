@@ -63,6 +63,7 @@
 #include <debug.h>
 
 #include <tinyara/sched.h>
+#include <tinyara/arch.h>
 
 #ifdef CONFIG_PREFERENCE
 #include <tinyara/preference.h>
@@ -76,6 +77,9 @@
 #endif
 #include "sched/sched.h"
 #include "task/task.h"
+#ifdef CONFIG_MEM_LEAK_CHECKER
+#include "debug/mem_leak_checker_roots.h"
+#endif
 
 #ifdef CONFIG_TASK_MONITOR
 #include "task_monitor/task_monitor_internal.h"
@@ -118,7 +122,17 @@
  *
  ****************************************************************************/
 
-int prctl(int option, ...)
+#if defined(CONFIG_MEM_LEAK_CHECKER) && \
+	(defined(CONFIG_ARCH_CHIP_LM) || defined(CONFIG_ARCH_CHIP_AMEBASMART))
+#define TASK_PRCTL_ENTRY task_prctl_impl
+
+_Static_assert(PR_MEM_LEAK_CHECKER == UP_MEM_LEAK_PRCTL_OPTION,
+		"prctl assembly selector mismatch");
+#else
+#define TASK_PRCTL_ENTRY prctl
+#endif
+
+int TASK_PRCTL_ENTRY(int option, ...)
 {
 	va_list ap;
 	int err;
@@ -359,14 +373,21 @@ int prctl(int option, ...)
 #ifdef CONFIG_MEM_LEAK_CHECKER
 	case PR_MEM_LEAK_CHECKER:
 	{
+#if defined(CONFIG_ARCH_CHIP_LM) || defined(CONFIG_ARCH_CHIP_AMEBASMART)
+		err = ENOSYS;
+		goto errout;
+#else
+		struct up_mem_leak_capture_s capture;
 		int ret;
 		int checker_pid;
 		checker_pid = va_arg(ap, int);
 
-		ret = run_all_mem_leak_checker(checker_pid);
+		up_mem_leak_capture_current(&capture);
+		ret = run_all_mem_leak_checker_with_capture(checker_pid, &capture);
 		va_end(ap);
 
 		return ret;
+#endif
 	}
 #endif
 #ifdef CONFIG_SYSTEM_REBOOT_REASON

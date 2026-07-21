@@ -125,7 +125,6 @@ void heapinfo_update_node(FAR struct mm_allocnode_s *node, mmaddress_t caller_re
 {
 	DEBUGASSERT(node);
 	node->alloc_call_addr = caller_retaddr;
-	node->memory_state = MM_MEMORY_STATE_UNUSED;
 	node->pid = getpid();
 }
 
@@ -148,21 +147,21 @@ void heapinfo_set_pid(void *address, pid_t pid)
 	if (heap) {
 		node = (struct mm_allocnode_s *)((char *)address - SIZEOF_MM_ALLOCNODE);
 		DEBUGASSERT(mm_takesemaphore(heap));
-		
+
 		old_pid = node->pid;
 		if (old_pid != pid) {
 			/* Subtract from old PID's accounting */
 			heapinfo_subtract_size(heap, old_pid, node->size);
 			heapinfo_update_total_size(heap, (-1) * node->size, old_pid);
-			
+
 			/* Update node PID */
 			node->pid = pid;
-			
+
 			/* Add to new PID's accounting */
 			heapinfo_add_size(heap, pid, node->size);
 			heapinfo_update_total_size(heap, node->size, pid);
 		}
-		
+
 		mm_givesemaphore(heap);
 	} else {
 		mdbg("Failed to set pid, heap not found. addr:%x\n", address);

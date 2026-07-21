@@ -57,6 +57,7 @@
 #include <tinyara/config.h>
 #include <debug.h>
 #include <tinyara/mm/mm.h>
+#include "../mm_heap/mm_realloc_logic.h"
 
 #ifdef CONFIG_MM_KERNEL_HEAP
 
@@ -133,6 +134,7 @@ FAR void *kmm_realloc(FAR void *oldmem, size_t newsize)
 {
 	void *ret;
 	int kheap_idx;
+	size_t old_payload_size = 0;
 
 	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_malloc api */
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
@@ -140,6 +142,9 @@ FAR void *kmm_realloc(FAR void *oldmem, size_t newsize)
 #endif
 	struct mm_heap_s *kheap_origin;
 	struct mm_heap_s *kheap_new;
+	if (!oldmem && newsize == 0) {
+		return NULL;
+	}
 
 	if (oldmem) {
 		kheap_origin = mm_get_heap(oldmem);
@@ -148,6 +153,8 @@ FAR void *kmm_realloc(FAR void *oldmem, size_t newsize)
 		 * allocated address. This will cause ASSERT like Linux.
 		 */
 		ASSERT(kheap_origin);
+		old_payload_size = ((struct mm_allocnode_s *)((char *)oldmem -
+				SIZEOF_MM_ALLOCNODE))->size - SIZEOF_MM_ALLOCNODE;
 
 		if (newsize == 0) {
 			mm_free(kheap_origin, oldmem);
@@ -165,6 +172,9 @@ FAR void *kmm_realloc(FAR void *oldmem, size_t newsize)
 	for (kheap_idx = HEAP_START_IDX; kheap_idx <= HEAP_END_IDX; kheap_idx++) {
 		ret = mm_malloc(&kheap_new[kheap_idx], newsize, caller_retaddr);
 		if (ret != NULL) {
+			if (oldmem) {
+				mm_realloc_copy(ret, oldmem, old_payload_size, newsize);
+			}
 			kmm_free(oldmem);
 			return ret;
 		}

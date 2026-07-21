@@ -84,6 +84,7 @@
 void *calloc_at(int heap_index, size_t n, size_t elem_size)
 {
 	void *ret;
+	size_t total_size;
 
 	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_calloc api */
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
@@ -98,9 +99,13 @@ void *calloc_at(int heap_index, size_t n, size_t elem_size)
 		mdbg("Invalid parameter, n %u, elem_size %u\n", n, elem_size);
 		return NULL;
 	}
+	if (!mm_size_multiply_checked(n, elem_size, &total_size)) {
+		mdbg("Parameters n(%u) and elem_size(%u) overflow size_t.\n", n, elem_size);
+		return NULL;
+	}
 	ret = mm_calloc(&BASE_HEAP[heap_index], n, elem_size, caller_retaddr);
 	if (ret == NULL) {
-		mm_manage_alloc_fail(&BASE_HEAP[heap_index], heap_index, heap_index, n * elem_size, 0, USER_HEAP, caller_retaddr);
+		mm_manage_alloc_fail(&BASE_HEAP[heap_index], heap_index, heap_index, total_size, 0, USER_HEAP, caller_retaddr);
 	}
 	return ret;
 }
@@ -123,7 +128,8 @@ void *calloc_at(int heap_index, size_t n, size_t elem_size)
  *
  ************************************************************************/
 
-static void *heap_calloc(size_t n, size_t elem_size, int s, int e, mmaddress_t caller_retaddr)
+static void *heap_calloc(size_t n, size_t elem_size, size_t total_size,
+		int s, int e, mmaddress_t caller_retaddr)
 {
 	int heap_idx;
 	void *ret;
@@ -134,7 +140,7 @@ static void *heap_calloc(size_t n, size_t elem_size, int s, int e, mmaddress_t c
 			return ret;
 		}
 	}
-	mm_manage_alloc_fail(BASE_HEAP, s, e, n * elem_size, 0, USER_HEAP, caller_retaddr);
+	mm_manage_alloc_fail(BASE_HEAP, s, e, total_size, 0, USER_HEAP, caller_retaddr);
 	return NULL;
 }
 #endif
@@ -150,6 +156,7 @@ static void *heap_calloc(size_t n, size_t elem_size, int s, int e, mmaddress_t c
 FAR void *calloc(size_t n, size_t elem_size)
 {
 	void *ret = NULL;
+	size_t total_size;
 
 	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_calloc api */
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
@@ -160,12 +167,16 @@ FAR void *calloc(size_t n, size_t elem_size)
 		mdbg("Invalid parameter, n %u, elem_size %u\n", n, elem_size);
 		return NULL;
 	}
+	if (!mm_size_multiply_checked(n, elem_size, &total_size)) {
+		mdbg("Parameters n(%u) and elem_size(%u) overflow size_t.\n", n, elem_size);
+		return NULL;
+	}
 
 #ifdef CONFIG_APP_BINARY_SEPARATION
 	/* User supports a single heap on app separation */
 	ret = mm_calloc(BASE_HEAP, n, elem_size, caller_retaddr);
 	if (ret == NULL) {
-		mm_manage_alloc_fail(BASE_HEAP, HEAP_START_IDX, HEAP_END_IDX, n * elem_size, 0, USER_HEAP, caller_retaddr);
+		mm_manage_alloc_fail(BASE_HEAP, HEAP_START_IDX, HEAP_END_IDX, total_size, 0, USER_HEAP, caller_retaddr);
 	}
 
 #else /* CONFIG_APP_BINARY_SEPARATION */
@@ -174,14 +185,15 @@ FAR void *calloc(size_t n, size_t elem_size)
 #ifdef CONFIG_RAM_MALLOC_PRIOR_INDEX
 	heap_idx = CONFIG_RAM_MALLOC_PRIOR_INDEX;
 #endif
-	ret = heap_calloc(n, elem_size, heap_idx, HEAP_END_IDX, caller_retaddr);
+	ret = heap_calloc(n, elem_size, total_size, heap_idx, HEAP_END_IDX, caller_retaddr);
 	if (ret != NULL) {
 		return ret;
 	}
 
 #if (defined(CONFIG_RAM_MALLOC_PRIOR_INDEX) && CONFIG_RAM_MALLOC_PRIOR_INDEX > 0)
 	/* Try to mm_calloc to other heaps */
-	ret = heap_calloc(n, elem_size, HEAP_START_IDX, CONFIG_RAM_MALLOC_PRIOR_INDEX - 1, caller_retaddr);
+	ret = heap_calloc(n, elem_size, total_size, HEAP_START_IDX,
+			CONFIG_RAM_MALLOC_PRIOR_INDEX - 1, caller_retaddr);
 #endif
 
 #endif  /* CONFIG_APP_BINARY_SEPARATION */

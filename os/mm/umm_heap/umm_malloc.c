@@ -59,6 +59,7 @@
 #include <unistd.h>
 #include <debug.h>
 #include <tinyara/mm/mm.h>
+#include "umm_malloc.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -176,13 +177,8 @@ static void *heap_malloc(size_t size, int s, int e, mmaddress_t caller_retaddr)
  *
  ************************************************************************/
 
-FAR void *malloc(size_t size)
+FAR void *umm_malloc_with_caller(size_t size, mmaddress_t caller_retaddr)
 {
-	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_malloc api */
-#ifdef CONFIG_DEBUG_MM_HEAPINFO
-	caller_retaddr = GET_RETURN_ADDRESS();
-#endif
-
 #ifdef CONFIG_BUILD_KERNEL
 	FAR void *brkaddr;
 	FAR void *mem;
@@ -244,4 +240,14 @@ FAR void *malloc(size_t size)
 
 	return ret;
 #endif /* CONFIG_BUILD_KERNEL */
+}
+
+FAR void *malloc(size_t size)
+{
+	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_malloc api */
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	caller_retaddr = GET_RETURN_ADDRESS();
+#endif
+
+	return umm_malloc_with_caller(size, caller_retaddr);
 }

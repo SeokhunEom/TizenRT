@@ -68,7 +68,8 @@
  * Private Functions
  ****************************************************************************/
 
-static void *kheap_calloc(size_t n, size_t elem_size, mmaddress_t retaddr)
+static void *kheap_calloc(size_t n, size_t elem_size, size_t total_size,
+		mmaddress_t retaddr)
 {
 	int heap_idx;
 	void *ret;
@@ -81,7 +82,8 @@ static void *kheap_calloc(size_t n, size_t elem_size, mmaddress_t retaddr)
 		}
 	}
 
-	mm_manage_alloc_fail(kheap, HEAP_START_IDX, HEAP_END_IDX, n * elem_size, 0, KERNEL_HEAP, retaddr);
+	mm_manage_alloc_fail(kheap, HEAP_START_IDX, HEAP_END_IDX, total_size, 0,
+			KERNEL_HEAP, retaddr);
 	return NULL;
 }
 
@@ -106,6 +108,7 @@ void *kmm_calloc_at(int heap_index, size_t n, size_t elem_size)
 {
 	void *ret;
 	struct mm_heap_s *kheap;
+	size_t total_size;
 
 	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_calloc api */
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
@@ -120,11 +123,16 @@ void *kmm_calloc_at(int heap_index, size_t n, size_t elem_size)
 		mdbg("Invalid parameter, n %u, elem_size %u\n", n, elem_size);
 		return NULL;
 	}
+	if (!mm_size_multiply_checked(n, elem_size, &total_size)) {
+		mdbg("Parameters n(%u) and elem_size(%u) overflow size_t.\n", n, elem_size);
+		return NULL;
+	}
 
 	kheap = kmm_get_baseheap();
 	ret = mm_calloc(&kheap[heap_index], n, elem_size, caller_retaddr);
 	if (ret == NULL) {
-		mm_manage_alloc_fail(&kheap[heap_index], heap_index, heap_index, n * elem_size, 0, KERNEL_HEAP, caller_retaddr);
+		mm_manage_alloc_fail(&kheap[heap_index], heap_index, heap_index, total_size, 0,
+				KERNEL_HEAP, caller_retaddr);
 	}
 	return ret;
 }
@@ -140,8 +148,14 @@ void *kmm_calloc_at(int heap_index, size_t n, size_t elem_size)
 
 FAR void *kmm_calloc(size_t n, size_t elem_size)
 {
+	size_t total_size;
+
 	if (n == 0 || elem_size == 0) {
 		mdbg("Invalid parameter, n %u, elem_size %u\n", n, elem_size);
+		return NULL;
+	}
+	if (!mm_size_multiply_checked(n, elem_size, &total_size)) {
+		mdbg("Parameters n(%u) and elem_size(%u) overflow size_t.\n", n, elem_size);
 		return NULL;
 	}
 
@@ -150,7 +164,7 @@ FAR void *kmm_calloc(size_t n, size_t elem_size)
 	caller_retaddr = GET_RETURN_ADDRESS();
 #endif
 
-	return kheap_calloc(n, elem_size, caller_retaddr);
+	return kheap_calloc(n, elem_size, total_size, caller_retaddr);
 }
 
 #endif							/* CONFIG_MM_KERNEL_HEAP */

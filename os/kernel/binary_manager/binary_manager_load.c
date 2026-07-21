@@ -41,7 +41,8 @@
 #include <tinyara/sched.h>
 #include <tinyara/init.h>
 #include <tinyara/kthread.h>
-#ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
+#if defined(CONFIG_OPTIMIZE_APP_RELOAD_TIME) || \
+	defined(CONFIG_SUPPORT_COMMON_BINARY)
 #include <tinyara/binfmt/binfmt.h>
 #endif
 #ifdef CONFIG_BINMGR_RELOAD_REBOOT
@@ -121,8 +122,14 @@ static int binary_manager_load_binary(int bin_idx, char *path, load_attr_t *load
 		ret = load_binary(bin_idx, path, load_attr);
 		if (ret >= 0) {
 			/* Set the data in table from header */
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+			if (bin_idx != BM_CMNLIB_IDX) {
+#endif
 			BIN_LOAD_ATTR(bin_idx) = *load_attr;
 			strncpy(BIN_NAME(bin_idx), load_attr->bin_name, BIN_NAME_MAX);
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+			}
+#endif
 			bmdbg("Load success! [Name: %s] [Version: %d] [Partition: %s] [Text start : 0x%08x] %s\n", BIN_NAME(bin_idx), 
 					BIN_LOADVER(bin_idx), GET_PARTNAME(BIN_USEIDX(bin_idx)), elf_find_text_section_addr(bin_idx), BINARY_COMP_TYPE);
 			return OK;
@@ -328,6 +335,10 @@ static int binary_manager_load(int bin_idx)
 static int binary_manager_terminate_binary(int bin_idx)
 {
 	int ret;
+#if defined(CONFIG_SUPPORT_COMMON_BINARY) && \
+	defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	int domain_ret;
+#endif
 	int binid;
 	int state;
 	bool need_recovery;
@@ -336,6 +347,9 @@ static int binary_manager_terminate_binary(int bin_idx)
 	struct tcb_s *ntcb;
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
 	struct binary_s *binp = NULL;
+#endif
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+	uint32_t *umm_app_id;
 #endif
 
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
@@ -347,11 +361,38 @@ static int binary_manager_terminate_binary(int bin_idx)
 			binp->reload = true;
 		}
 #endif
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+		ret = mm_loadable_domain_disable_and_wait(g_lib_binp);
+		if (ret != OK) {
+			return BINMGR_OPERATION_FAIL;
+		}
+#endif
+		umm_app_id = binfmt_exchange_umm_app_id(NULL);
 		ret = unload_module(g_lib_binp);
 		if (ret != OK) {
 			bmdbg("Fail to unload common binary %d\n", ret);
+			(void)binfmt_exchange_umm_app_id(umm_app_id);
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+			domain_ret = mm_loadable_domain_reactivate(g_lib_binp);
+			if (domain_ret != OK) {
+				bmdbg("Fail to reactivate common domain %d\n", domain_ret);
+				PANIC();
+				return BINMGR_OPERATION_FAIL;
+			}
+#endif
 			return BINMGR_OPERATION_FAIL;
 		}
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+		ret = mm_loadable_domain_finish_unload(g_lib_binp);
+		if (ret != OK) {
+			bmdbg("Fail to finalize common domain %d\n", ret);
+			PANIC();
+			return BINMGR_OPERATION_FAIL;
+		}
+#endif
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
 		if (binp == NULL || binp->reload != true) {
 			g_lib_binp = NULL;

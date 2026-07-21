@@ -144,6 +144,8 @@ irqstate_t enter_critical_section(void);
 #  define enter_critical_section() irqsave()
 #endif
 
+int irq_try_enter_critical_fresh(irqstate_t *flags);
+
 #ifdef CONFIG_IRQCOUNT
 void leave_critical_section(irqstate_t flags);
 #else

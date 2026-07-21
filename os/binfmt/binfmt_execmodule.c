@@ -158,6 +158,70 @@ static void exec_ctors(FAR void *arg)
  * Public Functions
  ****************************************************************************/
 
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+int binfmt_register_app_domain(FAR struct binary_s *binp)
+{
+	struct mm_loadable_domain_registration_s domain;
+	uintptr_t writable_container;
+	size_t writable_container_size;
+
+	memset(&domain, 0, sizeof(domain));
+#ifdef CONFIG_BINARY_MANAGER
+	domain.slot = binp->binary_idx;
+	domain.name = binp->bin_name;
+#else
+	domain.slot = 0;
+	domain.name = binp->filename;
+#endif
+	domain.heap = binp->uheap;
+	domain.descriptor = binp;
+	domain.descriptor_container = binp;
+	domain.descriptor_container_size = sizeof(*binp);
+	domain.text_start = binp->sections[BIN_TEXT];
+	domain.text_size = binp->sizes[BIN_TEXT];
+#ifdef CONFIG_XIP_ELF
+	if (binp->ram_region_end <= binp->ram_region_start) {
+		return -EINVAL;
+	}
+	writable_container = binp->ram_region_start;
+	writable_container_size = binp->ram_region_end - binp->ram_region_start;
+#elif defined(CONFIG_OPTIMIZE_APP_RELOAD_TIME) && \
+	defined(CONFIG_BINFMT_SECTION_UNIFIED_MEMORY)
+	writable_container = binp->ramstart;
+	writable_container_size = binp->sizes[BIN_TEXT] +
+		binp->sizes[BIN_RO] + binp->ramsize;
+#else
+	writable_container = binp->ramstart;
+	writable_container_size = binp->ramsize;
+#endif
+	if (binp->sizes[BIN_DATA] != 0) {
+		domain.writable[domain.writable_count].start = binp->sections[BIN_DATA];
+		domain.writable[domain.writable_count].size = binp->sizes[BIN_DATA];
+		domain.writable_count++;
+	}
+	if (binp->sizes[BIN_BSS] != 0) {
+		domain.writable[domain.writable_count].start = binp->sections[BIN_BSS];
+		domain.writable[domain.writable_count].size = binp->sizes[BIN_BSS];
+		domain.writable_count++;
+	}
+	for (size_t index = 0; index < domain.writable_count; index++) {
+#ifdef CONFIG_XIP_ELF
+		domain.writable[index].container = writable_container;
+		domain.writable[index].container_size = writable_container_size;
+#else
+		if (writable_container != 0 && writable_container_size != 0) {
+			domain.writable[index].container = writable_container;
+			domain.writable[index].container_size = writable_container_size;
+		} else {
+			domain.writable[index].container = domain.writable[index].start;
+			domain.writable[index].container_size = domain.writable[index].size;
+		}
+#endif
+	}
+	return mm_loadable_domain_register(&domain);
+}
+#endif
+
 /****************************************************************************
  * Name: exec_module
  *
@@ -178,6 +242,11 @@ int exec_module(FAR struct binary_s *binp)
 	pid_t pid;
 	int ret;
 	int binary_idx;
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	int cleanup_ret;
+	bool domain_prepared = false;
+	bool domain_active = false;
+#endif
 
 	/* Sanity checking */
 
@@ -197,6 +266,14 @@ int exec_module(FAR struct binary_s *binp)
 		return ret;
 	}
 	mm_add_app_heap_list(binp->uheap, binp->bin_name);
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	ret = binfmt_register_app_domain(binp);
+	if (ret < 0) {
+		goto errout_with_appheap;
+	}
+	domain_prepared = true;
+#endif
 
 	binfo("------------------------%s Binary Heap Information------------------------\n", binp->bin_name);
 	binfo("Start addr = 0x%x, size = %u \n", (void *)binp->sections[BIN_HEAP] + sizeof(struct mm_heap_s), binp->sizes[BIN_HEAP]);
@@ -333,6 +410,13 @@ int exec_module(FAR struct binary_s *binp)
 
 	/* Then activate the task at the provided priority */
 
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	ret = mm_loadable_domain_activate(binp);
+	if (ret < 0) {
+		goto errout_with_tcbinit;
+	}
+	domain_active = true;
+#endif
 	ret = task_activate((FAR struct tcb_s *)newtcb);
 	if (ret < 0) {
 		ret = -get_errno();
@@ -344,9 +428,22 @@ int exec_module(FAR struct binary_s *binp)
 
 	return (int)pid;
 
-errout_with_appheap:
-	mm_remove_app_heap_list(binp->uheap);
 errout_with_tcbinit:
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	if (domain_active) {
+		cleanup_ret = mm_loadable_domain_disable_and_wait(binp);
+		if (cleanup_ret == OK) {
+			cleanup_ret = mm_loadable_domain_finish_unload(binp);
+		}
+		if (cleanup_ret != OK) {
+			berr("ERROR: loadable domain cleanup failed: %d\n", cleanup_ret);
+			PANIC();
+			return cleanup_ret;
+		}
+		domain_active = false;
+		domain_prepared = false;
+	}
+#endif
 	if (newtcb != NULL) {
 #ifdef CONFIG_BINARY_MANAGER
 		BIN_ID(binary_idx) = -1;
@@ -356,12 +453,34 @@ errout_with_tcbinit:
 		binary_manager_remove_binlist(&newtcb->cmn);
 #endif
 		sched_releasetcb(&newtcb->cmn, TCB_FLAG_TTYPE_TASK);
+		newtcb = NULL;
 	}
-	return ret;
+	goto errout_with_appheap;
 
 errout_with_stack:
 	kumm_free(stack);
 	kmm_free(newtcb);
+	newtcb = NULL;
+
+errout_with_appheap:
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	if (domain_active) {
+		cleanup_ret = mm_loadable_domain_disable_and_wait(binp);
+		if (cleanup_ret == OK) {
+			cleanup_ret = mm_loadable_domain_finish_unload(binp);
+		}
+	} else if (domain_prepared) {
+		cleanup_ret = mm_loadable_domain_abort(binp);
+	} else {
+		cleanup_ret = OK;
+	}
+	if (cleanup_ret != OK) {
+		berr("ERROR: loadable domain cleanup failed: %d\n", cleanup_ret);
+		PANIC();
+		return cleanup_ret;
+	}
+#endif
+	mm_remove_app_heap_list(binp->uheap);
 	return ret;
 }
 

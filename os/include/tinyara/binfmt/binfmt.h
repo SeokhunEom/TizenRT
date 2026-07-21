@@ -215,6 +215,15 @@ extern "C" {
  * Public Function Prototypes
  ****************************************************************************/
 
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+FAR uint32_t *binfmt_exchange_umm_app_id(FAR uint32_t *address);
+int binfmt_umm_app_id_is(FAR uint32_t *address);
+void binfmt_update_umm_app_id(uint32_t app_id);
+#endif
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+int binfmt_register_app_domain(FAR struct binary_s *binp);
+#endif
+
 /****************************************************************************
  * Name: binfmt_initialize
  *

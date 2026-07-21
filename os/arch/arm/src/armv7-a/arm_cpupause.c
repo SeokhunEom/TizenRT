@@ -52,6 +52,9 @@
 #include "up_internal.h"
 #include "gic.h"
 #include "sched/sched.h"
+#ifdef CONFIG_MEM_LEAK_CHECKER
+#include "debug/mem_leak_checker_pause.h"
+#endif
 
 #ifdef CONFIG_SMP
 
@@ -273,6 +276,12 @@ int arm_pause_handler(int irq, void *context, void *arg)
 {
 	int cpu = this_cpu();
 
+#ifdef CONFIG_MEM_LEAK_CHECKER
+	if (mlc_pause_service_irq(cpu, irq, context,
+		mlc_pause_service_token(cpu))) {
+		return OK;
+	}
+#endif
 	/* Check for false alarms.  Such false could occur as a consequence of
 	 * some deadlock breaking logic that might have already serviced the SG2
 	 * interrupt by calling up_cpu_paused().  If the pause event has already

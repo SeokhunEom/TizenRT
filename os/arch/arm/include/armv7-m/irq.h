@@ -323,6 +323,26 @@ static inline irqstate_t irqsave(void)
 #endif
 }
 
+static inline bool up_irq_saved_enabled(irqstate_t flags) inline_function;
+static inline bool up_irq_saved_enabled(irqstate_t flags)
+{
+#ifdef CONFIG_ARMV7M_USEBASEPRI
+	return flags == 0;
+#else
+	return (flags & 1) == 0;
+#endif
+}
+
+static inline irqstate_t irqstate(void) inline_function;
+static inline irqstate_t irqstate(void)
+{
+#ifdef CONFIG_ARMV7M_USEBASEPRI
+	return (irqstate_t)getbasepri();
+#else
+	return (irqstate_t)getprimask();
+#endif
+}
+
 /* Enable IRQs */
 
 static inline void irqenable(void) inline_function;

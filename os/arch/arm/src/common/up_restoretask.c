@@ -22,6 +22,7 @@
 #include <sched.h>
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
 #include <stdint.h>
+#include <tinyara/binfmt/binfmt.h>
 #endif
 #ifdef CONFIG_TASK_MONITOR
 #include <stdbool.h>
@@ -42,13 +43,6 @@
 #include "sched/sched.h"
 #if defined(CONFIG_APP_BINARY_SEPARATION) && defined(CONFIG_ARCH_USE_MMU)
 #include "mmu.h"
-#endif
-
-/****************************************************************************
- * Private Data
- ****************************************************************************/
-#ifdef CONFIG_SUPPORT_COMMON_BINARY
-extern uint32_t *g_umm_app_id;
 #endif
 
 /************************************************************************************
@@ -77,9 +71,7 @@ void up_restoretask(struct tcb_s *tcb)
 #ifdef CONFIG_APP_BINARY_SEPARATION
 
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
-		if (g_umm_app_id) {
-			*g_umm_app_id = tcb->app_id;
-		}
+		binfmt_update_umm_app_id(tcb->app_id);
 #endif
 
 #ifdef CONFIG_ARCH_USE_MMU

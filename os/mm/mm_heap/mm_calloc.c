@@ -77,14 +77,14 @@
 FAR void *mm_calloc(FAR struct mm_heap_s *heap, size_t n, size_t elem_size, mmaddress_t caller_retaddr)
 {
 	FAR void *ret = NULL;
+	size_t total_size;
 
-	if (n > (MMSIZE_MAX / elem_size)) {
-		mdbg("Parameter n(%u) should be smaller than (MMSIZE_MAX / elem_size)(%u), \
-			because multiplication of n and elem_size cannot overflow the size_t.\n", n, (MMSIZE_MAX / elem_size));
+	if (!mm_size_multiply_checked(n, elem_size, &total_size)) {
+		mdbg("Parameters n(%u) and elem_size(%u) overflow size_t.\n", n, elem_size);
 		return NULL;
 	}
 
-	ret = mm_zalloc(heap, n * elem_size, caller_retaddr);
+	ret = mm_zalloc(heap, total_size, caller_retaddr);
 
 	return ret;
 }

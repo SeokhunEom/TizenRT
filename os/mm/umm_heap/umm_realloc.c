@@ -58,6 +58,8 @@
 #include <stdlib.h>
 #include <debug.h>
 #include <tinyara/mm/mm.h>
+#include "../mm_heap/mm_realloc_logic.h"
+#include "umm_malloc.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -131,6 +133,7 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 {
 #ifndef CONFIG_APP_BINARY_SEPARATION
 	int prev_heap_idx ;
+	size_t old_payload_size = 0;
 #endif
 	void *ret;
 
@@ -138,12 +141,14 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 	caller_retaddr = GET_RETURN_ADDRESS();
 #endif
-
+	if (!oldmem) {
+		return umm_malloc_with_caller(size, caller_retaddr);
+	}
 #ifdef CONFIG_APP_BINARY_SEPARATION
 	if (size == 0) {
 		free(oldmem);
 		return NULL;
-	}	
+	}
 	/* User supports a single heap on app separation */
 	ret = mm_realloc(BASE_HEAP, oldmem, size, caller_retaddr);
 	if (ret == NULL) {
@@ -162,6 +167,8 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 		mm_free(&BASE_HEAP[heap_idx], oldmem);
 		return NULL;
 	}
+	old_payload_size = ((struct mm_allocnode_s *)((char *)oldmem -
+			SIZEOF_MM_ALLOCNODE))->size - SIZEOF_MM_ALLOCNODE;
 
 	/* Try to realloc in previous allocated heap */
 
@@ -176,6 +183,7 @@ FAR void *realloc(FAR void *oldmem, size_t size)
 	for (heap_idx = HEAP_START_IDX; heap_idx <= HEAP_END_IDX; heap_idx++) {
 		ret = mm_malloc(&BASE_HEAP[heap_idx], size, caller_retaddr);
 		if (ret != NULL) {
+			mm_realloc_copy(ret, oldmem, old_payload_size, size);
 			mm_free(&BASE_HEAP[prev_heap_idx], oldmem);
 			return ret;
 		}

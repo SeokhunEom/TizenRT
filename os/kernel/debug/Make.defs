@@ -21,7 +21,7 @@ CSRCS += sysdbg.c
 endif
 
 ifeq ($(CONFIG_MEM_LEAK_CHECKER),y)
-CSRCS += mem_leak_checker.c
+CSRCS += mem_leak_checker.c mem_leak_checker_unified.c mem_leak_checker_core.c mem_leak_checker_index.c mem_leak_checker_graph.c mem_leak_checker_graph_validate.c mem_leak_checker_tarjan.c mem_leak_checker_lifecycle.c mem_leak_checker_budget.c mem_leak_checker_report.c mem_leak_checker_roots.c mem_leak_checker_domain.c mem_leak_checker_candidates.c mem_leak_checker_candidate_roots.c mem_leak_checker_candidate_validate.c mem_leak_checker_candidate_preflight.c mem_leak_checker_pause.c mem_leak_checker_pause_terminal.c mem_leak_checker_pause_service.c mem_leak_checker_pause_service_stub.c mem_leak_checker_pause_owner.c
 endif
 
 CSRCS += dbg_termination_info.c

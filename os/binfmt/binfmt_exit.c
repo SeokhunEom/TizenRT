@@ -99,6 +99,9 @@ extern volatile sq_queue_t g_delayed_kufree;
 int binfmt_exit(FAR struct binary_s *bin)
 {
 	int ret;
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	int domain_ret;
+#endif
 	irqstate_t flags;
 	FAR void *address;
 	uint32_t uheap_start;
@@ -106,11 +109,28 @@ int binfmt_exit(FAR struct binary_s *bin)
 
 	DEBUGASSERT(bin != NULL);
 
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	ret = mm_loadable_domain_disable_and_wait(bin);
+	if (ret < 0) {
+		return ret;
+	}
+#endif
+
 	/* Unload the module */
 
 	ret = unload_module(bin);
 	if (ret < 0) {
 		berr("ERROR: unload_module() failed: %d\n", ret);
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+		domain_ret = mm_loadable_domain_reactivate(bin);
+		if (domain_ret < 0) {
+			berr("ERROR: loadable domain reactivation failed: %d\n", domain_ret);
+			PANIC();
+			return domain_ret;
+		}
+#endif
+		return ret;
 	}
 
 	elf_delete_bin_section_addr(bin->binary_idx);
@@ -130,6 +150,14 @@ int binfmt_exit(FAR struct binary_s *bin)
 		address = (FAR void *)sq_next((FAR sq_entry_t *)address);
 	}
 	mm_disable_app_heap_list(bin->uheap);
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(__KERNEL__)
+	ret = mm_loadable_domain_finish_unload(bin);
+	if (ret < 0) {
+		berr("ERROR: loadable domain finalization failed: %d\n", ret);
+		PANIC();
+		return ret;
+	}
+#endif
 
 	/* Free the load structure */
 

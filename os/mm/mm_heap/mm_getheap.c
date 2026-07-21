@@ -59,6 +59,7 @@ static dq_queue_t app_heap_q;
 void mm_initialize_app_heap_q()
 {
 	dq_init(&app_heap_q);
+	mm_loadable_domain_initialize();
 }
 
 void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name)

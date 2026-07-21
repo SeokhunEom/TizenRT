@@ -113,6 +113,9 @@ FAR void *mm_memalign(FAR struct mm_heap_s *heap, size_t alignment, size_t size,
 	void *ret = NULL;
 	int ndx;
 	size_t newsize;
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	size_t requested_size = size;
+#endif
 	FAR struct mm_allocnode_s *alignchunk = NULL;
 	bool found_align = false;
 	size_t mask = (size_t)(alignment - 1);
@@ -264,6 +267,8 @@ retry_after_gc:
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		heapinfo_update_node((struct mm_allocnode_s *)node, caller_retaddr);
+		ASSERT(mm_allocnode_set_padding((struct mm_allocnode_s *)node, requested_size));
+		ASSERT(((struct mm_allocnode_s *)node)->alloc_padding <= MM_MEMALIGN_PADDING_MAX);
 		heapinfo_add_size(heap, ((struct mm_allocnode_s *)node)->pid, node->size);
 		heapinfo_update_total_size(heap, node->size, ((struct mm_allocnode_s *)node)->pid);
 #endif
