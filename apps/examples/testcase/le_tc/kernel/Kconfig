@@ -49,6 +49,7 @@ config TC_KN_ALL
 	select TC_KERNEL_UMM_HEAP
 	select TC_KERNEL_WORK_QUEUE if SCHED_WORKQUEUE
 	select TC_KERNEL_IRQ if TIMER
+	select TC_KERNEL_MEM_LEAK_CHECKER if MEM_LEAK_CHECKER
 	select ITC_KERNEL_ENVIRON
 	select ITC_KERNEL_LIBC_PTHREAD
 	select ITC_KERNEL_LIBC_SEMAPHORE
@@ -208,6 +209,11 @@ config TC_KERNEL_IRQ
 	bool "irq"
 	default n
 	depends on TIMER
+
+config TC_KERNEL_MEM_LEAK_CHECKER
+	bool "Memory leak checker characterization"
+	default n
+	depends on MEM_LEAK_CHECKER
 
 config ITC_KERNEL_ENVIRON
 	bool "ITC Environ"

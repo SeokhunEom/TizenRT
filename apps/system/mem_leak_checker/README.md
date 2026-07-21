@@ -65,3 +65,34 @@ $ addr2line -e <ELF_PATH> 0x40d301c
 
 .../TizenRT/apps/examples/hello/hello_main.c:71
 ```
+
+## Graph and report semantics
+
+The checker uses root-seeded reachability from registered roots and follows candidate-to-candidate
+edges. Self-references, cycles, detached tails, convergence, and cross-heap links are
+classified as retained allocation groups rather than being treated as incoming references.
+Aligned exact pointers are definite roots; interior and unaligned matches remain
+ambiguous and are reported separately. One-past pointers, allocator headers, padding,
+freed nodes, checker workspace, and control ranges are excluded from the candidate set.
+Reports retain allocation capacity and requested size, bound copied data to 32 bytes,
+and preserve the legacy five-column row for definite leaks alongside provenance and SCC
+detail records.
+
+## Reproducible validation and hardware policy
+
+The canonical final validation commands are:
+
+```bash
+tools/mem_leak_checker_qa.sh qemu --task 15 --commands kernel_tc,mem_leak --repeat-mem-leak 2
+tools/mem_leak_checker_qa.sh build --task 15 --config rtl8730e/flat_apps --name rtl-flat
+tools/mem_leak_checker_qa.sh build --task 15 --config rtl8730e/loadable_apps --name rtl-loadable
+```
+
+For this execution, physical hardware discovery, deployment, runtime probing, and fatal
+reboot validation are intentionally skipped. Receipts must carry
+`hardware_validation: "skipped_by_user"`; QEMU remains
+`deferred_unexecuted_baseline_link_failure`, and no deferred result is a runtime PASS.
+The task-15 contract records GPTM3 for QEMU, CNTVCT for RTL, the 100000-usec measured
+deadline target, protected operation budgets, and the runtime identity note exclusion
+from payload hashing. Flash manifests describe only repository `ALL` partitions; build
+intermediates are provenance and are never programmed.

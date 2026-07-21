@@ -158,6 +158,9 @@ endif
 ifeq ($(CONFIG_TC_KERNEL_IRQ),y)
   CSRCS += tc_irq.c
 endif
+ifeq ($(CONFIG_TC_KERNEL_MEM_LEAK_CHECKER),y)
+  CSRCS += tc_mem_leak_checker.c tc_mem_leak_checker_realloc.c
+endif
 ifeq ($(CONFIG_ITC_KERNEL_ENVIRON),y)
   CSRCS += itc_environ.c
 endif

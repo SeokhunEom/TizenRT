@@ -15,14 +15,82 @@ if MEM_LEAK_CHECKER
 
 config MEM_LEAK_CHECKER_HASH_TABLE_SIZE
 	int "size of hash table"
+	range 1 65536
 	default 1007
 	---help---
 		The size of the hash table for searching. It is preferred to have this as a prime number
 
 config MEM_LEAK_CHECKER_MAX_ALLOC_COUNT
 	int "max allocation counts"
+	range 1 65536
 	default 3000
 	---help---
 		It must be larger than the total number of memory allocations.
+
+config MEM_LEAK_REMOTE_PAUSED_MAX_POLLS
+	int "maximum remote CPU paused-service polls"
+	range 1 65536
+	default 65536
+	---help---
+		Bound every remote CPU service iteration while a leak-check snapshot
+		owns the CPU.  Exhaustion is a fatal ownership failure, not a timeout
+		that permits a normal leak verdict.
+
+config MEM_LEAK_CHECKER_REGISTRY_ENUM_MAX
+	int "registry enumeration operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_DOMAIN_PIN_MAX
+	int "domain pin operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_ROOT_CONTAINER_ENUM_MAX
+	int "root-container enumeration operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_HEAP_ACQUIRE_MAX
+	int "heap acquisition operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_HEAP_RELEASE_VALIDATE_MAX
+	int "heap release validation operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_DOMAIN_UNPIN_MAX
+	int "domain unpin operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_REGISTRY_UNWIND_MAX
+	int "registry unwind operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_PAUSE_ACK_MAX
+	int "pause acknowledgement operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_REMOTE_PAUSED_SERVICE_MAX
+	int "remote paused service operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_CANCEL_COMPLETION_MAX
+	int "cancel completion operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_RESUME_COMPLETION_MAX
+	int "resume completion operation maximum"
+	range 1 65536
+	default 65536
+config MEM_LEAK_CHECKER_SGI_DRAIN_MAX
+	int "SGI drain operation maximum"
+	range 1 65536
+	default 65536
+
+config TC_KERNEL_MEM_LEAK_CHECKER_FATAL
+	bool "Enable deterministic memory-leak fatal markers"
+	default n
+	depends on TC_KERNEL_MEM_LEAK_CHECKER
+	---help---
+		Emit fixed low-level markers for fatal ownership tests.  This option
+		never formats or allocates and is intended only for kernel test builds.
 
 endif
