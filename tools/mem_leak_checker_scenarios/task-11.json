@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "task": 11,
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 11 --config qemu/tc_1m --fixture mlc_production_snapshot",
+      "expected_exit": 86,
+      "fixtures": "mlc_production_snapshot"
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 11 --fixtures mlc_production_snapshot,mlc_admission_workspace_teardown_race --repeat 20",
+      "expected_exit": 0,
+      "fixtures": "mlc_production_snapshot,mlc_admission_workspace_teardown_race"
+    }
+  ],
+  "post_commit": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 11 --fixtures mlc_production_snapshot,mlc_admission_workspace_teardown_race --repeat 20 --post-commit",
+      "expected_exit": 0,
+      "fixtures": "mlc_production_snapshot,mlc_admission_workspace_teardown_race"
+    }
+  ],
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 11 --fixtures mlc_production_adapter_faults,mlc_late_failure_atomic_publish,mlc_post_unpin_poison,mlc_teardown_failure_admission",
+      "expected_exit": 0,
+      "fixtures": "mlc_production_adapter_faults,mlc_late_failure_atomic_publish,mlc_post_unpin_poison,mlc_teardown_failure_admission"
+    }
+  ],
+  "qemu": "deferred_unexecuted_baseline_link_failure",
+  "red_exempt": false
+}

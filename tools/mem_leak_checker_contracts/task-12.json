@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "task": 12,
+  "legacy": {
+    "header": "Type   |    Addr    | Size(byte) |    Owner   | PID \\n---------------------------------------------------\\n",
+    "row": "LEAK   | %10p |  %8d  | %10p | %d\\n",
+    "dump_prefix": "[DATA] ",
+    "dump_width": 32,
+    "summary_definite": "*** N LEAKS, 0 BROKENS.\\n",
+    "summary_clean": "*** NO MEMORY LEAK.\\n"
+  },
+  "records": {
+    "detail_prefix": "DETAIL | ",
+    "ambiguous_prefix": "AMBIGUOUS | ",
+    "broken_forbidden": true,
+    "legacy_extra_columns": false,
+    "dump_bound": "min(requested_size, 32)",
+    "row_size": "allocation_capacity"
+  },
+  "primary_summaries": [
+    "*** NO MEMORY LEAK.",
+    "*** N LEAKS, 0 BROKENS.",
+    "*** NO DEFINITE MEMORY LEAK; N RETAINED-AMBIGUOUS.",
+    "INCOMPLETE <reason>"
+  ],
+  "incomplete": {
+    "suppresses_verdict_tokens": true,
+    "exactly_one_record": true,
+    "reason_precedence": [
+      "HEAP_CORRUPT",
+      "DOMAIN_CHANGED",
+      "TASK_CONTEXT",
+      "PREOWNED_RESOURCE",
+      "UNSUPPORTED_CONTEXT",
+      "GENERATION_EXHAUSTED",
+      "CLOCK",
+      "CAPACITY",
+      "BUDGET",
+      "DEADLINE",
+      "BUSY_REGISTRY",
+      "BUSY_CRITICAL",
+      "BUSY_HEAP",
+      "INTERNAL"
+    ]
+  },
+  "ambiguous": {
+    "legacy_no_leak_forbidden": true,
+    "separate_records": true,
+    "provenance": ["ALIGNED_EXACT", "INTERIOR", "UNALIGNED"]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 3 --fixture mlc_scanner_invalid_ranges",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=3 fixtures=mlc_scanner_invalid_ranges status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh receipt-negative --task 3",
+      "expected_exit": 0,
+      "expected_record_prefix": "MLC_QA_RECEIPT_NEGATIVE task=3 cases=symlink,boulder,wrong_branch,baseline_mismatch,cross_fixture,cross_command status=PASS",
+      "required_fields": ["receipt_sha256"]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/test_mem_leak_checker_core.sh --fixtures mlc_scanner_index,mlc_zero_exact_precedence",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_HOST fixture=mlc_scanner_index status=PASS",
+        "MLC_HOST fixture=mlc_zero_exact_precedence status=PASS"
+      ]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 3 --fixtures mlc_scanner_index,mlc_zero_exact_precedence",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=3 fixtures=mlc_scanner_index,mlc_zero_exact_precedence status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ],
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 3 --config qemu/tc_1m --fixtures mlc_scanner_index,mlc_zero_exact_precedence",
+      "expected_exit": 86,
+      "fixtures": "mlc_scanner_index,mlc_zero_exact_precedence",
+      "expected_record_prefix": "MLC_QA_RED task=3 fixtures=mlc_scanner_index,mlc_zero_exact_precedence status=evidence_bound_expected_failure exit=86",
+      "required_fields": ["receipt_sha256", "proof_exit", "proof_log_sha256"]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 3
+}

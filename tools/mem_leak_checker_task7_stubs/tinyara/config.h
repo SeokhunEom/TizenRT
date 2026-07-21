@@ -1,0 +1,7 @@
+#ifndef __MLC_TASK7_CONFIG_H
+#define __MLC_TASK7_CONFIG_H
+
+#define CONFIG_DEBUG_MM_HEAPINFO 1
+#define CONFIG_KMM_REGIONS 1
+
+#endif

@@ -1,0 +1,23 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh self-test --task 1 --cases timeout,malformed,incomplete-with-verdict,missing-second-prompt,bad-red-linkage,pipeline-failure,missing-root,preflight-context-create-failure,preflight-context-fsync-failure,preflight-worktree-partial,preflight-evidence-dir-failure,preflight-identity-failure,preflight-concurrent-loser,preflight-ancestor-symlink,preflight-ancestor-replacement,preflight-existing-context-refusal,preflight-owned-child-cleanup --output-json \"$(tools/mem_leak_checker_qa.sh context --print-evidence-dir)/task-1/preflight-self-test.json\"",
+      "expected_exit": 0,
+      "expected_record": "all cases status=PASS"
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 1 --fixtures mlc_bootstrap,mlc_characterization",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_records": [
+        "MLC_QA fixture=mlc_bootstrap status=PASS",
+        "MLC_QA fixture=mlc_characterization self=hidden cycle=hidden chain_only_head=reported gating=false"
+      ]
+    }
+  ],
+  "red_exempt": true,
+  "schema": 1,
+  "task": 1
+}

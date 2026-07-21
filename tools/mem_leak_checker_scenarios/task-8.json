@@ -1,0 +1,44 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 8 --fixture mlc_invalid_task_irq_context --repeat 1 --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK8_ROUTE kind=failure selector=fixture fixtures=mlc_invalid_task_irq_context repeat=1 post_commit=true",
+        "MLC_TASK8_FAILURES model_status=PASS expected_incomplete=TASK_CONTEXT expected_rows=0 mutations=migration,tcb,irq,mode,sp,mask,cpsr,xpsr reuse=valid_after_rejection",
+        "MLC_TASK8_PRODUCTION_FAILURE status=PASS mutations=cpsr_fiq,cpsr_irq,cpsr_reserved,xpsr_thumb,xpsr_ipsr,sp,migration incomplete=TASK_CONTEXT rows=0 released=1 reuse=valid_after_rejection",
+        "MLC_TASK8_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 8 --fixtures mlc_task_roots,mlc_direct_wrapper_roots --repeat 1 --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK8_ROUTE kind=happy selector=fixtures fixtures=mlc_task_roots,mlc_direct_wrapper_roots repeat=1 post_commit=true",
+        "MLC_TASK8_MODEL status=PASS roots=callee_saved,stack saved_context=blocked,remote_paused architectures=armv7a,armv7m",
+        "MLC_TASK8_PRODUCTION_ROOTS status=PASS roots=saved_task cpsr=usr,svc,sys xpsr=thumb released=1",
+        "MLC_TASK8_WRAPPERS status=PASS prctl=assembly-entry direct=assembly-capture",
+        "MLC_TASK8_ASSEMBLY status=PASS armv7_m=compiled armv7_a=compiled",
+        "MLC_TASK8_OBJECTS status=PASS armv7_m=3 armv7_a=3",
+        "MLC_TASK8_ENTRY_CONTRACT status=PASS direct_record=72 direct_entry_sp=true prctl_entry_sp=true clang_opts=O0,O1,O2,O3,Os gnu=unverified",
+        "MLC_TASK8_SAVED_STATUS status=PASS cpsr=usr,svc,sys xpsr=thumb",
+        "MLC_TASK8_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "qemu": "deferred_unexecuted_baseline_link_failure",
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 8 --config qemu/tc_1m --fixture mlc_task_roots",
+      "expected_exit": 86,
+      "expected_records": [
+        "MLC_TASK8_RED status=expected_failure exit=86 evidence=development_only authoritative=false"
+      ]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 8
+}

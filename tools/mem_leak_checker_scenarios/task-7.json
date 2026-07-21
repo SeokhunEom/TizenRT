@@ -1,0 +1,39 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 7 --fixtures mlc_candidate_corruption_and_lock_contention,mlc_tcb_stack_root_policy,mlc_invalid_loadable_root_container",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK7_FIXTURE name=mlc_candidate_corruption_and_lock_contention status=PASS",
+        "MLC_TASK7_FIXTURE name=mlc_tcb_stack_root_policy status=PASS",
+        "MLC_TASK7_FIXTURE name=mlc_invalid_loadable_root_container status=PASS",
+        "MLC_TASK7_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 7 --fixtures mlc_candidate_manifest,mlc_control_source_target_exclusions,mlc_heap_backed_loadable_root --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK7_FIXTURE name=mlc_candidate_manifest status=PASS",
+        "MLC_TASK7_FIXTURE name=mlc_control_source_target_exclusions status=PASS",
+        "MLC_TASK7_FIXTURE name=mlc_heap_backed_loadable_root status=PASS",
+        "MLC_TASK7_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "qemu": "deferred_unexecuted_baseline_link_failure",
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 7 --config qemu/tc_1m --fixture mlc_candidate_manifest",
+      "expected_exit": 86,
+      "expected_records": [
+        "MLC_TASK7_RED status=expected_failure reason=collector_missing exit=86"
+      ]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 7
+}

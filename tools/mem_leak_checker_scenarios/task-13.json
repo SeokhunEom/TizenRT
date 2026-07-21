@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "task": 13,
+  "fixture_ids": [
+    "mlc_kernel_tc_empty",
+    "mlc_kernel_tc_rootless_self",
+    "mlc_kernel_tc_rootless_two_cycle",
+    "mlc_kernel_tc_rootless_long_cycle",
+    "mlc_kernel_tc_rootless_reversed_chain",
+    "mlc_kernel_tc_rootless_cycle_tail",
+    "mlc_kernel_tc_rootless_convergence",
+    "mlc_kernel_tc_rooted_equivalents",
+    "mlc_kernel_tc_cross_domain",
+    "mlc_kernel_tc_bounds_exact_interior_one_past",
+    "mlc_kernel_tc_provenance_alignment",
+    "mlc_kernel_tc_ambiguity_upgrade",
+    "mlc_kernel_tc_iterative_scc_max_depth",
+    "mlc_kernel_tc_exclusions",
+    "mlc_kernel_tc_broad_ram_overlap",
+    "mlc_kernel_tc_caller_boundaries",
+    "mlc_kernel_tc_worker_register_irq_roots",
+    "mlc_kernel_tc_post_unpin_poison",
+    "mlc_kernel_tc_report_dumps",
+    "mlc_kernel_tc_legacy_flat",
+    "mlc_kernel_tc_legacy_loadable"
+  ],
+  "happy": {
+    "command": "kernel_tc",
+    "fixture_filter": "tc_mem_leak_checker",
+    "repeat": 20,
+    "expected_exit": 0
+  },
+  "mutation_negative": [
+    {"name": "incoming-reference", "expected_exit": "nonzero"},
+    {"name": "recursive-scc", "expected_exit": "nonzero"},
+    {"name": "control-as-candidate", "expected_exit": "nonzero"},
+    {"name": "post-unpin-dereference", "expected_exit": "nonzero"},
+    {"name": "legacy-extra-column", "expected_exit": "nonzero"}
+  ],
+  "red": {"exempt": true},
+  "sealed": true,
+  "qemu": "deferred_unexecuted_baseline_link_failure"
+}

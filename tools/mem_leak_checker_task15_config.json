@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "task": 15,
+  "qemu": {"defconfig": "build/configs/qemu/tc_1m/defconfig", "timer": "GPTM3", "deadline_usec": 100000},
+  "rtl": {
+    "flat": {"defconfig": "build/configs/rtl8730e/flat_apps/defconfig", "timer": "CNTVCT"},
+    "loadable": {"defconfig": "build/configs/rtl8730e/loadable_apps/defconfig", "timer": "CNTVCT"}
+  },
+  "maxima": {"counter": 65536, "allocations": 3000, "hash_flat": 1007, "hash_qemu": 257},
+  "hardware_validation": "skipped_by_user"
+}

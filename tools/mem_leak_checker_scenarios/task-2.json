@@ -1,0 +1,43 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 2 --fixture mlc_alloc_padding_invalid",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=2 fixtures=mlc_alloc_padding_invalid status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh compile-negative --task 2 --fixture mlc_alloc_padding_unrepresentable",
+      "expected_exit": 0,
+      "expected_record": "MLC_QA_HOST fixture=mlc_alloc_padding_unrepresentable status=PASS"
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh receipt-negative --task 2",
+      "expected_exit": 0,
+      "expected_record_prefix": "MLC_QA_RECEIPT_NEGATIVE task=2 cases=symlink,wrong_branch,baseline_mismatch,cross_fixture,cross_command status=PASS",
+      "required_fields": ["receipt_sha256"]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 2 --fixtures mlc_alloc_bounds,mlc_alloc_zero",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=2 fixtures=mlc_alloc_bounds,mlc_alloc_zero status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ],
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 2 --config qemu/tc_1m --fixtures mlc_alloc_bounds,mlc_alloc_zero",
+      "expected_exit": 86,
+      "fixtures": "mlc_alloc_bounds,mlc_alloc_zero",
+      "expected_record_prefix": "MLC_QA_RED task=2 fixtures=mlc_alloc_bounds,mlc_alloc_zero status=evidence_bound_expected_failure exit=86",
+      "required_fields": ["receipt_sha256"]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 2
+}

@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "task": 13,
+  "graph": {
+    "reachability": "root-seeded-forward-only",
+    "cycles": "iterative-scc",
+    "ambiguous": "retained-separate-from-definite",
+    "provenance": ["ALIGNED_EXACT", "INTERIOR", "UNALIGNED"]
+  },
+  "bounds": {
+    "targets": ["exact", "interior", "one-past"],
+    "source_windows": ["aligned", "unaligned", "final-window"],
+    "broad_ram_overlap": "reject"
+  },
+  "exclusions": ["header", "padding", "free", "control", "checker_source", "checker_target"],
+  "roots": ["worker", "register", "irq"],
+  "records": {
+    "requested_dump_bound": "min(requested_size,32)",
+    "legacy_columns": 5,
+    "loadable_text_trace": true,
+    "deterministic_repeat": 20
+  },
+  "qemu": {
+    "status": "deferred_unexecuted_baseline_link_failure",
+    "hardware_validation": "skipped_by_user"
+  }
+}

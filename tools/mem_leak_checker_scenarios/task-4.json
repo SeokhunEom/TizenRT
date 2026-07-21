@@ -1,0 +1,55 @@
+{
+  "failure": [
+    {
+      "command": "tools/test_mem_leak_checker_graph.sh --fixtures mlc_frontier_tarjan_exhaustion,mlc_tarjan_max_depth",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_HOST fixture=mlc_frontier_tarjan_exhaustion status=PASS verdict=INCOMPLETE_CAPACITY rows=0 canaries=intact",
+        "MLC_HOST fixture=mlc_tarjan_max_depth status=PASS depth=3000 recursion=none"
+      ]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 4 --fixtures mlc_frontier_tarjan_exhaustion,mlc_tarjan_max_depth",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=4 fixtures=mlc_frontier_tarjan_exhaustion,mlc_tarjan_max_depth status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    },
+    {
+      "command": "tools/mem_leak_checker_task4_qa.sh negative",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_QA_TASK4_NEGATIVE cases=invalid-trailing,duplicate,empty,surplus,fixture-mode-mutation,receipt-mutation,scenario-mutation status=PASS"
+      ]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/test_mem_leak_checker_graph.sh --fixtures mlc_graph_core,mlc_zero_graph --repeat 50",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_HOST fixture=mlc_graph_core status=PASS",
+        "MLC_HOST fixture=mlc_zero_graph status=PASS"
+      ]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 4 --fixtures mlc_graph_core,mlc_zero_graph --repeat 50",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_QA_QEMU task=4 fixtures=mlc_graph_core,mlc_zero_graph status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ],
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 4 --config qemu/tc_1m --fixtures mlc_graph_core,mlc_zero_graph",
+      "expected_exit": 86,
+      "fixtures": "mlc_graph_core,mlc_zero_graph",
+      "expected_record_prefix": "MLC_QA_RED task=4 fixtures=mlc_graph_core,mlc_zero_graph status=evidence_bound_expected_failure exit=86",
+      "required_fields": ["receipt_sha256", "proof_exit", "proof_log_sha256"]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 4
+}

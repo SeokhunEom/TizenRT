@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "task": 14,
+  "red_exempt": false,
+  "red": {
+    "command": "tools/mem_leak_checker_qa.sh red --task 14 --config qemu/tc_1m --fixtures mlc_fault_matrix,mlc_reentrancy",
+    "expected_exit": 86
+  },
+  "happy": {
+    "command": "tools/mem_leak_checker_qa.sh qemu --task 14 --fixtures mlc_fault_matrix,mlc_reentrancy --repeat 100",
+    "expected_exit": 0,
+    "host_status": "PASS",
+    "qemu_status": "deferred_unexecuted_baseline_link_failure"
+  },
+  "post_commit": {
+    "command": "tools/mem_leak_checker_qa.sh qemu --task 14 --fixtures mlc_fault_matrix,mlc_reentrancy --repeat 100 --post-commit",
+    "expected_exit": 0,
+    "host_status": "PASS",
+    "qemu_status": "deferred_unexecuted_baseline_link_failure"
+  },
+  "failure": {
+    "command": "tools/mem_leak_checker_qa.sh qemu --task 14 --fixtures mlc_fault_matrix,mlc_domain_heap_task_churn --repeat 500",
+    "expected_exit": 0,
+    "host_status": "PASS",
+    "qemu_status": "deferred_unexecuted_baseline_link_failure"
+  },
+  "fatal": {
+    "command": "tools/mem_leak_checker_qa.sh reboot-fatal --task 14 --fixtures mlc_resume_fatal,mlc_cancel_ambiguous_fatal",
+    "expected_exit": 0,
+    "status": "deferred_unexecuted_baseline_link_failure",
+    "hardware_validation": "skipped_by_user"
+  }
+}

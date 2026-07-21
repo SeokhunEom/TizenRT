@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task": 12,
+  "red_exempt": false,
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 12 --config qemu/tc_1m --fixture mlc_report_contract",
+      "expected_exit": 86,
+      "fixtures": "mlc_report_contract"
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/test_mem_leak_checker_report.sh --fixtures mlc_report_contract,mlc_reason_precedence,mlc_legacy_row_bounds",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_HOST fixture=mlc_report_contract status=PASS",
+        "MLC_HOST fixture=mlc_reason_precedence status=PASS",
+        "MLC_HOST fixture=mlc_legacy_row_bounds status=PASS"
+      ]
+    },
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 12 --fixtures mlc_report_contract,mlc_legacy_golden_flat,mlc_legacy_golden_loadable,mlc_ambiguous_only",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_TASK12_QEMU status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ],
+  "post_commit": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 12 --fixtures mlc_report_contract,mlc_legacy_golden_flat,mlc_legacy_golden_loadable,mlc_ambiguous_only --post-commit",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_TASK12_QEMU status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ],
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 12 --fixtures mlc_incomplete_output_contract,mlc_legacy_appended_field_rejected,mlc_reason_precedence",
+      "expected_exit": null,
+      "expected_status": "deferred_unexecuted_baseline_link_failure",
+      "expected_record_prefix": "MLC_TASK12_QEMU status=deferred_unexecuted_baseline_link_failure",
+      "required_fields": ["red_linkage=verified", "receipt_sha256"]
+    }
+  ]
+}

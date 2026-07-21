@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "task": 15,
+  "qemu": {
+    "commands": ["kernel_tc", "mem_leak"],
+    "repeat_mem_leak": 2,
+    "status": "deferred_unexecuted_baseline_link_failure",
+    "timer_sources": ["GPTM3"]
+  },
+  "rtl": {
+    "configs": ["rtl8730e/flat_apps", "rtl8730e/loadable_apps"],
+    "timer_sources": ["CNTVCT"],
+    "build_status": "deferred_unexecuted_user_hardware_policy"
+  },
+  "budgets": {
+    "counter_max": 65536,
+    "deadline_usec": 100000,
+    "protected_loop_counters": true,
+    "preownership_unwind_counters": true,
+    "lifecycle_poll_counters": true
+  },
+  "identity": {
+    "protocol": 2,
+    "note_excluded_from_payload": true,
+    "self_containing_final_elf_claim": false
+  },
+  "flash_manifest": {
+    "programmed_set": "repository_ALL_only",
+    "intermediates_never_programmed": true,
+    "status_when_unexecuted": "deferred_unexecuted"
+  },
+  "hardware_policy": {
+    "hardware_validation": "skipped_by_user",
+    "require_mem_leak_hardware": 1,
+    "discovery": "not_invoked",
+    "deployment": "not_invoked",
+    "fatal_reboot": "not_invoked"
+  }
+}

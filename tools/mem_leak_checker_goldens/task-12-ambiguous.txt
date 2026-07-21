@@ -1,0 +1,1 @@
+"Type   |    Addr    | Size(byte) |    Owner   | PID \n---------------------------------------------------\nAMBIGUOUS | <ADDR> |  64  | <ADDR> | <PID>\nDETAIL | SCC=7 class=direct provenance=INTERIOR representative=<ADDR> members=2\n*** NO DEFINITE MEMORY LEAK; 1 RETAINED-AMBIGUOUS.\n"

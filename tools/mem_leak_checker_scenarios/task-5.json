@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "task": 5,
+  "qemu": "deferred_unexecuted_baseline_link_failure",
+  "red": {
+    "fixture": "mlc_lifecycle",
+    "command": "tools/mem_leak_checker_qa.sh red --task 5 --config qemu/tc_1m --fixture mlc_lifecycle",
+    "expected_exit": 86,
+    "expected_records": [
+      "MLC_TASK5_RED stale_identity_detected=true expected_exit=86"
+    ]
+  },
+  "scenarios": [
+    {
+      "kind": "happy",
+      "fixtures": [
+        "mlc_lifecycle",
+        "mlc_try_critical_fresh_variants",
+        "mlc_fake_operation_budget"
+      ],
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 5 --fixtures mlc_lifecycle,mlc_try_critical_fresh_variants,mlc_fake_operation_budget --repeat 100",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK5_MODEL status=PASS repeat=100",
+        "MLC_TASK5_MIGRATION_BOUNDARY status=PASS published_cpu=1 stale_cpu=0",
+        "MLC_TASK5_PHASE_ORDER status=PASS acquire=domain,critical,heaps unwind=heaps,critical,domain",
+        "MLC_TASK5_PHASE_PREDECESSORS status=PASS missing=critical,heaps,domain_resource skips=domain_heaps,captured,analysis,copied",
+        "MLC_TASK5_REPORT_ATOMIC status=PASS two_heap_late_failure=true capacity_no_partial=true",
+        "MLC_TASK5_IRQ_ACTUAL variant=smp_irqcount status=PASS repeat=100",
+        "MLC_TASK5_IRQ_ACTUAL variant=up_irqcount status=PASS repeat=100",
+        "MLC_TASK5_IRQ_ACTUAL variant=up_no_irqcount status=PASS repeat=100",
+        "MLC_TASK5_LIFECYCLE status=PASS recoverable_reuse=true post_release_record=true",
+        "MLC_TASK5_VARIANT_COMPILE status=PASS fallback=up_no_irqcount negative=smp_no_irqcount",
+        "MLC_TASK5_STATIC status=PASS variants=3 negative=smp_no_irqcount"
+      ]
+    },
+    {
+      "kind": "failure",
+      "fixtures": [
+        "mlc_lifecycle_recoverable_faults",
+        "mlc_critical_primary_busy",
+        "mlc_critical_secondary_busy",
+        "mlc_critical_preowned",
+        "mlc_fake_deadline_reserve",
+        "mlc_post_release_record_lifetime"
+      ],
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 5 --fixtures mlc_lifecycle_recoverable_faults,mlc_critical_primary_busy,mlc_critical_secondary_busy,mlc_critical_preowned,mlc_fake_deadline_reserve,mlc_post_release_record_lifetime --repeat 100",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK5_LIFECYCLE_FAILURES status=PASS classes=5 phases=8",
+        "MLC_TASK5_ADMISSION_RACE status=PASS repeat=100"
+      ]
+    },
+    {
+      "kind": "fatal",
+      "fixtures": [
+        "mlc_fatal_stub_isolated",
+        "mlc_fatal_terminal_record"
+      ],
+      "command": "tools/mem_leak_checker_task5_qa.sh $MLC_TASK5_ARTIFACT_DIR",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK5_FATAL_ISOLATED status=PASS ownership_retained=true"
+      ]
+    }
+  ]
+}

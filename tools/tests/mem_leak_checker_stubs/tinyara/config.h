@@ -1,0 +1,1 @@
+#define CONFIG_TESTING 1

@@ -1,0 +1,490 @@
+{
+  "files": [
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-build-gcc6-jobs1.log",
+      "sha256": "5abe2e7f39674febd032c675c2317ef1365ec946a3e2d0a5cd7ae904a6f3e2d1"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-build-gcc6-serial.log",
+      "sha256": "ac84cc1ad85c8f2befa28b7fec2482f91a253c5d76f1784fe285d9405139e25c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-build-gcc6.log",
+      "sha256": "75a21a22f3b6ffd388e525f9028a08f19c0a42cd9c74b41aaf43b94d96092d37"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-build-retry.log",
+      "sha256": "adc30e379fe409f6d70b45ff2281b567b0a0cc648756afe096d603434eed5b2d"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-build.log",
+      "sha256": "c318c0da3f3d5086f246c2a0d3f7d6bc74d416884af406e13749a5f4d742b5a1"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-configure-jobs1.log",
+      "sha256": "2d8b5a1670aff09a4c7605390da8857fc88040041baad04a73365adcc400b3ab"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-configure-serial.log",
+      "sha256": "2d8b5a1670aff09a4c7605390da8857fc88040041baad04a73365adcc400b3ab"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline-distclean-jobs1.log",
+      "sha256": "4e45dd48a2af721403ad3ae55ccf7b795e9fc8f0360a8de89ac2954ad339dee0"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/baseline.sha",
+      "sha256": "994c9f8cb146f66ec9649dd178ae3f82e1a983355651f85f046e52c2e1638146"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/debug-journal.md",
+      "sha256": "dc19d5d28ee982c7c4cead92fcd8772bcf7a714fc92c40229d073a0d054be416"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-1/build.log",
+      "sha256": "87fd100f1db3191b38048c337bb7c33ee46f9c27b10e7dd82a324df512fd04a9"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-1/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-2/build.log",
+      "sha256": "1b70377c870cac9f0178dd701f296bcba0e498784669d9ba0e2e62e2f511755c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-2/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-3/build.log",
+      "sha256": "b3291c2888484f944611a465eae4650323b5aca6779a46b580cf0ceaccfd3c8f"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-3/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-4/build.log",
+      "sha256": "569b7db0ad7c487ad7de79610dcfa4e83f9dccb2bb60432d1277aee86a31e0ef"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-4/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-5/build.log",
+      "sha256": "34d05d783a82fcdd0c4ae76b21f2e8cb213689fa0a45ed7d6857a879334290fb"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-5/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-6/build.log",
+      "sha256": "82be34daf07c3dade524a1f10ad823cb49cb7b81a5359b636ce5d60991c2e7d0"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-6/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-7/build.log",
+      "sha256": "4f61ff1f7a4c496cf8c72a61734f9441d2f5b8f5aca08d9c31bab2e9985f53d4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/build-attempt-7/configure.log",
+      "sha256": "06f6d10bb2c3f7326ff9710badb5fdc02897cc5c5db53f22521c736068d0e189"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/preflight-self-test.json",
+      "sha256": "7b5b1ca3261abb18c18a471c74d0721ffe5a5eedb957dfde932b08bb957b432e"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-1-executor/task-1/qemu-deferred.json",
+      "sha256": "b503178c9cb1e4c5dc7e18ced256672bee0d2f867c28433d7568aed184086969"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/debug-journal.md",
+      "sha256": "a465d2b336fe9099af398b69b7201dd3be5e0c2e1e8fae9644231ace50867071"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/final-verification.md",
+      "sha256": "d4e0eb1ec4247718cc92fc4ada6d0724d7a6493cb0d7fec7bda6ed354d7b28a0"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/fix-round-review.md",
+      "sha256": "abd1d29fded1a76920835e81651482e04dea0b08fb031c25e37bc5e5fb302558"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/red-green-evidence.md",
+      "sha256": "c21a378d00e334723c980e69e204aa294fbf2cf0e5a6d9730ba1eaba334968e7"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/second-fix-round.md",
+      "sha256": "84360c2a9586b97b9c6260b0d0b746b0ac282d5a0766292acddaf2c08ebf7312"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-2-executor/task-2-red.json",
+      "sha256": "3fa39a85e965b4e3c5e4d2e82b8dc601936bc4aa2a9915559b098af89bbec1e4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/final-small-red-validation.log",
+      "sha256": "c66445694989cdcff63b70c814b32962db39f5bf0c7856ca35a25d02a857ffc6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/fix-round-red-adversarial.log",
+      "sha256": "080a6002c7e6580e83e5d27f9c079ef6736f89b33ff1933d8e5bf7667e64db78"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/fix-round-red-runner.log",
+      "sha256": "6fa06addfa6c5f286933024c27cdb4efa76ec413bbaeb5deca4f4b98c27a958b"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-fixture-fe40a82f5dfe989c28e6da7ee64eb919e00149d9-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef-1d8ec90e84cd9d13.json",
+      "sha256": "b68b952cc1f564cd0b3cdae627a08452e1e5790015ac67a6c158cdd478bc61e6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-fixtures-fe40a82f5dfe989c28e6da7ee64eb919e00149d9-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef-ce5e155ac28f4c01.json",
+      "sha256": "c296967386e4468ce35fbcc7675fc6d4da341b886965018d36044062ed8365a1"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixture-37829f7e4b8cbb3948f1451d5c693be857c551f6-1d8ec90e84cd9d13.json",
+      "sha256": "6eff077992d1737912f5b09f59e50f8c3a58ee495f51bd056a61484358e1b432"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixture-a45db5778a19add9aff14dbc2097ded0061c6fca-1d8ec90e84cd9d13.json",
+      "sha256": "5451fd9eec941e779dcf8a3c76c34bec587574b28e8f3bd13af73e5b3ebc35ac"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixture-c3a1f426e0ab469e5b7bee3e5a299eb140593a71-1d8ec90e84cd9d13.json",
+      "sha256": "63ef3780586902c3ff81c3b479821f1874d0afc864f0d5f1f6b7d6fc56dca1b2"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixtures-37829f7e4b8cbb3948f1451d5c693be857c551f6-ce5e155ac28f4c01.json",
+      "sha256": "5fd5981fd9be3759bcb62a7fdd957793bc451efe701b54470510540af36f2d38"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixtures-a45db5778a19add9aff14dbc2097ded0061c6fca-ce5e155ac28f4c01.json",
+      "sha256": "b22a1863d47b1c31e39c35d1cd428e73fd7d1668694898fe566c64806539fb23"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/qemu-deferred-integrated-fixtures-c3a1f426e0ab469e5b7bee3e5a299eb140593a71-ce5e155ac28f4c01.json",
+      "sha256": "99b3e075d33b4ac093505c4370cc1647b084d3049cf7a0cf08938d663e492657"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/recovery-invalid-task-3-post-integration-c3a1f426e0ab469e5b7bee3e5a299eb140593a71-6229330a240f1a51.json",
+      "sha256": "6229330a240f1a5131a1743ce3ef916bd925e9aa5cb73a9bd9eaab3c4af9f800"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-arm-gcc6-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef.json",
+      "sha256": "adc1815756711ae7fd1fafbe14ccbd17f7d4a5743968245842918820aaf85a31"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-development-seal-fe40a82f5dfe989c28e6da7ee64eb919e00149d9-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef.json",
+      "sha256": "636f6d81b61aaa24486084b443ce1ffe7a03ff57d859dfdad192e38427f99039"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-mutation-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef.json",
+      "sha256": "22cd08926591ef5f65c447556129958044d7cdbd64d617d23ab5fe84042a05da"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-post-integration-a45db5778a19add9aff14dbc2097ded0061c6fca.json",
+      "sha256": "212d90c50534d29fe160ad4018e5bcd23c10ceb7b96f14a10022c4a35eef61d9"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-red.json",
+      "sha256": "e827ce359311948a12291fa496f064a63f1e88f44b31ed9c9a0450a97f2cd471"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-3-executor/task-3-sanitizer-e0c2708677bf2bf820e6ef065f4cf98aedcac43f6d9e1f2e21a0fd96f15195ef.json",
+      "sha256": "93f10dada35c2d28f51ca29784456950cb03893cc6311305422c62fb4bdd9c96"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-post-integration/failure.log",
+      "sha256": "ae6af7d66964ebcce3b16cdec96458be4d14104c7a58f97eabb3fd2a5681340c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-post-integration/happy.log",
+      "sha256": "2a1c0b769aeecc3d8608a379f080d84f6cd59e70e3e4eeaa11a946699b0223c7"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-post-integration/qemu-failure-deferred.log",
+      "sha256": "62da5cd53afeae83dddfa740614dff1a525c4fdfcda95042184a3a532a3c1c81"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-post-integration/qemu-happy-deferred.log",
+      "sha256": "f41c04858d53652fd7f6468552f21ed791d5763b403cecba097f7ed7dea95aa7"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-post-integration/task-4-post-integration.json",
+      "sha256": "92d282d2602253375076b2464c1802bb097b0c7f05685de9df85803ebd8a9049"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-red-proof.log",
+      "sha256": "c072c33b79f73aa45a42b95308db92ac142fc3a0385d2d416571115471340040"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-4-executor/task-4-red.json",
+      "sha256": "c6f77490a240818b504747fe2e812595625a0900dcf963fba8cf1beb9c465275"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-fixed/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-fixed/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-fixed/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-fixed/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-100/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-100/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-100/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-100/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-fatal/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-fatal/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-fatal/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run-fatal/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-run/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-verified/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-verified/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-verified/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-verified/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final-verified/summary.log",
+      "sha256": "283f8dc59597a3f84129e3494640794eeb6dc550ccd89c1eb3ce2841ec0e6f35"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/final/summary.log",
+      "sha256": "2a37b33f2d32cadf87abe2b5f454b2ad194b173ac08b3898f03bd7de5e769f9c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/compile-and-run.log",
+      "sha256": "a5ec9531046bd4a98868fc4188bb7ffeed67bd2e135ed5eca225633cd98246dc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/irq-fallback-actual.log",
+      "sha256": "c90a8d464ddf768310d2c4a421c616326740a73de8d516395b2fa992f7b64caf"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/irq-smp-actual.log",
+      "sha256": "0e37c0ee99d1583c03e2eb4ce3adf2f859425f32007f65eab004233767ece649"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/irq-up-actual.log",
+      "sha256": "d0178131ceb6065cea4ed70c25f9d6bf9ec123195b6996cd8ebb1e6b8b895638"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/lifecycle.log",
+      "sha256": "97d6bc6d31331d59bc1a67e38f4e7bda4f8dc06e6f153381255e54d24a626299"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-final/summary.log",
+      "sha256": "b2929ad81d896267d232c576529226aad489caedae073ddde7a8cd5918d72442"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/irq-fallback-actual.log",
+      "sha256": "c90a8d464ddf768310d2c4a421c616326740a73de8d516395b2fa992f7b64caf"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/irq-smp-actual.log",
+      "sha256": "0e37c0ee99d1583c03e2eb4ce3adf2f859425f32007f65eab004233767ece649"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/irq-up-actual.log",
+      "sha256": "d0178131ceb6065cea4ed70c25f9d6bf9ec123195b6996cd8ebb1e6b8b895638"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/lifecycle.log",
+      "sha256": "982e6c4dc886080a02369d2d61a5b28402233ba0045799523db576af10c5509c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-green/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/irq-fallback-actual.log",
+      "sha256": "c90a8d464ddf768310d2c4a421c616326740a73de8d516395b2fa992f7b64caf"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/irq-smp-actual.log",
+      "sha256": "0e37c0ee99d1583c03e2eb4ce3adf2f859425f32007f65eab004233767ece649"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/irq-up-actual.log",
+      "sha256": "d0178131ceb6065cea4ed70c25f9d6bf9ec123195b6996cd8ebb1e6b8b895638"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/lifecycle.log",
+      "sha256": "982e6c4dc886080a02369d2d61a5b28402233ba0045799523db576af10c5509c"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/model.log",
+      "sha256": "778518d4ff18925c03591e0bc59e18b8148853b1844491b2be40c4a68ff471a6"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/fix-round-production-signature/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green2/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green2/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green3/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green3/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green3/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green4/lifecycle.log",
+      "sha256": "f829bd26cd32dd71e72bb6d4d9fad946d4f88b6449b43d92f13f3ac737831a05"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green4/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green4/smp-no-irqcount.log",
+      "sha256": "75499418e808c1d62f6ddc2cd3dcf78cc6a614d66a1d8c32fac64becdca8f8b4"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/green4/static.log",
+      "sha256": "96613800a73d6cc9749a0481241902b1407941a968972b6e08807dc50d66ff39"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/red-green.md",
+      "sha256": "065dd8323cc7634cecdd8e1e170e879f59b4378b921f4acb8c52498e5a2c29bd"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/red/model.log",
+      "sha256": "16ae9068c84950095ff38238fdd5b5af140660802376bed2aea453b159fbc4fc"
+    },
+    {
+      "path": ".omo/start-work/artifacts/task-5-executor/red/static.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".omo/start-work/recovery/preintegrate-todo2-stale/tools/tests/mem_leak_checker_alloc_bounds_model.c",
+      "sha256": "b51812634a4d46e9676e35419d502b2dacdd4565e44bdcc19a59390176c0c68d"
+    },
+    {
+      "path": ".omo/start-work/recovery/preintegrate-todo2-stale/tools/tests/mem_leak_checker_alloc_layout_characterization.c",
+      "sha256": "b7fbdc1ca2b561ebada96551a9091d6334825a1532b686e111826ffd20a9df5c"
+    },
+    {
+      "path": ".omo/start-work/recovery/preintegrate-todo2-stale/tools/tests/mem_leak_checker_alloc_padding_unrepresentable.c",
+      "sha256": "46c6a63d471302139f8d88435cb51c76bd7f66ebbd970b0b93aa98263edda141"
+    }
+  ],
+  "schema": 1,
+  "task": 5
+}

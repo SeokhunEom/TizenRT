@@ -1,0 +1,59 @@
+{
+  "allocation_header": {
+    "debug_field": "uint16_t alloc_padding",
+    "layout_change": false,
+    "meaning": "actual_payload_capacity - requested_size",
+    "sentinel": null
+  },
+  "bound": {
+    "expression": "(MM_MIN_CHUNK - 1) + 2 * (SIZEOF_MM_FREENODE - 1)",
+    "storage_max": "UINT16_MAX",
+    "compile_time_assertion": true,
+    "runtime_checks": [
+      "requested_size <= actual_payload_capacity",
+      "actual_payload_capacity - requested_size <= UINT16_MAX"
+    ]
+  },
+  "covered_paths": [
+    "malloc",
+    "calloc",
+    "zalloc",
+    "memalign",
+    "realloc_null",
+    "realloc_same_capacity",
+    "realloc_shrink",
+    "realloc_previous_neighbor",
+    "realloc_next_neighbor",
+    "realloc_both_neighbors",
+    "realloc_move",
+    "realloc_failure_preserves_padding",
+    "realloc_nonnull_zero_frees",
+    "realloc_null_zero_uses_malloc_zero"
+  ],
+  "production_helpers": {
+    "branch_plan": "mm_realloc_plan",
+    "checked_neighbor_addition": true,
+    "copy": "memmove min(old_payload_size, requested_size)",
+    "host_sanitizers": [
+      "address",
+      "undefined"
+    ]
+  },
+  "extent": {
+    "content_end": "allocation_start + actual_payload_capacity - alloc_padding",
+    "valid_when": "alloc_padding <= actual_payload_capacity",
+    "zero_request_identity": "only_when_allocation_succeeds_nonnull",
+    "zero_request_source_interval_empty": true
+  },
+  "requested_extent_consumers": {
+    "status": "routed_not_implemented_in_task_2",
+    "todos": {
+      "3": "scanner interval construction and exact-zero precedence",
+      "7": "candidate manifest requested extents",
+      "11": "production snapshot adapter consumption"
+    }
+  },
+  "public_abi_output_change": false,
+  "schema": 1,
+  "task": 2
+}

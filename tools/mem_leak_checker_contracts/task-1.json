@@ -1,0 +1,68 @@
+{
+  "abi": {
+    "argv_behavior": "mem_leak_checker_main ignores argc and argv",
+    "entry_signatures": [
+      "int run_mem_leak_checker(int checker_pid, char *bin_name)",
+      "int run_all_mem_leak_checker(int checker_pid)"
+    ],
+    "selector": "PR_MEM_LEAK_CHECKER"
+  },
+  "accepted_roots": [
+    "writable_kernel_static",
+    "writable_common_static",
+    "writable_app_static",
+    "validated_live_task_stack",
+    "validated_caller_stack",
+    "validated_saved_registers"
+  ],
+  "excluded_sources": [
+    "allocator_headers",
+    "capacity_padding",
+    "free_nodes",
+    "guard_nodes",
+    "checker_workspace",
+    "checker_frames_below_caller_boundary",
+    "report_index_frontier_storage"
+  ],
+  "propagation": {
+    "aligned_exact": "strong",
+    "interior": "weak",
+    "strong_overrides_weak": true,
+    "unaligned": "weak"
+  },
+  "report_grouping": {
+    "primary_summary_per_heap": 1,
+    "scc_details": "separately_prefixed",
+    "scc_source": "on_demand_rescan"
+  },
+  "return_codes": {
+    "error": "ERROR",
+    "success": "OK"
+  },
+  "schema": 1,
+  "sealed_publication": {
+    "directory_fsync": true,
+    "existing_destination": "reject_unless_identical_descriptor_hash",
+    "strong_method": "exclusive_staging_then_linkat_noreplace",
+    "exfat_development_exception": "exclusive_final_inode_write_all_file_and_directory_fsync_weaker_not_atomic_not_immutable"
+  },
+  "snapshot": {
+    "incomplete_suppresses_primary_verdict": true,
+    "states": [
+      "complete",
+      "incomplete_roots",
+      "incomplete_capacity",
+      "incomplete_contention",
+      "incomplete_timeout",
+      "incomplete_unsupported_context",
+      "fatal_resume_ambiguous"
+    ]
+  },
+  "strict_target_bounds": "allocation_start <= address < allocation_start + requested_size",
+  "verdicts": [
+    "reachable_strong",
+    "retained_ambiguous",
+    "unreachable_leak",
+    "incomplete_no_verdict"
+  ]
+}

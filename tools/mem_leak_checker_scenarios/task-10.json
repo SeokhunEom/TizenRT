@@ -1,0 +1,31 @@
+{
+  "task": 10,
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 10 --config qemu/tc_1m --fixture mlc_static_budget",
+      "expected_exit": 86,
+      "fixtures": "mlc_static_budget"
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh budget-audit --task 10 --config qemu/tc_1m --require-protected-loop-counters --require-preownership-unwind-counters --require-lifecycle-poll-counters --require-deadline-checks && tools/mem_leak_checker_qa.sh qemu --task 10 --fixtures mlc_static_budget,mlc_qemu_gptm3_clock,mlc_resume_deadline_guard",
+      "expected_exit": 0,
+      "fixtures": "mlc_static_budget,mlc_qemu_gptm3_clock,mlc_resume_deadline_guard"
+    }
+  ],
+  "post_commit": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh budget-audit --task 10 --config qemu/tc_1m --require-protected-loop-counters --require-preownership-unwind-counters --require-lifecycle-poll-counters --require-deadline-checks && tools/mem_leak_checker_qa.sh qemu --task 10 --fixtures mlc_static_budget,mlc_qemu_gptm3_clock,mlc_resume_deadline_guard --post-commit",
+      "expected_exit": 0,
+      "fixtures": "mlc_static_budget,mlc_qemu_gptm3_clock,mlc_resume_deadline_guard"
+    }
+  ],
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 10 --fixtures mlc_unwind_reservation_boundaries,mlc_unwind_order,mlc_broad_ram_overlap,mlc_deadline_resume_reserve,mlc_scan_budget_exhausted,mlc_operation_budget_boundaries,mlc_heap_region_node_budget,mlc_corrupt_link_termination,mlc_exclusion_sort_budget,mlc_snapshot_revalidation_budget,mlc_preownership_unwind_counter_boundaries,mlc_lifecycle_poll_counter_boundaries,mlc_remote_paused_counter_boundaries,mlc_timer_ownership_failure,mlc_timer_double_acquire,mlc_clock_frozen && tools/mem_leak_checker_qa.sh budget-negative --task 10 --mutations all",
+      "expected_exit": 0,
+      "fixtures": "mlc_unwind_reservation_boundaries,mlc_unwind_order,mlc_broad_ram_overlap,mlc_deadline_resume_reserve,mlc_scan_budget_exhausted,mlc_operation_budget_boundaries,mlc_heap_region_node_budget,mlc_corrupt_link_termination,mlc_exclusion_sort_budget,mlc_snapshot_revalidation_budget,mlc_preownership_unwind_counter_boundaries,mlc_lifecycle_poll_counter_boundaries,mlc_remote_paused_counter_boundaries,mlc_timer_ownership_failure,mlc_timer_double_acquire,mlc_clock_frozen"
+    }
+  ]
+}

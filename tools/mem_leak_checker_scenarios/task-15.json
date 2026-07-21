@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "task": 15,
+  "qemu": {
+    "command": "tools/mem_leak_checker_qa.sh qemu --task 15 --commands kernel_tc,mem_leak --repeat-mem-leak 2",
+    "commands": ["kernel_tc", "mem_leak"],
+    "repeat_mem_leak": 2,
+    "expected_exit": 0,
+    "actual_status": "deferred_unexecuted_baseline_link_failure"
+  },
+  "builds": [
+    {"config": "rtl8730e/flat_apps", "name": "rtl-flat", "expected_status": "deferred_unexecuted_user_hardware_policy"},
+    {"config": "rtl8730e/loadable_apps", "name": "rtl-loadable", "expected_status": "deferred_unexecuted_user_hardware_policy"}
+  ],
+  "budget_audit": {
+    "required_flags": ["protected-loop-counters", "preownership-unwind-counters", "lifecycle-poll-counters", "deadline-checks", "reset-noreturn"],
+    "expected_exit": 0
+  },
+  "hardware": {
+    "deployment_exit": 77,
+    "runtime_exit": 77,
+    "hardware_validation": "skipped_by_user",
+    "discovery_invoked": false
+  },
+  "seal_all": {"tasks": "1-14", "red_exempt": [1, 13, 15], "final_artifacts": "deferred"},
+  "self_test": {
+    "expected_exit": 0,
+    "cases": ["hardware-required-rejects-77", "false-hardware-unavailable", "self-referential-runtime-identity", "flash-partition-mismatch", "cleanup-before-deploy", "precommit-todo15-evidence"]
+  }
+}

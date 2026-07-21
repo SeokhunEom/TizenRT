@@ -1,0 +1,7 @@
+Kernel :
+Type   |    Addr    | Size(byte) |    Owner   | PID
+---------------------------------------------------
+LEAK   | <ADDR> |        64  | <ADDR> | <PID>
+[DATA] <32 bytes>
+Below are text addresses of loadable apps (and common binary if enabled) :
+The pc value of the allocation can be obtained by subtracting the text start address of the appropriate binary

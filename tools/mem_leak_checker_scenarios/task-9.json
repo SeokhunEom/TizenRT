@@ -1,0 +1,49 @@
+{
+  "failure": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 9 --fixtures mlc_cpu_pause_cancel_races,mlc_poll_cancel_irq_restore_drain,mlc_poll_cancel_initially_masked,mlc_cpu_pause_reordering,mlc_cpu_pause_stale_ipi,mlc_irq_waitlock_late_sgi,mlc_irq_waitlock_ordinary_contention,mlc_generation_exhausted,mlc_remote_paused_counter_boundaries --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK9_ROUTE kind=failure fixtures=mlc_cpu_pause_cancel_races,mlc_poll_cancel_irq_restore_drain,mlc_poll_cancel_initially_masked,mlc_cpu_pause_reordering,mlc_cpu_pause_stale_ipi,mlc_irq_waitlock_late_sgi,mlc_irq_waitlock_ordinary_contention,mlc_generation_exhausted,mlc_remote_paused_counter_boundaries post_commit=true",
+        "MLC_TASK9_FAILURE status=PASS model=executed cancel=unclaimed,claimed irq_restore=executed_model try_again=executed_model ordinary_critical=executed_model delayed_sgi=drained duplicate_sgi=fatal initially_masked=rejected stale=host_token_bound arm_sgi_generation=deferred_no_payload token_exhaustion=fail_closed counter=max,max_plus_one",
+        "MLC_TASK9_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "fatal": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh reboot-fatal --task 9 --fixtures mlc_resume_fatal,mlc_cancel_ambiguous_fatal,mlc_remote_paused_counter_exhausted,mlc_rtl_system_reset_closure --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK9_ROUTE kind=fatal fixtures=mlc_resume_fatal,mlc_cancel_ambiguous_fatal,mlc_remote_paused_counter_exhausted,mlc_rtl_system_reset_closure post_commit=true",
+        "MLC_TASK9_FATAL status=PASS model=executed markers=REMOTE_COUNTER_EXHAUSTED,CLOCK_INVALID,MAILBOX_PROTOCOL rtl_closure=deferred_unsupported_vendor_sys_reset target_objects=deferred fixed_reset_statuses=5 hardware_validation=skipped_by_user reset_executed=false",
+        "MLC_TASK9_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "happy": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh qemu --task 9 --fixtures mlc_cpu_pause_ownership,mlc_cpu_pause_atomic_publication,mlc_irq_waitlock_pause_poll --post-commit",
+      "expected_exit": 0,
+      "expected_records": [
+        "MLC_TASK9_ROUTE kind=happy fixtures=mlc_cpu_pause_ownership,mlc_cpu_pause_atomic_publication,mlc_irq_waitlock_pause_poll post_commit=true",
+        "MLC_TASK9_MODEL status=PASS smp2=executed owner_thresholds=10,20,40,78,80,95 clock=regressed,frozen paths=irq,poll up=compile_only",
+        "MLC_TASK9_PRODUCTION status=PASS validation=host_compile_and_executable_model mutation=executable_source_mutants lifecycle=request,resume,recycle frame=structured fatal=deferred rtl=unsupported target_objects=deferred",
+        "MLC_TASK9_QEMU status=deferred_unexecuted_baseline_link_failure"
+      ]
+    }
+  ],
+  "qemu": "deferred_unexecuted_baseline_link_failure",
+  "red": [
+    {
+      "command": "tools/mem_leak_checker_qa.sh red --task 9 --config qemu/tc_1m --fixture mlc_cpu_pause_ownership",
+      "expected_exit": 86,
+      "expected_records": [
+        "MLC_TASK9_RED status=expected_failure exit=86 evidence=development_only authoritative=false"
+      ]
+    }
+  ],
+  "red_exempt": false,
+  "schema": 1,
+  "task": 9
+}

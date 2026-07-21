@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "task": 14,
+  "fault_classes": [
+    "admission",
+    "registry_contention",
+    "global_critical_contention",
+    "heap_contention",
+    "caller_preowned",
+    "domain_drift",
+    "task_context_drift",
+    "register_drift",
+    "prepaused",
+    "pause_cancel_resume_race",
+    "stale_reordered_ipi",
+    "generation_exhaustion",
+    "heap_corruption",
+    "invalid_padding",
+    "capacity",
+    "operation_budget",
+    "deadline",
+    "post_unpin_poison",
+    "reentrancy",
+    "graph_churn"
+  ],
+  "recoverable": {
+    "verdict_on_incomplete": false,
+    "resources_release_exactly_once": true,
+    "unowned_resources_release": false,
+    "same_process_retry": true,
+    "deterministic_busy": true,
+    "repeat": 500
+  },
+  "fatal": {
+    "reasons": ["resume_ambiguous", "cancel_ambiguous"],
+    "nonreturn_required": true,
+    "hardware_status": "skipped_by_user",
+    "qemu_status": "deferred_unexecuted_baseline_link_failure"
+  },
+  "timing": {
+    "boundaries_usec": [10, 20, 40, 80, 95],
+    "formal_wcet": false,
+    "measurement": "host_logical_clock_only"
+  }
+}
