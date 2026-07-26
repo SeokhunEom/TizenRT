@@ -8,6 +8,7 @@ import os
 import shutil
 import json
 import sys
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -209,6 +210,76 @@ class QemuArmv8mKernelTcTest(RunnerHarness):
         self.assertEqual(1, code)
         self.assertEqual("kernel-tc-fail", result["reason"])
         self.assertEqual(1, result["fail_count"])
+
+    def test_fragmented_kernel_assert_fails_without_waiting_for_timeout(self) -> None:
+        continue_path = self.root / "continue-assert"
+        script = (
+            "from pathlib import Path\n"
+            "import sys\n"
+            "import time\n"
+            "sys.stdout.buffer.write(b'Assertion failed at ')\n"
+            "sys.stdout.buffer.flush()\n"
+            "continue_path = Path(sys.argv[1])\n"
+            "while not continue_path.exists():\n"
+            "    time.sleep(0.01)\n"
+            "sys.stdout.buffer.write(b'file:semaphore/sem_holder.c line: 820\\n')\n"
+            "sys.stdout.buffer.flush()\n"
+            "time.sleep(3)\n"
+        )
+
+        started = time.monotonic()
+        completed: dict[str, int] = {}
+        runner_thread = threading.Thread(
+            target=lambda: completed.setdefault(
+                "code",
+                self.runner.run_kernel_tc(
+                    self.request(),
+                    self.child_command(script, str(continue_path)),
+                ),
+            )
+        )
+        runner_thread.start()
+        observed_deadline = time.monotonic() + 1.0
+        first_fragment = b"Assertion failed at "
+        while time.monotonic() < observed_deadline:
+            if self.log_path.exists() and first_fragment in self.log_path.read_bytes():
+                break
+            time.sleep(0.01)
+        else:
+            continue_path.touch()
+            runner_thread.join(timeout=2.0)
+            self.fail("runner did not consume the first assertion fragment")
+
+        continue_path.touch()
+        runner_thread.join(timeout=2.0)
+        elapsed = time.monotonic() - started
+        result = self.read_result()
+
+        self.assertFalse(runner_thread.is_alive())
+        self.assertEqual(1, completed["code"])
+        self.assertEqual("kernel-assert", result["reason"])
+        self.assertLess(elapsed, 2.0)
+
+    def test_kernel_assert_takes_precedence_during_negative_check(self) -> None:
+        script = (
+            "import sys\n"
+            "import time\n"
+            "sys.stdout.write('QEMU_LOAD_REJECT common crc\\n')\n"
+            "sys.stdout.write('Assertion failed at file:binary_manager.c line: 1\\n')\n"
+            "sys.stdout.flush()\n"
+            "time.sleep(3)\n"
+        )
+        request = dataclasses.replace(
+            self.request(),
+            expect_reject="QEMU_LOAD_REJECT common",
+            forbid_marker="QEMU_APP1_STARTED",
+        )
+
+        code = self.runner.run_kernel_tc(request, self.child_command(script))
+        result = self.read_result()
+
+        self.assertEqual(1, code)
+        self.assertEqual("kernel-assert", result["reason"])
 
     def test_early_exit_records_tail_and_qemu_exit(self) -> None:
         script = "import sys; sys.stdout.write('diagnostic-tail\\n'); sys.stdout.flush()"
