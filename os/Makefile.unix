@@ -493,9 +493,9 @@ endif
 # Verify app binary to make sure there are no undefined symbols and to check the l2 pages per app are sufficient enough
 define VERIFY_APP
 	$(Q) echo "Verify $(OUTBIN_DIR)/$1"
-	$(Q) if [ "`nm -u $(OUTBIN_DIR)/$1 | wc -l`" != "0" ]; then \
+	$(Q) if [ "`$(NM) -u $(OUTBIN_DIR)/$1 | wc -l`" -ne 0 ]; then \
 		echo "Undefined Symbols in $(OUTBIN_DIR)/$1"; \
-		nm -u -l $(OUTBIN_DIR)/$1; \
+		$(NM) -u -l $(OUTBIN_DIR)/$1; \
 		rm $(OUTBIN_DIR)/$1; \
 		exit 1; \
 	fi

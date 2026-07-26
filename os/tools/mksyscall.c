@@ -519,11 +519,11 @@ static void generate_stub(int nparms)
 		fprintf(stream, "  set_errno(ENOSYS);\n");
 		if (strcmp(get_parm(RETTYPE_INDEX), "void") == 0) {
 			fprintf(stream, "  return 0;\n");
-		} else if (strcmp(get_parm(RETTYPE_INDEX), "int") == 0) {
-			fprintf(stream, "  return -1;\n");
-		} else {
-			fprintf(stream, "  return NULL;\n");
-		}
+			} else if (strcmp(get_parm(RETTYPE_INDEX), "int") == 0) {
+				fprintf(stream, "  return -1;\n");
+			} else {
+				fprintf(stream, "  return 0;\n");
+			}
 		fprintf(stream, "#endif\n");
 		fprintf(stream, "}\n");
 	}
