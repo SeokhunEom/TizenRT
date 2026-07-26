@@ -21,9 +21,10 @@ from __future__ import print_function
 import os
 import sys
 import struct
-import string
 import shutil
+import subprocess
 import config_util as util
+from loadable_binary_header import BinaryNameError, encode_binary_name, make_resource_binary_header
 
 cfg_path = os.path.dirname(__file__) + '/../.config'
 
@@ -32,6 +33,13 @@ ELF = 1
 
 # Temporary file to estimate the static RAM size.
 STATIC_RAM_ESTIMATION = 'temp_static_ram_estimation_file'
+
+def find_executable(command):
+    for directory in os.environ.get('PATH', '').split(os.pathsep):
+        candidate = os.path.join(directory, command)
+        if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+    return None
 
 def roundup_power_two(size):
     size = size - 1
@@ -52,8 +60,15 @@ def get_static_ram_size(bin_type):
     bsssize = 0
     if bin_type == ELF :
         # Static RAM size : Extract from readelf command in linux(ONLY for elf)
-        os.system('readelf -S ' + file_path + '_dbg > ' + STATIC_RAM_ESTIMATION)
-        ram_fp = open(STATIC_RAM_ESTIMATION, 'rb')
+        readelf = find_executable('readelf') or find_executable('arm-none-eabi-readelf')
+        if readelf is None:
+            print("Error : readelf command is not found.")
+            sys.exit(1)
+
+        with open(STATIC_RAM_ESTIMATION, 'w') as ram_fp:
+            subprocess.check_call([readelf, '-S', file_path + '_dbg'], stdout=ram_fp)
+
+        ram_fp = open(STATIC_RAM_ESTIMATION, 'r')
         line = ram_fp.readline()
         while line:
             words = line.split('.')
@@ -179,17 +194,13 @@ def make_kernel_binary_header():
 #
 ############################################################################
 
-def make_user_binary_header():
+def make_user_binary_header(binary_name):
     binary_format = sys.argv[3]
-    binary_name = sys.argv[4]
     binary_ver = sys.argv[5]
     dynamic_ram_size = sys.argv[6]
     main_stack_size = sys.argv[7]
     main_priority = sys.argv[8]
     loading_priority = sys.argv[9]
-
-    # Path to directory of this file
-    mkbinheader_path = os.path.dirname(__file__)
 
     SIZE_OF_HEADERSIZE = 2
     SIZE_OF_BINTYPE = 1
@@ -297,7 +308,7 @@ def make_user_binary_header():
         fp.write(struct.pack('B', main_priority))
         fp.write(struct.pack('B', loading_priority))
         fp.write(struct.pack('I', file_size))
-        fp.write('{:{}{}.{}}'.format(binary_name, '<', SIZE_OF_BINNAME, SIZE_OF_BINNAME - 1).replace(' ','\0'))
+        fp.write(binary_name)
         fp.write(struct.pack('I', int(binary_ver)))
         fp.write(struct.pack('I', binary_ram_size))
         fp.write(struct.pack('I', int(main_stack_size)))
@@ -381,67 +392,19 @@ def make_common_binary_header():
 
 ############################################################################
 #
-# Resource binary header information :
-#
-# The total size is 4096 bytes but CRC value (4 bytes) will be prepended later.
-# So now it makes header with (4096 - 4) bytes.
-# +---------------------------------------------------------------------------------+
-# | Header size | Binary Version |  Binary Size |              Padding              |
-# |   (2bytes)  |    (4bytes)    |   (4bytes)   |         (4096 - 14 bytes)         |
-# +---------------------------------------------------------------------------------+
-#
-# parameter information :
-#
-# argv[1] is file path of binary file.
-# argv[2] is binary type.
-#
-###########################################################################
-def make_resource_binary_header():
-
-    SIZE_OF_TOTAL = 4096
-    SIZE_OF_HEADERSIZE = 2
-    SIZE_OF_BINVER = 4
-    SIZE_OF_BINSIZE = 4
-    
-    # Calculate binary header size
-    header_size = SIZE_OF_HEADERSIZE + SIZE_OF_BINVER + SIZE_OF_BINSIZE
-
-    remain_size = SIZE_OF_TOTAL - header_size - 4
-
-    # Get binary version
-    bin_ver = util.get_value_from_file(cfg_path, "CONFIG_RESOURCE_BINARY_VERSION=").replace('"','').replace('\n','')
-    if bin_ver == 'None' :
-        print("Error : Not Found config for resource binary version, CONFIG_RESOURCE_BINARY_VERSION")
-        sys.exit(1)
-    bin_ver = int(bin_ver)
-    if bin_ver < 101 or bin_ver > 991231 :
-        print("Error : Invalid Resource Binary Version, ",bin_ver,".")
-        print("        Please check CONFIG_RESOURCE_BINARY_VERSION with 'YYMMDD' format in (101, 991231)")
-        sys.exit(1)
-
-    with open(file_path, 'rb') as fp:
-        # binary data copy to 'data'
-        data = fp.read()
-        file_size = fp.tell()
-        fp.close()
-
-        fp = open(file_path, 'wb')
-
-        # Generate binary with header data
-        fp.write(struct.pack('H', header_size))
-        fp.write(struct.pack('I', int(bin_ver)))
-        fp.write(struct.pack('I', file_size))
-        # Add padding for total size 4 Kbytes
-        fp.write(b'\xff' * remain_size)
-        fp.write(data)
-
-############################################################################
-#
 # Generate headers for binary types
 #
 ############################################################################
 file_path  = sys.argv[1]
 binary_type = sys.argv[2]
+
+binary_name = b''
+if binary_type == 'user' :
+    try:
+        binary_name = encode_binary_name(sys.argv[4])
+    except BinaryNameError as error:
+        print("Error :", error)
+        sys.exit(1)
 
 # copy orignal binary to (filename)_without_header.(ext)
 file_path_without_header = os.path.splitext(file_path)[0] + "_without_header" + os.path.splitext(file_path)[1]
@@ -450,12 +413,11 @@ shutil.copyfile(file_path, file_path_without_header)
 if binary_type == 'kernel' :
     make_kernel_binary_header()
 elif binary_type == 'user' :
-    make_user_binary_header()
+    make_user_binary_header(binary_name)
 elif binary_type == 'common' :
     make_common_binary_header()
 elif binary_type == 'resource' :
-    make_resource_binary_header()
+    make_resource_binary_header(file_path, cfg_path)
 else : # Not supported.
     print("Error : Not supported Binary Type")
     sys.exit(1)
-
