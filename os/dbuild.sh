@@ -30,6 +30,7 @@ DOCKER_PUBLIC_IMAGE="tizenrt/tizenrt"
 DOCKER_DEFAULT_VERSION="1.5.8"
 DOCKER_ARM64_IMAGE="tizenrt/tizenrt:2.0.1-arm64-local"
 BUILD_JOBS=
+TRANSIENT_COPY_RACE_MARKER="as it was replaced while being copied"
 
 STATUS_LIST="NOT_CONFIGURED BOARD_CONFIGURED CONFIGURED BUILT PREPARE_DL DOWNLOAD_READY"
 BUILD_CMD=make
@@ -552,6 +553,21 @@ function UPDATE_STATUS()
 	echo "Docker Platform : ${DOCKER_PLATFORM}"
 }
 
+function RUN_BUILD_CONTAINER()
+{
+	local log_mode=$1
+	local run_status
+	shift
+
+	if [ "${log_mode}" == "append" ]; then
+		docker run --rm --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} ${DOCKER_HOSTNAME_OPT} ${DOCKER_LOCALTIME_OPT} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "$@" 2>&1 | tee -a build.log
+	else
+		docker run --rm --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} ${DOCKER_HOSTNAME_OPT} ${DOCKER_LOCALTIME_OPT} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "$@" 2>&1 | tee build.log
+	fi
+	run_status=${PIPESTATUS[0]}
+	return ${run_status}
+}
+
 function BUILD()
 {
 	local make_target=()
@@ -571,12 +587,18 @@ function BUILD()
 	fi
 	GET_BUILD_JOBS || exit 1
 
-	HOSTNAME="-h=`git config user.name | tr -d ' '`" # set github username instead of hostname, "-h=`hostname`"
-	LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
+	DOCKER_HOSTNAME_OPT="-h=`git config user.name | tr -d ' '`" # set github username instead of hostname, "-h=`hostname`"
+	DOCKER_LOCALTIME_OPT="-v /etc/localtime:/etc/localtime:ro"
 
 	echo "Build Jobs : ${BUILD_JOBS}"
-	docker run --rm --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "${make_target[@]}" 2>&1 | tee build.log
-	run_status=${PIPESTATUS[0]}
+	RUN_BUILD_CONTAINER truncate "${make_target[@]}"
+	run_status=$?
+	if [ ${run_status} -ne 0 ] && [ ${#make_target[@]} -eq 0 ] &&
+		grep -Fq "${TRANSIENT_COPY_RACE_MARKER}" build.log; then
+		echo "Transient bind-mount copy race detected; retrying build once with the same configuration." | tee -a build.log
+		RUN_BUILD_CONTAINER append "${make_target[@]}"
+		run_status=$?
+	fi
 	if [ ${run_status} -ne 0 ]; then
 		exit ${run_status}
 	fi
