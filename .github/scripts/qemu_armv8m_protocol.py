@@ -17,6 +17,7 @@ from qemu_armv8m_prompt import PromptEpoch
 
 
 PASS_RE: Final = re.compile(rb"Kernel TC End \[PASS : ([0-9]+), FAIL : ([0-9]+)\]")
+KERNEL_ASSERT_RE: Final = re.compile(rb"Assertion failed at file:")
 MAX_SEND_COUNT: Final = 5
 MAX_REJECT_OBSERVE_SECONDS: Final = 60.0
 TERMINAL_REAP_SECONDS: Final = 0.1
@@ -292,6 +293,8 @@ def run_protocol(request: RunRequest, command_builder: CommandBuilder) -> int:
                 if request.verbose:
                     sys.stdout.buffer.write(chunk)
                     sys.stdout.buffer.flush()
+                if KERNEL_ASSERT_RE.search(bytes(state.window)) is not None:
+                    return finish(request, state, ProtocolOutcome("failed", "kernel-assert", None))
                 negative_outcome = update_negative_markers(request, state, now)
                 if negative_outcome is not None:
                     return finish(request, state, negative_outcome)
