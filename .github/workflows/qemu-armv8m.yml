@@ -1,0 +1,270 @@
+name: qemu-armv8m
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/**"
+      - ".github/workflows/qemu-armv8m.yml"
+      - "apps/examples/testcase/**"
+      - "build/configs/qemu-armv8m/**"
+      - "framework/**"
+      - "os/**"
+      - "os/arch/arm/src/armv8-m/**"
+      - "os/board/qemu-armv8m/**"
+      - "os/tools/**"
+  push:
+    branches:
+      - master
+      - "codex/**"
+    paths:
+      - ".github/scripts/**"
+      - ".github/workflows/qemu-armv8m.yml"
+      - "apps/examples/testcase/**"
+      - "build/configs/qemu-armv8m/**"
+      - "framework/**"
+      - "os/**"
+      - "os/arch/arm/src/armv8-m/**"
+      - "os/board/qemu-armv8m/**"
+      - "os/tools/**"
+
+permissions:
+  contents: read
+
+env:
+  CI_ARTIFACT_ROOT: build/qemu-armv8m/ci-artifacts
+
+jobs:
+  exception-return-compile:
+    name: exception-return-${{ matrix.name }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: qemu-non-fpu
+            defines: >-
+              -DCONFIG_ARCH_CHIP_QEMU_ARMV8M=1 -DTEST_EXPECT_QEMU=1
+              -DTEST_EXPECT_FPU=0 -DTEST_EXPECT_BASE=0xffffffe1UL
+              -DTEST_EXPECT_HANDLER=0xfffffff1UL -DTEST_EXPECT_PRIVTHR=0xfffffff9UL
+              -DTEST_EXPECT_UNPRIVTHR=0xfffffffdUL
+          - name: qemu-fpu
+            defines: >-
+              -DCONFIG_ARCH_CHIP_QEMU_ARMV8M=1 -DCONFIG_ARCH_FPU=1
+              -DCONFIG_ARM_CMNVECTOR=1 -DTEST_EXPECT_QEMU=1 -DTEST_EXPECT_FPU=1
+              -DTEST_EXPECT_BASE=0xffffffe1UL -DTEST_EXPECT_HANDLER=0xfffffff1UL
+              -DTEST_EXPECT_PRIVTHR=0xffffffe9UL -DTEST_EXPECT_UNPRIVTHR=0xffffffedUL
+          - name: non-qemu-non-fpu
+            defines: >-
+              -DTEST_EXPECT_QEMU=0 -DTEST_EXPECT_FPU=0 -DTEST_EXPECT_BASE=0xffffffa0UL
+              -DTEST_EXPECT_HANDLER=0xffffffb0UL -DTEST_EXPECT_PRIVTHR=0xffffffb8UL
+              -DTEST_EXPECT_UNPRIVTHR=0xffffffbcUL
+          - name: non-qemu-fpu
+            defines: >-
+              -DCONFIG_ARCH_FPU=1 -DCONFIG_ARM_CMNVECTOR=1 -DTEST_EXPECT_QEMU=0
+              -DTEST_EXPECT_FPU=1 -DTEST_EXPECT_BASE=0xffffffa0UL
+              -DTEST_EXPECT_HANDLER=0xffffffb0UL -DTEST_EXPECT_PRIVTHR=0xffffffa8UL
+              -DTEST_EXPECT_UNPRIVTHR=0xffffffacUL
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Compile exception-return branch
+        run: |
+          clang -std=gnu99 -Wall -Wextra -Werror -Wconversion -Wshadow -fsyntax-only \
+            -Ios/board/qemu-armv8m/tests/include -Ios/arch/arm/src/armv8-m \
+            ${{ matrix.defines }} os/board/qemu-armv8m/tests/test_exc_return_values.c
+
+  qemu-positive:
+    name: positive-${{ matrix.config }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - hello
+          - loadable_all
+          - loadable_apps
+          - xip_all
+    env:
+      CI_ARTIFACT_DIR: build/qemu-armv8m/ci-artifacts/${{ matrix.config }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Prepare artifacts
+        run: |
+          mkdir -p "${CI_ARTIFACT_DIR}"
+          printf '%s\n' 'tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3' > "${CI_ARTIFACT_DIR}/image-digest.txt"
+          sha256sum "build/configs/qemu-armv8m/${{ matrix.config }}/defconfig" > "${CI_ARTIFACT_DIR}/defconfig.sha256"
+      - name: Install and record QEMU
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-arm
+          dpkg-query -W -f='${Version}\n' qemu-system-arm | tee "${CI_ARTIFACT_DIR}/qemu-package-version.txt"
+          qemu-system-arm --version | tee "${CI_ARTIFACT_DIR}/qemu-version.txt"
+          qemu-system-arm -machine help | tee "${CI_ARTIFACT_DIR}/qemu-machine-help.txt"
+          grep -Eq '^mps2-an505\b' "${CI_ARTIFACT_DIR}/qemu-machine-help.txt"
+      - name: Pull reviewed TizenRT build image
+        run: docker pull tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3
+      - name: Build qemu-armv8m
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace/os \
+            tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3 \
+            bash -lc '
+              set -euo pipefail
+              mkdir -p /tmp/tizenrt-ci-bin
+              ln -sf "$(command -v python3)" /tmp/tizenrt-ci-bin/python
+              export PATH="/tmp/tizenrt-ci-bin:$PATH"
+              if [ -f .config ]; then
+                make distclean
+              fi
+              ./tools/configure.sh qemu-armv8m/${{ matrix.config }}
+              make
+            ' 2>&1 | tee "${CI_ARTIFACT_DIR}/build.log"
+      - name: Verify generated XIP layout
+        if: matrix.config == 'xip_all'
+        run: |
+          set -euo pipefail
+          readelf -lW build/output/bin/common_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-readelf-programs.txt"
+          readelf -SW build/output/bin/common_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-readelf-sections.txt"
+          readelf -lW build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-readelf-programs.txt"
+          readelf -SW build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-readelf-sections.txt"
+          python3 .github/scripts/tests/test_qemu_armv8m_layout.py --root . \
+            --report "${CI_ARTIFACT_DIR}/xip-layout-report.json" \
+            --common-ld build/output/bin/common_0.ld --common-artifact build/output/bin/common_dbg \
+            --app1-ld build/output/bin/app1_0.ld --app1-artifact build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-layout-check.log"
+      - name: Run kernel_tc on QEMU
+        run: |
+          marker_args=()
+          if [[ "${{ matrix.config }}" == "hello" ]]; then
+            marker_args+=(
+              --expect-once "[tc_sched_sched_foreach] PASS"
+              --expect-once "[signal_findaction_null_main] PASS"
+              --expect-once "[tc_clock_clock_conversion] PASS"
+              --expect-once "[tc_timer_timer_deleteall] PASS"
+              --expect-once "[tc_semaphore_kernel] PASS"
+              --expect-once "[tc_pthread_kernel] PASS"
+              --expect-once "[tc_irq_kernel] PASS"
+              --expect-once "[tc_sched_kernel_affinity] PASS"
+              --expect-once "[tc_group_group_signal] PASS"
+              --expect-once "[tc_sched_kernel_state] PASS"
+              --expect-once "[tc_signal_kernel_pendingset] PASS"
+              --expect-once "[tc_environ_kernel] PASS"
+              --expect-once "[tc_errno_kernel] PASS"
+              --expect-once "[tc_mqueue_kernel] PASS"
+              --expect-once "[tc_procfs_kernel] PASS"
+              --expect-once "[tc_pipe_kernel] PASS"
+              --expect-once "[tc_vfs_kernel] PASS"
+              --expect-once "[tc_termios_tcsetattr_tcgetattr] PASS"
+              --expect-once "[tc_kmm_heap_negative_index] PASS"
+              --expect-once "[tc_kmm_heap_zero_index] PASS"
+              --expect-once "[tc_kmm_heap_upper_bound_index] PASS"
+            )
+          fi
+          python3 .github/scripts/qemu-armv8m-kernel-tc.py \
+            --config "${{ matrix.config }}" --timeout 1200 \
+            "${marker_args[@]}" \
+            --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+      - name: Upload QEMU artifacts
+        if: always()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: qemu-armv8m-positive-${{ matrix.config }}
+          path: ${{ env.CI_ARTIFACT_DIR }}
+          if-no-files-found: error
+
+  qemu-negative:
+    name: negative-${{ matrix.case }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - case: corrupt-common
+            config: xip_all
+          - case: omitted-common
+            config: xip_all
+          - case: corrupt-app1
+            config: loadable_all
+          - case: oversized-app1
+            config: loadable_all
+    env:
+      CI_ARTIFACT_DIR: build/qemu-armv8m/ci-artifacts/negative-${{ matrix.case }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Prepare artifacts
+        run: |
+          mkdir -p "${CI_ARTIFACT_DIR}"
+          printf '%s\n' 'tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3' > "${CI_ARTIFACT_DIR}/image-digest.txt"
+          sha256sum "build/configs/qemu-armv8m/${{ matrix.config }}/defconfig" > "${CI_ARTIFACT_DIR}/defconfig.sha256"
+      - name: Install and record QEMU
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-arm
+          dpkg-query -W -f='${Version}\n' qemu-system-arm | tee "${CI_ARTIFACT_DIR}/qemu-package-version.txt"
+          qemu-system-arm --version | tee "${CI_ARTIFACT_DIR}/qemu-version.txt"
+          qemu-system-arm -machine help | tee "${CI_ARTIFACT_DIR}/qemu-machine-help.txt"
+          grep -Eq '^mps2-an505\b' "${CI_ARTIFACT_DIR}/qemu-machine-help.txt"
+      - name: Pull reviewed TizenRT build image
+        run: docker pull tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3
+      - name: Build qemu-armv8m
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace/os \
+            tizenrt/tizenrt@sha256:678bc19455484d414031d322fd62853134b1353e9b61d466c0db9e85696a01b3 \
+            bash -lc '
+              set -euo pipefail
+              mkdir -p /tmp/tizenrt-ci-bin
+              ln -sf "$(command -v python3)" /tmp/tizenrt-ci-bin/python
+              export PATH="/tmp/tizenrt-ci-bin:$PATH"
+              if [ -f .config ]; then
+                make distclean
+              fi
+              ./tools/configure.sh qemu-armv8m/${{ matrix.config }}
+              make
+            ' 2>&1 | tee "${CI_ARTIFACT_DIR}/build.log"
+      - name: Run expected package rejection
+        run: |
+          set -euo pipefail
+          case "${{ matrix.case }}" in
+            corrupt-common)
+              cp build/output/bin/common "${CI_ARTIFACT_DIR}/corrupt-common"
+              printf '\377' | dd of="${CI_ARTIFACT_DIR}/corrupt-common" bs=1 seek=64 conv=notrunc status=none
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --common "${CI_ARTIFACT_DIR}/corrupt-common" --expect-reject "QEMU_LOAD_REJECT common" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              ;;
+            omitted-common)
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --omit-common --expect-reject "QEMU_LOAD_REJECT common" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              ;;
+            corrupt-app1)
+              cp build/output/bin/app1 "${CI_ARTIFACT_DIR}/corrupt-app1"
+              printf '\377' | dd of="${CI_ARTIFACT_DIR}/corrupt-app1" bs=1 seek=64 conv=notrunc status=none
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/corrupt-app1" --expect-reject "QEMU_LOAD_REJECT app1" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              ;;
+            oversized-app1)
+              cp build/output/bin/app1 "${CI_ARTIFACT_DIR}/oversized-app1"
+              printf '\000\000\020\000' | dd of="${CI_ARTIFACT_DIR}/oversized-app1" bs=1 seek=9 conv=notrunc status=none
+              dd if="${CI_ARTIFACT_DIR}/oversized-app1" of="${CI_ARTIFACT_DIR}/oversized-app1.payload" bs=1 skip=4 status=none
+              python3 os/tools/mkchecksum.py "${CI_ARTIFACT_DIR}/oversized-app1.payload"
+              mv "${CI_ARTIFACT_DIR}/oversized-app1.payload" "${CI_ARTIFACT_DIR}/oversized-app1"
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "QEMU_LOAD_REJECT app1 size" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              ;;
+          esac
+      - name: Upload rejection artifacts
+        if: always()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: qemu-armv8m-negative-${{ matrix.case }}
+          path: ${{ env.CI_ARTIFACT_DIR }}
+          if-no-files-found: error
