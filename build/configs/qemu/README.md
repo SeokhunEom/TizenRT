@@ -2,15 +2,18 @@
 
 QEMU is a generic and open source machine emulator and virtualizer.
 
+For the role split between this legacy LM3S6965 target and the ARMv8-M QEMU
+target, see [QEMU Target Roles](../qemu-targets.md).
+
 ## Information
 
 Targets Supported:
 
-- **lm3s6963-ek**
+- **lm3s6965-ek**
 
- ***NOTE:*** TizenRT supports three memory options for lm3s6963-ek board.
+ ***NOTE:*** TizenRT supports three memory options for lm3s6965-ek board.
 
-  - 64KB RAM requirement configuration which matches with real memory of ***lm3s6963-ek*** board
+  - 64KB RAM requirement configuration which matches with real memory of ***lm3s6965-ek*** board
 
   - 1MB RAM requirement which can be run on QEMU only with the [qemu-2.12.0-rc1_1m_ram_size.patch](https://github.com/Samsung/TizenRT/blob/master/build/configs/qemu/qemu-2.12.0-rc1_1m_ram_size.patch)
 
