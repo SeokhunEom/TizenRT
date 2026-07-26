@@ -38,6 +38,7 @@
 
 #define MPS2_UART0_BASE                 0x40200000
 #define MPS2_TIMER0_BASE                0x40000000
+#define MPS2_LAN9118_BASE               0x42000000
 
 #define MPS2_TIMER_CTRL_OFFSET          0x0000
 #define MPS2_TIMER_VALUE_OFFSET         0x0004

@@ -106,13 +106,16 @@ static void nic_display_state(void)
 	int numreqs = 3;
 	int num_nic = 0;
 
-	// to get ipv6 address call netlib_getifaddrs()
+	// IPv6 enumeration currently uses the LWNL control socket.  Ethernet-only
+	// builds can still display their IPv4 state through SIOCGIFCONF below.
 	struct ifaddrs *ifa = NULL, *ifp = NULL;
+#ifdef CONFIG_LWNL80211
 	ret = netlib_getifaddrs(&ifa);
 	if (ret < 0) {
 		NETCMD_LOGE(NTAG, "get ifaddrs fail\n");
 		return;
 	}
+#endif
 
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (fd < 0) {
@@ -187,7 +190,9 @@ static void nic_display_state(void)
 		NETCMD_LOG(NTAG, "\n");
 	}
 DONE:
+#ifdef CONFIG_LWNL80211
 	netlib_freeifaddrs(ifa);
+#endif
 	free(ifcfg.ifc_buf);
 	close(fd);
 }
@@ -392,20 +397,29 @@ static int _cmd_ifconfig_setipaddr(struct ifconfig_cmd_info_s *info)
 			NETCMD_LOG(NTAG, "Host IP: %s\n", hostip);
 			if (strstr(hostip, ".") != NULL) {
 				addr.s_addr = inet_addr(hostip);
-				netlib_set_ipv4addr(intf, &addr);
+				ret = netlib_set_ipv4addr(intf, &addr);
 #ifdef CONFIG_NET_IPv6
 			} else if (strstr(hostip, ":") != NULL) {
 				struct in6_addr addr6;
-				inet_pton(AF_INET6, hostip, &addr6);
-				netlib_set_ipv6addr(intf, &addr6);
+
+				if (inet_pton(AF_INET6, hostip, &addr6) != 1) {
+					NETCMD_LOGE(NTAG, "hostip is not valid\n");
+					return ERROR;
+				}
+				return netlib_set_ipv6addr(intf, &addr6);
 #endif /* CONFIG_NET_IPv6 */
 			} else {
 				NETCMD_LOGE(NTAG, "hostip is not valid\n");
 				return ERROR;
 			}
+
+			if (ret < 0) {
+				NETCMD_LOGE(NTAG, "failed to set host IP\n");
+				return ret;
+			}
 		}
 
-		/* Gateway and Netmask setting */
+		/* Gateway and netmask apply only to IPv4 addresses. */
 		ret = _ipv4_set_gateway_netmask(info, &addr);
 		if (ret < 0) {
 			NETCMD_LOGE(NTAG, "failed to set Gateway and Netmask\n");

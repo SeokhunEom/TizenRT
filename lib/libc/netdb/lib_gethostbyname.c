@@ -23,10 +23,8 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/ioctl.h>
 #include <netdb.h>
-#include <errno.h>
-#include <tinyara/netmgr/netctl.h>
+#include <string.h>
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -66,27 +64,32 @@ struct hostent g_hent = {g_name, &g_aliases, 0, 0, (char **)&g_phostent_addr};
 
 struct hostent *gethostbyname(const char *name)
 {
-	struct req_lwip_data req;
+	struct addrinfo hints;
+	struct addrinfo *result = NULL;
+	struct sockaddr_in *address;
 
-	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sockfd < 0) {
-		printf("socket() failed with errno: %d\t%s\n", errno, __FUNCTION__);
+	if (!name) {
 		return NULL;
 	}
 
-	memset(&req, 0, sizeof(req));
-	req.type = GETHOSTBYNAME;
-	req.msg.netdb.host_name = name;
-	req.msg.netdb.host_entry = &g_hent;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
 
-	int ret = ioctl(sockfd, SIOCLWIP, (unsigned long)&req);
-	if (ret == ERROR) {
-		printf("ioctl() failed with errno: %d\t%s\n", errno, __FUNCTION__);
-		close(sockfd);
+	if (getaddrinfo(name, NULL, &hints, &result) != 0 ||
+		!result || !result->ai_addr) {
+		if (result) {
+			freeaddrinfo(result);
+		}
 		return NULL;
 	}
 
-	close(sockfd);
-	return req.msg.netdb.host_entry;
+	address = (struct sockaddr_in *)result->ai_addr;
+	g_hostent_addr = address->sin_addr;
+	strncpy(g_name, name, DNS_MAX_NAME_LENGTH);
+	g_name[DNS_MAX_NAME_LENGTH] = '\0';
+	g_hent.h_addrtype = AF_INET;
+	g_hent.h_length = sizeof(struct in_addr);
+	freeaddrinfo(result);
+	return &g_hent;
 }
 #endif

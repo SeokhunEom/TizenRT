@@ -38,7 +38,9 @@ extern void vwifi_start(void);
 #ifdef CONFIG_VIRTUAL_BLE
 extern void vble_start(void);
 #endif
+#ifdef CONFIG_LWNL80211
 extern int trwifi_run_handler(void);
+#endif
 /****************************************************************************
  * Name: netmgr_setup
  *
@@ -119,10 +121,12 @@ void net_initialize(void)
 		NET_LOGKE(TAG, "!!!start stack fail!!!\n");
 		assert(0);
 	}
+#ifdef CONFIG_LWNL80211
 	if (trwifi_run_handler() != 0) {
 		NET_LOGKE(TAG, "!!!start event handler fail!!!\n");
 		assert(0);
 	}
+#endif
 
 	return;
 }

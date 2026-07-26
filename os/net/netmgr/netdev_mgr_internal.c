@@ -46,6 +46,7 @@
 #define NETDEV_MGR_LOOP_NAME "lo"
 #define NETDEV_MGR_WIFI_NAME "wlan"
 #define NETDEV_MGR_ETHERNET_NAME "eth"
+#define NETDEV_ETHERNET_HEADER_LEN 14
 #define TAG "[NETMGR]"
 
 static struct netdev g_netdev[CONFIG_NETDEV_NUM];
@@ -64,6 +65,21 @@ static sem_t g_netdev_lock;
  */
 // the way to get lwip stack need to be changed.
 extern void *get_netdev_ops_lwip(void);
+
+static void _nm_release_stack(struct netdev *dev)
+{
+	struct netdev_ops *ops = dev ? (struct netdev_ops *)dev->ops : NULL;
+
+	if (!ops) {
+		return;
+	}
+
+	if (ops->nic && ops->deinit_nic) {
+		(void)ops->deinit_nic(dev);
+	}
+	kmm_free(ops);
+	dev->ops = NULL;
+}
 
 struct netdev *nm_get_netdev(uint8_t *ifname)
 {
@@ -97,11 +113,17 @@ int nm_foreach(tr_netdev_callback_t callback, void *arg)
 
 int _nm_register_loop(struct netdev *dev, struct netdev_config *config)
 {
-	int res = 0;
+	int res;
 	struct nic_config nconfig;
 	nconfig.loopback = 1;
 
 	struct netdev_ops *ops = get_netdev_ops_lwip();
+	if (!ops || !ops->init_nic) {
+		if (ops) {
+			kmm_free(ops);
+		}
+		return -ENOMEM;
+	}
 	dev->ops = (void *)ops;
 	res = ops->init_nic(dev, &nconfig);
 
@@ -110,33 +132,54 @@ int _nm_register_loop(struct netdev *dev, struct netdev_config *config)
 
 struct netdev *nm_register(struct netdev_config *config)
 {
+	struct netdev *dev;
+	struct netdev_ops *ops;
+	struct nic_config nconfig;
+	struct sockaddr_in *addr;
+	char name[IFNAMSIZ] = {0,};
+	int res;
+
 	//NETDEV_LOCK;
-	if (g_netdev_idx == CONFIG_NETDEV_NUM) {
+	if (!config) {
+		NET_LOGKE(TAG, "invalid netdev config\n");
+		return NULL;
+	}
+
+	if (g_netdev_idx >= CONFIG_NETDEV_NUM) {
 		NET_LOGKE(TAG, "No available netdev slot %d %d\n",
 					g_netdev_idx, CONFIG_NETDEV_NUM);
 		return NULL;
 	}
 
-	struct netdev *dev = &g_netdev[g_netdev_idx++];
-
-	char name[IFNAMSIZ] = {0,};
+	dev = &g_netdev[g_netdev_idx];
 	if (config->type == NM_LOOPBACK) {
 		snprintf(name, IFNAMSIZ, "%s", NETDEV_MGR_LOOP_NAME);
 		strncpy(dev->ifname, name, IFNAMSIZ);
 		dev->type = NM_LOOPBACK;
-		int res = _nm_register_loop(dev, config);
+		res = _nm_register_loop(dev, config);
 		if (res < 0) {
 			NET_LOGKE(TAG, "initialize loopback fail\n");
+			_nm_release_stack(dev);
+			memset(dev, 0, sizeof(*dev));
 			return NULL;
 		}
+		g_netdev_idx++;
 		return dev;
 	} else if (config->type == NM_WIFI) {
-		snprintf(name, IFNAMSIZ, "%s%d", NETDEV_MGR_WIFI_NAME, g_wlan_idx++);
+		if (!config->ops || !config->t_ops.wl) {
+			NET_LOGKE(TAG, "invalid wi-fi operations\n");
+			return NULL;
+		}
+		snprintf(name, IFNAMSIZ, "%s%d", NETDEV_MGR_WIFI_NAME, g_wlan_idx);
 		strncpy(dev->ifname, name, IFNAMSIZ);
 		dev->type = NM_WIFI;
 		dev->t_ops.wl = config->t_ops.wl;
 	} else if (config->type == NM_ETHERNET) {
-		snprintf(name, IFNAMSIZ, "%s%d", NETDEV_MGR_ETHERNET_NAME, g_eth_idx++);
+		if (!config->ops || !config->t_ops.eth) {
+			NET_LOGKE(TAG, "invalid ethernet operations\n");
+			return NULL;
+		}
+		snprintf(name, IFNAMSIZ, "%s%d", NETDEV_MGR_ETHERNET_NAME, g_eth_idx);
 		strncpy(dev->ifname, name, IFNAMSIZ);
 		dev->type = NM_ETHERNET;
 		dev->t_ops.eth = config->t_ops.eth;
@@ -145,19 +188,32 @@ struct netdev *nm_register(struct netdev_config *config)
 		return NULL;
 	}
 
-	// to do calculate exact size of tx_buf
-	dev->tx_buf = (uint8_t *)kmm_malloc(config->mtu + 12); // 12 is padding.
-	if (!dev->tx_buf) {
-		NET_LOGKE(TAG, "create txbuf fail(%d)\n", config->mtu + 12);
+	if (config->hwaddr_len < 0 ||
+		config->hwaddr_len > NM_MAX_HWADDR_LEN ||
+		config->mtu <= 0 ||
+		config->mtu > UINT16_MAX - NETDEV_ETHERNET_HEADER_LEN) {
+		NET_LOGKE(TAG, "invalid hardware address length or MTU\n");
+		memset(dev, 0, sizeof(*dev));
 		return NULL;
 	}
-	struct nic_config nconfig;
+
+	dev->tx_buf = (uint8_t *)kmm_malloc(config->mtu + NETDEV_ETHERNET_HEADER_LEN);
+	if (!dev->tx_buf) {
+		NET_LOGKE(TAG, "create txbuf fail(%d)\n",
+				 config->mtu + NETDEV_ETHERNET_HEADER_LEN);
+		memset(dev, 0, sizeof(*dev));
+		return NULL;
+	}
+	memset(&nconfig, 0, sizeof(nconfig));
 	nconfig.flag = config->flag;
 	/*  Hardware address */
 	nconfig.mtu = config->mtu;
 	nconfig.hwaddr_len = config->hwaddr_len;
+	if (config->type == NM_ETHERNET) {
+		memcpy(nconfig.hwaddr, config->hwaddr, config->hwaddr_len);
+	}
 	/*  IP4 address */
-	struct sockaddr_in *addr = (struct sockaddr_in *)&nconfig.addr;
+	addr = (struct sockaddr_in *)&nconfig.addr;
 	addr->sin_addr.s_addr = 0;
 	addr = (struct sockaddr_in *)&nconfig.netmask;
 	addr->sin_addr.s_addr = 0;
@@ -166,7 +222,7 @@ struct netdev *nm_register(struct netdev_config *config)
 #if defined(CONFIG_ENABLE_HOMELYNK) && (CONFIG_ENABLE_HOMELYNK == 1)
 	/* When wlan0:ST and wlan1:softap, Default interface is wlan0 */
 	if (config->type == NM_WIFI) {
-		if (g_wlan_idx > 1) {
+		if (g_wlan_idx > 0) {
 			nconfig.is_default = 0;
 		}
 		else {
@@ -182,10 +238,29 @@ struct netdev *nm_register(struct netdev_config *config)
 	nconfig.loopback = 0;
 	nconfig.io_ops = *config->ops;
 
-	struct netdev_ops *ops = get_netdev_ops_lwip();
+	ops = get_netdev_ops_lwip();
+	if (!ops || !ops->init_nic) {
+		NET_LOGKE(TAG, "network stack operations unavailable\n");
+		kmm_free(dev->tx_buf);
+		memset(dev, 0, sizeof(*dev));
+		return NULL;
+	}
 	dev->ops = (void *)ops;
-	ops->init_nic(dev, &nconfig);
+	res = ops->init_nic(dev, &nconfig);
+	if (res < 0) {
+		NET_LOGKE(TAG, "initialize network interface fail\n");
+		kmm_free(dev->tx_buf);
+		_nm_release_stack(dev);
+		memset(dev, 0, sizeof(*dev));
+		return NULL;
+	}
 	dev->priv = config->priv;
+	if (config->type == NM_WIFI) {
+		g_wlan_idx++;
+	} else {
+		g_eth_idx++;
+	}
+	g_netdev_idx++;
 
 	//NETDEV_UNLOCK;
 	return dev;

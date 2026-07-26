@@ -336,6 +336,12 @@ static err_t lwip_linkoutput(struct netif *nic, struct pbuf *buf)
 	struct netdev *dev = LW_GETND(nic);
 	int offset = 0;
 	struct pbuf *tbuf = buf;
+
+	if (buf->tot_len > nic->mtu + SIZEOF_ETH_HDR) {
+		NET_LOGKE(TAG, "linkoutput frame too large: %u\n", buf->tot_len);
+		return ERR_BUF;
+	}
+
 	while (tbuf) {
 		memcpy((void *)&dev->tx_buf[offset], (void *)tbuf->payload, tbuf->len);
 		offset += tbuf->len;
@@ -793,8 +799,9 @@ static int lwip_init_nic(struct netdev *dev, struct nic_config *config)
 	((struct netdev_ops *)dev->ops)->linkoutput = config->io_ops.linkoutput;
 	((struct netdev_ops *)dev->ops)->igmp_mac_filter = config->io_ops.igmp_mac_filter;
 
-	nic->mtu = CONFIG_NET_ETH_MTU;
+	nic->mtu = config->mtu;
 	nic->hwaddr_len = config->hwaddr_len;
+	memcpy(nic->hwaddr, config->hwaddr, config->hwaddr_len);
 #if LWIP_IPV6
 	nic->output_ip6 = ethip6_output;
 #endif /* LWIP_IPV6 */
@@ -803,7 +810,7 @@ static int lwip_init_nic(struct netdev *dev, struct nic_config *config)
 #if LWIP_IPV4 && LWIP_IGMP
 	nic->igmp_mac_filter = lwip_set_multicast_list;
 #endif
-	nic->num = g_num++;
+	nic->num = g_num;
 
 	/*
 	 * Initialize the snmp variables and counters inside the struct netif.
@@ -821,7 +828,13 @@ static int lwip_init_nic(struct netdev *dev, struct nic_config *config)
 	netmask.addr = taddr->sin_addr.s_addr;
 	taddr = (struct sockaddr_in *)&config->gw;
 	gw.addr = taddr->sin_addr.s_addr;
-	netif_add(nic, &ipaddr, &netmask, &gw, NULL, _lwip_nic_init, tcpip_input);
+	if (!netif_add(nic, &ipaddr, &netmask, &gw, NULL,
+				   _lwip_nic_init, tcpip_input)) {
+		((struct netdev_ops *)dev->ops)->nic = NULL;
+		kmm_free(rnetif);
+		return -1;
+	}
+	g_num++;
 	if (config->is_default) {
 		netif_set_default(nic);
 	}
@@ -892,7 +905,7 @@ static int lwip_get_stats(struct netdev *dev, void *arg)
 
 struct netdev_ops *get_netdev_ops_lwip(void)
 {
-	struct netdev_ops *netdev_ops = (struct netdev_ops *)kmm_malloc(sizeof(struct netdev_ops));
+	struct netdev_ops *netdev_ops = (struct netdev_ops *)kmm_zalloc(sizeof(*netdev_ops));
 	if (!netdev_ops) {
 		NET_LOGKE(TAG, "alloc netdev_ops fail\n");
 		return NULL;
