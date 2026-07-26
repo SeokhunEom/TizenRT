@@ -44,7 +44,13 @@ struct mm_heap_s *kmm_get_baseheap(void)
  ************************************************************************/
 struct mm_heap_s *kmm_get_heap(void *addr)
 {
-	return mm_get_heap(addr);
+	int heap_idx = kmm_get_index_of_heap(addr);
+
+	if (heap_idx == INVALID_HEAP_IDX) {
+		return NULL;
+	}
+
+	return &g_kmmheap[heap_idx];
 }
 
 /************************************************************************
@@ -56,7 +62,11 @@ struct mm_heap_s *kmm_get_heap(void *addr)
  ************************************************************************/
 struct mm_heap_s *kmm_get_heap_with_index(int index)
 {
-	return mm_get_heap_with_index(index);
+	if (index < 0 || index >= CONFIG_KMM_NHEAPS) {
+		mdbg("heap index is out of range.\n");
+		return NULL;
+	}
+	return &g_kmmheap[index];
 }
 
 /************************************************************************
@@ -68,5 +78,28 @@ struct mm_heap_s *kmm_get_heap_with_index(int index)
  ************************************************************************/
 int kmm_get_index_of_heap(void *mem)
 {
-	return mm_get_index_of_heap(mem);
+	int heap_idx;
+
+	if (mem == NULL) {
+		return INVALID_HEAP_IDX;
+	}
+
+	/* Search the kernel heaps (g_kmmheap) directly.  We must not delegate to
+	 * mm_get_index_of_heap() here: in the protected/kernel build BASE_HEAP
+	 * resolves to the current task's user heap, so a kernel-heap address would
+	 * never be found and it would wrongly return INVALID_HEAP_IDX.
+	 */
+	for (heap_idx = 0; heap_idx < CONFIG_KMM_NHEAPS; heap_idx++) {
+		int region = 0;
+#if CONFIG_KMM_REGIONS > 1
+		for (; region < g_kmmheap[heap_idx].mm_nregions; region++)
+#endif
+		{
+			if ((mem > (void *)g_kmmheap[heap_idx].mm_heapstart[region]) && (mem < (void *)g_kmmheap[heap_idx].mm_heapend[region])) {
+				return heap_idx;
+			}
+		}
+	}
+
+	return INVALID_HEAP_IDX;
 }

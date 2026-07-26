@@ -135,6 +135,13 @@ config ARCH_CHIP_AMEBASMART
 	---help---
 		Realtek AMEBASMART architectures (ARM Cortex-A32).
 
+config ARCH_CHIP_QEMU_ARMV8M
+	bool "QEMU MPS2-AN505"
+	select ARCH_CORTEXM33
+	select ARCH_HAVE_MPU
+	---help---
+		QEMU MPS2-AN505 board model with a Cortex-M33 CPU.
+
 endchoice
 
 config ARCH_CHIP
@@ -149,6 +156,7 @@ config ARCH_CHIP
 	default "armino"	if ARCH_CHIP_ARMINO
 	default "amebalite"	if ARCH_CHIP_AMEBALITE
 	default "amebasmart"	if ARCH_CHIP_AMEBASMART
+	default "qemu-armv8m" if ARCH_CHIP_QEMU_ARMV8M
 	default "stm32h745"     if ARCH_CHIP_STM32H745
 	default "imx6"		if ARCH_CHIP_IMX6
 
@@ -560,5 +568,8 @@ source arch/arm/src/armino/Kconfig
 endif
 if ARCH_CHIP_STM32H745
 source arch/arm/src/stm32h745/Kconfig
+endif
+if ARCH_CHIP_QEMU_ARMV8M
+source arch/arm/src/qemu-armv8m/Kconfig
 endif
 endif

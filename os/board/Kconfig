@@ -52,6 +52,12 @@ config ARCH_BOARD_LM3S6965EK
 		Stellaris LM3S6965 Evaluation Kit.  This board is based on the
 		an ARM Cortex-M3 MCU, the Luminary/TI LM3S6965.
 
+config ARCH_BOARD_QEMU_ARMV8M
+	bool "QEMU MPS2-AN505"
+	depends on ARCH_CHIP_QEMU_ARMV8M
+	---help---
+		QEMU MPS2-AN505 board model with a Cortex-M33 CPU.
+
 config ARCH_BOARD_SIDK_S5JT200
 	bool "Samsung S5JT200 sidk board"
 	depends on ARCH_CHIP_S5JT200
@@ -210,6 +216,7 @@ config ARCH_BOARD
 	default "rtl8730e"           if ARCH_BOARD_RTL8730E
 	default "rtl8721csm"         if ARCH_BOARD_RTL8721CSM
 	default "stm32h745zi-nucleo" if ARCH_BOARD_STM32H745ZI_NUCLEO
+	default "qemu-armv8m"        if ARCH_BOARD_QEMU_ARMV8M
 	default "sabre-6quad"	     if ARCH_BOARD_SABRE_6QUAD	
 comment "Common Board Options"
 

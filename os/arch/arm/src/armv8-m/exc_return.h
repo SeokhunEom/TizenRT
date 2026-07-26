@@ -91,7 +91,11 @@
  * differ from the ARMv7 implementation
  */
 
+#ifdef CONFIG_ARCH_CHIP_QEMU_ARMV8M
+#define EXC_RETURN_BASE          0xffffffe1
+#else
 #define EXC_RETURN_BASE          0xffffffa0
+#endif
 
 /* EXC_RETURN_EXC_SECURE: Exception Secure.  The security domain the
  * exception was taken to.  If this bit is clear non-secure, else secure.
