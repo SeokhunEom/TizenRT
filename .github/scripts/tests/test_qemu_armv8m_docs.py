@@ -86,7 +86,14 @@ def analyze_docs(docs: Documentation) -> list[str]:
     for forbidden in ("qemu-system-arm", "-device loader", "addr=0x", "-kernel ../build/output"):
         if forbidden in armv8m_text:
             errors.append(f"ARMv8-M documentation must not duplicate raw QEMU command/address: {forbidden}")
-    for stale_claim in ("runtime fault", "IRQ assertion", "런타임 fault", "IRQ assertion"):
+    for stale_claim in (
+        "runtime fault",
+        "IRQ assertion",
+        "런타임 fault",
+        "semaphore-holder assertion caused a timeout",
+        "full Kernel TC is not currently green",
+        "semaphore holder assertion으로 timeout",
+    ):
         if stale_claim in armv8m_text:
             errors.append(f"documentation must not retain the unverified missing-common fault claim: {stale_claim}")
 
@@ -103,8 +110,10 @@ def analyze_docs(docs: Documentation) -> list[str]:
         "--expect-reject",
         "--forbid-marker",
         "Local runtime evidence includes `hello`, `loadable_all`, `loadable_apps`, and",
-        "full Kernel TC is not",
-        "reached TASH and loaded common/app1/app2",
+        "PASS : 459, FAIL : 0",
+        "PASS : 447, FAIL : 0",
+        "preallocated holder pool is a",
+        "local QEMU software-path evidence, not hardware-board validation",
         "explicit candidate commit/push authorization",
         ".github/workflows/qemu-armv8m.yml",
         "ubuntu-24.04",

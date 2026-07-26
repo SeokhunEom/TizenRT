@@ -119,6 +119,18 @@ Docker Image : tizenrt/tizenrt:2.0.1-arm64-local
 Docker Platform : linux/arm64
 ```
 
+`/Volumes/T7`의 exFAT bind mount에서 build 중 다음 문구가 발생하면
+`dbuild.sh`가 같은 build를 한 번 자동 재시도한다.
+
+```text
+as it was replaced while being copied
+```
+
+사용자가 메뉴에서 다시 `1`을 누를 필요는 없다. marker가 없는
+compiler/linker 오류는 재시도하지 않는다. marker와 다른 오류가 함께 있으면
+한 번만 재시도하며, 재시도도 실패하면 `os/build.log`에서 첫 오류와 마지막
+종료 상태를 함께 확인한다.
+
 ## 4. `qemu-armv8m/hello` 빌드
 
 메뉴 입력의 개념 예시는 다음과 같다. 실제 번호는 화면에 표시된 번호를 사용한다.
@@ -207,7 +219,7 @@ kernel_tc
 최종 출력 예:
 
 ```text
-########## Kernel TC End [PASS : 458, FAIL : 0] ##########
+########## Kernel TC End [PASS : 459, FAIL : 0] ##########
 ```
 
 `PASS`가 일부 보인다는 이유만으로 성공 처리하지 말고, 반드시 마지막 `Kernel TC End` 줄을 확인한다.
@@ -247,8 +259,7 @@ python3 .github/scripts/qemu-armv8m-kernel-tc.py \
 ```
 
 `xip_all`은 `--config xip_all`로 바꾼다. `loadable_apps`도 동일한 방식으로
-실행할 수 있다. 이번 검증에서는 common/app1/app2를 로드하고 TASH에
-진입했지만 semaphore holder assertion 뒤 timeout되었다. `--state-image`를 생략하면 임시 state를 사용하며, 새
+실행할 수 있다. `--state-image`를 생략하면 임시 state를 사용하며, 새
 패키지를 빌드한 뒤에는 기존 state image를 삭제해야 최신 패키지를 다시
 staging한다.
 
@@ -258,28 +269,27 @@ staging한다.
   smoke 성공이다.
 - full `kernel_tc` 성공은 result JSON의 `status`가 `pass`이고 마지막 줄이
   `Kernel TC End [PASS : n, FAIL : 0]`일 때만 인정한다.
+- `Assertion failed at file:`이 나오면 runner는 기다리지 않고
+  `reason=kernel-assert`로 실패한다. 해당 assertion이 첫 원인이다.
 
-현재 구현 검증에서는 `hello`가 `PASS : 457, FAIL : 2`였고,
-`loadable_all`과 `xip_all`은 package boot smoke는 확인했지만 full Kernel TC는
-각각 timeout이 발생했다. 이 결과는 QEMU 소프트웨어 검증이며 실제 BK/RTL
-보드 동작을 대신하지 않는다.
+2026-07-25 clean build/runtime 검증에서는 `hello`가
+`PASS : 459, FAIL : 0`, `loadable_all`, `loadable_apps`, `xip_all`이 각각
+`PASS : 447, FAIL : 0`이었다. 이 결과는 QEMU 소프트웨어 검증이며 실제
+BK/RTL 보드 동작을 대신하지 않는다.
 
-## `make download`가 실패할 때
+## `make download` 사용
 
-현재 저장소의 `qemu-armv8m/Make.defs`는 macOS에서 `make download`를 실행할 때 다음 문제가 나타날 수 있다.
-
-```text
-make: nproc: Command not found
-/bin/sh: @qemu-system-arm: command not found
-```
-
-`nproc`는 Linux 명령이고, 현재 Makefile의 QEMU 호출에는 recipe용 `@`가 남아 있기 때문이다. 이 경우 소스 파일을 수정하지 않고 이 문서의 직접 실행 명령을 사용한다.
+현재 `qemu-armv8m/Make.defs`의 `make download`는 선택된 config를 감지해
+저장소의 Python runner를 호출한다. runner가 QEMU를 시작하고 TASH에
+`kernel_tc`를 전송하므로 수동 입력 대신 자동 결과를 확인할 때 사용한다.
 
 ```bash
 cd "$TIZENRT_ROOT/os"
-PATH="$(brew --prefix)/bin:$PATH" \
-  qemu-system-arm -M mps2-an505 -kernel ../build/output/bin/tinyara -nographic
+PATH="$(brew --prefix)/bin:$PATH" make download
 ```
+
+현재 터미널에서 TASH를 직접 조작하려면 위의 “QEMU를 현재 터미널에서 직접
+실행” 절차를 사용한다.
 
 ## 10. 다른 QEMU config
 
@@ -312,24 +322,25 @@ cd "$TIZENRT_ROOT/os"
 | `qemu-system-arm: command not found` | `brew install qemu` 후 `export PATH="$(brew --prefix)/bin:$PATH"`를 실행한다. |
 | Docker 이미지가 없음 | `docker image inspect "$IMAGE_TAG"`를 확인하고 ARM64 이미지 build 절차를 실행한다. |
 | 잘못된 platform으로 registry를 찾음 | `dbuild.sh`가 `Docker Platform : linux/arm64`를 출력하는지 확인한다. 스크립트가 수정된 checkout인지도 확인한다. |
+| `as it was replaced while being copied` | build라면 스크립트가 한 번 자동 재시도한다. 두 번째 실패는 `os/build.log`와 종료 코드를 확인한다. |
 | `Already configured and compiled` | `./dbuild.sh menu`에서 `5. Clean Build and Re-Configure`를 선택한다. |
 | `TASH>>`가 안 나옴 | `tinyara`가 새로 생성됐는지, QEMU 프로세스가 남아 있지 않은지 확인한다. |
 | `kernel_tc`가 멈춘 것처럼 보임 | 전체 suite가 실행 중일 수 있으므로 마지막 `Kernel TC End`까지 기다린다. |
+| result의 `reason`이 `kernel-assert` | 로그의 첫 `Assertion failed at file:`을 원인으로 분석한다. |
 | `FAIL`이 1개 이상임 | 마지막 결과와 앞선 실패 testcase를 기록하고, 빌드 config와 변경사항을 확인한다. |
 
 ## 직접 검증 기록
 
-이 가이드는 2026-07-24에 다음 순서로 직접 확인했다.
+이 가이드는 2026-07-25에 다음 순서로 직접 확인했다.
 
 1. `qemu-armv8m/hello`를 ARM64 Docker 이미지로 clean build
 2. `qemu-system-arm -M mps2-an505 ... -nographic`로 현재 터미널에서 부팅
 3. TASH에서 `help` 실행
 4. TASH에서 `kernel_tc` 실행
-5. `Kernel TC End [PASS : 457, FAIL : 2]`를 확인했으며, 따라서 full suite
-   pass가 아님을 기록
+5. `Kernel TC End [PASS : 459, FAIL : 0]` 확인
 
-같은 세션에서 `loadable_all`과 `xip_all`은 각각 binary-manager/XIP package
-부팅 smoke를 확인했지만 full `kernel_tc`는 timeout이었다. `loadable_apps`는
-이 세션에서 local runtime을 실행하지 않았다.
+같은 변경 상태에서 `loadable_all`, `loadable_apps`, `xip_all`도 각각
+distclean/reconfigure 조건으로 build하고 runner를 실행해
+`Kernel TC End [PASS : 447, FAIL : 0]`을 확인했다.
 
 QEMU 결과는 QEMU 소프트웨어 경로의 검증 결과이며, 실제 보드의 주변장치나 하드웨어 동작을 의미하지 않는다.

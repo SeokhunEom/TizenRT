@@ -47,11 +47,18 @@ runner가 보드별 실행 명령, TASH 프롬프트, `kernel_tc`, serial log와
 로컬 runtime 증거는 ARM64 이미지와 persistent-state runner를 사용한
 `hello`, `loadable_all`, `loadable_apps`, `xip_all`에 대해 확보했습니다.
 TASH 부팅, binary-manager 패키지 탐색, 앱 로드와 XIP 패키지 배치를
-확인했습니다. `loadable_apps`는 common/app1/app2 로드와 TASH 진입 뒤
-semaphore holder assertion으로 timeout되었습니다. 모든 구성에서 full `Kernel TC`가
-성공한 것은 아니며, 현재 로컬 결과에는 semaphore/multiheap 실패 또는
-timeout이 포함됩니다. 따라서 build/boot smoke test를 full `kernel_tc`
-통과로 보고하지 않습니다.
+확인했습니다. 2026-07-25 clean build와 새 runner 실행에서 `hello`는
+`PASS : 459, FAIL : 0`, loadable/XIP 세 구성은 각각
+`PASS : 447, FAIL : 0`으로 완료되었습니다. 이 결과는 QEMU 소프트웨어
+경로의 로컬 증거이며 실제 보드 검증을 대신하지 않습니다.
+
+`hello`는 priority inheritance와 Binary Manager가 모두 꺼져 semaphore
+holder tracking을 빌드하지 않습니다. PI-off `loadable_all`과
+`loadable_apps`는 Binary Manager holder recovery용으로
+`CONFIG_SEM_PREALLOCHOLDERS=16`을 사용합니다. `xip_all`도 priority
+inheritance와 Binary Manager용으로 같은 크기의 pool을 사용합니다.
+preallocated holder pool은 유한한 holder accounting 자원이므로 동시에
+존재할 수 있는 task/semaphore holder pair 수에 맞춰 설정합니다.
 
 loadable/XIP 구성은 runner에 `--state-image`를 지정하면 RAM-backed flash와
 A/B boot parameter를 persistent image로 보존할 수 있습니다. 패키지를 다시

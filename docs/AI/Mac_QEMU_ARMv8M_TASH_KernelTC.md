@@ -5,9 +5,8 @@
 ## 범위와 전제
 
 - QEMU 머신은 `mps2-an505`, Cortex-M33 계열 ARMv8-M이다.
-- `hello`, `loadable_all`, `loadable_apps`, `xip_all`은 로컬 빌드/부팅 smoke를
-  확인했다. `loadable_apps`는 common/app1/app2를 로드하고 TASH까지 진입한
-  뒤 semaphore holder assertion으로 timeout되었다.
+- `hello`, `loadable_all`, `loadable_apps`, `xip_all`은 각각 clean build,
+  TASH 진입, full `kernel_tc`를 로컬에서 확인했다.
 - 실제 RTL/BK 보드의 플래시, UART, 무선, 센서 동작은 이 문서의 QEMU 결과로 검증할 수 없다.
 - 저장소 경로가 다르면 아래 `TIZENRT_ROOT`만 현재 checkout 경로로 바꾼다.
 
@@ -50,6 +49,13 @@ cd "$TIZENRT_ROOT/os"
 Docker Image : tizenrt/tizenrt:2.0.1-arm64-local
 Docker Platform : linux/arm64
 ```
+
+실제 build가 `/Volumes/T7` exFAT bind mount의 일시적 copy race로 실패하고
+`os/build.log`에 `as it was replaced while being copied`가 있으면
+`dbuild.sh`가 같은 build를 정확히 한 번 자동 재시도한다. marker가 없는
+compiler/linker 오류와 `clean`/`distclean`/`menuconfig`는 재시도하지 않는다.
+marker와 다른 오류가 같은 로그에 있으면 한 번만 재시도하며, 두 번째 실패의
+종료 코드는 그대로 반환한다.
 
 ## `qemu-armv8m/hello` 빌드
 
@@ -123,6 +129,8 @@ full `kernel_tc` 성공을 의미하지 않는다.
 ## TASH와 `kernel_tc` 검증
 
 자동화된 runner를 권장한다. runner는 QEMU를 기동하고 새 TASH 프롬프트를 확인한 뒤 `kernel_tc`를 전송한다. 단순히 이전 로그에 PASS 문자열이 있는 것은 성공으로 보지 않으며, 새 실행에서 `PASS > 0` 및 `FAIL : 0`을 요구한다.
+`Assertion failed at file:`이 나타나면 최종 집계나 timeout을 기다리지 않고
+`reason=kernel-assert`로 즉시 실패한다.
 
 ```bash
 cd "$TIZENRT_ROOT"
@@ -168,16 +176,27 @@ done
 
 | config | 확인 결과 | 제한 사항 |
 | --- | --- | --- |
-| `hello` | build와 TASH/`kernel_tc` 실행 확인, `PASS : 457`, `FAIL : 2` | semaphore와 multiheap 관련 2건 실패 |
-| `loadable_all` | build, binary-manager의 common/app1/app2 탐색과 TASH 부팅 확인; A/B state staging/bootparam 단위 검증 | `kernel_tc`가 semaphore holder assertion 뒤 timeout |
-| `xip_all` | build, flash-backed common/app1 XIP 배치와 TASH 부팅 확인 | scheduler testcase 뒤 full `kernel_tc` timeout |
-| `loadable_apps` | build, binary-manager의 common/app1/app2 탐색과 TASH 부팅 확인 | semaphore holder assertion 뒤 timeout |
+| `hello` | clean build, TASH, `PASS : 459`, `FAIL : 0` | QEMU flat/multiheap 경로 |
+| `loadable_all` | clean build, common/app1/app2, `PASS : 447`, `FAIL : 0` | RAM-backed package 경로 |
+| `loadable_apps` | clean build, common/app1/app2, `PASS : 447`, `FAIL : 0` | 큰 app SRAM recipe |
+| `xip_all` | clean build, flash-backed common/app1, `PASS : 447`, `FAIL : 0` | PI-on/XIP 경로 |
 
-따라서 현재 상태를 “모든 QEMU config의 `FAIL : 0`”으로 보고하지 않는다.
+세마포어 holder 정책도 recipe 역할에 맞춘다. `hello`는 PI와 Binary
+Manager가 모두 꺼져 holder tracking을 빌드하지 않는다. PI-off
+`loadable_all`과 `loadable_apps`는 Binary Manager holder recovery용으로
+preallocated holder 16개를 사용한다. PI-on `xip_all`도 같은 크기를
+priority inheritance와 Binary Manager에 사용한다. pool이 가득 찬
+single-count waiter handoff에서는 해제된 zero-count holder를 직접
+재사용하고, multi-count handoff에서는 마지막 남은 pool slot에 waiter
+holder가 등록되는 경계를 회귀 테스트한다.
+
 CI의 positive/negative matrix와 artifact는 별도 검증 축이다.
 위 표의 runtime 수치는 이 checkout에서 생성한 로그를 바탕으로 한 세션
-기록이며, generated log/result는 커밋하지 않는다. 재현 시에는 매번 새
+기록(2026-07-25)이며, generated log/result는 커밋하지 않는다. 재현 시에는 매번 새
 `--log`와 `--result` 경로를 지정한다.
+이번 positive 결과는 모두 `active_slot=0`, `attempt=0`이므로 full
+`kernel_tc`와 package boot 증거이지 실제 alternate-slot failover 증거는
+아니다. failover는 별도 negative/recovery 시나리오로 검증한다.
 
 ## 수동 TASH 확인
 
@@ -205,4 +224,5 @@ kernel_tc
 | `Already configured and compiled` | `./dbuild.sh menu`에서 `5. Clean Build and Re-Configure`를 선택한다. |
 | `TASH>>`가 보이지 않음 | `build/output/bin/tinyara`가 새로 생성됐는지, QEMU가 실행 중인지, 로그/timeout을 확인한다. |
 | 예전 PASS 로그로 성공 처리됨 | 새 로그와 새 result JSON을 사용한다. runner는 fresh prompt epoch을 요구한다. |
+| result의 `reason`이 `kernel-assert` | 로그의 첫 `Assertion failed at file:`과 call stack을 확인한다. timeout으로 재실행해 덮지 않는다. |
 | `kernel_tc`가 실패함 | QEMU 로그의 `PASS`/`FAIL` 수를 확인하고, QEMU 통과를 하드웨어 통과로 해석하지 않는다. |

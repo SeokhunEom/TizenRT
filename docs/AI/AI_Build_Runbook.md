@@ -9,8 +9,9 @@
 - 실행 스크립트: Homebrew Bash 5.x의 `os/dbuild.sh menu`
 - 문서/QEMU checkout: `/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc`,
   branch `codex/qemu-armv8m-kernel-tc`
-- `dbuild.sh menu` 직접 빌드 checkout: `/Volumes/T7/Dev/TizenRT/main`, HEAD `85056ad92`
-- 검증일: 2026-07-24
+- `dbuild.sh menu` 직접 빌드 checkout: `/Volumes/T7/Dev/TizenRT/main`,
+  HEAD `85056ad92` (2026-07-24)
+- 현재 checkout QEMU clean build/runtime 재검증일: 2026-07-25
 
 이 문서는 빌드 재현 절차를 정의한다. 보드의 실제 플래시, UART, 무선, 센서 동작은 별도 하드웨어 검증이 필요하다.
 
@@ -164,6 +165,23 @@ x. Exit
 
 같은 board/config를 그대로 다시 빌드하려면 `./dbuild.sh menu`에서 `1`을 선택한다. 출력만 지우고 다시 빌드하려면 `4`를 선택한 다음 메뉴에서 `1`을 선택한다. config를 다시 고르려면 `5`를 사용한다.
 
+### exFAT bind-mount copy race 자동 재시도
+
+실제 build에서 첫 Docker 실행이 실패하고 `os/build.log`에 다음 문구가
+있으면 `dbuild.sh`가 같은 설정으로 정확히 한 번 자동 재시도한다.
+
+```text
+as it was replaced while being copied
+```
+
+이 동작은 `/Volumes/T7` exFAT bind mount에서 GNU `cp` 또는 `install`이
+동시에 갱신되는 산출물을 복사할 때 발생하는 일시적 race만 대상으로 한다.
+`clean`, `distclean`, `menuconfig`에는 적용하지 않는다. marker가 없는
+compiler/linker 오류는 재시도하지 않는다. 한 실패 로그에 marker와 다른
+오류가 함께 있으면 copy race 가능성을 우선해 한 번만 재시도하고, 두 번째
+실행도 실패하면 두 번째 종료 코드를 그대로 반환한다. 첫 실행과 재시도
+출력은 모두 `os/build.log`에 남는다.
+
 ## 4. 대표 보드 빌드 예
 
 다음은 메뉴 입력의 개념 예시다. 실제 번호는 실행 시 표시된 메뉴를 따른다.
@@ -258,14 +276,23 @@ loadable/XIP에서 main RAM 4 MiB + loaded RAM 8 MiB + SSRAM heap 512 KiB를
 사용한다. runner의 persistent state는 RAM-backed flash, A/B kernel/user
 slot, boot parameter를 보존한다.
 
-이번 검증에서 `hello`는 build/TASH/Kernel TC 실행까지 확인했지만
-`PASS : 457, FAIL : 2`였다. `loadable_all`은 binary-manager가 common/app1/app2를
-탐색하고 TASH를 띄웠으며 A/B state staging/bootparam 단위 검증을 통과했지만
-semaphore assertion 뒤 timeout이었다. `loadable_apps`도 common/app1/app2를
-탐색하고 TASH를 띄웠지만 같은 semaphore holder assertion 뒤 timeout이었다.
-`xip_all`은 common/app1 XIP 부팅을 확인했지만 scheduler testcase 뒤 timeout이었다.
-따라서 이 결과는 QEMU boot/package smoke 증거이지,
-모든 config의 `FAIL : 0` 또는 실제 보드 동작을 의미하지 않는다.
+runner는 `Kernel TC End` 집계 전이라도
+`Assertion failed at file:`을 감지하면 `reason=kernel-assert`로 즉시
+실패시킨다. timeout까지 기다리거나 negative-package 성공으로 잘못 분류하지
+않는다.
+
+2026-07-25에 각 config를 메뉴 흐름과 동일한 distclean/reconfigure 조건으로
+clean build한 뒤 full Kernel TC를 실행한 결과는 다음과 같다.
+
+| config | Kernel TC 결과 |
+| --- | --- |
+| `hello` | `PASS : 459, FAIL : 0` |
+| `loadable_all` | `PASS : 447, FAIL : 0` |
+| `loadable_apps` | `PASS : 447, FAIL : 0` |
+| `xip_all` | `PASS : 447, FAIL : 0` |
+
+이 결과는 해당 checkout의 QEMU 소프트웨어 경로에 대한 로컬 증거이며 실제
+보드 동작을 의미하지 않는다.
 Binary Manager의 손상/누락 package negative 경로는
 `binary_manager_load: Invalid Header data, name : common/app1` 진단과
 alternate-slot 성공 진단의 부재, recovery reboot 종료를 기준으로
