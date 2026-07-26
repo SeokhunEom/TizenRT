@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from verify_qemu_armv8m_workflow import HELLO_EXACT_ONCE_MARKERS, IMAGE_DIGEST, RUNTIME_TIMEOUT_SECONDS, analyze_workflow
+from verify_qemu_armv8m_workflow import HELLO_EXACT_ONCE_MARKERS, IMAGE_DIGEST, NEGATIVE_FORBIDDEN_MARKERS, RUNTIME_TIMEOUT_SECONDS, analyze_workflow
 
 
 class QemuArmv8mWorkflowContractTest(unittest.TestCase):
@@ -35,8 +35,16 @@ class QemuArmv8mWorkflowContractTest(unittest.TestCase):
         self.assertTrue(any("mutable TizenRT image tag" in error for error in errors), errors)
 
     def test_rejects_missing_negative_marker_xip_check_and_masked_distclean(self) -> None:
-        workflow = self.workflow().replace("--forbid-marker \"QEMU_APP1_STARTED\"", "", 1)
-        workflow = workflow.replace("QEMU_LOAD_REJECT app1", "QEMU_LOAD_REJECT missing-app1", 1)
+        workflow = self.workflow().replace(
+            f'--forbid-marker "{NEGATIVE_FORBIDDEN_MARKERS["corrupt-common"]}"',
+            "",
+            1,
+        )
+        workflow = workflow.replace(
+            "binary_manager_load: Invalid Header data, name : app1",
+            "binary_manager_load: Invalid Header data, name : missing-app1",
+            1,
+        )
         workflow = workflow.replace("Verify generated XIP layout", "Verify generated layout", 1)
         workflow = workflow.replace("make distclean", "make distclean || true", 1)
         errors = analyze_workflow(workflow)
@@ -114,23 +122,15 @@ class QemuArmv8mWorkflowContractTest(unittest.TestCase):
         self.assertTrue(any("checkout action" in error for error in analyze_workflow(workflow)))
 
     def test_rejects_oversized_app1_case_that_can_stop_at_crc(self) -> None:
-        crc_refreshed = self.workflow().replace(
-            "printf '\\000\\000\\020\\000' | dd of=\"${CI_ARTIFACT_DIR}/oversized-app1\" bs=1 seek=8 conv=notrunc status=none",
-            "printf '\\000\\000\\020\\000' | dd of=\"${CI_ARTIFACT_DIR}/oversized-app1\" bs=1 seek=9 conv=notrunc status=none\n"
-            "              dd if=\"${CI_ARTIFACT_DIR}/oversized-app1\" of=\"${CI_ARTIFACT_DIR}/oversized-app1.payload\" bs=1 skip=4 status=none\n"
-            "              python3 os/tools/mkchecksum.py \"${CI_ARTIFACT_DIR}/oversized-app1.payload\"\n"
-            "              mv \"${CI_ARTIFACT_DIR}/oversized-app1.payload\" \"${CI_ARTIFACT_DIR}/oversized-app1\"",
-            1,
-        )
-        exact_rejection = crc_refreshed.replace(
-            '--app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "QEMU_LOAD_REJECT app1"',
-            '--app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "QEMU_LOAD_REJECT app1 size"',
-            1,
-        )
+        workflow = self.workflow()
         mutations = {
-            "size field offset": exact_rejection.replace("seek=9", "seek=8", 1),
-            "CRC refresh": exact_rejection.replace("python3 os/tools/mkchecksum.py", "true #", 1),
-            "size rejection marker": exact_rejection.replace("QEMU_LOAD_REJECT app1 size", "QEMU_LOAD_REJECT app1", 1),
+            "size field offset": workflow.replace("seek=9", "seek=8", 1),
+            "CRC refresh": workflow.replace("python3 os/tools/mkchecksum.py", "true #", 1),
+            "app1 rejection marker": workflow.replace(
+                '--app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "binary_manager_load: Invalid Header data, name : app1"',
+                '--app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "binary_manager_load: Invalid Header data, name : missing-app1"',
+                1,
+            ),
         }
         for diagnostic, mutated in mutations.items():
             with self.subTest(diagnostic=diagnostic):

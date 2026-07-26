@@ -69,6 +69,9 @@ $(foreach BDIR, $(CONFIGURED), $(eval $(call DIR_template,$(BDIR),context)))
 $(foreach BDIR, $(CONFIGURED), $(eval $(call DIR_template,$(BDIR),all)))
 ifeq ($(CONFIG_XIP_ELF),y)
 $(foreach BDIR, $(CONFIGURED), $(eval $(call DIR_template,$(BDIR),undefsym)))
+ifeq ($(CONFIG_XIP_ELF_DUAL_SLOT),y)
+$(foreach BDIR, $(CONFIGURED), $(eval $(call DIR_template,$(BDIR),xip_slot1)))
+endif
 endif
 $(foreach BDIR, $(BUILDIRS), $(eval $(call DIR_template,$(BDIR),preconfig)))
 $(foreach CDIR, $(BUILDIRS), $(eval $(call DIR_template,$(CDIR),clean)))
@@ -93,6 +96,10 @@ build: $(foreach BDIR, $(CONFIGURED), $(BDIR)_all)
 
 ifeq ($(CONFIG_XIP_ELF),y)
 undefsym: $(foreach BDIR, $(CONFIGURED), $(BDIR)_undefsym)
+endif
+
+ifeq ($(CONFIG_XIP_ELF_DUAL_SLOT),y)
+xip_slot1: $(foreach BDIR, $(CONFIGURED), $(BDIR)_xip_slot1)
 endif
 
 context: $(foreach BDIR, $(CONFIGURED), $(BDIR)_context)

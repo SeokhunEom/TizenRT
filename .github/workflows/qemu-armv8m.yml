@@ -7,6 +7,7 @@ on:
       - ".github/workflows/qemu-armv8m.yml"
       - "apps/examples/testcase/**"
       - "build/configs/qemu-armv8m/**"
+      - "loadable_apps/**"
       - "framework/**"
       - "os/**"
       - "os/arch/arm/src/armv8-m/**"
@@ -21,6 +22,7 @@ on:
       - ".github/workflows/qemu-armv8m.yml"
       - "apps/examples/testcase/**"
       - "build/configs/qemu-armv8m/**"
+      - "loadable_apps/**"
       - "framework/**"
       - "os/**"
       - "os/arch/arm/src/armv8-m/**"
@@ -34,6 +36,17 @@ env:
   CI_ARTIFACT_ROOT: build/qemu-armv8m/ci-artifacts
 
 jobs:
+  contract-tests:
+    name: qemu-contract-tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Run QEMU Python contract tests
+        run: python3 -m unittest discover -s .github/scripts/tests -p 'test_qemu_armv8m*.py'
+      - name: Compile Python 3 build helpers
+        run: python3 -m py_compile os/tools/mkbootparam.py os/tools/mkchecksum.py
+
   exception-return-compile:
     name: exception-return-${{ matrix.name }}
     runs-on: ubuntu-24.04
@@ -132,12 +145,18 @@ jobs:
           set -euo pipefail
           readelf -lW build/output/bin/common_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-readelf-programs.txt"
           readelf -SW build/output/bin/common_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-readelf-sections.txt"
+          readelf -lW build/output/bin/common_1_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-alt-readelf-programs.txt"
+          readelf -SW build/output/bin/common_1_dbg | tee "${CI_ARTIFACT_DIR}/xip-common-alt-readelf-sections.txt"
           readelf -lW build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-readelf-programs.txt"
           readelf -SW build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-readelf-sections.txt"
+          readelf -lW build/output/bin/app1_1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-alt-readelf-programs.txt"
+          readelf -SW build/output/bin/app1_1_dbg | tee "${CI_ARTIFACT_DIR}/xip-app1-alt-readelf-sections.txt"
           python3 .github/scripts/tests/test_qemu_armv8m_layout.py --root . \
             --report "${CI_ARTIFACT_DIR}/xip-layout-report.json" \
             --common-ld build/output/bin/common_0.ld --common-artifact build/output/bin/common_dbg \
-            --app1-ld build/output/bin/app1_0.ld --app1-artifact build/output/bin/app1_dbg | tee "${CI_ARTIFACT_DIR}/xip-layout-check.log"
+            --common-alt-ld build/output/bin/common_1.ld --common-alt-artifact build/output/bin/common_1_dbg \
+            --app1-ld build/output/bin/app1_0.ld --app1-artifact build/output/bin/app1_dbg \
+            --app1-alt-ld build/output/bin/app1_1.ld --app1-alt-artifact build/output/bin/app1_1_dbg | tee "${CI_ARTIFACT_DIR}/xip-layout-check.log"
       - name: Run kernel_tc on QEMU
         run: |
           marker_args=()
@@ -242,15 +261,15 @@ jobs:
             corrupt-common)
               cp build/output/bin/common "${CI_ARTIFACT_DIR}/corrupt-common"
               printf '\377' | dd of="${CI_ARTIFACT_DIR}/corrupt-common" bs=1 seek=64 conv=notrunc status=none
-              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --common "${CI_ARTIFACT_DIR}/corrupt-common" --expect-reject "QEMU_LOAD_REJECT common" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --common "${CI_ARTIFACT_DIR}/corrupt-common" --expect-reject "binary_manager_load: Invalid Header data, name : common" --forbid-marker "binary_manager_load: common Header Checking Success" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
               ;;
             omitted-common)
-              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --omit-common --expect-reject "QEMU_LOAD_REJECT common" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config xip_all --omit-common --expect-reject "binary_manager_load: Invalid Header data, name : common" --forbid-marker "binary_manager_load: common Header Checking Success" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
               ;;
             corrupt-app1)
               cp build/output/bin/app1 "${CI_ARTIFACT_DIR}/corrupt-app1"
               printf '\377' | dd of="${CI_ARTIFACT_DIR}/corrupt-app1" bs=1 seek=64 conv=notrunc status=none
-              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/corrupt-app1" --expect-reject "QEMU_LOAD_REJECT app1" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/corrupt-app1" --expect-reject "binary_manager_load: Invalid Header data, name : app1" --forbid-marker "binary_manager_load: app1 Header Checking Success" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
               ;;
             oversized-app1)
               cp build/output/bin/app1 "${CI_ARTIFACT_DIR}/oversized-app1"
@@ -258,7 +277,7 @@ jobs:
               dd if="${CI_ARTIFACT_DIR}/oversized-app1" of="${CI_ARTIFACT_DIR}/oversized-app1.payload" bs=1 skip=4 status=none
               python3 os/tools/mkchecksum.py "${CI_ARTIFACT_DIR}/oversized-app1.payload"
               mv "${CI_ARTIFACT_DIR}/oversized-app1.payload" "${CI_ARTIFACT_DIR}/oversized-app1"
-              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "QEMU_LOAD_REJECT app1 size" --forbid-marker "QEMU_APP1_STARTED" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
+              python3 .github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all --app1 "${CI_ARTIFACT_DIR}/oversized-app1" --expect-reject "binary_manager_load: Invalid Header data, name : app1" --forbid-marker "binary_manager_load: app1 Header Checking Success" --timeout 1200 --log "${CI_ARTIFACT_DIR}/serial.log" --result "${CI_ARTIFACT_DIR}/result.json"
               ;;
           esac
       - name: Upload rejection artifacts

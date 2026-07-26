@@ -65,6 +65,16 @@ ifeq ($(CONFIG_XIP_ELF),y)
 $(BIN): $(OBJS)
 	$(Q) $(LD) -T $(USER_BIN_DIR)/$@_0.ld -T $(TOPDIR)/../build/configs/$(CONFIG_ARCH_BOARD)/scripts/xipelf/userspace_all.ld -e main -o $@ $(ARCHCRT0OBJ) $^ --start-group $(LIBGCC) $(LIBSUPXX) --end-group -R $(USER_BIN_DIR)/$(CONFIG_COMMON_BINARY_NAME)
 
+ifeq ($(CONFIG_XIP_ELF_DUAL_SLOT),y)
+$(BIN)_1: $(OBJS)
+	$(Q) $(LD) -T $(USER_BIN_DIR)/$@.ld -T $(TOPDIR)/../build/configs/$(CONFIG_ARCH_BOARD)/scripts/xipelf/userspace_all.ld -e main -o $@ $(ARCHCRT0OBJ) $^ --start-group $(LIBGCC) $(LIBSUPXX) --end-group -R $(USER_BIN_DIR)/$(CONFIG_COMMON_BINARY_NAME)_1
+
+xip_slot1: $(BIN)_1 | $(BUILDDIR)
+	$(Q) mkdir -p $(BUILDDIR)
+	$(Q) mv $(BIN)_1 $(BUILDDIR)/$(BIN)_1
+	$(Q) install $(BUILDDIR)/$(BIN)_1 $(USER_BIN_DIR)/$(BIN)_1
+endif
+
 undefsym : $(OBJS)
 	$(Q) $(LD) $(LDELFFLAGS) -o $(USER_BIN_DIR)/$(BIN).relelf $(ARCHCRT0OBJ) $^ --start-group $(LIBGCC) --end-group
 	$(Q) $(NM) -u $(USER_BIN_DIR)/$(BIN).relelf | grep -v "w " | awk -F"U " '{print "--require-defined "$$2}' >> $(USER_BIN_DIR)/lib_symbols.txt

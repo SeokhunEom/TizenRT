@@ -1,0 +1,31 @@
+#
+# QEMU MPS2-AN505 board configuration.
+#
+
+if ARCH_BOARD_QEMU_ARMV8M
+
+config FLASH_START_ADDR
+	hex
+	default 0x80c00000
+	---help---
+		Start of the QEMU RAM-backed flash device. The upper 4 MiB of
+		main RAM is reserved for persistent kernel and user binary slots.
+
+config FLASH_SIZE
+	int
+	default 4194304
+
+config FLASH_VSTART_LOADABLE
+	hex
+	default 0x80ca0000
+	depends on XIP_ELF
+
+config XIP_ELF_DUAL_SLOT
+	bool
+	default n
+	depends on XIP_ELF
+	---help---
+		Generate XIP linker scripts and package artifacts for both A/B
+		binary slots.
+
+endif # ARCH_BOARD_QEMU_ARMV8M

@@ -55,6 +55,8 @@ config ARCH_BOARD_LM3S6965EK
 config ARCH_BOARD_QEMU_ARMV8M
 	bool "QEMU MPS2-AN505"
 	depends on ARCH_CHIP_QEMU_ARMV8M
+	select ARCH_BOARD_HAVE_FLASH
+	select ARCH_HAVE_RESET
 	---help---
 		QEMU MPS2-AN505 board model with a Cortex-M33 CPU.
 
@@ -411,6 +413,9 @@ source board/rtl8721csm/Kconfig
 endif
 if ARCH_BOARD_STM32H745ZI_NUCLEO
 source board/stm32h745zi-nucleo/Kconfig
+endif
+if ARCH_BOARD_QEMU_ARMV8M
+source board/qemu-armv8m/Kconfig
 endif
 
 source board/common/Kconfig

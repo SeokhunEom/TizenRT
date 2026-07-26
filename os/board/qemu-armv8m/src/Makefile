@@ -18,9 +18,26 @@
 
 -include $(TOPDIR)/Make.defs
 
+DEPPATH = --dep-path .
+VPATH = .
+
+DEPPATH += --dep-path $(TOPDIR)/board/common
+VPATH += :$(TOPDIR)/board/common
+
 ASRCS =
 AOBJS = $(ASRCS:.S=$(OBJEXT))
-CSRCS = qemu_armv8m_boot.c
+
+ifeq ($(CONFIG_FLASH_PARTITION),y)
+CSRCS += partitions.c
+endif
+
+ifeq ($(CONFIG_LIB_BOARDCTL),y)
+DEPPATH += --dep-path $(TOPDIR)/arch
+VPATH += :$(TOPDIR)/arch
+CSRCS += boardctl.c
+endif
+
+CSRCS += qemu_armv8m_boot.c qemu_armv8m_flash.c
 COBJS = $(CSRCS:.c=$(OBJEXT))
 
 SRCS = $(ASRCS) $(CSRCS)
@@ -28,6 +45,7 @@ OBJS = $(AOBJS) $(COBJS)
 
 ARCH_SRCDIR = $(TOPDIR)/arch/$(CONFIG_ARCH)/src
 CFLAGS += -I$(TOPDIR)/binfmt -I$(TOPDIR)/binfmt/libelf
+CFLAGS += -I$(TOPDIR)/board/common
 CFLAGS += -I$(ARCH_SRCDIR)/chip -I$(ARCH_SRCDIR)/common -I$(ARCH_SRCDIR)/armv8-m
 
 all: libboard$(LIBEXT)
@@ -42,7 +60,7 @@ libboard$(LIBEXT): $(OBJS)
 	$(call ARCHIVE, $@, $(OBJS))
 
 .depend: Makefile $(SRCS)
-	$(Q) $(MKDEP) $(CC) -- $(CFLAGS) -- $(SRCS) >Make.dep
+	$(Q) $(MKDEP) $(DEPPATH) $(CC) -- $(CFLAGS) -- $(SRCS) >Make.dep
 	$(Q) touch $@
 
 depend: .depend

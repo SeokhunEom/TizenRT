@@ -5,11 +5,17 @@ import dataclasses
 import importlib
 import io
 import os
+import shutil
+import json
+import sys
 import time
 import unittest
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from qemu_armv8m_kernel_tc_test_support import RunnerHarness
+from qemu_armv8m_ab import flip_active_slot, stage_state
 
 
 PASS = "import sys; sys.stdout.buffer.write(b'Kernel TC End [PASS : 3, FAIL : 0]\\n'); sys.stdout.flush()"
@@ -18,6 +24,85 @@ FAIL = "import sys; sys.stdout.buffer.write(b'Kernel TC End [PASS : 3, FAIL : 1]
 
 
 class QemuArmv8mKernelTcTest(RunnerHarness):
+    def prepare_ab_request(self):
+        config_root = self.root / "build/configs/qemu-armv8m/loadable_all"
+        config_root.mkdir(parents=True)
+        shutil.copy2(
+            Path(__file__).resolve().parents[3] / "build/configs/qemu-armv8m/loadable_all/defconfig",
+            config_root / "defconfig",
+        )
+        bin_dir = self.root / "build/output/bin"
+        bin_dir.mkdir(parents=True)
+        for name in ("tinyara.bin", "common", "app1", "app2"):
+            data = bytearray(16 + len(name))
+            data[4:6] = (12).to_bytes(2, "little")
+            data[10:14] = len(name).to_bytes(4, "little")
+            data[16:] = name.encode()
+            (bin_dir / name).write_bytes(data)
+        state = self.root / "state.bin"
+        stage_state(self.root, "loadable_all", state)
+        request = dataclasses.replace(
+            self.request(),
+            config="loadable_all",
+            log_path=self.root / "artifacts/serial.log",
+            result_path=self.root / "artifacts/result.json",
+            max_reboots=1,
+        )
+        return request, state
+
+    def test_ab_retry_follows_binary_manager_slot_change(self) -> None:
+        request, state = self.prepare_ab_request()
+        seen_slots = []
+
+        def fake_protocol(attempt_request, _command_builder):
+            seen_slots.append(self.runner.active_slot(state, self.root, "loadable_all"))
+            attempt_request.result_path.parent.mkdir(parents=True, exist_ok=True)
+            if len(seen_slots) == 1:
+                flip_active_slot(state, self.root, "loadable_all")
+                attempt_request.result_path.write_text(
+                    json.dumps({"status": "failed", "reason": "qemu-exit", "returncode": 0}),
+                    encoding="utf-8",
+                )
+                return 1
+            attempt_request.result_path.write_text(
+                json.dumps({"status": "pass", "reason": "pass", "returncode": 0}),
+                encoding="utf-8",
+            )
+            return 0
+
+        original = self.runner.run_protocol
+        self.runner.run_protocol = fake_protocol
+        try:
+            code = self.runner._run_ab_attempts(request, state)
+        finally:
+            self.runner.run_protocol = original
+
+        self.assertEqual(0, code)
+        self.assertEqual([0, 1], seen_slots)
+
+    def test_ab_retry_does_not_mask_timeout(self) -> None:
+        request, state = self.prepare_ab_request()
+        attempts = []
+
+        def fake_protocol(attempt_request, _command_builder):
+            attempts.append(attempt_request)
+            attempt_request.result_path.parent.mkdir(parents=True, exist_ok=True)
+            attempt_request.result_path.write_text(
+                json.dumps({"status": "failed", "reason": "timeout", "returncode": None}),
+                encoding="utf-8",
+            )
+            return 1
+
+        original = self.runner.run_protocol
+        self.runner.run_protocol = fake_protocol
+        try:
+            code = self.runner._run_ab_attempts(request, state)
+        finally:
+            self.runner.run_protocol = original
+
+        self.assertEqual(1, code)
+        self.assertEqual(1, len(attempts))
+
     def test_qemu_command_covers_layouts_and_alternate_packages(self) -> None:
         _tinyara, common, app1 = self.write_packages()
 
@@ -205,7 +290,7 @@ class QemuArmv8mKernelTcTest(RunnerHarness):
         self.assertEqual("protocol-error", result["reason"])
         self.assertTrue(result["forbidden_marker_seen"])
 
-    def test_reject_before_observation_window_end_is_not_success(self) -> None:
+    def test_reject_followed_by_process_exit_is_expected_rejection(self) -> None:
         script = "import sys; sys.stdout.write('QEMU_LOAD_REJECT app1 crc\\n'); sys.stdout.flush()"
         request = dataclasses.replace(
             self.request(),
@@ -217,8 +302,24 @@ class QemuArmv8mKernelTcTest(RunnerHarness):
         code = self.runner.run_kernel_tc(request, self.child_command(script))
         result = self.read_result()
 
+        self.assertEqual(0, code)
+        self.assertEqual("expected-rejection", result["reason"])
+        self.assertEqual(0, result["returncode"])
+
+    def test_reject_followed_by_nonzero_process_exit_fails(self) -> None:
+        script = "import sys; sys.stdout.write('QEMU_LOAD_REJECT app1 crc\\n'); sys.stdout.flush(); sys.exit(7)"
+        request = dataclasses.replace(
+            self.request(),
+            expect_reject="QEMU_LOAD_REJECT app1",
+            forbid_marker="QEMU_APP1_STARTED",
+        )
+
+        code = self.runner.run_kernel_tc(request, self.child_command(script))
+        result = self.read_result()
+
         self.assertEqual(1, code)
         self.assertEqual("qemu-exit", result["reason"])
+        self.assertEqual(7, result["returncode"])
 
     def test_expected_rejection_requires_quiet_observation_window(self) -> None:
         script = (

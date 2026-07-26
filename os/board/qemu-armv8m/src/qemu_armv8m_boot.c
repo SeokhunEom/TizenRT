@@ -30,7 +30,15 @@
 
 #include <debug.h>
 
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#ifdef CONFIG_FLASH_PARTITION
+#include "common.h"
+#endif
+
+#if defined(CONFIG_BINARY_MANAGER) && defined(CONFIG_USE_BP)
+#include <tinyara/binary_manager.h>
+#endif
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 #include <crc32.h>
 #include <arch/chip/chip.h>
 #include <tinyara/binary_manager.h>
@@ -50,7 +58,7 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 #ifdef CONFIG_XIP_ELF
 #define QEMU_COMMON_LOADADDR      0x102c0000
 #define QEMU_APP1_LOADADDR        0x10360000
@@ -64,7 +72,7 @@
 #define QEMU_SSRAM_END            (MPS2_AN505_SSRAM_BASE + MPS2_AN505_SSRAM_SIZE)
 #endif
 
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 struct qemu_binary_slot_s {
 	FAR const char *name;
 	uintptr_t loadaddr;
@@ -73,7 +81,7 @@ struct qemu_binary_slot_s {
 };
 #endif
 
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 #ifdef CONFIG_XIP_ELF
 static const struct qemu_binary_slot_s g_qemu_common_slot = {
 	"common",
@@ -95,7 +103,7 @@ static const struct qemu_binary_slot_s g_qemu_app1_slot = {
  * Private Functions
  ****************************************************************************/
 
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 static int qemu_armv8m_reject(FAR const struct qemu_binary_slot_s *slot,
 							  FAR const char *reason, int result)
 {
@@ -336,10 +344,35 @@ static int qemu_armv8m_load_app1(void)
 #ifdef CONFIG_BOARD_INITIALIZE
 void board_initialize(void)
 {
+#ifdef CONFIG_FLASH_PARTITION
+	{
+		FAR struct mtd_dev_s *mtd;
+		partition_info_t partinfo;
+		int ret;
+
+		mtd = mtd_initialize();
+		ret = configure_mtd_partitions(mtd, 0, &partinfo);
+		if (ret != OK) {
+			lldbg("qemu-armv8m: failed to configure flash partitions\n");
+			return;
+		}
+
+#if defined(CONFIG_BINARY_MANAGER) && defined(CONFIG_USE_BP)
+		ret = binary_manager_check_bootparam_set();
+		if (ret != OK) {
+			ret = binary_manager_recover_bootparam_set();
+			if (ret != OK) {
+				lldbg("qemu-armv8m: failed to recover bootparam set, ret %d\n", ret);
+				return;
+			}
+		}
+#endif
+	}
+#endif
 #if defined(CONFIG_BUILTIN_APPS) && !defined(CONFIG_APP_BINARY_SEPARATION)
 	register_examples_cmds();
 #endif
-#ifdef CONFIG_APP_BINARY_SEPARATION
+#if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
 	if (qemu_armv8m_load_common() < 0) {
 		return;
