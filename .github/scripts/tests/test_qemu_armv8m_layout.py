@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from qemu_armv8m_layout import BOARD, CHIP, DEFCONFIGS, KCONFIG, KERNEL_SCRIPT, MAKE, XIP_SCRIPT, LayoutContractError, analyze_layout, inspect_artifact, parse_generated_regions, validate_readelf, write_report
+from qemu_armv8m_layout import BOARD, CHIP, DEFCONFIGS, KCONFIG, KERNEL_SCRIPT, MAKE, RUNNER, XIP_SCRIPT, LayoutContractError, analyze_layout, inspect_artifact, parse_generated_regions, validate_readelf, write_report
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -94,8 +94,15 @@ class QemuArmv8mLayoutContractTest(unittest.TestCase):
             board.write_text(board.read_text(encoding="utf-8").replace("0x10360000", "0x10361000", 1), encoding="utf-8")
             self.assertTrue(any("disagrees with board slot" in error for error in analyze_layout(root)["errors"]))
 
+    def test_contract_rejects_changed_runner_address(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.copy_layout_fixture(Path(directory))
+            runner = root / RUNNER
+            runner.write_text(runner.read_text(encoding="utf-8").replace("0x10360000", "0x10361000", 1), encoding="utf-8")
+            self.assertTrue(any("runner" in error for error in analyze_layout(root)["errors"]))
+
     def copy_layout_fixture(self, root: Path) -> Path:
-        for relative in (BOARD, CHIP, KCONFIG, MAKE, KERNEL_SCRIPT, XIP_SCRIPT):
+        for relative in (BOARD, CHIP, KCONFIG, MAKE, RUNNER, KERNEL_SCRIPT, XIP_SCRIPT):
             target = root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / relative, target)

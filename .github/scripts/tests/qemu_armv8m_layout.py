@@ -14,6 +14,7 @@ BOARD: Final = Path("os/board/qemu-armv8m/src/qemu_armv8m_boot.c")
 CHIP: Final = Path("os/arch/arm/include/qemu-armv8m/chip.h")
 KCONFIG: Final = Path("os/Kconfig")
 MAKE: Final = Path("build/configs/qemu-armv8m/Make.defs")
+RUNNER: Final = Path(".github/scripts/qemu-armv8m-kernel-tc.py")
 KERNEL_SCRIPT: Final = Path("build/configs/qemu-armv8m/scripts/mps2-an505.ld")
 XIP_SCRIPT: Final = Path("build/configs/qemu-armv8m/scripts/xipelf/userspace_all.ld")
 DEFCONFIGS: Final = ("hello", "loadable_all", "loadable_apps", "xip_all")
@@ -127,10 +128,12 @@ def validate_readelf(programs: str, sections: str, artifact_size: int, regions: 
 def analyze_layout(root: Path) -> dict[str, ReportValue]:
     slots = parse_board_slots(root)
     make = (root / MAKE).read_text(encoding="utf-8")
+    runner = (root / RUNNER).read_text(encoding="utf-8")
     xip_script = (root / XIP_SCRIPT).read_text(encoding="utf-8")
     kernel_ssram = parse_linker_region(root / KERNEL_SCRIPT, "ssram")
     configs = {name: read_config(root / "build/configs/qemu-armv8m" / name / "defconfig") for name in DEFCONFIGS}
     make_loaders = [(name, int(address, 0)) for name, address in re.findall(r"loader,file=\$\(TOPDIR\)/\.\./build/output/bin/(common|app1),addr=(0x[0-9a-fA-F]+)", make)]
+    runner_loaders = [(name, int(address, 0)) for name, address in re.findall(r"loader,file=\{(common|app1)\},addr=(0x[0-9a-fA-F]+)", runner)]
     expected = {"common": {slots["xip-common"].origin}, "app1": {slots["loadable-app1"].origin, slots["xip-app1"].origin}}
     errors: list[str] = []
     if "range 1 1 if ARCH_BOARD_QEMU_ARMV8M" not in (root / KCONFIG).read_text(encoding="utf-8"):
@@ -155,10 +158,15 @@ def analyze_layout(root: Path) -> dict[str, ReportValue]:
     for name, address in make_loaders:
         if address not in expected[name]:
             errors.append(f"{name}: loader address 0x{address:x} disagrees with board slot")
+    for name, address in runner_loaders:
+        if address not in expected[name]:
+            errors.append(f"runner {name}: loader address 0x{address:x} disagrees with board slot")
     if make_loaders != [("common", slots["xip-common"].origin), ("app1", slots["xip-app1"].origin), ("app1", slots["loadable-app1"].origin)]:
         errors.append("Make loader layout is not xip common+app1 followed by loadable app1")
+    if runner_loaders != [("app1", slots["loadable-app1"].origin), ("common", slots["xip-common"].origin), ("app1", slots["xip-app1"].origin)]:
+        errors.append("runner loader layout is not loadable app1 and xip common+app1")
     slot_report = {name: {"name": slot.name, "origin": slot.origin, "length": slot.length} for name, slot in slots.items()}
-    return {"ok": not errors, "errors": errors, "slots": slot_report, "make_loaders": make_loaders}
+    return {"ok": not errors, "errors": errors, "slots": slot_report, "make_loaders": make_loaders, "runner_loaders": runner_loaders}
 
 
 def inspect_artifact(linker: Path, artifact: Path) -> list[str]:
