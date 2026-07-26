@@ -112,11 +112,17 @@ packages when a fresh image is required.
 Local runtime evidence includes `hello`, `loadable_all`, `loadable_apps`, and
 `xip_all` using the ARM64 Docker image and the persistent-state runner. The
 checks proved TASH boot, Binary Manager discovery, app loading, and XIP package
-placement. `loadable_apps` reached TASH and loaded common/app1/app2 before the
-same semaphore-holder assertion caused a timeout. `full Kernel TC is not
-currently green for every configuration`; the current local logs include known
-semaphore and multiheap failures or timeouts. Do not report a local build or
-boot smoke test as a full `kernel_tc` pass.
+placement. On 2026-07-25, clean builds followed by fresh runner invocations
+completed with `PASS : 459, FAIL : 0` for `hello` and
+`PASS : 447, FAIL : 0` for each loadable/XIP configuration. These results are
+local QEMU software-path evidence, not hardware-board validation.
+
+`hello` keeps both priority inheritance and Binary Manager disabled, so it does
+not compile semaphore-holder tracking. The PI-disabled `loadable_all` and
+`loadable_apps` recipes use `CONFIG_SEM_PREALLOCHOLDERS=16` for Binary Manager
+holder recovery. `xip_all` uses the same pool size for priority inheritance and
+Binary Manager. The preallocated holder pool is a finite holder-accounting
+resource; size it for the maximum concurrent task/semaphore holder pairs.
 
 CI remains the reproducible positive/negative matrix after explicit candidate commit/push authorization. It also verifies the generated XIP layout and
 package rejection cases, so local evidence and CI evidence must remain separate.

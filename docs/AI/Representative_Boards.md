@@ -130,13 +130,17 @@ main RAM 4 MiB, loaded-app RAM 8 MiB, SSRAM heap 512 KiB를 사용한다. heap
 index는 각각 `0,1`과 `0,2,1`이다. SSRAM 상단 512 KiB는 heap으로 예약하며,
 loadable/XIP package는 main RAM 상단의 RAM-backed flash A/B state에 보관한다.
 
-현재 local evidence는 `hello`, `loadable_all`, `loadable_apps`, `xip_all`의
-build/boot smoke다.
-`hello`의 Kernel TC는 `PASS : 457, FAIL : 2`, `loadable_all`과 `xip_all`은
-package boot 후 full Kernel TC timeout, `loadable_apps`는 common/app1/app2
-로드와 TASH 진입 후 semaphore holder assertion으로 timeout되었다. full suite
-결과와 실제 보드 동작은 CI/하드웨어에서 별도로
-확인한다.
+2026-07-25 local evidence에서는 네 config를 각각 clean build한 뒤 full
+Kernel TC까지 확인했다. `hello`는 `PASS : 459, FAIL : 0`,
+`loadable_all`, `loadable_apps`, `xip_all`은 각각
+`PASS : 447, FAIL : 0`이었다. 이 결과는 QEMU 소프트웨어 경로의 증거이며
+실제 보드 동작은 CI/하드웨어에서 별도로 확인한다.
+
+QEMU `hello`는 PI와 Binary Manager가 모두 꺼져 semaphore holder tracking을
+빌드하지 않는다. PI-off `loadable_all`과 `loadable_apps`는 Binary Manager
+holder recovery용 preallocated holder 16개를 사용하고, PI-on `xip_all`도
+priority inheritance와 Binary Manager용으로 같은 크기를 사용한다. 이
+차이는 실제 활성 기능과 동시에 필요한 holder 수에 맞춘 것이다.
 
 실행 명령은 [Mac QEMU ARMv8-M 가이드](Mac_QEMU_ARMv8M_TASH_KernelTC.md)를 사용한다.
 
