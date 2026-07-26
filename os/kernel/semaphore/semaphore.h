@@ -91,7 +91,7 @@ extern "C" {
 
 /* Common semaphore logic */
 
-#ifdef CONFIG_PRIORITY_INHERITANCE
+#ifdef SAVE_SEM_HOLDER
 void sem_initialize(void);
 #else
 #define sem_initialize()
@@ -107,7 +107,8 @@ void sem_recover(FAR struct tcb_s *tcb);
  * holders of semaphores.
  */
 
-void sem_unblock_task(sem_t *sem, struct tcb_s *htcb);
+void sem_releasecount(FAR sem_t *sem, FAR struct tcb_s *htcb);
+void sem_unblock_task(FAR sem_t *sem, FAR struct tcb_s *htcb);
 #ifdef SAVE_SEM_HOLDER
 void sem_freeholder(sem_t *sem, FAR struct semholder_s *pholder);
 void sem_initholders(void);
@@ -118,7 +119,8 @@ void sem_addholder_tcb(FAR struct tcb_s *tcb, FAR sem_t *sem);
 FAR struct tcb_s *sem_releaseholder(FAR sem_t *sem, FAR struct tcb_s *htcb);
 #if defined(CONFIG_PRIORITY_INHERITANCE)
 void sem_boostpriority(FAR sem_t *sem);
-void sem_restorebaseprio(FAR struct tcb_s *stcb, FAR struct tcb_s *htcb, FAR sem_t *sem);
+bool sem_restorebaseprio(FAR struct tcb_s *stcb, FAR struct tcb_s *htcb,
+						 FAR sem_t *sem);
 void sem_release_all(FAR struct tcb_s *stcb);
 FAR struct tcb_s *sem_findhighestwaiter(FAR sem_t *sem, FAR struct tcb_s *exclude);
 #else

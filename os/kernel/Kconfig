@@ -773,20 +773,16 @@ menuconfig PRIORITY_INHERITANCE
 	---help---
 		Set to enable support for priority inheritance on mutexes and semaphores.
 
-if PRIORITY_INHERITANCE
-
 config SEM_PREALLOCHOLDERS
 	int "Number of pre-allocated holders"
-	default 16
+	depends on PRIORITY_INHERITANCE || BINARY_MANAGER
+	default 16 if PRIORITY_INHERITANCE
+	default 0
 	---help---
-		This setting is only used if priority inheritance is enabled.
-		It defines the maximum number of different threads (minus one) that
-		can take counts on a semaphore with priority inheritance support.
-		This may be set to zero if priority inheritance is disabled OR if you
-		are only using semaphores as mutexes (only one holder) OR if no more
-		than two threads participate using a counting semaphore.
-
-endif # PRIORITY_INHERITANCE
+		This setting is used by priority inheritance and Binary Manager
+		recovery.  It defines the maximum number of task/semaphore holder
+		records kept across the system.  It may be set to zero when every
+		tracked semaphore has at most one holder.
 
 menu "RTOS hooks"
 
