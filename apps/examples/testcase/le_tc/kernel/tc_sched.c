@@ -47,6 +47,17 @@
 #define PID_IDLE        0
 #define TASK_CANCEL_INVALID  -1
 
+#if defined(CONFIG_BUILD_FLAT) && defined(CONFIG_SCHED_WAITPID) && \
+	defined(CONFIG_SCHED_HAVE_PARENT) && defined(CONFIG_SCHED_CHILD_STATUS)
+#define CHILD_RELEASE_RETRY            500
+#define CHILD_RELEASE_USEC             1000
+#define WAITID_EXIT_STATUS             23
+#define WAITPID_ANY_EXIT_STATUS        37
+#define REPARENT_CHILD_EXIT_STATUS     41
+#define REPARENT_PARENT_EXIT_STATUS    43
+#define REPARENT_RESULT_PENDING        1
+#endif
+
 pthread_t thread1, thread2;
 
 pid_t g_task_pid;
@@ -82,6 +93,141 @@ static int sleep2sec_taskdel(int argc, char *argv[])
 	return 0;
 }
 #endif /* CONFIG_SCHED_HAVE_PARENT */
+
+#if defined(CONFIG_BUILD_FLAT) && defined(CONFIG_SCHED_HAVE_PARENT) && \
+	defined(CONFIG_SCHED_CHILD_STATUS)
+static volatile pid_t g_reparent_child_pid;
+static volatile int g_reparent_result;
+static volatile bool g_reparent_start;
+static volatile bool g_reparent_child_release;
+static volatile bool g_reparent_parent_release;
+static pid_t g_reparent_target_pid;
+
+static int waitid_exited_child(int argc, char *argv[])
+{
+	return WAITID_EXIT_STATUS;
+}
+
+static int waitpid_any_exited_child(int argc, char *argv[])
+{
+	return WAITPID_ANY_EXIT_STATUS;
+}
+
+static int wait_for_task_release(pid_t pid)
+{
+	int retry;
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY; retry++) {
+		if (sched_gettcb(pid) == NULL) {
+			return OK;
+		}
+
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	return ERROR;
+}
+
+static int wait_for_reparent_child_pid(void)
+{
+	int retry;
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY; retry++) {
+		if (g_reparent_child_pid > 0) {
+			return OK;
+		}
+
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	return ERROR;
+}
+
+static int wait_for_reparent_result(void)
+{
+	int retry;
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY; retry++) {
+		if (g_reparent_result != REPARENT_RESULT_PENDING) {
+			return OK;
+		}
+
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	return ERROR;
+}
+
+static int reparent_child_task(int argc, char *argv[])
+{
+	int retry;
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY && !g_reparent_start; retry++) {
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	if (!g_reparent_start) {
+		return ERROR;
+	}
+
+	g_reparent_result = ioctl(tc_get_drvfd(), TESTIOC_TASK_REPARENT, g_reparent_target_pid);
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY && !g_reparent_child_release; retry++) {
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	if (!g_reparent_child_release) {
+		return ERROR;
+	}
+
+	usleep(10 * CHILD_RELEASE_USEC);
+	return REPARENT_CHILD_EXIT_STATUS;
+}
+
+static int reparent_parent_task(int argc, char *argv[])
+{
+	int retry;
+	pid_t child_pid;
+
+	child_pid = task_create("sched_reparent_child", SCHED_PRIORITY_DEFAULT,
+			TASK_STACKSIZE, reparent_child_task, (char *const *)NULL);
+	g_reparent_child_pid = child_pid;
+
+	for (retry = 0; retry < CHILD_RELEASE_RETRY && !g_reparent_parent_release; retry++) {
+		usleep(CHILD_RELEASE_USEC);
+	}
+
+	if (!g_reparent_parent_release) {
+		return ERROR;
+	}
+
+	usleep(10 * CHILD_RELEASE_USEC);
+	return REPARENT_PARENT_EXIT_STATUS;
+}
+
+static int set_unrelated_group_flag(uint8_t *saved_flags)
+{
+	struct tcb_s *rtcb = sched_self();
+
+	if (rtcb == NULL || rtcb->group == NULL) {
+		return ERROR;
+	}
+
+	*saved_flags = rtcb->group->tg_flags;
+	rtcb->group->tg_flags = (*saved_flags & ~GROUP_FLAG_NOCLDWAIT) |
+			GROUP_FLAG_PRIVILEGED;
+	return OK;
+}
+
+static void restore_group_flags(uint8_t saved_flags)
+{
+	struct tcb_s *rtcb = sched_self();
+
+	if (rtcb != NULL && rtcb->group != NULL) {
+		rtcb->group->tg_flags = saved_flags;
+	}
+}
+#endif
 #endif /* CONFIG_SCHED_WAITPID */
 
 /**
@@ -308,6 +454,7 @@ static void tc_sched_waitid(void)
 	pid_t child1_pid;
 	pid_t child2_pid;
 	siginfo_t info;
+	int status;
 
 	/* Check for The TCB corresponding to this PID is not our child. */
 
@@ -346,6 +493,9 @@ static void tc_sched_waitid(void)
 	ret_chk = waitid(P_PID, child1_pid, &info, 0);
 	TC_ASSERT_EQ("waitid", ret_chk, ERROR);
 	TC_ASSERT_EQ("waitid", errno, ENOSYS);
+
+	ret_chk = waitpid(child1_pid, &status, 0);
+	TC_ASSERT_EQ("waitpid", ret_chk, child1_pid);
 
 	TC_SUCCESS_RESULT();
 }
@@ -388,6 +538,136 @@ static void tc_sched_waitpid(void)
 
 	TC_SUCCESS_RESULT();
 }
+
+#if defined(CONFIG_BUILD_FLAT) && defined(CONFIG_SCHED_HAVE_PARENT) && \
+	defined(CONFIG_SCHED_CHILD_STATUS)
+static void tc_sched_waitid_exited_child_before_wait(void)
+{
+	siginfo_t info;
+	uint8_t saved_flags;
+	pid_t child_pid;
+	int ret_chk;
+
+	ret_chk = set_unrelated_group_flag(&saved_flags);
+	TC_ASSERT_EQ("set_unrelated_group_flag", ret_chk, OK);
+
+	child_pid = task_create("waitid_exited", SCHED_PRIORITY_DEFAULT,
+			TASK_STACKSIZE, waitid_exited_child, (char *const *)NULL);
+	restore_group_flags(saved_flags);
+	TC_ASSERT_GT("task_create", child_pid, 0);
+
+	ret_chk = wait_for_task_release(child_pid);
+	TC_ASSERT_EQ_CLEANUP("wait_for_task_release", ret_chk, OK, task_delete(child_pid));
+
+	ret_chk = waitid(P_ALL, 0, &info, WEXITED);
+	TC_ASSERT_EQ("waitid", ret_chk, OK);
+	TC_ASSERT_EQ("waitid si_pid", info.si_pid, child_pid);
+	TC_ASSERT_EQ("waitid si_code", info.si_code, CLD_EXITED);
+	TC_ASSERT_EQ("waitid si_status", info.si_status, WAITID_EXIT_STATUS);
+
+	TC_SUCCESS_RESULT();
+}
+
+static void tc_sched_waitpid_missed_signal(void)
+{
+	uint8_t saved_flags;
+	pid_t child_pid;
+	pid_t waited_pid;
+	int ret_chk;
+	int status;
+
+	ret_chk = set_unrelated_group_flag(&saved_flags);
+	TC_ASSERT_EQ("set_unrelated_group_flag", ret_chk, OK);
+
+	child_pid = task_create("waitpid_missed", SCHED_PRIORITY_DEFAULT,
+			TASK_STACKSIZE, waitpid_any_exited_child, (char *const *)NULL);
+	restore_group_flags(saved_flags);
+	TC_ASSERT_GT("task_create", child_pid, 0);
+
+	ret_chk = wait_for_task_release(child_pid);
+	TC_ASSERT_EQ_CLEANUP("wait_for_task_release", ret_chk, OK, task_delete(child_pid));
+
+	waited_pid = waitpid((pid_t)-1, &status, 0);
+	TC_ASSERT_EQ("waitpid(-1) child PID", waited_pid, child_pid);
+	TC_ASSERT_EQ("waitpid(-1) WIFEXITED", WIFEXITED(status), true);
+	TC_ASSERT_EQ("waitpid(-1) WEXITSTATUS", WEXITSTATUS(status), WAITPID_ANY_EXIT_STATUS);
+
+	TC_SUCCESS_RESULT();
+}
+
+static void tc_sched_reparented_child(void)
+{
+	uint8_t saved_flags;
+	pid_t parent_pid;
+	pid_t child_pid;
+	pid_t waited_pid;
+	int ret_chk;
+	int status;
+
+	g_reparent_child_pid = INVALID_PID;
+	g_reparent_result = REPARENT_RESULT_PENDING;
+	g_reparent_start = false;
+	g_reparent_child_release = false;
+	g_reparent_parent_release = false;
+	g_reparent_target_pid = getpid();
+
+	parent_pid = task_create("sched_reparent_parent", SCHED_PRIORITY_DEFAULT,
+			TASK_STACKSIZE, reparent_parent_task, (char *const *)NULL);
+	TC_ASSERT_GT("task_create parent", parent_pid, 0);
+
+	ret_chk = wait_for_reparent_child_pid();
+	if (ret_chk != OK) {
+		g_reparent_child_release = true;
+		g_reparent_parent_release = true;
+		task_delete(parent_pid);
+		TC_ASSERT_EQ("reparent child PID", ret_chk, OK);
+	}
+
+	child_pid = g_reparent_child_pid;
+	ret_chk = set_unrelated_group_flag(&saved_flags);
+	if (ret_chk != OK) {
+		g_reparent_child_release = true;
+		g_reparent_parent_release = true;
+		task_delete(child_pid);
+		task_delete(parent_pid);
+		TC_ASSERT_EQ("set_unrelated_group_flag", ret_chk, OK);
+	}
+
+	g_reparent_start = true;
+	ret_chk = wait_for_reparent_result();
+	restore_group_flags(saved_flags);
+	if (ret_chk != OK || g_reparent_result != OK) {
+		g_reparent_child_release = true;
+		g_reparent_parent_release = true;
+		usleep(20 * CHILD_RELEASE_USEC);
+		task_delete(child_pid);
+		task_delete(parent_pid);
+		TC_ASSERT_EQ("task_reparent", g_reparent_result, OK);
+	}
+
+	g_reparent_child_release = true;
+	waited_pid = waitpid(child_pid, &status, 0);
+	if (waited_pid != child_pid) {
+		g_reparent_parent_release = true;
+		usleep(20 * CHILD_RELEASE_USEC);
+		task_delete(parent_pid);
+		TC_ASSERT_EQ("waitpid reparented child", waited_pid, child_pid);
+	}
+
+	TC_ASSERT_EQ_CLEANUP("reparented child WIFEXITED", WIFEXITED(status), true,
+			g_reparent_parent_release = true);
+	TC_ASSERT_EQ_CLEANUP("reparented child WEXITSTATUS", WEXITSTATUS(status),
+			REPARENT_CHILD_EXIT_STATUS, g_reparent_parent_release = true);
+
+	g_reparent_parent_release = true;
+	waited_pid = waitpid(parent_pid, &status, 0);
+	TC_ASSERT_EQ("waitpid original parent", waited_pid, parent_pid);
+	TC_ASSERT_EQ("original parent WIFEXITED", WIFEXITED(status), true);
+	TC_ASSERT_EQ("original parent WEXITSTATUS", WEXITSTATUS(status), REPARENT_PARENT_EXIT_STATUS);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
 #endif
 
 /**
@@ -711,6 +991,12 @@ int sched_main(void)
 	tc_sched_waitid();
 #endif
 	tc_sched_waitpid();
+#if defined(CONFIG_BUILD_FLAT) && defined(CONFIG_SCHED_HAVE_PARENT) && \
+	defined(CONFIG_SCHED_CHILD_STATUS)
+	tc_sched_waitid_exited_child_before_wait();
+	tc_sched_waitpid_missed_signal();
+	tc_sched_reparented_child();
+#endif
 #endif
 	tc_sched_sched_setget_scheduler_param();
 	tc_sched_sched_rr_get_interval();

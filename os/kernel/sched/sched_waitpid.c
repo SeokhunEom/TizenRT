@@ -428,6 +428,14 @@ pid_t waitpid(pid_t pid, int *stat_loc, int options)
 				}
 				pid = child->ch_pid;
 
+				/* Return the PID of the exited child.  In the pid == -1 case
+				 * the caller (e.g. wait()) expects the child's PID as the
+				 * return value; without this the fast "missed signal" path
+				 * would wrongly return the unmodified pid of -1.
+				 */
+
+				pid = child->ch_pid;
+
 				/* Discard the child entry and break out of the loop */
 
 				(void)group_removechild(rtcb->group, child->ch_pid);

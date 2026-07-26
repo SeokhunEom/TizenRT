@@ -203,6 +203,7 @@ config TC_KERNEL_MEMORY_SAFETY
 	bool "Memory Safety"
 	default n
 	depends on !DISABLE_MQUEUE
+	depends on !DISABLE_PTHREAD
 
 config TC_KERNEL_IRQ
 	bool "irq"
