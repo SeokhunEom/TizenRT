@@ -11,14 +11,15 @@ The supported set is exactly these four configurations.
 | Configuration | Build model | Package contract |
 | --- | --- | --- |
 | `hello` | Flat kernel image with TASH and `kernel_tc` | Kernel image only |
-| `loadable_all` | Protected kernel with a loadable ELF application | Kernel image and `app1` |
-| `loadable_apps` | XIP kernel with a loadable ELF application | Kernel image and `app1` |
+| `loadable_all` | Protected kernel with loadable ELF applications | Kernel image, `common`, `app1`, and `app2` |
+| `loadable_apps` | Protected kernel with loadable ELF applications | Kernel image, `common`, `app1`, and `app2` |
 | `xip_all` | XIP kernel with XIP common/application packages | Kernel image, `common`, and `app1` |
 
-Every supported layout has one application package: `app1; app2 and later are unsupported`.
-The board loader owns the package addresses and validates each package before
-starting it. For `xip_all`, the runner loads `common before app1`; omitting or
-rejecting `common` prevents the `app1` start path.
+`app1 and app2 are supported by loadable configurations`; `xip_all` uses one
+XIP application. The board flash adapter registers the RAM-backed MTD and
+partition map; Binary Manager owns package discovery, validation, loading, and
+boot-parameter recovery. For `xip_all`, the runner stages `common before app1`;
+omitting or rejecting `common` prevents the `app1` start path.
 
 ## Build
 
@@ -34,9 +35,15 @@ make
 ```
 
 Replace `hello` with `loadable_all`, `loadable_apps`, or `xip_all` as needed.
-The kernel image is `build/output/bin/tinyara` relative to the repository root.
+The generated `os/.config` is used when it matches the requested recipe mode,
+so menuconfig changes to the selected recipe are reflected in the runner. The
+kernel image is `build/output/bin/tinyara` relative to the repository root.
 Loadable configurations also produce `build/output/bin/app1`; `xip_all` also
 produces `build/output/bin/common`.
+
+`make download` selects the matching runner recipe automatically: `xip_all` for
+`CONFIG_XIP_ELF=y`, `loadable_apps` for `CONFIG_XIP_KERNEL=y`, `loadable_all`
+for the remaining separated build, and `hello` for the flat build.
 
 ## Validate with the QEMU runner
 
@@ -66,23 +73,53 @@ The runner's default artifacts are
 
 ## Package-rejection checks
 
-The board exposes `QEMU_LOAD_REJECT common` and `QEMU_LOAD_REJECT app1` for
-the corresponding rejected slots. A negative run must require the appropriate
-marker with `--expect-reject` and must reject `QEMU_APP1_STARTED` with
-`--forbid-marker`; an expected rejection is not a successful application
-launch. The successful rejection contract records `"status": "expected-rejection"`
-in the result JSON.
+The Binary Manager reports a rejected slot with
+`binary_manager_load: Invalid Header data, name : common` or
+`binary_manager_load: Invalid Header data, name : app1`. A negative run must
+require the appropriate diagnostic with `--expect-reject` and must reject the
+corresponding Binary Manager success diagnostic with `--forbid-marker`:
+`binary_manager_load: common Header Checking Success` for common or
+`binary_manager_load: app1 Header Checking Success` for app1. This ensures
+the invalid package is not replaced by a successfully loaded alternate
+package; an expected rejection is not a successful application
+launch. The older `QEMU_LOAD_REJECT` strings belong to
+the board's non-Binary-Manager loader unit fixture, not these runtime recipes.
+The successful rejection contract records `"status": "expected-rejection"` in
+the result JSON.
 
 The CI matrix covers corrupt-common, omitted-common, corrupt-app1, and
 oversized-app1 through this runner interface. It also verifies the generated
 `xip_all` layout before runtime validation.
 
+## SRAM and persistent A/B state
+
+The QEMU port reserves the upper 512 KiB of the MPS2-AN505 SSRAM as a second
+heap. Kernel code stays below that boundary. The loadable and XIP layouts use
+three heap regions: 4 MiB of kernel RAM, 8 MiB of loaded-application RAM, and
+512 KiB of SSRAM. The flat `hello` layout uses 12 MiB of main RAM plus the same
+512 KiB SSRAM heap. This keeps the heap indices aligned with the BK7239N-style
+main/secondary-memory model while leaving room to grow app and XIP recipes.
+
+For loadable and XIP configurations, the runner stages a 16 MiB persistent
+QEMU state image containing the RAM-backed flash area and two package slots.
+Pass `--state-image build/qemu-armv8m/qemu.state` to retain the boot parameter
+across invocations. A failed run can select the alternate slot when
+`--max-reboots` is greater than zero. Delete the state image after rebuilding
+packages when a fresh image is required.
+
 ## Local and CI validation boundary
 
-Local QEMU runtime proof is limited to `hello` and the existing
-`tizenrt/tizenrt:2.0.1-arm64-local` image. Loadable, XIP, and negative-package
-runtime proof is CI-only after explicit candidate commit/push authorization;
-do not infer those results from a local macOS build.
+Local runtime evidence includes `hello`, `loadable_all`, `loadable_apps`, and
+`xip_all` using the ARM64 Docker image and the persistent-state runner. The
+checks proved TASH boot, Binary Manager discovery, app loading, and XIP package
+placement. `loadable_apps` reached TASH and loaded common/app1/app2 before the
+same semaphore-holder assertion caused a timeout. `full Kernel TC is not
+currently green for every configuration`; the current local logs include known
+semaphore and multiheap failures or timeouts. Do not report a local build or
+boot smoke test as a full `kernel_tc` pass.
+
+CI remains the reproducible positive/negative matrix after explicit candidate commit/push authorization. It also verifies the generated XIP layout and
+package rejection cases, so local evidence and CI evidence must remain separate.
 
 The CI contract is maintained in `.github/workflows/qemu-armv8m.yml`. Keep its
 `ubuntu-24.04` runner, `tizenrt/tizenrt@sha256:` image digest, and GitHub

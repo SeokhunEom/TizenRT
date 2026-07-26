@@ -50,13 +50,15 @@ python3 .github/scripts/qemu-armv8m-kernel-tc.py --config hello --timeout 1200
 Its configurations cover ARMv8-M and app-package layouts:
 
 - `hello`: flat build with TASH and `kernel_tc`
-- `loadable_all`: protected build with a loadable `app1` package
-- `loadable_apps`: XIP kernel with a loadable `app1` package
+- `loadable_all`: protected build with loadable `common`, `app1`, and `app2` packages
+- `loadable_apps`: protected build with loadable `common`, `app1`, and `app2` packages
 - `xip_all`: XIP kernel plus XIP `common` and `app1` packages
 
-Each supported layout uses only `app1`. For `xip_all`, the runner loads and
-validates `common` before `app1`; package placement remains a board/runner
-contract rather than a copied user command.
+Loadable configurations support `app1` and `app2`. For `xip_all`, the runner
+loads and validates `common` before `app1`; package placement remains a
+board/runner contract rather than a copied user command. Local evidence and
+the CI matrix are recorded separately because a boot smoke test is not by
+itself a full `kernel_tc` pass.
 
 This target is the right default for ARMv8-M porting, Cortex-M33 behavior,
 MPU/FPU/BASEPRI paths, loadable app execution, XIP ELF execution, and the

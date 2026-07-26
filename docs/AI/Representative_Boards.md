@@ -124,6 +124,20 @@ test -s "$TIZENRT_ROOT/build/output/bin/kernel_rtl8721csm_200204.trpk"
 
 `loadable_all`과 `loadable_apps`도 지원 config지만, QEMU 시작 recipe는 `hello`와 `xip_all`로 고정한다. `xip_all`은 `common`과 `app1` 패키지를 함께 확인해야 한다.
 
+QEMU는 BK7239N과의 설정 비교를 위해 SRAM heap을 별도 region으로 둔다.
+`hello`는 main RAM 12 MiB와 SSRAM heap 512 KiB를 사용하고, loadable/XIP는
+main RAM 4 MiB, loaded-app RAM 8 MiB, SSRAM heap 512 KiB를 사용한다. heap
+index는 각각 `0,1`과 `0,2,1`이다. SSRAM 상단 512 KiB는 heap으로 예약하며,
+loadable/XIP package는 main RAM 상단의 RAM-backed flash A/B state에 보관한다.
+
+현재 local evidence는 `hello`, `loadable_all`, `loadable_apps`, `xip_all`의
+build/boot smoke다.
+`hello`의 Kernel TC는 `PASS : 457, FAIL : 2`, `loadable_all`과 `xip_all`은
+package boot 후 full Kernel TC timeout, `loadable_apps`는 common/app1/app2
+로드와 TASH 진입 후 semaphore holder assertion으로 timeout되었다. full suite
+결과와 실제 보드 동작은 CI/하드웨어에서 별도로
+확인한다.
+
 실행 명령은 [Mac QEMU ARMv8-M 가이드](Mac_QEMU_ARMv8M_TASH_KernelTC.md)를 사용한다.
 
 ```bash
@@ -140,7 +154,7 @@ python3 .github/scripts/qemu-armv8m-kernel-tc.py \
   --result build/qemu-armv8m/hello-kernel-tc.result.json
 ```
 
-성공 기준은 새 QEMU 실행의 result JSON `status=pass`와 `Kernel TC End [PASS : n, FAIL : 0]`이다. 이 결과는 QEMU 소프트웨어 경로의 증거로만 사용한다.
+성공 기준은 새 QEMU 실행의 result JSON `status=pass`와 `Kernel TC End [PASS : n, FAIL : 0]`이다. boot smoke와 full Kernel TC 결과를 구분하고, QEMU 결과는 소프트웨어 경로의 증거로만 사용한다.
 
 ## recipe 선택 원칙
 
