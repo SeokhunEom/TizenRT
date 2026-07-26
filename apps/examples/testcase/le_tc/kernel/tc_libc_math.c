@@ -817,11 +817,12 @@ static void tc_libc_math_cbrtf(void)
  */
 static void tc_libc_math_cbrtl(void)
 {
-	const long double in_val[] = { ZERO, VAL1, -VAL1, INFINITY, -INFINITY, NAN };
-	const long double sol_val[] = { ZERO, 131072.0, -131072.0, INFINITY, -INFINITY, NAN };
+	const long double in_val[] = { ZERO, 8.0L, -8.0L, VAL1, -VAL1, INFINITY, -INFINITY, NAN };
+	const long double sol_val[] = { ZERO, 2.0L, -2.0L, 131072.0, -131072.0, INFINITY, -INFINITY, NAN };
 	long double ret_val[SIZE(sol_val, long double)];
 	int cbrtl_idx;
 	long double compute_val;
+	long double result;
 
 	for (cbrtl_idx = 0; cbrtl_idx < SIZE(sol_val, long double); cbrtl_idx++) {
 		ret_val[cbrtl_idx] = cbrtl(in_val[cbrtl_idx]);
@@ -833,6 +834,14 @@ static void tc_libc_math_cbrtl(void)
 
 		TC_ASSERT_LEQ("cbrtl", compute_val, FLT_EPSILON);
 	}
+
+	TC_ASSERT("cbrtl exact positive", cbrtl(8.0L) == 2.0L);
+	TC_ASSERT("cbrtl exact negative", cbrtl(-8.0L) == -2.0L);
+	TC_ASSERT("cbrtl positive infinity", isinf(cbrtl(INFINITY)) && !signbit(cbrtl(INFINITY)));
+	TC_ASSERT("cbrtl negative infinity", isinf(cbrtl(-INFINITY)) && signbit(cbrtl(-INFINITY)));
+	TC_ASSERT("cbrtl NaN", isnan(cbrtl(NAN)));
+	result = cbrtl(-0.0L);
+	TC_ASSERT("cbrtl signed zero", result == 0.0L && signbit(result));
 
 	TC_SUCCESS_RESULT();
 }
@@ -1501,11 +1510,12 @@ static void tc_libc_math_exp2f(void)
  */
 static void tc_libc_math_exp2l(void)
 {
-	const long double in_val[] = { ZERO, VAL1, -VAL1, VAL2, -VAL2, INFINITY, -INFINITY, NAN, 0x1p-20 };
-	const long double sol_val[] = { 1.0, INFINITY, ZERO, INFINITY, ZERO, INFINITY, ZERO, NAN, 1.0000007 };
+	const long double in_val[] = { ZERO, 3.0L, -3.0L, VAL1, -VAL1, VAL2, -VAL2, INFINITY, -INFINITY, NAN, 0x1p-20 };
+	const long double sol_val[] = { 1.0, 8.0L, 0.125L, INFINITY, ZERO, INFINITY, ZERO, INFINITY, ZERO, NAN, 1.0000007 };
 	long double ret_val[SIZE(sol_val, long double)];
 	int exp2l_idx;
 	long double compute_val;
+	long double result;
 
 	for (exp2l_idx = 0; exp2l_idx < SIZE(sol_val, long double); exp2l_idx++) {
 		ret_val[exp2l_idx] = exp2l(in_val[exp2l_idx]);
@@ -1517,6 +1527,13 @@ static void tc_libc_math_exp2l(void)
 
 		TC_ASSERT_LEQ("exp2l", compute_val, FLT_EPSILON);
 	}
+
+	TC_ASSERT("exp2l exact positive", exp2l(3.0L) == 8.0L);
+	TC_ASSERT("exp2l exact negative", exp2l(-3.0L) == 0.125L);
+	TC_ASSERT("exp2l positive infinity", isinf(exp2l(INFINITY)) && !signbit(exp2l(INFINITY)));
+	result = exp2l(-INFINITY);
+	TC_ASSERT("exp2l negative infinity", result == 0.0L && !signbit(result));
+	TC_ASSERT("exp2l NaN", isnan(exp2l(NAN)));
 
 	TC_SUCCESS_RESULT();
 }
@@ -3891,13 +3908,13 @@ static void tc_libc_math_tanf(void)
 {
 	const float in_val[] = { M_PI_4, 0.50, -0.50, 5, 10, -5, -10, ZERO, INFINITY, -INFINITY, NAN };
 	const float sol_val[] = { 1, 0.54630248984379, -0.54630248984379, -3.3805160522461, 0.6483603715897, 3.3805131912231, -0.6483607292175, ZERO, NAN, NAN, NAN };
-	float ret_val[SIZE(in_val, double)];
+	float ret_val[SIZE(in_val, float)];
 	int tanf_idx;
 	float compute_val;
 
 	/* Returns the tangent of an angle x */
 
-	for (tanf_idx = 0; tanf_idx < SIZE(in_val, double); tanf_idx++) {
+	for (tanf_idx = 0; tanf_idx < SIZE(in_val, float); tanf_idx++) {
 		ret_val[tanf_idx] = tanf(in_val[tanf_idx]);
 		compute_val = fabsf(sol_val[tanf_idx] - ret_val[tanf_idx]);
 
@@ -3957,13 +3974,13 @@ static void tc_libc_math_tanhf(void)
 {
 	const float in_val[] = { M_PI_4, 0.50, -0.50, 5, 10, -5, -10, ZERO,  INFINITY, -INFINITY, NAN };
 	const float sol_val[] = { 0.65579420263267, 0.46211715726001, -0.46211715726001, 0.9999092042626, 0.99999999587769, -0.9999092042626, -0.99999999587769, ZERO, 1.0, -1.0, NAN };
-	float ret_val[SIZE(in_val, double)];
+	float ret_val[SIZE(in_val, float)];
 	int tanhf_idx;
 	float compute_val;
 
 	/* Returns the hyperbolic tangent of an angle x */
 
-	for (tanhf_idx = 0; tanhf_idx < SIZE(in_val, double); tanhf_idx++) {
+	for (tanhf_idx = 0; tanhf_idx < SIZE(in_val, float); tanhf_idx++) {
 		ret_val[tanhf_idx] = tanhf(in_val[tanhf_idx]);
 		compute_val = fabsf(sol_val[tanhf_idx] - ret_val[tanhf_idx]);
 
@@ -4105,6 +4122,41 @@ static void tc_libc_math_truncf(void)
 
 		TC_ASSERT_LEQ("truncf", compute_val, FLT_EPSILON);
 	}
+
+	TC_SUCCESS_RESULT();
+}
+
+static void tc_libc_math_truncl(void)
+{
+	const long double in_val[] = { 3.75L, -3.75L, ZERO, -INFINITY, INFINITY, NAN };
+	const long double sol_val[] = { 3.0L, -3.0L, ZERO, -INFINITY, INFINITY, NAN };
+	long double ret_val[SIZE(sol_val, long double)];
+	int truncl_idx;
+	long double compute_val;
+	long double result;
+
+	for (truncl_idx = 0; truncl_idx < SIZE(sol_val, long double); truncl_idx++) {
+		ret_val[truncl_idx] = truncl(in_val[truncl_idx]);
+		compute_val = fabsl(sol_val[truncl_idx] - ret_val[truncl_idx]);
+
+		if ((isnan(sol_val[truncl_idx]) ^ (isnan(ret_val[truncl_idx])))) {
+			compute_val = ONE;
+		}
+
+		TC_ASSERT_LEQ("truncl", compute_val, FLT_EPSILON);
+	}
+
+	TC_ASSERT("truncl exact positive", truncl(3.75L) == 3.0L);
+	TC_ASSERT("truncl exact negative", truncl(-3.75L) == -3.0L);
+	TC_ASSERT("truncl positive infinity", isinf(truncl(INFINITY)) && !signbit(truncl(INFINITY)));
+	TC_ASSERT("truncl negative infinity", isinf(truncl(-INFINITY)) && signbit(truncl(-INFINITY)));
+	TC_ASSERT("truncl NaN", isnan(truncl(NAN)));
+	result = truncl(0.75L);
+	TC_ASSERT("truncl positive signed zero", result == 0.0L && !signbit(result));
+	result = truncl(-0.75L);
+	TC_ASSERT("truncl negative signed zero", result == 0.0L && signbit(result));
+	result = truncl(-0.0L);
+	TC_ASSERT("truncl preserves signed zero", result == 0.0L && signbit(result));
 
 	TC_SUCCESS_RESULT();
 }
@@ -4505,6 +4557,7 @@ int libc_math_main(void)
 	tc_libc_math_tanl();
 	tc_libc_math_trunc();
 	tc_libc_math_truncf();
+	tc_libc_math_truncl();
 	tc_libc_math_y0();
 	tc_libc_math_y0f();
 	tc_libc_math_y1();

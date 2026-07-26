@@ -49,30 +49,26 @@
 
 #include <tinyara/compiler.h>
 
-#include <stdint.h>
-#include <float.h>
 #include <math.h>
+
+#include "libm.h"
 
 /************************************************************************
  * Public Functions
  ************************************************************************/
 
 #ifdef CONFIG_HAVE_LONG_DOUBLE
+#if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+long double truncl(long double x)
+{
+	return (long double)trunc((double)x);
+}
+#elif (LDBL_MANT_DIG == 64 || LDBL_MANT_DIG == 113) && LDBL_MAX_EXP == 16384
 static const long double toint = 1 / LDBL_EPSILON;
-
-/* FIXME This will only work if long double is 64 bit and little endian */
-
-union ldshape {
-	long double f;
-	struct {
-		uint64_t m;
-		uint16_t se;
-	} i;
-};
 
 long double truncl(long double x)
 {
-	union ldshape u = { x };
+	union ldshape u = { .f = x };
 	int e = u.i.se & 0x7fff;
 	int s = u.i.se >> 15;
 	long double y;
@@ -104,4 +100,7 @@ long double truncl(long double x)
 	x += y;
 	return s ? -x : x;
 }
+#else
+#error Unsupported long double representation
+#endif
 #endif
