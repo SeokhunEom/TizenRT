@@ -24,6 +24,7 @@
 #include <debug.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include <queue.h>
 #include <sys/types.h>
@@ -84,12 +85,17 @@ static void hash_deinit(void)
 	g_node_info = NULL;
 }
 
+static uintptr_t hash_key(uintptr_t value)
+{
+	return value % (uintptr_t)HASH_SIZE;
+}
+
 static void add_hash(int index)
 {
-	long key;
+	uintptr_t key;
 	struct alloc_node_info_s *cur;
 
-	key = (long)g_node_info[index].node % HASH_SIZE;
+	key = hash_key((uintptr_t)g_node_info[index].node);
 	if (g_hash_table[key] == NULL) {
 		g_hash_table[key] = &g_node_info[index];
 		return;
@@ -102,13 +108,13 @@ static void add_hash(int index)
 	cur->next = &g_node_info[index];
 }
 
-static bool search_hash(unsigned long value)
+static bool search_hash(uintptr_t value)
 {
-	long key = value % HASH_SIZE;
+	uintptr_t key = hash_key(value);
 	struct alloc_node_info_s *cur = g_hash_table[key];
 
 	while (cur != NULL) {
-		if ((unsigned long)cur->node == value) {
+		if ((uintptr_t)cur->node == value) {
 			if (cur->node->memory_state == MM_MEMORY_STATE_USED) {
 				return false;
 			}
@@ -224,7 +230,7 @@ static void search_addr(void *start_addr, void *end_addr, int *leak_cnt)
 
 	/* Not to access over its region, subtract 0x04 from the end of the address. */
 	for (leak_chk = start_addr; leak_chk < end_addr - MEM_ACCESS_UNIT; leak_chk++) {
-		if (search_hash(*(unsigned long volatile *)leak_chk - (unsigned long)SIZEOF_MM_ALLOCNODE)) {
+		if (search_hash(*(uintptr_t volatile *)leak_chk - (uintptr_t)SIZEOF_MM_ALLOCNODE)) {
 			(*leak_cnt)--;
 		}
 	}
@@ -263,7 +269,7 @@ static void heap_check(struct mm_heap_s *heap, int checker_pid, int *leak_cnt)
 					if ((leak_chk >= exclude_bottom && leak_chk <= exclude_top)) {
 						continue;
 					}
-					if (search_hash(*(unsigned long volatile *)leak_chk - (unsigned long)SIZEOF_MM_ALLOCNODE)) {
+					if (search_hash(*(uintptr_t volatile *)leak_chk - (uintptr_t)SIZEOF_MM_ALLOCNODE)) {
 						(*leak_cnt)--;
 					}
 				}

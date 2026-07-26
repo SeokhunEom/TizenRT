@@ -116,12 +116,12 @@
 | HEAPINFO | FREEINFO | 64-bit | mmsize_t | pointer | sizeof(mm_allocnode_s) | sizeof(mm_freenode_s) | MM_MIN_SHIFT
 | OFF      | OFF      | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 16 bytes              | 4
 | OFF      | OFF      | ON     | 8 bytes  | 8 bytes | 16 bytes               | 32 bytes              | 5 
-| OFF      | ON       | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 24 bytes              | 5 
-| OFF      | ON       | ON     | 8 bytes  | 8 bytes | 16 bytes               | 44 bytes              | 6 
-| ON       | OFF      | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 24 bytes              | 5 
-| ON       | OFF      | ON     | 8 bytes  | 8 bytes | 28 bytes               | 44 bytes              | 6 
-| ON       | ON       | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 32 bytes              | 5 
-| ON       | ON       | ON     | 8 bytes  | 8 bytes | 28 bytes               | 56 bytes              | 6 
+| OFF      | ON       | OFF    | 4 bytes  | 4 bytes | 8 bytes                | 24 bytes              | 5
+| OFF      | ON       | ON     | 8 bytes  | 8 bytes | 16 bytes               | 48 bytes              | 6
+| ON       | OFF      | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 24 bytes              | 5
+| ON       | OFF      | ON     | 8 bytes  | 8 bytes | 32 bytes               | 48 bytes              | 6
+| ON       | ON       | OFF    | 4 bytes  | 4 bytes | 16 bytes               | 32 bytes              | 5
+| ON       | ON       | ON     | 8 bytes  | 8 bytes | 32 bytes               | 64 bytes              | 6
  */
 
 /* Base minimum shift value (16 bytes) */
@@ -141,12 +141,7 @@
 #define MM_MIN_SHIFT_64BIT	0
 #endif
 
-/*
-	The alignment unit is set to 16 bytes (2^4) via `MM_MIN_SHIFT = 4` to optimize memory utilization with a best-fit strategy
-	Since `mm_allocnode_s` is currently 16 bytes, this works fine, but `MM_MIN_SHIFT` to 5 (32-byte alignment) should be tested.
-*/
-// #define MM_MIN_SHIFT 	(MM_MIN_SHIFT_BASE + MM_MIN_SHIFT_DEBUG + MM_MIN_SHIFT_64BIT)
-#define MM_MIN_SHIFT 	4
+#define MM_MIN_SHIFT	(MM_MIN_SHIFT_BASE + MM_MIN_SHIFT_DEBUG + MM_MIN_SHIFT_64BIT)
 #define MM_MAX_SHIFT	22		/* 4 Mb */
 
 /* All other definitions derive from these two */
@@ -267,8 +262,7 @@ struct mm_allocnode_s {
 
 /* What is the size of the allocnode? */
 
-#define SIZEOF_MM_ALLOCNODE \
-	(sizeof(mmsize_t) + sizeof(mmsize_t) + SIZEOF_MM_MALLOC_DEBUG_INFO)
+#define SIZEOF_MM_ALLOCNODE sizeof(struct mm_allocnode_s)
 
 #define CHECK_ALLOCNODE_SIZE \
 	DEBUGASSERT(sizeof(struct mm_allocnode_s) == SIZEOF_MM_ALLOCNODE)
@@ -296,8 +290,7 @@ struct mm_freenode_s {
 
 #define MM_PTR_SIZE sizeof(FAR struct mm_freenode_s *)
 
-#define SIZEOF_MM_FREENODE \
-	(SIZEOF_MM_ALLOCNODE + 2 * MM_PTR_SIZE + SIZEOF_MM_FREE_DEBUG_INFO)
+#define SIZEOF_MM_FREENODE sizeof(struct mm_freenode_s)
 
 #define CHECK_FREENODE_SIZE \
 	DEBUGASSERT(sizeof(struct mm_freenode_s) == SIZEOF_MM_FREENODE)

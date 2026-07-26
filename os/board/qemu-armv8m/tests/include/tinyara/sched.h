@@ -1,0 +1,4 @@
+#ifndef __TASK4_TEST_TINYARA_SCHED_H
+#define __TASK4_TEST_TINYARA_SCHED_H
+
+#endif

@@ -36,4 +36,8 @@ void stackinfo_save_terminated(struct tcb_s *tcb);
 
 void dbg_save_termination_info(struct tcb_s *tcb);
 
+#ifdef CONFIG_MEM_LEAK_CHECKER
+int run_mem_leak_checker(int checker_pid, char *bin_name);
+#endif
+
 #endif							/* __SCHED_DEBUG_DEBUG_H */
