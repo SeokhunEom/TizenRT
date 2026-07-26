@@ -203,6 +203,28 @@ uptime
 
 각 명령 뒤에 다시 `TASH>>`가 나타날 때 다음 명령을 입력한다.
 
+QEMU `hello`에는 RAM-backed flash의 SmartFS가 `/mnt`에 자동 mount된다.
+다음 명령으로 mount와 파일 작업을 확인할 수 있다.
+
+```text
+mount
+ls /mnt
+smartfs_test 4 /mnt/test 4096 1 y
+```
+
+정상적인 출력에는 다음 내용이 포함된다.
+
+```text
+/mnt type smartfs
+FS R/W Performance Test!
+write:... remove:... run_time: ... ms
+```
+
+QEMU `hello`는 `CONFIG_RAMMTD_ERASE_ON_INIT=y`이므로 부팅 때 RAM flash를
+초기화한다. 따라서 위 테스트 파일은 QEMU를 재부팅하면 보존되지 않는다.
+첫 `TASH>>` 직후 `not registered`가 나오면 `help`를 입력해 명령 등록이
+끝났는지 확인한 뒤 다시 실행한다.
+
 ## 7. `kernel_tc` 실행
 
 TASH 프롬프트에서 다음을 입력한다.
@@ -335,9 +357,10 @@ cd "$TIZENRT_ROOT/os"
 
 1. `qemu-armv8m/hello`를 ARM64 Docker 이미지로 clean build
 2. `qemu-system-arm -M mps2-an505 ... -nographic`로 현재 터미널에서 부팅
-3. TASH에서 `help` 실행
-4. TASH에서 `kernel_tc` 실행
-5. `Kernel TC End [PASS : 459, FAIL : 0]` 확인
+3. TASH에서 `help`, `ps`, `mount`, `ls /mnt` 실행
+4. TASH에서 `smartfs_test 4 /mnt/test 4096 1 y` 실행
+5. TASH에서 `kernel_tc` 실행
+6. `Kernel TC End [PASS : 459, FAIL : 0]` 확인
 
 같은 변경 상태에서 `loadable_all`, `loadable_apps`, `xip_all`도 각각
 distclean/reconfigure 조건으로 build하고 runner를 실행해
