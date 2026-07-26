@@ -270,7 +270,7 @@ static inline void os_workqueues(void)
 #if defined(CONFIG_INIT_ENTRYPOINT)
 static inline void os_do_appstart(void)
 {
-	int pid;
+	int pid = OK;
 
 #ifdef CONFIG_SILENT_REBOOT
 	silent_reboot_initialize();
@@ -387,7 +387,12 @@ static inline void os_do_appstart(void)
 #endif
 #endif // !CONFIG_APP_BINARY_SEPARATION
 
+#if defined(CONFIG_BINARY_MANAGER) || \
+	(!defined(CONFIG_APP_BINARY_SEPARATION) && defined(CONFIG_USER_ENTRYPOINT))
 	ASSERT(pid > 0);
+#else
+	(void)pid;
+#endif
 }
 
 #elif defined(CONFIG_INIT_NONE)

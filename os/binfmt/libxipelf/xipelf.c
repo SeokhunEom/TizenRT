@@ -164,9 +164,10 @@ static int xipelf_loadbinary(FAR struct binary_s *binp)
 
 	binp->entrypt = (main_t)uspace.entry;
 
+#ifdef CONFIG_BINFMT_CONSTRUCTORS
 	binp->ctors = (binfmt_ctor_t *) uspace.sctors;
-
 	binp->nctors = (uspace.ectors - uspace.sctors) / (sizeof(binfmt_ctor_t));
+#endif
 	
 	return OK;
 }
@@ -217,6 +218,27 @@ typedef struct bin_addr_info_s bin_addr_info_t;
 static bin_addr_info_t g_bin_addr_list[CONFIG_NUM_APPS + 1];
 #endif
 
+#ifdef CONFIG_APP_BINARY_SEPARATION
+static FAR const char *xipelf_get_bin_name(int bin_idx)
+{
+#ifdef CONFIG_BINARY_MANAGER
+	return BIN_NAME(bin_idx);
+#else
+	if (bin_idx == 0) {
+		return "kernel";
+	} else if (bin_idx == 1) {
+		return CONFIG_APP1_BIN_NAME;
+#if CONFIG_NUM_APPS > 1
+	} else if (bin_idx == 2) {
+		return CONFIG_APP2_BIN_NAME;
+#endif
+	}
+
+	return "app";
+#endif
+}
+#endif
+
 bin_addr_info_t *get_bin_addr_list(void)
 {
 	return g_bin_addr_list;
@@ -239,7 +261,7 @@ void elf_show_all_bin_section_addr(void)
 	lldbg_noarg("===========================================================\n");
 	for (bin_idx = 0; bin_idx <= CONFIG_NUM_APPS; bin_idx++) {
 		if (g_bin_addr_list[bin_idx].text_addr != 0) {
-			lldbg("[%s] Text Addr : %p, Text Size : %u\n", BIN_NAME(bin_idx), g_bin_addr_list[bin_idx].text_addr, g_bin_addr_list[bin_idx].text_size);
+			lldbg("[%s] Text Addr : %p, Text Size : %u\n", xipelf_get_bin_name(bin_idx), g_bin_addr_list[bin_idx].text_addr, g_bin_addr_list[bin_idx].text_size);
 		}
 	}
 }

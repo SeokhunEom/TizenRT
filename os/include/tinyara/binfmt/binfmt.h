@@ -64,7 +64,7 @@
 #include <tinyara/arch.h>
 #include <tinyara/sched.h>
 #include <tinyara/mm/mm.h>
-#ifdef CONFIG_BINARY_MANAGER
+#if defined(CONFIG_BINARY_MANAGER) || defined(CONFIG_APP_BINARY_SEPARATION)
 #include <tinyara/binary_manager.h>
 #endif
 #ifdef CONFIG_LIBCXX_EXCEPTION
@@ -167,7 +167,7 @@ struct binary_s {
 	size_t stacksize;			/* Size of the stack in bytes (unallocated) */
 	size_t filelen;                 /* Size of binary size, used only when underlying is MTD */
 	size_t offset;                  /* Offset of binary from partition start*/
-#ifdef CONFIG_BINARY_MANAGER
+#ifdef CONFIG_APP_BINARY_SEPARATION
 	uint8_t binary_idx;             /* Index of binary in binary table */
 	uint32_t bin_ver;               /* version of binary */
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
