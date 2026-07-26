@@ -25,6 +25,7 @@ BUILDDIR="${TOPDIR}/build"
 BINDIR="${BUILDDIR}/output/bin"
 CONFIGDIR="${BUILDDIR}/configs"
 DOCKER_IMAGE_REF=
+DOCKER_PLATFORM=
 DOCKER_PUBLIC_IMAGE="tizenrt/tizenrt"
 DOCKER_DEFAULT_VERSION="1.5.8"
 DOCKER_ARM64_IMAGE="tizenrt/tizenrt:2.0.1-arm64-local"
@@ -61,6 +62,19 @@ function GET_SPECIFIC_DOCKER_IMAGE()
 		echo "failed to inspect Docker architecture"
 		return 1
 	fi
+
+	case "${docker_arch}" in
+		aarch64|arm64)
+			DOCKER_PLATFORM="linux/arm64"
+			;;
+		amd64|x86_64)
+			DOCKER_PLATFORM="linux/amd64"
+			;;
+		*)
+			echo "unsupported Docker architecture: ${docker_arch}"
+			return 1
+			;;
+	esac
 
 	if [ -n "${TIZENRT_DOCKER_IMAGE:-}" ]; then
 		requested_image=${TIZENRT_DOCKER_IMAGE}
@@ -253,7 +267,7 @@ function BUILD_TEST()
 	GET_BUILD_JOBS || exit 1
 	# execute a shell script for build test
 	pushd ${OSDIR} > /dev/null
-	docker run --rm ${DOCKER_OPT} -e TIZENRT_BUILD_JOBS=${BUILD_JOBS} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" bash -c "./tools/build_test.sh"
+	docker run --rm --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} -e TIZENRT_BUILD_JOBS=${BUILD_JOBS} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" bash -c "./tools/build_test.sh"
 	run_status=$?
 	popd > /dev/null
 	if [ ${run_status} -ne 0 ]; then
@@ -512,7 +526,7 @@ function DOWNLOAD()
 
 	# Currently supports ALL only, later this will have a menu
 	pushd ${OSDIR} > /dev/null
-	docker run --rm -it ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -v /run/udev:/run/udev:ro -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
+	docker run --rm -it --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} -v ${TOPDIR}:/root/tizenrt -v /run/udev:/run/udev:ro -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} download $1 $2 $3 $4 $5 $6
 	run_status=$?
 	popd > /dev/null
 	if [ ${run_status} -ne 0 ]; then
@@ -535,6 +549,7 @@ function UPDATE_STATUS()
 	fi
 	GET_SPECIFIC_DOCKER_IMAGE || exit 1
 	echo "Docker Image : ${DOCKER_IMAGE_REF}"
+	echo "Docker Platform : ${DOCKER_PLATFORM}"
 }
 
 function BUILD()
@@ -560,7 +575,7 @@ function BUILD()
 	LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
 
 	echo "Build Jobs : ${BUILD_JOBS}"
-	docker run --rm ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "${make_target[@]}" 2>&1 | tee build.log
+	docker run --rm --platform "${DOCKER_PLATFORM}" ${DOCKER_OPT} ${HOSTNAME} ${LOCALTIME} -v ${TOPDIR}:/root/tizenrt -w /root/tizenrt/os --privileged "${DOCKER_IMAGE_REF}" ${BUILD_CMD} CONFIG_BUILD_PARALLEL_JOBS=${BUILD_JOBS} "${make_target[@]}" 2>&1 | tee build.log
 	run_status=${PIPESTATUS[0]}
 	if [ ${run_status} -ne 0 ]; then
 		exit ${run_status}
