@@ -71,8 +71,11 @@
 #include <tinyara/mmu.h>
 #endif
 
-#ifdef CONFIG_BINARY_MANAGER
+#ifdef CONFIG_APP_BINARY_SEPARATION
 #include <string.h>
+#endif
+
+#ifdef CONFIG_BINARY_MANAGER
 #include "binary_manager/binary_manager_internal.h"
 #endif
 
@@ -177,7 +180,9 @@ int exec_module(FAR struct binary_s *binp)
 	FAR uint32_t *stack;
 	pid_t pid;
 	int ret;
+#ifdef CONFIG_BINARY_MANAGER
 	int binary_idx;
+#endif
 
 	/* Sanity checking */
 
@@ -189,7 +194,9 @@ int exec_module(FAR struct binary_s *binp)
 
 	binfo("Executing %s\n", binp->filename);
 
+#ifdef CONFIG_BINARY_MANAGER
 	binary_idx = binp->binary_idx;
+#endif
 	binp->uheap = (struct mm_heap_s *)binp->sections[BIN_HEAP];
 	ret = mm_initialize(binp->uheap, (void *)binp->sections[BIN_HEAP] + sizeof(struct mm_heap_s), binp->sizes[BIN_HEAP]);
 	if (ret != OK) {
@@ -305,13 +312,15 @@ int exec_module(FAR struct binary_s *binp)
 	newtcb->cmn.uspace = binp->sections[BIN_TEXT] + 4;
 	newtcb->cmn.uheap = (uint32_t)binp->uheap;
 
-#ifdef CONFIG_BINARY_MANAGER
+#ifdef CONFIG_APP_BINARY_SEPARATION
 	newtcb->cmn.app_id = binp->binary_idx;
 
 	/* Set task name as binary name */
 	strncpy(newtcb->cmn.name, binp->bin_name, CONFIG_TASK_NAME_SIZE);
 	newtcb->cmn.name[CONFIG_TASK_NAME_SIZE] = '\0';
+#endif
 
+#ifdef CONFIG_BINARY_MANAGER
 	newtcb->cmn.group->tg_binidx = binary_idx;
 	binary_manager_add_binlist(&newtcb->cmn);
 
