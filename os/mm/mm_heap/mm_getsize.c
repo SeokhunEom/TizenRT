@@ -64,13 +64,13 @@ size_t mm_get_largest_freenode_size(void)
 	struct mm_heap_s *heap;
 	size_t largest_size = 0;
 
-#ifdef __KERNEL__
+#if defined(__KERNEL__) || defined(CONFIG_BUILD_FLAT)
 	size_t curheap_freesize;
 	int heap_idx;
 	heap = g_kmmheap;
 	struct mm_heap_s *target_heap;
 
-	/* Kernel can have multi-heap, so traversing all n-heaps to check the largest. */
+	/* Kernel and flat builds can have multi-heap, so traverse all heaps. */
 	for (heap_idx = HEAP_START_IDX; heap_idx <= HEAP_END_IDX; heap_idx++) {
 		target_heap = &heap[heap_idx];
 		curheap_freesize = mm_get_largest_freesize_from_specific_heap(target_heap);
@@ -110,13 +110,13 @@ size_t mm_get_heap_free_size(void)
 {
 	struct mm_heap_s *heap;
 
-#ifdef __KERNEL__
+#if defined(__KERNEL__) || defined(CONFIG_BUILD_FLAT)
 	size_t free_size = 0;
 	int heap_idx;
 	heap = g_kmmheap;
 	struct mm_heap_s *target_heap;
 
-	/* Kernel can have multi-heap, so traversing all n-heaps and add all free sizes. */
+	/* Kernel and flat builds can have multi-heap, so add all free sizes. */
 	for (heap_idx = HEAP_START_IDX; heap_idx <= HEAP_END_IDX; heap_idx++) {
 		target_heap = &heap[heap_idx];
 		free_size += (target_heap->mm_heapsize - target_heap->total_alloc_size);

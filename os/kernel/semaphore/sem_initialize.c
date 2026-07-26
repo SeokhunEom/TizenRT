@@ -58,9 +58,11 @@
 
 #include "semaphore/semaphore.h"
 
-/* Currently only need to setup priority inheritance logic */
+/* Set up semaphore holder tracking for priority inheritance or Binary Manager
+ * recovery.
+ */
 
-#ifdef CONFIG_PRIORITY_INHERITANCE
+#ifdef SAVE_SEM_HOLDER
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -105,9 +107,9 @@
 
 void sem_initialize(void)
 {
-	/* Initialize holder structures needed to support priority inheritance */
+	/* Initialize the preallocated holder pool, when configured. */
 
 	sem_initholders();
 }
 
-#endif							/* CONFIG_PRIORITY_INHERITANCE */
+#endif							/* SAVE_SEM_HOLDER */

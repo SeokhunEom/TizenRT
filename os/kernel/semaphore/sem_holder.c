@@ -59,6 +59,7 @@
 #include <semaphore.h>
 #include <sched.h>
 #include <assert.h>
+#include <stdbool.h>
 #include <debug.h>
 #include <tinyara/arch.h>
 
@@ -408,13 +409,12 @@ static int sem_restoreholderprio(FAR struct semholder_s *pholder, FAR sem_t *sem
 			/* Skip a holder entry whose count has been given up: the holder
 			 * no longer holds this semaphore, so its waiters must not boost
 			 * the holder.  sem_releaseholder() is the only thing that
-			 * decrements a holder's count, and the zero-count entry is freed
-			 * shortly after in sem_restorebaseprio() -- by both the task path
-			 * (sem_restorebaseprio_task) and the interrupt path
-			 * (sem_restorebaseprio_irq).  A held semaphore can therefore reach
-			 * a zero count only while it is the one being released here; assert
-			 * that, both to document the invariant and to catch any holder left
-			 * stranded on the list with no counts.
+			 * decrements a holder's count, and the zero-count entry is finalized
+			 * shortly after priority restoration in sem_restorebaseprio().  A
+			 * held semaphore can therefore reach a zero count only while it is
+			 * the one being released here; assert that, both to document the
+			 * invariant and to catch any holder left stranded on the list with
+			 * no counts.
 			 */
 
 			if (hpholder->counts <= 0) {
@@ -695,6 +695,71 @@ struct semholder_s *sem_findholder(sem_t *sem, FAR struct tcb_s *htcb)
 	return NULL;
 }
 
+#ifdef CONFIG_PRIORITY_INHERITANCE
+/****************************************************************************
+ * Name: sem_transferholder
+ *
+ * Description:
+ *   Reuse a released zero-count holder for the task that received the
+ *   released semaphore count.  Keeping the holder in the semaphore list
+ *   avoids a free-and-allocate gap when the global holder pool is full.
+ *
+ * Return Value:
+ *   true if the received count was recorded, otherwise false.
+ *
+ * Assumptions:
+ *   Interrupts are disabled and the scheduler is locked.
+ *
+ ****************************************************************************/
+
+static bool sem_transferholder(FAR struct semholder_s *pholder,
+							   FAR struct tcb_s *stcb)
+{
+	FAR struct semholder_s *existing;
+	FAR struct semholder_s **htlink;
+
+	DEBUGASSERT(pholder != NULL && pholder->counts == 0 && stcb != NULL);
+
+	if (pholder->htcb == stcb) {
+		pholder->counts = 1;
+		return true;
+	}
+
+	existing = sem_findholder(pholder->sem, stcb);
+	if (existing != NULL) {
+		DEBUGASSERT(existing->counts < SEM_VALUE_MAX);
+		if (existing->counts < SEM_VALUE_MAX) {
+			existing->counts++;
+			sem_freeholder(pholder->sem, pholder);
+			return true;
+		}
+
+		return false;
+	}
+
+	/* Move the holder from the releasing task's list to the receiving
+	 * task's list.  It remains linked to the same semaphore.
+	 */
+
+	for (htlink = &pholder->htcb->holdsem;
+		 *htlink != NULL && *htlink != pholder;
+		 htlink = &(*htlink)->tlink) {
+	}
+
+	DEBUGASSERT(*htlink == pholder);
+	if (*htlink != pholder) {
+		return false;
+	}
+	*htlink = pholder->tlink;
+
+	pholder->htcb = stcb;
+	pholder->counts = 1;
+	pholder->tlink = stcb->holdsem;
+	stcb->holdsem = pholder;
+	return true;
+}
+#endif
+
 /****************************************************************************
  * Name: sem_addholder_tcb
  *
@@ -797,7 +862,8 @@ FAR struct tcb_s *sem_releaseholder(FAR sem_t *sem, FAR struct tcb_s *rtcb)
 {
 	FAR struct semholder_s *pholder;
 	FAR struct semholder_s *candidate = NULL;
-	unsigned int total = 0;
+	FAR struct semholder_s *released = NULL;
+	FAR struct tcb_s *released_tcb = rtcb;
 
 	if ((sem->flags & FLAGS_SIGSEM) != 0) {
 		/* No saved holder for semaphore used for signaling */
@@ -820,34 +886,45 @@ FAR struct tcb_s *sem_releaseholder(FAR sem_t *sem, FAR struct tcb_s *rtcb)
 		DEBUGASSERT(pholder->counts > 0);
 
 		if (pholder->htcb == rtcb) {
-			/* Decrement the counts on this holder -- the holder will be freed
-			 * later in sem_restorebaseprio.
-			 */
-
-			pholder->counts--;
-			return rtcb;
+			released = pholder;
+		} else if (candidate == NULL) {
+			candidate = pholder;
 		}
-
-		total++;
-		candidate = pholder;
 	}
 
-	if (total == 1) {
-		/* The posting task is not a holder, but the sole holder is
-		 * unambiguous.  Return its TCB so sem_restorebaseprio() removes the
-		 * correct zero-count entry after priority restoration.
+	if (released == NULL) {
+		/* POSIX permits a task or interrupt handler that did not obtain a
+		 * count to post it.  In that case no ownership information exists,
+		 * so return one recorded permit deterministically.  This preserves
+		 * the invariant between holder counts and the semaphore count.
 		 */
 
-		candidate->counts--;
-		return candidate->htcb;
+		released = candidate;
 	}
 
-	/* With multiple holders there is not enough information to select the
-	 * released holder.  Keep the existing records rather than attributing
-	 * the release to the wrong task.
-	 */
+	if (released != NULL) {
+		released_tcb = released->htcb;
+		released->counts--;
 
-	return rtcb;
+		/* Priority restoration needs the released holder to remain linked
+		 * until sem_unblock_task() has handed the count to a waiter.  Other
+		 * builds can remove an empty holder immediately.  Keeping cleanup
+		 * beside the decrement also preserves holders that own more counts.
+		 */
+
+#ifdef CONFIG_PRIORITY_INHERITANCE
+		if ((sem->flags & PRIOINHERIT_FLAGS_DISABLE) != 0 &&
+			released->counts == 0) {
+			sem_freeholder(sem, released);
+		}
+#else
+		if (released->counts == 0) {
+			sem_freeholder(sem, released);
+		}
+#endif
+	}
+
+	return released_tcb;
 }
 
 #ifdef CONFIG_PRIORITY_INHERITANCE
@@ -906,16 +983,19 @@ void sem_boostpriority(FAR sem_t *sem)
  *       stcb should be null.
  *
  * Return Value:
- *   None
+ *   true if the released holder was reused to record ownership for stcb;
+ *   otherwise false.
  *
  * Assumptions:
  *   The scheduler is locked.
  *
  ****************************************************************************/
 
-void sem_restorebaseprio(FAR struct tcb_s *stcb, FAR struct tcb_s *htcb, FAR sem_t *sem)
+bool sem_restorebaseprio(FAR struct tcb_s *stcb, FAR struct tcb_s *htcb,
+						 FAR sem_t *sem)
 {
 	FAR struct semholder_s *pholder;
+	bool transferred = false;
 
 	/* Check our assumptions */
 
@@ -947,21 +1027,30 @@ void sem_restorebaseprio(FAR struct tcb_s *stcb, FAR struct tcb_s *htcb, FAR sem
 	}
 #endif
 
-	/* In any case, the currently executing task should have an entry in the
-	 * list.  Its counts were previously decremented; if it now holds no
-	 * counts, then we need to remove it from the list of holders.
+	/* In any case, the releasing task should have an entry in the list.  Its
+	 * counts were previously decremented; if it now holds no counts, remove
+	 * it or transfer the entry to the waiter that received the count.
 	 */
 
-	pholder = sem_findholder(sem, htcb);
-	if (pholder) {
-		/* When no more counts are held, remove the holder from the list.  The
-		 * count was decremented in sem_releaseholder.
+	pholder = htcb != NULL ? sem_findholder(sem, htcb) : NULL;
+	if (pholder != NULL) {
+		/* Reusing the zero-count entry avoids requiring a free pool slot
+		 * during a waiter handoff.  The old holder remains linked until here
+		 * so its inherited priority can be restored first.
 		 */
 
 		if (pholder->counts <= 0) {
-			sem_freeholder(sem, pholder);
+			if (stcb != NULL) {
+				transferred = sem_transferholder(pholder, stcb);
+			}
+
+			if (!transferred) {
+				sem_freeholder(sem, pholder);
+			}
 		}
 	}
+
+	return transferred;
 }
 
 /****************************************************************************
@@ -985,15 +1074,12 @@ void sem_release_all(FAR struct tcb_s *htcb)
 	FAR struct semholder_s *pholder;
 
 	while ((pholder = htcb->holdsem) != NULL) {
-		FAR sem_t *sem = pholder->sem;
-
-		sem_freeholder(sem, pholder);
-
-		/* Increment the count on the semaphore to release the count that
-		 * was taken by sem_wait() or sem_post().
+		/* Release one count at a time.  A holder can represent multiple
+		 * successful waits on the same semaphore and remains on holdsem
+		 * until its final count is handed back.
 		 */
 
-		sem->semcount++;
+		sem_releasecount(pholder->sem, htcb);
 	}
 }
 #endif

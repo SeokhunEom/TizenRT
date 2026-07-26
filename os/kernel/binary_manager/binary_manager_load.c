@@ -693,6 +693,7 @@ void binary_manager_release_binary_sem(int bin_idx)
 	sem_t *sem;
 	irqstate_t flags;
 	FAR struct semholder_s *holder;
+	FAR struct tcb_s *htcb;
 
 	flags = enter_critical_section();
 
@@ -701,24 +702,30 @@ void binary_manager_release_binary_sem(int bin_idx)
 		bmdbg("g_sem_list is empty.\n");
 	} else {
 		do {
+			do {
+				htcb = NULL;
 #if CONFIG_SEM_PREALLOCHOLDERS > 0
-			for (holder = sem->hhead; holder; holder = holder->flink)
+				for (holder = sem->hhead; holder; holder = holder->flink)
 #else
-			holder = &sem->holder;
+				holder = &sem->holder;
 #endif
-			{
-				if (holder && holder->htcb && holder->htcb->group && holder->htcb->group->tg_binidx == bin_idx) {
-					/* Increase semcount and release itself from holder */
-					sem->semcount++;
-
-					if ((sem->flags & FLAGS_SEM_MUTEX) != 0) {
-						DEBUGASSERT(sem->semcount < 2);
+				{
+					if (holder && holder->htcb && holder->htcb->group &&
+						holder->htcb->group->tg_binidx == bin_idx) {
+						htcb = holder->htcb;
+						break;
 					}
-
-					/* And after releasing the kernel sem, there can be a task which waits that sem. So unblock the waiting task. */
-					sem_unblock_task(sem, holder->htcb);
 				}
-			}
+
+				if (htcb != NULL) {
+					/* Release one held count and restart the scan because the
+					 * holder can be removed or a waiter can become a holder.
+					 */
+
+					sem_releasecount(sem, htcb);
+				}
+			} while (htcb != NULL);
+
 			sem = sq_next(sem);
 		} while (sem);
 	}

@@ -154,10 +154,11 @@ int main(int argc, char **argv, char **envp)
 	printf("#  undef CONFIG_DEV_LOWCONSOLE\n");
 	printf("#  undef CONFIG_RAMLOG_CONSOLE\n");
 	printf("#endif\n\n");
-	printf("/* If priority inheritance is disabled, then do not allocate any\n");
-	printf(" * associated resources.\n");
+	printf("/* If neither priority inheritance nor Binary Manager needs semaphore holder\n");
+	printf(" * tracking, then do not allocate any associated resources.\n");
 	printf(" */\n\n");
-	printf("#if !defined(CONFIG_PRIORITY_INHERITANCE) || !defined(CONFIG_SEM_PREALLOCHOLDERS)\n");
+	printf("#if (!defined(CONFIG_PRIORITY_INHERITANCE) && !defined(CONFIG_BINARY_MANAGER)) || \\\n");
+	printf("\t!defined(CONFIG_SEM_PREALLOCHOLDERS)\n");
 	printf("# undef CONFIG_SEM_PREALLOCHOLDERS\n");
 	printf("# define CONFIG_SEM_PREALLOCHOLDERS 0\n");
 	printf("#endif\n\n");

@@ -94,11 +94,11 @@
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
-void sem_unblock_task(sem_t *sem, struct tcb_s *htcb)
+void sem_unblock_task(FAR sem_t *sem, FAR struct tcb_s *htcb)
 {
 	struct tcb_s *stcb = NULL;
-#ifdef SAVE_SEM_HOLDER
-	struct semholder_s *pholder = NULL;
+#ifdef CONFIG_PRIORITY_INHERITANCE
+	bool holder_transferred = false;
 #endif
 
 #ifdef CONFIG_SEMAPHORE_HISTORY
@@ -129,8 +129,13 @@ void sem_unblock_task(sem_t *sem, struct tcb_s *htcb)
 		for (stcb = (FAR struct tcb_s *)g_waitingforsemaphore.head; (stcb && stcb->waitsem != sem); stcb = stcb->flink) ;
 
 		if (stcb) {
-			sem_addholder_tcb(stcb, sem);
+#ifndef CONFIG_PRIORITY_INHERITANCE
+			/* Without scheduler locking, register ownership before the
+			 * higher-priority waiter can run.
+			 */
 
+			sem_addholder_tcb(stcb, sem);
+#endif
 			/* It is, let the task take the semaphore */
 
 			stcb->waitsem = NULL;
@@ -144,7 +149,6 @@ void sem_unblock_task(sem_t *sem, struct tcb_s *htcb)
 		}
 	}
 
-#ifdef SAVE_SEM_HOLDER
 	/* Check if we need to drop the priority of any threads holding
 	 * this semaphore.  The priority could have been boosted while they
 	 * held the semaphore.
@@ -152,21 +156,52 @@ void sem_unblock_task(sem_t *sem, struct tcb_s *htcb)
 
 #ifdef CONFIG_PRIORITY_INHERITANCE
 	if ((sem->flags & PRIOINHERIT_FLAGS_DISABLE) == 0) {
-		sem_restorebaseprio(stcb, htcb, sem);
-	} else {
+		holder_transferred = sem_restorebaseprio(stcb, htcb, sem);
+	}
 #endif
-		/* Free a semaphore holder directly. */
-		pholder = sem_findholder(sem, htcb);
-		if (pholder) {
-			sem_freeholder(sem, pholder);
-		}
+
 #ifdef CONFIG_PRIORITY_INHERITANCE
+	/* Register the new holder unless priority restoration transferred the
+	 * released entry directly.  The scheduler remains locked, so the
+	 * unblocked task cannot run before its ownership is recorded.
+	 */
+
+	if (stcb != NULL && !holder_transferred) {
+		sem_addholder_tcb(stcb, sem);
 	}
 
 	sched_unlock();
 #endif
-#endif
+}
 
+/****************************************************************************
+ * Name: sem_releasecount
+ *
+ * Description:
+ *   Release one count held on a semaphore and make that count available to
+ *   the highest-priority waiter, if any.
+ *
+ * Assumptions:
+ *   Interrupts are disabled.
+ *
+ ****************************************************************************/
+
+void sem_releasecount(FAR sem_t *sem, FAR struct tcb_s *htcb)
+{
+	size_t caller_retaddr = (size_t)GET_RETURN_ADDRESS();
+
+	ASSERT_INFO(sem->semcount < SEM_VALUE_MAX, "sem = 0x%x, semcount = %d, flags = 0x%x, caller address = 0x%x\n",
+				sem, sem->semcount, sem->flags, caller_retaddr);
+
+	htcb = sem_releaseholder(sem, htcb);
+	sem->semcount++;
+
+	if ((sem->flags & FLAGS_SEM_MUTEX) != 0) {
+		ASSERT_INFO(sem->semcount < 2, "sem = 0x%x, semcount = %d, flags = 0x%x, caller address = 0x%x\n",
+					sem, sem->semcount, sem->flags, caller_retaddr);
+	}
+
+	sem_unblock_task(sem, htcb);
 }
 
 /****************************************************************************
@@ -198,10 +233,8 @@ void sem_unblock_task(sem_t *sem, struct tcb_s *htcb)
 
 int sem_post(FAR sem_t *sem)
 {
-	FAR struct tcb_s *htcb;
 	irqstate_t saved_state;
 	int ret = ERROR;
-	size_t caller_retaddr = (size_t)GET_RETURN_ADDRESS();
 
 	/* Make sure we were supplied with a valid semaphore. */
 	saved_state = enter_critical_section();
@@ -213,16 +246,7 @@ int sem_post(FAR sem_t *sem)
 		 */
 
 		/* Perform the semaphore unlock operation. */
-		ASSERT_INFO(sem->semcount < SEM_VALUE_MAX, "sem = 0x%x, semcount = %d, flags = 0x%x, caller address = 0x%x\n", sem, sem->semcount, sem->flags, caller_retaddr);
-		htcb = this_task();
-		htcb = sem_releaseholder(sem, htcb);
-		sem->semcount++;
-
-		if ((sem->flags & FLAGS_SEM_MUTEX) != 0) {
-			ASSERT_INFO(sem->semcount < 2, "sem = 0x%x, semcount = %d, flags = 0x%x, caller address = 0x%x\n", sem, sem->semcount, sem->flags, caller_retaddr);
-		}
-
-		sem_unblock_task(sem, htcb);
+		sem_releasecount(sem, up_interrupt_context() ? NULL : this_task());
 		ret = OK;
 
 		/* Interrupts may now be enabled. */

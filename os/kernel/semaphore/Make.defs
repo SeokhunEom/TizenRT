@@ -61,7 +61,7 @@ ifeq ($(CONFIG_BINARY_MANAGER),y)
 CSRCS += sem_list.c
 endif
 else ifeq ($(CONFIG_BINARY_MANAGER),y)
-CSRCS += sem_holder.c sem_list.c
+CSRCS += sem_initialize.c sem_holder.c sem_list.c
 endif
 ifeq ($(CONFIG_SPINLOCK),y)
 CSRCS += spinlock.c
