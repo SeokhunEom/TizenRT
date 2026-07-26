@@ -48,8 +48,9 @@ for the remaining separated build, and `hello` for the flat build.
 ## Validate with the QEMU runner
 
 Use the repository runner for every ARMv8-M runtime check. It constructs the
-board-specific QEMU command, waits for a fresh TASH prompt, sends `kernel_tc`,
-and writes a serial log plus a JSON result.
+board-specific QEMU command with LAN9118 user networking, waits for a fresh
+TASH prompt, validates DHCP, IPv4/IPv6 gateway reachability, DNS,
+`network_tc`, and `kernel_tc`, then writes a serial log plus a JSON result.
 
 ```sh
 python3 .github/scripts/qemu-armv8m-kernel-tc.py --config hello --timeout 1200
@@ -87,9 +88,10 @@ the board's non-Binary-Manager loader unit fixture, not these runtime recipes.
 The successful rejection contract records `"status": "expected-rejection"` in
 the result JSON.
 
-The CI matrix covers corrupt-common, omitted-common, corrupt-app1, and
-oversized-app1 through this runner interface. It also verifies the generated
-`xip_all` layout before runtime validation.
+The local negative checks cover corrupt-common, omitted-common, corrupt-app1,
+and alternate-slot recovery through this runner interface. CI may add further
+package boundary cases and verifies the generated `xip_all` layout before
+runtime validation.
 
 ## SRAM and persistent A/B state
 
@@ -112,8 +114,9 @@ packages when a fresh image is required.
 Local runtime evidence includes `hello`, `loadable_all`, `loadable_apps`, and
 `xip_all` using the ARM64 Docker image and the persistent-state runner. The
 checks proved TASH boot, Binary Manager discovery, app loading, and XIP package
-placement. On 2026-07-25, clean builds followed by fresh runner invocations
-completed with `PASS : 459, FAIL : 0` for `hello` and
+placement. On 2026-07-26, clean builds followed by fresh runner invocations
+completed with network `PASS : 161, FAIL : 0` for all four configurations,
+kernel `PASS : 459, FAIL : 0` for `hello`, and kernel
 `PASS : 447, FAIL : 0` for each loadable/XIP configuration. These results are
 local QEMU software-path evidence, not hardware-board validation.
 

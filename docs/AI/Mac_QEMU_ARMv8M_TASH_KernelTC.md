@@ -6,7 +6,8 @@
 
 - QEMU 머신은 `mps2-an505`, Cortex-M33 계열 ARMv8-M이다.
 - `hello`, `loadable_all`, `loadable_apps`, `xip_all`은 각각 clean build,
-  TASH 진입, full `kernel_tc`를 로컬에서 확인했다.
+  TASH 진입, Ethernet 네트워크와 full `network_tc`/`kernel_tc`를 로컬에서
+  확인한다.
 - 실제 RTL/BK 보드의 플래시, UART, 무선, 센서 동작은 이 문서의 QEMU 결과로 검증할 수 없다.
 - 저장소 경로가 다르면 아래 `TIZENRT_ROOT`만 현재 checkout 경로로 바꾼다.
 
@@ -126,11 +127,52 @@ BP0(version 1, active A)을 보존하고 BP1(version 2, active B)에 복구 결�
 기록한 뒤 clean reboot를 요청했다. 이 결과는 A/B bootparam 전환 증거이며,
 full `kernel_tc` 성공을 의미하지 않는다.
 
-## TASH와 `kernel_tc` 검증
+## QEMU Ethernet과 TASH 검증
 
-자동화된 runner를 권장한다. runner는 QEMU를 기동하고 새 TASH 프롬프트를 확인한 뒤 `kernel_tc`를 전송한다. 단순히 이전 로그에 PASS 문자열이 있는 것은 성공으로 보지 않으며, 새 실행에서 `PASS > 0` 및 `FAIL : 0`을 요구한다.
-`Assertion failed at file:`이 나타나면 최종 집계나 timeout을 기다리지 않고
-`reason=kernel-assert`로 즉시 실패한다.
+MPS2-AN505의 LAN9118 MMIO NIC를 `eth0`으로 등록한다. runner는 QEMU
+user-mode network를 다음 고정 계약으로 시작한다.
+
+- guest MAC: `52:54:00:12:34:56`
+- IPv4 guest/host: DHCP `10.0.2.15` / gateway `10.0.2.2`
+- IPv6 guest/host: `fec0::15` / `fec0::2`
+- 필수 Internet 확인: `example.com` DNS 조회
+- 관찰 항목: `1.1.1.1` ICMP. QEMU user-mode network와 host 방화벽에 따라
+  0/1이어도 DNS가 성공하면 네트워크 실패로 처리하지 않는다.
+
+runner는 명령 등록을 확인한 뒤 다음 순서로 실행한다.
+
+```text
+help
+ifdown eth0
+ifup eth0
+ifconfig eth0 dhcp
+ifconfig eth0 fec0::15
+ifconfig eth0
+ping -c 3 10.0.2.2
+ping6 -c 3 fec0::2
+netdb --host example.com
+ping -c 1 1.1.1.1
+net_stats
+network_tc
+sleep 2
+kernel_tc
+```
+
+필수 성공 조건은 DHCP 주소 획득, IPv4/IPv6 gateway ping 수신, DNS 결과,
+`Network TC End [PASS : n, FAIL : 0]`, `Kernel TC End [PASS : n, FAIL : 0]`
+이다. `network_tc`의 보조 thread가 종료될 시간을 확보하기 위해 두 suite
+사이에 2초를 둔다. Ethernet-only build의 `ifconfig`는 IPv4/MAC/MTU를
+표시하며, IPv6 동작은 `ping6` 결과로 확인한다.
+
+## 자동 runner로 `network_tc`와 `kernel_tc` 검증
+
+자동화된 runner를 권장한다. runner는 QEMU를 기동하고 새 TASH 프롬프트를
+확인한 뒤 위 네트워크 절차와 두 testcase suite를 실행한다. 단순히 이전
+로그에 PASS 문자열이 있는 것은 성공으로 보지 않으며, 새 실행에서 각
+suite의 `PASS > 0` 및 `FAIL : 0`을 요구한다.
+완전한 `Assertion failed at file:... line:...` 진단이 나타나면 최종 집계나
+timeout을 기다리지 않고 `reason=kernel-assert`로 즉시 실패한다. serial
+chunk 중간의 잘린 prefix만으로는 QEMU를 종료하지 않아 file/line을 보존한다.
 
 ```bash
 cd "$TIZENRT_ROOT"
@@ -147,10 +189,11 @@ rg -n "TASH>>|Kernel TC End|PASS|FAIL" \
   build/qemu-armv8m/hello-kernel-tc.log
 ```
 
-완전한 `kernel_tc` 성공 조건은 결과 JSON의 `status`가 `pass`이고, 로그에
-다음 형태의 결과가 있는 것이다.
+완전한 성공 조건은 결과 JSON의 최상위 `status`와 `network.status`가
+모두 `pass`이고, 로그에 다음 두 결과가 있는 것이다.
 
 ```text
+Network TC End [PASS : <positive number>, FAIL : 0]
 Kernel TC End [PASS : <positive number>, FAIL : 0]
 ```
 
@@ -174,12 +217,18 @@ done
 
 검증 결과는 full `kernel_tc` pass와 boot/package smoke를 구분한다.
 
-| config | 확인 결과 | 제한 사항 |
+| config | 네트워크 결과 | 커널 결과 | 제한 사항 |
 | --- | --- | --- |
-| `hello` | clean build, TASH, `PASS : 459`, `FAIL : 0` | QEMU flat/multiheap 경로 |
-| `loadable_all` | clean build, common/app1/app2, `PASS : 447`, `FAIL : 0` | RAM-backed package 경로 |
-| `loadable_apps` | clean build, common/app1/app2, `PASS : 447`, `FAIL : 0` | 큰 app SRAM recipe |
-| `xip_all` | clean build, flash-backed common/app1, `PASS : 447`, `FAIL : 0` | PI-on/XIP 경로 |
+| `hello` | LAN9118, IPv4/IPv6/DNS, `161/0` | `459/0` | QEMU flat/multiheap 경로 |
+| `loadable_all` | LAN9118, IPv4/IPv6/DNS, `161/0` | `447/0` | RAM-backed package 경로 |
+| `loadable_apps` | LAN9118, IPv4/IPv6/DNS, `161/0` | `447/0` | 큰 app SRAM recipe |
+| `xip_all` | LAN9118, IPv4/IPv6/DNS, `161/0` | `447/0` | PI-on/XIP 경로 |
+
+각 clean build에서 생성된 `.config`의 network/netdev/network-test 설정
+118개를 추출해 줄 번호를 제외하고 비교한 SHA-256은 네 recipe 모두
+`0f243d064d2192ff842216941298a523131b97c6616151af02bff845bfb6cea8`로
+같았다. 즉 defconfig 선언뿐 아니라 Kconfig 해석 결과도 동일한 네트워크
+계약이다.
 
 세마포어 holder 정책도 recipe 역할에 맞춘다. `hello`는 PI와 Binary
 Manager가 모두 꺼져 holder tracking을 빌드하지 않는다. PI-off
@@ -192,11 +241,12 @@ holder가 등록되는 경계를 회귀 테스트한다.
 
 CI의 positive/negative matrix와 artifact는 별도 검증 축이다.
 위 표의 runtime 수치는 이 checkout에서 생성한 로그를 바탕으로 한 세션
-기록(2026-07-25)이며, generated log/result는 커밋하지 않는다. 재현 시에는 매번 새
+기록(2026-07-26)이며, generated log/result는 커밋하지 않는다. 재현 시에는 매번 새
 `--log`와 `--result` 경로를 지정한다.
-이번 positive 결과는 모두 `active_slot=0`, `attempt=0`이므로 full
-`kernel_tc`와 package boot 증거이지 실제 alternate-slot failover 증거는
-아니다. failover는 별도 negative/recovery 시나리오로 검증한다.
+일반 positive 결과는 `active_slot=0`, `attempt=0`이다. 별도
+`loadable_all` recovery에서는 손상된 A-slot `app1`을 거부하고 bootparam
+version 1→2, active slot 0→1로 전환한 뒤 B-slot에서 network `161/0`과
+kernel `447/0`까지 통과했다.
 
 ## 수동 TASH 확인
 
@@ -205,7 +255,11 @@ CI의 positive/negative matrix와 artifact는 별도 검증 축이다.
 ```bash
 cd "$TIZENRT_ROOT/os"
 PATH="$(brew --prefix)/bin:$PATH" \
-  qemu-system-arm -M mps2-an505 -kernel ../build/output/bin/tinyara -nographic
+  qemu-system-arm \
+    -M mps2-an505 \
+    -kernel ../build/output/bin/tinyara \
+    -nic user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,mac=52:54:00:12:34:56 \
+    -nographic
 ```
 
 TASH 프롬프트가 나오면 다음을 입력한다.
@@ -216,6 +270,12 @@ ps
 mount
 ls /mnt
 smartfs_test 4 /mnt/test 4096 1 y
+ifconfig eth0 dhcp
+ifconfig eth0 fec0::15
+ping -c 3 10.0.2.2
+ping6 -c 3 fec0::2
+netdb --host example.com
+network_tc
 kernel_tc
 ```
 
