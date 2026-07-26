@@ -41,12 +41,15 @@ CONFIG_FLASH_VSTART_LOADABLE = util.get_value_from_file(cfg_file, "CONFIG_FLASH_
 
 # Define boards that use dual mode (dual OTA support)
 DUAL_LD_BOARDS = ["rtl8730e"]
-is_dual_ld_mode = board_name in DUAL_LD_BOARDS
+is_dual_ld_mode = board_name in DUAL_LD_BOARDS or \
+    util.check_config_existence(cfg_file, 'CONFIG_XIP_ELF_DUAL_SLOT=y')
 
 # Dynamically get the offset from Kernel TRPK binary file
 # Chip specific should implement the logic for offset calculation according to trpk file content
 offset = 0
-if CONFIG_TRPK_CONTAINS_MULTIPLE_BINARY == "y":
+if is_dual_ld_mode and board_name == "qemu-armv8m":
+    offset = int(util.get_value_from_file(cfg_file, "CONFIG_FLASH_START_ADDR="), 16)
+elif CONFIG_TRPK_CONTAINS_MULTIPLE_BINARY == "y":
     if is_dual_ld_mode:
         sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/tools/amebasmart/gnu_utility')))
         from loadable_xip_elf import get_offset
@@ -260,6 +263,9 @@ for name in NAME_LIST :
                     ld.write(generate_ld_script(common_start, common_size, common_ram_str))
                 ld_generated["common"] = True
     else:
+        # Reserved/unused partitions still occupy flash and must advance the
+        # cursor before the next A/B slot is generated.
+        offset = offset + part_size
         PART_IDX = PART_IDX + 1
         continue
 

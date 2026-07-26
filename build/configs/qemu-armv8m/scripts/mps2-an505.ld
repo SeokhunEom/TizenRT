@@ -18,9 +18,10 @@
 
 MEMORY
 {
-	/* QEMU loads app packages at 0x102c0000 and above. */
-	ssram (rx)  : ORIGIN = 0x10000000, LENGTH = 0x2c0000
-	ram   (rwx) : ORIGIN = 0x80000000, LENGTH = 16M
+	/* Keep 512 KiB of SSRAM for the secondary heap. */
+	ssram (rx)  : ORIGIN = 0x10000000, LENGTH = 0x380000
+	/* The upper 12 MiB of main RAM is managed as heap regions. */
+	ram   (rwx) : ORIGIN = 0x80000000, LENGTH = 4M
 }
 
 OUTPUT_ARCH(arm)

@@ -228,7 +228,7 @@ if APP_BINARY_SEPARATION
 config NUM_APPS
 	int "Number of application binaries"
 	default 2
-	range 1 1 if ARCH_BOARD_QEMU_ARMV8M
+	range 1 2 if ARCH_BOARD_QEMU_ARMV8M
 	---help---
 		Indicates the number of user applications to be built. The available RAM might
 		constrain the max number of applications. It is the developer's responsibility
@@ -683,4 +683,3 @@ endmenu
 menu "Security Framework"
 source "$FRAMEWORK_DIR/src/security/Kconfig"
 endmenu
-

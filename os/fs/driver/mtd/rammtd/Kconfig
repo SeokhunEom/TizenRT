@@ -15,12 +15,18 @@ config RAMMTD_ERASESTATE
         default 0xff
 
 config RAMMTD_FLASHSIM
-        bool "RAM MTD FLASH Simulation"
-        default n
+	bool "RAM MTD FLASH Simulation"
+	default n
         ---help---
-                RAMMTD_FLASHSIM will add some extra logic to improve the level of
-                FLASH simulation.
+		RAMMTD_FLASHSIM will add some extra logic to improve the level of
+		FLASH simulation.
+
+config RAMMTD_ERASE_ON_INIT
+	bool "Erase RAM MTD on initialization"
+	default y
+	---help---
+		Clear the backing memory when the RAM MTD device is initialized.
+		Disable this for a persistent RAM-backed flash simulation.
 endmenu
 
 endif #RAMMTD
-

@@ -15,6 +15,7 @@ CHIP: Final = Path("os/arch/arm/include/qemu-armv8m/chip.h")
 KCONFIG: Final = Path("os/Kconfig")
 MAKE: Final = Path("build/configs/qemu-armv8m/Make.defs")
 RUNNER: Final = Path(".github/scripts/qemu-armv8m-kernel-tc.py")
+AB_SCRIPT: Final = Path(".github/scripts/qemu_armv8m_ab.py")
 KERNEL_SCRIPT: Final = Path("build/configs/qemu-armv8m/scripts/mps2-an505.ld")
 XIP_SCRIPT: Final = Path("build/configs/qemu-armv8m/scripts/xipelf/userspace_all.ld")
 DEFCONFIGS: Final = ("hello", "loadable_all", "loadable_apps", "xip_all")
@@ -50,6 +51,11 @@ def read_config(path: Path) -> dict[str, str]:
             key, value = line.split("=", 1)
             values[key] = value
     return values
+
+
+def parse_config_list(config: dict[str, str], key: str) -> list[int]:
+    value = config.get(key, "").strip('"')
+    return [int(item, 0) for item in value.split(",") if item]
 
 
 def parse_define(text: str, name: str) -> list[int]:
@@ -127,44 +133,74 @@ def validate_readelf(programs: str, sections: str, artifact_size: int, regions: 
 
 def analyze_layout(root: Path) -> dict[str, ReportValue]:
     slots = parse_board_slots(root)
+    board = (root / BOARD).read_text(encoding="utf-8")
     make = (root / MAKE).read_text(encoding="utf-8")
     runner = (root / RUNNER).read_text(encoding="utf-8")
+    ab_script = (root / AB_SCRIPT).read_text(encoding="utf-8")
     xip_script = (root / XIP_SCRIPT).read_text(encoding="utf-8")
     kernel_ssram = parse_linker_region(root / KERNEL_SCRIPT, "ssram")
     configs = {name: read_config(root / "build/configs/qemu-armv8m" / name / "defconfig") for name in DEFCONFIGS}
-    make_loaders = [(name, int(address, 0)) for name, address in re.findall(r"loader,file=\$\(TOPDIR\)/\.\./build/output/bin/(common|app1),addr=(0x[0-9a-fA-F]+)", make)]
-    runner_loaders = [(name, int(address, 0)) for name, address in re.findall(r"loader,file=\{(common|app1)\},addr=(0x[0-9a-fA-F]+)", runner)]
-    expected = {"common": {slots["xip-common"].origin}, "app1": {slots["loadable-app1"].origin, slots["xip-app1"].origin}}
     errors: list[str] = []
-    if "range 1 1 if ARCH_BOARD_QEMU_ARMV8M" not in (root / KCONFIG).read_text(encoding="utf-8"):
-        errors.append("QEMU app-separated NUM_APPS must be range-limited to one")
+    kconfig = (root / KCONFIG).read_text(encoding="utf-8")
+    if "range 1 2 if ARCH_BOARD_QEMU_ARMV8M" not in kconfig:
+        errors.append("QEMU app-separated NUM_APPS must be range-limited to two")
     if make.count("$(CONFIG_ARCH_BOARD)") < 4:
         errors.append("Make linker paths must derive from CONFIG_ARCH_BOARD")
+    if "@python3" in make:
+        errors.append("QEMU download command must not pass a literal @ to the shell")
+    if "ifeq ($(CONFIG_XIP_KERNEL),y)" not in make or "--config loadable_apps" not in make:
+        errors.append("QEMU download command must select loadable_apps for XIP-kernel builds")
     if "} > usram AT > uflash" not in xip_script:
         errors.append("XIP userspace linker must retain RAM VMA with flash LMA")
-    if kernel_ssram.end != slots["xip-common"].origin:
-        errors.append("kernel linker ssram must end at the common package slot")
+    if kernel_ssram.origin != 0x10000000 or kernel_ssram.end != 0x10380000:
+        errors.append("kernel linker ssram must reserve the upper 512 KiB for heap")
+    if "memory-backend-file" not in ab_script or "qemu_armv8m_ab" not in runner:
+        errors.append("runner must use the file-backed A/B state image")
+    if (
+        "binary_manager_check_bootparam_set();" not in board
+        or "binary_manager_recover_bootparam_set();" not in board
+    ):
+        errors.append("QEMU Binary Manager must initialize and recover bootparam state")
     for name, config in configs.items():
         if config.get("CONFIG_ARCH_BOARD") != '"qemu-armv8m"':
             errors.append(f"{name}: board must be qemu-armv8m")
         separated = config.get("CONFIG_APP_BINARY_SEPARATION") == "y"
         if name == "hello" and separated:
             errors.append("hello must remain flat")
-        if name != "hello" and (not separated or config.get("CONFIG_NUM_APPS") != "1" or config.get("CONFIG_APP1_BIN_NAME") != '"app1"'):
-            errors.append(f"{name}: requires exactly app1")
-        common = config.get("CONFIG_SUPPORT_COMMON_BINARY") == "y"
-        if (name == "xip_all") != common:
-            errors.append(f"{name}: common package layout mismatch")
-    for name, address in make_loaders:
-        if address not in expected[name]:
-            errors.append(f"{name}: loader address 0x{address:x} disagrees with board slot")
-    for name, address in runner_loaders:
-        if address not in expected[name]:
-            errors.append(f"runner {name}: loader address 0x{address:x} disagrees with board slot")
-    if make_loaders != [("common", slots["xip-common"].origin), ("app1", slots["xip-app1"].origin), ("app1", slots["loadable-app1"].origin)]:
-        errors.append("Make loader layout is not xip common+app1 followed by loadable app1")
-    if runner_loaders != [("app1", slots["loadable-app1"].origin), ("common", slots["xip-common"].origin), ("app1", slots["xip-app1"].origin)]:
-        errors.append("runner loader layout is not loadable app1 and xip common+app1")
+        if name != "hello":
+            expected_apps = "1" if name == "xip_all" else "2"
+            if not separated or config.get("CONFIG_NUM_APPS") != expected_apps:
+                errors.append(f"{name}: requires NUM_APPS={expected_apps}")
+            if config.get("CONFIG_SUPPORT_COMMON_BINARY") != "y":
+                errors.append(f"{name}: common package layout mismatch")
+            if config.get("CONFIG_BINARY_MANAGER") != "y":
+                errors.append(f"{name}: binary manager must be enabled")
+            if config.get("CONFIG_FLASH_PARTITION") != "y":
+                errors.append(f"{name}: file-backed flash partitions must be enabled")
+
+            starts = parse_config_list(config, "CONFIG_RAM_KREGIONx_START")
+            sizes = parse_config_list(config, "CONFIG_RAM_KREGIONx_SIZE")
+            heaps = parse_config_list(config, "CONFIG_RAM_KREGIONx_HEAP_INDEX")
+            expected_regions = ([0x80000000, 0x80400000, 0x10380000], [0x400000, 0x800000, 0x80000], [0, 2, 1])
+            if (starts, sizes, heaps) != expected_regions:
+                errors.append(f"{name}: SRAM/main-RAM heap region mapping is incorrect")
+            if config.get("CONFIG_RAM_START") != "0x80400000":
+                errors.append(f"{name}: loaded app RAM must start after the kernel reservation")
+            if config.get("CONFIG_HEAP_INDEX_LOADED_APP") != "2":
+                errors.append(f"{name}: loaded apps must use the main-RAM heap")
+            if config.get("CONFIG_RAMMTD_ERASE_ON_INIT") != "n":
+                errors.append(f"{name}: file-backed RAMMTD must not erase on init")
+
+            names = [item for item in config.get("CONFIG_FLASH_PART_NAME", "").strip('"').split(",") if item]
+            sizes_kib = [int(item) for item in config.get("CONFIG_FLASH_PART_SIZE", "").strip('"').split(",") if item]
+            if len(names) != len(sizes_kib) or sum(sizes_kib) != 4096:
+                errors.append(f"{name}: A/B flash partition map must fill 4 MiB")
+            if names.count("kernel") != 2 or names.count("common") != 2 or names.count("app1") != 2:
+                errors.append(f"{name}: kernel/common/app1 must have A/B partitions")
+            if name != "xip_all" and names.count("app2") != 2:
+                errors.append(f"{name}: app2 must have A/B partitions")
+    make_loaders = []
+    runner_loaders = [(name, int(address, 0)) for name, address in re.findall(r"loader,file=\{(common|app1)\},addr=(0x[0-9a-fA-F]+)", runner)]
     slot_report = {name: {"name": slot.name, "origin": slot.origin, "length": slot.length} for name, slot in slots.items()}
     return {"ok": not errors, "errors": errors, "slots": slot_report, "make_loaders": make_loaders, "runner_loaders": runner_loaders}
 

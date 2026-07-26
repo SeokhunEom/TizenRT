@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from qemu_armv8m_layout import BOARD, CHIP, DEFCONFIGS, KCONFIG, KERNEL_SCRIPT, MAKE, RUNNER, XIP_SCRIPT, LayoutContractError, analyze_layout, inspect_artifact, parse_generated_regions, validate_readelf, write_report
+from qemu_armv8m_layout import AB_SCRIPT, BOARD, CHIP, DEFCONFIGS, KCONFIG, KERNEL_SCRIPT, MAKE, RUNNER, XIP_SCRIPT, LayoutContractError, analyze_layout, inspect_artifact, parse_generated_regions, validate_readelf, write_report
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -76,9 +76,10 @@ class QemuArmv8mLayoutContractTest(unittest.TestCase):
 
     def test_contract_rejects_mutated_qemu_inputs(self) -> None:
         mutations = {
-            "second app": (Path("build/configs/qemu-armv8m/loadable_all/defconfig"), "CONFIG_NUM_APPS=1", "CONFIG_NUM_APPS=2", "requires exactly app1"),
-            "make mismatch": (MAKE, "addr=0x10360000", "addr=0x10360001", "disagrees with board slot"),
+            "second app": (Path("build/configs/qemu-armv8m/loadable_all/defconfig"), "CONFIG_NUM_APPS=2", "CONFIG_NUM_APPS=1", "requires NUM_APPS=2"),
+            "state runner": (AB_SCRIPT, "memory-backend-file", "memory-backend-memfd", "file-backed A/B state image"),
             "missing common": (Path("build/configs/qemu-armv8m/xip_all/defconfig"), "CONFIG_SUPPORT_COMMON_BINARY=y", "# CONFIG_SUPPORT_COMMON_BINARY is not set", "common package layout mismatch"),
+            "download shell marker": (MAKE, "python3 $(TOPDIR)", "@python3 $(TOPDIR)", "literal @ to the shell"),
         }
         for label, (path, before, after, diagnostic) in mutations.items():
             with self.subTest(label=label), tempfile.TemporaryDirectory() as directory:
@@ -87,22 +88,44 @@ class QemuArmv8mLayoutContractTest(unittest.TestCase):
                 target.write_text(target.read_text(encoding="utf-8").replace(before, after), encoding="utf-8")
                 self.assertTrue(any(diagnostic in error for error in analyze_layout(root)["errors"]))
 
-    def test_contract_rejects_changed_board_address(self) -> None:
+    def test_contract_rejects_missing_loadable_apps_download_route(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self.copy_layout_fixture(Path(directory))
-            board = root / BOARD
-            board.write_text(board.read_text(encoding="utf-8").replace("0x10360000", "0x10361000", 1), encoding="utf-8")
-            self.assertTrue(any("disagrees with board slot" in error for error in analyze_layout(root)["errors"]))
+            make = root / MAKE
+            make.write_text(make.read_text(encoding="utf-8").replace("--config loadable_apps", "--config loadable_all", 1), encoding="utf-8")
+            self.assertTrue(any("loadable_apps" in error for error in analyze_layout(root)["errors"]))
+
+    def test_contract_rejects_changed_ssram_reservation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.copy_layout_fixture(Path(directory))
+            linker = root / KERNEL_SCRIPT
+            linker.write_text(linker.read_text(encoding="utf-8").replace("LENGTH = 0x380000", "LENGTH = 0x390000", 1), encoding="utf-8")
+            self.assertTrue(any("reserve the upper 512 KiB" in error for error in analyze_layout(root)["errors"]))
 
     def test_contract_rejects_changed_runner_address(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self.copy_layout_fixture(Path(directory))
-            runner = root / RUNNER
-            runner.write_text(runner.read_text(encoding="utf-8").replace("0x10360000", "0x10361000", 1), encoding="utf-8")
-            self.assertTrue(any("runner" in error for error in analyze_layout(root)["errors"]))
+            runner = root / AB_SCRIPT
+            runner.write_text(runner.read_text(encoding="utf-8").replace("memory-backend-file", "memory-backend-memfd", 1), encoding="utf-8")
+            self.assertTrue(any("file-backed A/B state image" in error for error in analyze_layout(root)["errors"]))
+
+    def test_contract_rejects_missing_bootparam_recovery_initialization(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.copy_layout_fixture(Path(directory))
+            board = root / BOARD
+            board.write_text(
+                board.read_text(encoding="utf-8").replace("binary_manager_check_bootparam_set();", "", 1),
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                any(
+                    "initialize and recover bootparam state" in error
+                    for error in analyze_layout(root)["errors"]
+                )
+            )
 
     def copy_layout_fixture(self, root: Path) -> Path:
-        for relative in (BOARD, CHIP, KCONFIG, MAKE, RUNNER, KERNEL_SCRIPT, XIP_SCRIPT):
+        for relative in (AB_SCRIPT, BOARD, CHIP, KCONFIG, MAKE, RUNNER, KERNEL_SCRIPT, XIP_SCRIPT):
             target = root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / relative, target)
@@ -120,11 +143,20 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--common-ld", type=Path)
     parser.add_argument("--common-artifact", type=Path)
+    parser.add_argument("--common-alt-ld", type=Path)
+    parser.add_argument("--common-alt-artifact", type=Path)
     parser.add_argument("--app1-ld", type=Path)
     parser.add_argument("--app1-artifact", type=Path)
+    parser.add_argument("--app1-alt-ld", type=Path)
+    parser.add_argument("--app1-alt-artifact", type=Path)
     args = parser.parse_args(argv[1:])
     report = analyze_layout(args.root.resolve())
-    artifact_pairs = (("common", args.common_ld, args.common_artifact), ("app1", args.app1_ld, args.app1_artifact))
+    artifact_pairs = (
+        ("common", args.common_ld, args.common_artifact),
+        ("common_1", args.common_alt_ld, args.common_alt_artifact),
+        ("app1", args.app1_ld, args.app1_artifact),
+        ("app1_1", args.app1_alt_ld, args.app1_alt_artifact),
+    )
     for name, linker, artifact in artifact_pairs:
         if (linker is None) != (artifact is None):
             parser.error(f"--{name}-ld and --{name}-artifact must be provided together")

@@ -40,6 +40,8 @@ class RunRequest:
     forbid_marker: str | None
     reject_observe_seconds: float
     expected_once: tuple[str, ...] = ()
+    state_image: Path | None = None
+    max_reboots: int = 0
 
 
 class PreflightError(ValueError):
@@ -199,6 +201,18 @@ def update_negative_markers(request: RunRequest, state: ProtocolState, now: floa
     return None
 
 
+def negative_process_exit_outcome(
+    request: RunRequest,
+    state: ProtocolState,
+    returncode: int | None,
+) -> ProtocolOutcome | None:
+    if request.expect_reject is None or request.forbid_marker is None:
+        return None
+    if returncode == 0 and state.required_marker_seen and not state.forbidden_marker_seen:
+        return ProtocolOutcome("expected-rejection", "expected-rejection", returncode)
+    return None
+
+
 def initialize_artifacts(request: RunRequest, state: ProtocolState) -> None:
     request.log_path.parent.mkdir(parents=True, exist_ok=True)
     request.result_path.parent.mkdir(parents=True, exist_ok=True)
@@ -242,6 +256,9 @@ def run_protocol(request: RunRequest, command_builder: CommandBuilder) -> int:
                     return finish(request, state, ProtocolOutcome("failed", "timeout", process.poll()))
                 if state.observe_deadline is not None:
                     if process.poll() is not None:
+                        outcome = negative_process_exit_outcome(request, state, process.returncode)
+                        if outcome is not None:
+                            return finish(request, state, outcome)
                         return finish(request, state, ProtocolOutcome("failed", "qemu-exit", process.returncode))
                     if now >= state.observe_deadline:
                         return finish(request, state, ProtocolOutcome("expected-rejection", "expected-rejection", None))
@@ -254,11 +271,17 @@ def run_protocol(request: RunRequest, command_builder: CommandBuilder) -> int:
                     return finish(request, state, ProtocolOutcome("failed", "timeout", process.poll()))
                 if not readable:
                     if process.poll() is not None:
+                        outcome = negative_process_exit_outcome(request, state, process.returncode)
+                        if outcome is not None:
+                            return finish(request, state, outcome)
                         return finish(request, state, ProtocolOutcome("failed", "qemu-exit", process.returncode))
                     continue
                 chunk = os.read(process.stdout.fileno(), 4096)
                 if not chunk:
                     if process.poll() is not None:
+                        outcome = negative_process_exit_outcome(request, state, process.returncode)
+                        if outcome is not None:
+                            return finish(request, state, outcome)
                         return finish(request, state, ProtocolOutcome("failed", "qemu-exit", process.returncode))
                     continue
                 state.window.extend(chunk)

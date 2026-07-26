@@ -67,6 +67,9 @@ endef
 $(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),preconfig)))
 $(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),context)))
 $(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),depend)))
+ifeq ($(CONFIG_XIP_ELF_DUAL_SLOT),y)
+$(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),xip_slot1)))
+endif
 $(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),clean)))
 $(foreach SDIR, $(SUBDIRS), $(eval $(call SDIR_template,$(SDIR),distclean)))
 
@@ -85,4 +88,3 @@ clean: $(foreach SDIR, $(SUBDIRS), $(SDIR)_clean)
 distclean: $(foreach SDIR, $(SUBDIRS), $(SDIR)_distclean)
 
 -include Make.dep
-

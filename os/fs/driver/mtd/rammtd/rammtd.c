@@ -439,8 +439,11 @@ FAR struct mtd_dev_s *rammtd_initialize(FAR uint8_t *start, size_t size)
 		fdbg("Failed to allocate the RAM MTD state structure\n");
 		return NULL;
 	}
+	/* A persistent RAM-backed flash must survive a software reset. */
+#ifdef CONFIG_RAMMTD_ERASE_ON_INIT
 	/* Use memset to initialize when it started, to guarantees cleaned space for sw reset */
 	memset(start, CONFIG_RAMMTD_ERASESTATE, size);
+#endif
 	/* Force the size to be an even number of the erase block size */
 
 	nblocks = size / CONFIG_RAMMTD_ERASESIZE;

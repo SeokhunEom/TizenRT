@@ -121,23 +121,34 @@ HOSTINCLUDES = -I.
 HOSTCFLAGS = -Wall -Wstrict-prototypes -Wshadow -g -pipe
 HOSTLDFLAGS =
 
+ifeq ($(CONFIG_BINARY_MANAGER),y)
+define MAKE_SAMSUNG_HEADER
+	$(TOPDIR)/tools/mksamsungheader.py $(1) kernel 0
+endef
+
+define MAKE_BOOTPARAM
+	$(TOPDIR)/tools/mkbootparam.py
+endef
+endif
+
 ifeq ($(CONFIG_XIP_ELF),y)
 define DOWNLOAD
-	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara \
-		-device loader,file=$(TOPDIR)/../build/output/bin/common,addr=0x102c0000,force-raw=on \
-		-device loader,file=$(TOPDIR)/../build/output/bin/app1,addr=0x10360000,force-raw=on \
-		-nographic
+	python3 $(TOPDIR)/../.github/scripts/qemu-armv8m-kernel-tc.py --config xip_all
 endef
 else
 ifeq ($(CONFIG_APP_BINARY_SEPARATION),y)
+ifeq ($(CONFIG_XIP_KERNEL),y)
 define DOWNLOAD
-	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara \
-		-device loader,file=$(TOPDIR)/../build/output/bin/app1,addr=0x10300000,force-raw=on \
-		-nographic
+	python3 $(TOPDIR)/../.github/scripts/qemu-armv8m-kernel-tc.py --config loadable_apps
 endef
 else
 define DOWNLOAD
-	@qemu-system-arm -M mps2-an505 -kernel $(TOPDIR)/../build/output/bin/tinyara -nographic
+	python3 $(TOPDIR)/../.github/scripts/qemu-armv8m-kernel-tc.py --config loadable_all
+endef
+endif
+else
+define DOWNLOAD
+	python3 $(TOPDIR)/../.github/scripts/qemu-armv8m-kernel-tc.py --config hello
 endef
 endif
 endif

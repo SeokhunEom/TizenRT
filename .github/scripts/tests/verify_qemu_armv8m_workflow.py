@@ -22,16 +22,23 @@ NEGATIVE_CONFIGS: Final = {
     "oversized-app1": "loadable_all",
 }
 NEGATIVE_MARKERS: Final = {
-    "corrupt-common": "QEMU_LOAD_REJECT common",
-    "omitted-common": "QEMU_LOAD_REJECT common",
-    "corrupt-app1": "QEMU_LOAD_REJECT app1",
-    "oversized-app1": "QEMU_LOAD_REJECT app1 size",
+    "corrupt-common": "binary_manager_load: Invalid Header data, name : common",
+    "omitted-common": "binary_manager_load: Invalid Header data, name : common",
+    "corrupt-app1": "binary_manager_load: Invalid Header data, name : app1",
+    "oversized-app1": "binary_manager_load: Invalid Header data, name : app1",
+}
+NEGATIVE_FORBIDDEN_MARKERS: Final = {
+    "corrupt-common": "binary_manager_load: common Header Checking Success",
+    "omitted-common": "binary_manager_load: common Header Checking Success",
+    "corrupt-app1": "binary_manager_load: app1 Header Checking Success",
+    "oversized-app1": "binary_manager_load: app1 Header Checking Success",
 }
 REQUIRED_FILTERS: Final = {
     ".github/scripts/**",
     ".github/workflows/qemu-armv8m.yml",
     "apps/examples/testcase/**",
     "build/configs/qemu-armv8m/**",
+    "loadable_apps/**",
     "framework/**",
     "os/**",
     "os/arch/arm/src/armv8-m/**",
@@ -51,10 +58,16 @@ REQUIRED_ARTIFACTS: Final = {
 XIP_COMMANDS: Final = (
     "readelf -lW build/output/bin/common_dbg",
     "readelf -SW build/output/bin/common_dbg",
+    "readelf -lW build/output/bin/common_1_dbg",
+    "readelf -SW build/output/bin/common_1_dbg",
     "readelf -lW build/output/bin/app1_dbg",
     "readelf -SW build/output/bin/app1_dbg",
+    "readelf -lW build/output/bin/app1_1_dbg",
+    "readelf -SW build/output/bin/app1_1_dbg",
     "--common-ld build/output/bin/common_0.ld --common-artifact build/output/bin/common_dbg",
+    "--common-alt-ld build/output/bin/common_1.ld --common-alt-artifact build/output/bin/common_1_dbg",
     "--app1-ld build/output/bin/app1_0.ld --app1-artifact build/output/bin/app1_dbg",
+    "--app1-alt-ld build/output/bin/app1_1.ld --app1-alt-artifact build/output/bin/app1_1_dbg",
     "xip-layout-report.json",
 )
 LAYOUT_CHECKS: Final = ("PT_LOAD VMA", "PT_LOAD LMA", "PT_LOAD file extent", "allocated section")
@@ -231,15 +244,16 @@ def analyze_workflow(workflow: str, layout_checker: str | None = None) -> list[s
         marker = NEGATIVE_MARKERS[case]
         if f"--expect-reject \"{marker}\"" not in case_body:
             errors.append(f"negative case {case} must use --expect-reject \"{marker}\"")
-        if "--forbid-marker \"QEMU_APP1_STARTED\"" not in case_body:
-            errors.append(f"negative case {case} must forbid QEMU_APP1_STARTED")
+        forbidden_marker = NEGATIVE_FORBIDDEN_MARKERS[case]
+        if f'--forbid-marker "{forbidden_marker}"' not in case_body:
+            errors.append(f"negative case {case} must forbid {forbidden_marker}")
     oversized = negative_case_block(negative, "oversized-app1")
     if 'bs=1 seek=9 conv=notrunc status=none' not in oversized:
         errors.append("oversized-app1 must write the bin_size field offset")
     if 'bs=1 skip=4 status=none' not in oversized or "python3 os/tools/mkchecksum.py" not in oversized:
         errors.append("oversized-app1 must perform a CRC refresh after changing metadata")
-    if '--expect-reject "QEMU_LOAD_REJECT app1 size"' not in oversized:
-        errors.append("oversized-app1 must require the size rejection marker")
+    if '--expect-reject "binary_manager_load: Invalid Header data, name : app1"' not in oversized:
+        errors.append("oversized-app1 must require the app1 rejection marker")
 
     exception = jobs.get("exception-return-compile", "")
     entries = exception_entries(exception)
