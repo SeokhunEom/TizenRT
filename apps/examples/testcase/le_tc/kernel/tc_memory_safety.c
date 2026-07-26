@@ -79,18 +79,29 @@
 #define TEST_MSGLEN         CONFIG_MQ_MAXMSGSIZE
 
 #define TEST_SEND_NMSGS      (int) 8000000 / TEST_MSGLEN
-#ifndef CONFIG_DISABLE_SIGNALS
-#define TEST_RECEIVE_NMSGS   TEST_SEND_NMSGS + 1
-#else
 #define TEST_RECEIVE_NMSGS   TEST_SEND_NMSGS
-#endif
 
-#define HALF_SECOND_USEC_USEC   500000L
 #define STACKSIZE TEST_MSGLEN + 1024
+#ifndef CONFIG_DISABLE_SIGNALS
+#define RECEIVER_JOIN_RETRY      100
+#define RECEIVER_JOIN_USEC       5000
+#endif
 
 static mqd_t g_send_mqfd;
 static mqd_t g_recv_mqfd;
 static int g_exit;
+#ifndef CONFIG_DISABLE_SIGNALS
+static volatile int g_receiver_ready;
+static volatile int g_receiver_interrupted;
+static volatile int g_receiver_received;
+static volatile int g_receiver_verified;
+static volatile int g_receiver_queue_depth;
+
+static void memory_safety_sigusr1_handler(int signo)
+{
+	(void)signo;
+}
+#endif
 
 /**
 * @fn                   :sender_thread
@@ -164,9 +175,25 @@ static void *receiver_thread(void *arg)
 {
 	char msg_buffer[TEST_MSGLEN];
 	struct mq_attr attr;
+#ifndef CONFIG_DISABLE_SIGNALS
+	struct sigaction action;
+#endif
 	int nbytes;
 	int nerrors = 0;
 	int msg_idx;
+#ifndef CONFIG_DISABLE_SIGNALS
+	int verified_count = 0;
+#endif
+
+#ifndef CONFIG_DISABLE_SIGNALS
+	memset(&action, 0, sizeof(action));
+	action.sa_handler = memory_safety_sigusr1_handler;
+	(void)sigemptyset(&action.sa_mask);
+	if (sigaction(SIGUSR1, &action, NULL) != OK) {
+		pthread_exit((pthread_addr_t)1);
+	}
+	g_receiver_ready = 1;
+#endif
 
 	/* Fill in attributes for message queue */
 
@@ -193,7 +220,8 @@ static void *receiver_thread(void *arg)
 
 	/* Perform the receive TEST_RECEIVE_NMSGS times */
 
-	for (msg_idx = 0; msg_idx < TEST_RECEIVE_NMSGS; msg_idx++) {
+	msg_idx = 0;
+	while (msg_idx < TEST_RECEIVE_NMSGS) {
 		memset(msg_buffer, 0xaa, TEST_MSGLEN);
 		nbytes = mq_receive(g_recv_mqfd, msg_buffer, TEST_MSGLEN, 0);
 		if (nbytes < 0) {
@@ -204,6 +232,7 @@ static void *receiver_thread(void *arg)
 			if (errno != EINTR) {
 				printf("tc_mqueue_mq_receive FAIL : failure on msg %d, errno=%d\n", msg_idx, errno);
 				nerrors++;
+				break;
 			} else {
 				tckndbg("mq_receive interrupted!\n");
 			}
@@ -226,7 +255,41 @@ static void *receiver_thread(void *arg)
 
 			tckndbg("receiver_thread: %2d 00 %02x\n", msg_chk, msg_buffer[msg_chk]);
 		}
+#ifndef CONFIG_DISABLE_SIGNALS
+		else {
+			verified_count++;
+		}
+#endif
+
+		if (nbytes >= 0) {
+			msg_idx++;
+		}
 	}
+
+#ifndef CONFIG_DISABLE_SIGNALS
+	g_receiver_received = msg_idx;
+	g_receiver_verified = verified_count;
+
+	if (msg_idx == TEST_RECEIVE_NMSGS) {
+		nbytes = mq_receive(g_recv_mqfd, msg_buffer, TEST_MSGLEN, 0);
+		if (nbytes < 0 && errno == EINTR) {
+			g_receiver_interrupted = 1;
+		} else {
+			printf("tc_mqueue_mq_receive FAIL : final receive=%d, errno=%d\n", nbytes, errno);
+			nerrors++;
+			if (nbytes >= 0) {
+				g_receiver_received++;
+			}
+		}
+	}
+
+	if (mq_getattr(g_recv_mqfd, &attr) < 0) {
+		printf("tc_mqueue_mq_getattr FAIL\n");
+		nerrors++;
+	} else {
+		g_receiver_queue_depth = attr.mq_curmsgs;
+	}
+#endif
 
 	/* Close the queue and return success */
 
@@ -260,7 +323,7 @@ static void *infiniteloop(void *arg)
 }
 
 /**
- * @fn                  :tc_memory_safety_with_mqueue
+ * @fn                  :tc_memory_safety_sigusr1_receiver_wakeup
  * @brief               :Tests mqueue APIs open, close, send, receive.
  * @Scenario            :Tests mqueue APIs open, close, send, receive.
  * API's covered        :mq_open, mq_close, mq_send, mq_receive
@@ -268,7 +331,7 @@ static void *infiniteloop(void *arg)
  * Postconditions       :none
  * @return              :void
  */
-static void tc_memory_safety_with_mqueue(void)
+static void tc_memory_safety_sigusr1_receiver_wakeup(void)
 {
 	pthread_t sender;
 	pthread_t receiver;
@@ -276,7 +339,12 @@ static void tc_memory_safety_with_mqueue(void)
 	void *result;
 	pthread_attr_t attr;
 	struct sched_param sparam;
+#ifdef CONFIG_DISABLE_SIGNALS
 	FAR void *expected;
+#else
+	int retry;
+	int signal_status;
+#endif
 	int priority1 = CONFIG_SCHED_LPWORKPRIORITY + 1;
 	int priority2 = CONFIG_SCHED_LPWORKPRIORITY + 2;
 	int priority3 = CONFIG_SCHED_LPWORKPRIORITY + 3;
@@ -288,6 +356,13 @@ static void tc_memory_safety_with_mqueue(void)
 	g_send_mqfd = NULL;
 	g_recv_mqfd = NULL;
 	g_exit = 0;
+#ifndef CONFIG_DISABLE_SIGNALS
+	g_receiver_ready = 0;
+	g_receiver_interrupted = 0;
+	g_receiver_received = 0;
+	g_receiver_verified = 0;
+	g_receiver_queue_depth = -1;
+#endif
 
 	/* Check whether the priority of this task is the largest among all threads */
 
@@ -346,19 +421,48 @@ static void tc_memory_safety_with_mqueue(void)
 	TC_ASSERT_EQ("pthread_join", result, (void *)0);
 
 	g_exit = 1;
-	
+
 #ifndef CONFIG_DISABLE_SIGNALS
-	/* Wake up the receiver thread with a signal */
+	TC_ASSERT_EQ_CLEANUP("SIGUSR1 receiver ready", g_receiver_ready, 1,
+			pthread_cancel(receiver); pthread_join(receiver, &result));
 
-	pthread_kill(receiver, 9);
+	status = pthread_kill(receiver, SIGUSR1);
+	TC_ASSERT_EQ_CLEANUP("pthread_kill SIGUSR1", status, OK,
+			pthread_cancel(receiver); pthread_join(receiver, &result));
 
-	/* Wait a bit to see if the thread exits on its own */
+	for (retry = 0; retry < RECEIVER_JOIN_RETRY; retry++) {
+		status = pthread_tryjoin_np(receiver, &result);
+		if (status != EBUSY) {
+			break;
+		}
 
-	usleep(HALF_SECOND_USEC_USEC);
-#endif
+		/* The receiver may still be draining messages when the first signal
+		 * arrives.  Retry while it is alive so one signal reaches the final
+		 * blocking mq_receive.
+		 */
 
-	/* Then cancel the thread and see if it did */
+		signal_status = pthread_kill(receiver, SIGUSR1);
+		if (signal_status != OK && signal_status != ESRCH) {
+			pthread_cancel(receiver);
+			pthread_join(receiver, &result);
+			TC_ASSERT_EQ("pthread_kill SIGUSR1 retry", signal_status, OK);
+		}
 
+		usleep(RECEIVER_JOIN_USEC);
+	}
+
+	if (status != OK) {
+		pthread_cancel(receiver);
+		pthread_join(receiver, &result);
+		TC_ASSERT_EQ("SIGUSR1 receiver bounded join", status, OK);
+	}
+
+	TC_ASSERT_EQ("SIGUSR1 receiver mq_receive EINTR", g_receiver_interrupted, 1);
+	TC_ASSERT_EQ("SIGUSR1 receiver messages received", g_receiver_received, TEST_RECEIVE_NMSGS);
+	TC_ASSERT_EQ("SIGUSR1 receiver messages verified", g_receiver_verified, TEST_RECEIVE_NMSGS);
+	TC_ASSERT_EQ("SIGUSR1 receiver queue empty", g_receiver_queue_depth, 0);
+	TC_ASSERT_EQ("SIGUSR1 receiver result", result, (void *)0);
+#else
 	expected = PTHREAD_CANCELED;
 	status = pthread_cancel(receiver);
 	if (status == ESRCH) {
@@ -373,6 +477,7 @@ static void tc_memory_safety_with_mqueue(void)
 
 	pthread_join(receiver, &result);
 	TC_ASSERT_EQ("pthread_join", result, expected);
+#endif
 
 	/* Message queues are global resources and persist for the life of the
 	 * task group.  The message queue opened by the sender_thread must be closed
@@ -404,6 +509,6 @@ static void tc_memory_safety_with_mqueue(void)
  ****************************************************************************/
 int memory_safety_main(void)
 {
-	tc_memory_safety_with_mqueue();
+	tc_memory_safety_sigusr1_receiver_wakeup();
 	return 0;
 }
