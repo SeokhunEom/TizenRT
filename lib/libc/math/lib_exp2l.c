@@ -259,7 +259,7 @@ static const double tbl[TBLSIZE * 2] = {
  */
 long double exp2l(long double x)
 {
-	union ldshape u = { x };
+	union ldshape u = { .f = x };
 	int e = u.i.se & 0x7fff;
 	long double r;
 	long double z;
@@ -640,7 +640,7 @@ static const float eps[TBLSIZE] = {
 
 long double exp2l(long double x)
 {
-	union ldshape u = { x };
+	union ldshape u = { .f = x };
 	int e = u.i.se & 0x7fff;
 	long double r;
 	long double z;

@@ -85,7 +85,7 @@ static const unsigned B1 = 709958130;	/* B1 = (127-127.0/3-0.03306235651)*2**23 
 
 long double cbrtl(long double x)
 {
-	union ldshape u = { x }, v;
+	union ldshape u = { .f = x }, v;
 	union {
 		float f;
 		uint32_t i;
