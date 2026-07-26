@@ -16,7 +16,7 @@
 #
 ############################################################################
 
-ifeq ($(CONFIG_TC_NET_PBUF),y)
+ifneq ($(CONFIG_TC_NET_PBUF)$(CONFIG_TC_KERNEL_NET_PBUF),)
 CSRCS += test_net_pbuf.c
 endif
 

@@ -1,0 +1,4 @@
+#ifndef __TASK11_FIXTURE_TINYARA_FS_IOCTL_H
+#define __TASK11_FIXTURE_TINYARA_FS_IOCTL_H
+#define _TESTIOC(nr) (nr)
+#endif

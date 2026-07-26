@@ -87,6 +87,8 @@
  * Private Type Declarations
  ****************************************************************************/
 
+typedef CODE void (*thread_starthook_t)(FAR void *arg);
+
 /****************************************************************************
  * Global Variables
  ****************************************************************************/
@@ -129,7 +131,9 @@
  *
  ****************************************************************************/
 
-static int thread_create(FAR const char *name, uint8_t ttype, int priority, int stack_size, main_t entry, FAR char *const argv[])
+static int thread_create(FAR const char *name, uint8_t ttype, int priority, int stack_size,
+		main_t entry, FAR char *const argv[], thread_starthook_t starthook,
+		FAR void *starthook_arg)
 {
 	FAR struct task_tcb_s *tcb;
 	pid_t pid;
@@ -227,6 +231,15 @@ static int thread_create(FAR const char *name, uint8_t ttype, int priority, int 
 	heapinfo_check_group_list(pid, tcb->cmn.name);
 #endif
 
+#ifdef CONFIG_SCHED_STARTHOOK
+	if (starthook != NULL) {
+		task_starthook(tcb, starthook, starthook_arg);
+	}
+#else
+	(void)starthook;
+	(void)starthook_arg;
+#endif
+
 	/* Activate the task */
 
 	(void)task_activate((FAR struct tcb_s *)tcb);
@@ -295,7 +308,7 @@ int task_create(FAR const char *name, int priority, int stack_size, main_t entry
 		return ERROR;
 	}
 #endif
-	return thread_create(name, TCB_FLAG_TTYPE_TASK, priority, stack_size, entry, argv);
+	return thread_create(name, TCB_FLAG_TTYPE_TASK, priority, stack_size, entry, argv, NULL, NULL);
 }
 #endif
 
@@ -317,5 +330,15 @@ int task_create(FAR const char *name, int priority, int stack_size, main_t entry
 
 int kernel_thread(FAR const char *name, int priority, int stack_size, main_t entry, FAR char *const argv[])
 {
-	return thread_create(name, TCB_FLAG_TTYPE_KERNEL, priority, stack_size, entry, argv);
+	return thread_create(name, TCB_FLAG_TTYPE_KERNEL, priority, stack_size, entry, argv, NULL, NULL);
 }
+
+#if defined(CONFIG_DRIVERS_OS_API_TEST) && defined(CONFIG_SCHED_STARTHOOK)
+int task_create_with_starthook(FAR const char *name, int priority, int stack_size,
+		main_t entry, FAR char *const argv[], starthook_t starthook,
+		FAR void *starthook_arg)
+{
+	return thread_create(name, TCB_FLAG_TTYPE_KERNEL, priority, stack_size, entry,
+			argv, starthook, starthook_arg);
+}
+#endif

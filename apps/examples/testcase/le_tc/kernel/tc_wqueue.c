@@ -25,9 +25,12 @@
 **************************************************************************/
 #include <tinyara/config.h>
 #include <tinyara/clock.h>
+#include <tinyara/os_api_test_drv.h>
 #include <tinyara/wqueue.h>
 #include <stdio.h>
+#include <sys/ioctl.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include "tc_internal.h"
 
 /**************************************************************************
@@ -35,15 +38,21 @@
 **************************************************************************/
 #ifdef CONFIG_SCHED_WORKQUEUE
 
+#define WQUEUE_TEST_WAIT_RETRIES 300
+#define WQUEUE_TEST_WAIT_USEC (10 * USEC_PER_TICK)
+
 /**************************************************************************
 * Private Variables
 **************************************************************************/
 
+#ifndef CONFIG_BUILD_PROTECTED
 static clock_t start_time;
+#endif
 
 /**************************************************************************
 * Private Functions
 **************************************************************************/
+#ifndef CONFIG_BUILD_PROTECTED
 static void wq_test1(void *arg)
 {
 	clock_t cur_time = 0;
@@ -64,6 +73,7 @@ static void wq_test3(void *arg)
 	cur_time = clock();
 	printf("workqueue_test 3 : test 3 requested delay is (%u) ticks, executed delay is (%llu) ticks.\n", (uint32_t)arg, (uint64_t)cur_time - (uint64_t)start_time);
 }
+#endif
 /**************************************************************************
 * Public Functions
 **************************************************************************/
@@ -71,6 +81,14 @@ static void wq_test3(void *arg)
 static void tc_wqueue_work_queue_cancel(void)
 {
 	int result;
+
+#ifdef CONFIG_BUILD_PROTECTED
+	result = ioctl(tc_get_drvfd(), TESTIOC_WORK_QUEUE_TEST, 0);
+	TC_ASSERT_EQ("work_queue", result, OK);
+	TC_SUCCESS_RESULT();
+#else
+	int retry;
+	int success = 0;
 	struct work_s *test_work1;
 	struct work_s *test_work2;
 	struct work_s *test_work3;
@@ -100,12 +118,29 @@ static void tc_wqueue_work_queue_cancel(void)
 	TC_ASSERT_EQ_CLEANUP("work_queue", result, OK, goto cleanup);
 
 	sleep(1);
+	for (retry = 0; retry < WQUEUE_TEST_WAIT_RETRIES && (!work_available(test_work1) || !work_available(test_work3)); retry++) {
+		usleep(WQUEUE_TEST_WAIT_USEC);
+	}
+	TC_ASSERT_CLEANUP("work_available", work_available(test_work1) && work_available(test_work3), {
+		if (!work_available(test_work1)) {
+			(void)work_cancel(HPWORK, test_work1);
+		}
+		if (!work_available(test_work3)) {
+			(void)work_cancel(LPWORK, test_work3);
+		}
+		goto cleanup;
+	});
+
+	success = 1;
 
 cleanup:
 	free(test_work1);
 	free(test_work2);
 	free(test_work3);
-	TC_SUCCESS_RESULT();
+	if (success) {
+		TC_SUCCESS_RESULT();
+	}
+#endif
 }
 #endif
 /****************************************************************************

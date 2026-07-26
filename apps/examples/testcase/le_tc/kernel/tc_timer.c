@@ -23,14 +23,37 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 #include <tinyara/os_api_test_drv.h>
+#ifndef CONFIG_BUILD_PROTECTED
 #include "../../os/kernel/timer/timer.h"
+#endif
 #include "tc_internal.h"
 
 #define USECINT 10000000
 
 static int sig_no = SIGRTMIN;
 
-#ifndef CONFIG_BUILD_PROTECTED
+#ifdef CONFIG_BUILD_PROTECTED
+/**
+* @fn                   :tc_timer_timer_create_delete
+* @brief                :Create and delete a POSIX per-process timer
+* @scenario             :Create and delete a POSIX per-process timer
+* API's covered         :timer_create, timer_delete
+* Preconditions         :none
+* Postconditions        :none
+* @return               :void
+*/
+static void tc_timer_timer_create_delete(void)
+{
+	int fd;
+	int ret_chk;
+
+	fd = tc_get_drvfd();
+	ret_chk = ioctl(fd, TESTIOC_TIMER_CREATE_DELETE_TEST, 0);
+	TC_ASSERT_EQ("timer_create_delete", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#else
 /**
 * @fn                   :tc_timer_timer_create_delete
 * @brief                :Create and delete a POSIX per-process timer
@@ -121,6 +144,33 @@ static void tc_timer_timer_create_delete(void)
 }
 #endif	/* CONFIG_BUILD_PROTECTED */
 
+/**
+* @fn                   :tc_timer_timer_deleteall
+* @brief                :Delete timers owned by a task during kernel timer cleanup
+* @scenario             :Create timers in the kernel test driver, call timer_deleteall,
+*                        and verify timer lists are restored
+* API's covered         :timer_deleteall
+* Preconditions         :none
+* Postconditions        :none
+* @return               :void
+*/
+static void tc_timer_timer_deleteall(void)
+{
+	int fd;
+	int ret_chk;
+
+	fd = tc_get_drvfd();
+	ret_chk = ioctl(fd, TESTIOC_TIMER_DELETEALL_TEST, 0);
+	TC_ASSERT_EQ("timer_deleteall", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void timer_deleteall_main(void)
+{
+	tc_timer_timer_deleteall();
+}
+
 #ifndef CONFIG_DISABLE_POSIX_TIMERS
 /**
 * @fn                   :tc_timer_timer_getoverrun
@@ -179,6 +229,8 @@ static void tc_timer_timer_set_get_time(void)
 	struct itimerspec st_timer_spec_set;
 	struct itimerspec st_timer_spec_get;
 	timer_t timer_id;
+	uint32_t max_remaining_nsec;
+	uint32_t remaining_nsec;
 
 	/* Set and enable alarm */
 
@@ -238,10 +290,15 @@ static void tc_timer_timer_set_get_time(void)
 
 	ret_chk = timer_gettime(timer_id, &st_timer_spec_get);
 	TC_ASSERT_EQ_ERROR_CLEANUP("timer_gettime", ret_chk, OK, errno, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_nsec, st_timer_spec_set.it_interval.tv_nsec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_sec, st_timer_spec_set.it_interval.tv_sec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, st_timer_spec_set.it_value.tv_sec, timer_delete(timer_id));
-	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, st_timer_spec_set.it_value.tv_nsec, timer_delete(timer_id));
+	TC_ASSERT_EQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_nsec, st_timer_spec_set.it_interval.tv_nsec, timer_delete(timer_id));
+	TC_ASSERT_EQ_CLEANUP("timer_gettime", st_timer_spec_get.it_interval.tv_sec, st_timer_spec_set.it_interval.tv_sec, timer_delete(timer_id));
+	TC_ASSERT_GEQ_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_sec, 0, timer_delete(timer_id));
+	TC_ASSERT_LT_CLEANUP("timer_gettime", st_timer_spec_get.it_value.tv_nsec, NSEC_PER_SEC, timer_delete(timer_id));
+	remaining_nsec = st_timer_spec_get.it_value.tv_sec * NSEC_PER_SEC +
+		st_timer_spec_get.it_value.tv_nsec;
+	max_remaining_nsec = st_timer_spec_set.it_value.tv_sec * NSEC_PER_SEC +
+		st_timer_spec_set.it_value.tv_nsec + (CONFIG_USEC_PER_TICK * 1000);
+	TC_ASSERT_LEQ_CLEANUP("timer_gettime", remaining_nsec, max_remaining_nsec, timer_delete(timer_id));
 
 	timer_delete(timer_id);
 	TC_SUCCESS_RESULT();
@@ -249,10 +306,11 @@ static void tc_timer_timer_set_get_time(void)
 
 /**
 * @fn                   :tc_timer_timer_initialize
-* @brief                :Boot up configuration of the POSIX timer facility.
-* @brief                :Boot up configuration of the POSIX timer facility.
-* API's covered         :timer_initialize
-* Preconditions         :Creation of timer_id(timer_create)
+* @brief                :Verify boot-initialized POSIX timer list state.
+* @scenario             :Create and delete one timer through the kernel driver
+*                        and verify timer list bookkeeping is restored.
+* API's covered         :timer_create, timer_delete
+* Preconditions         :timer_initialize has run during OS boot
 * Postconditions        :none
 * @return               :void
 */
@@ -274,9 +332,7 @@ static void tc_timer_timer_initialize(void)
 
 int timer_tc_main(void)
 {
-#ifndef CONFIG_BUILD_PROTECTED
 	tc_timer_timer_create_delete();
-#endif	
 
 #ifndef CONFIG_DISABLE_POSIX_TIMERS
 	tc_timer_timer_getoverrun();

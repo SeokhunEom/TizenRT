@@ -53,17 +53,34 @@
 
 ifeq ($(CONFIG_EXAMPLES_TESTCASE_KERNEL),y)
 CSRCS += kernel_tc_main.c
+ifeq ($(CONFIG_TC_KERNEL_BINFMT),y)
+ifeq ($(CONFIG_BINFMT_ENABLE),y)
+  CSRCS += tc_binfmt.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_BINARY_MANAGER),y)
+ifeq ($(CONFIG_BINARY_MANAGER),y)
+  CSRCS += tc_binary_manager.c
+endif
+endif
 ifeq ($(CONFIG_TC_KERNEL_CLOCK),y)
   CSRCS += tc_clock.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_ENVIRON),y)
+ifneq ($(CONFIG_DISABLE_ENVIRON),y)
   CSRCS += tc_environ.c
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_ERRNO),y)
   CSRCS += tc_errno.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_GROUP),y)
   CSRCS += tc_group.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_LOG_DUMP),y)
+ifeq ($(CONFIG_LOG_DUMP),y)
+  CSRCS += tc_log_dump.c
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_LIBC_FIXEDMATH),y)
   CSRCS += tc_libc_fixedmath.c
@@ -114,10 +131,41 @@ ifeq ($(CONFIG_TC_KERNEL_LIBC_SYSLOG),y)
   CSRCS += tc_libc_syslog.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_MQUEUE),y)
+ifneq ($(CONFIG_DISABLE_MQUEUE),y)
   CSRCS += tc_mqueue.c
 endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_NET_PBUF),y)
+  CSRCS += tc_kernel_net_pbuf.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_PIPE),y)
+ifeq ($(CONFIG_PIPES),y)
+  CSRCS += tc_pipe.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_PM),y)
+ifeq ($(CONFIG_PM),y)
+  CSRCS += tc_pm.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_PROCFS),y)
+ifeq ($(CONFIG_FS_PROCFS),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_UPTIME),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_VERSION),y)
+  CSRCS += tc_procfs.c
+endif
+endif
+endif
+endif
 ifeq ($(CONFIG_TC_KERNEL_PTHREAD),y)
+ifneq ($(CONFIG_DISABLE_PTHREAD),y)
   CSRCS += tc_pthread.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_RTC),y)
+ifeq ($(CONFIG_RTC_DRIVER),y)
+  CSRCS += tc_rtc.c
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_SEMAPHORE),y)
   CSRCS += tc_semaphore.c
@@ -126,7 +174,9 @@ ifeq ($(CONFIG_TC_KERNEL_SCHED),y)
   CSRCS += tc_sched.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_SIGNAL),y)
+ifneq ($(CONFIG_DISABLE_SIGNALS),y)
   CSRCS += tc_signal.c
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_SYSTEM_DEBUG),y)
   CSRCS += tc_sysdbg.c
@@ -135,10 +185,22 @@ ifeq ($(CONFIG_TC_KERNEL_TASK),y)
   CSRCS += tc_task.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_TERMIOS),y)
+ifeq ($(CONFIG_SERIAL_TERMIOS),y)
   CSRCS += tc_termios.c
 endif
+endif
 ifeq ($(CONFIG_TC_KERNEL_TIMER),y)
+ifneq ($(CONFIG_DISABLE_POSIX_TIMERS),y)
   CSRCS += tc_timer.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_VFS),y)
+  CSRCS += tc_vfs.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_WDOG),y)
+ifeq ($(CONFIG_WATCHDOG),y)
+  CSRCS += tc_wdog.c
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_UMM_HEAP),y)
 ifeq ($(CONFIG_MM_KERNEL_HEAP),y)
@@ -152,13 +214,27 @@ ifeq ($(CONFIG_TC_KERNEL_TASH_STACKMONITOR),y)
   CSRCS += tc_tash_stackmonitor.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_WORK_QUEUE),y)
+ifeq ($(CONFIG_SCHED_WORKQUEUE),y)
+ifneq ($(filter y,$(CONFIG_SCHED_HPWORK) $(CONFIG_SCHED_LPWORK)),)
   CSRCS += tc_wqueue.c
+endif
+endif
 endif
 ifeq ($(CONFIG_TC_KERNEL_MEMORY_SAFETY),y)
   CSRCS += tc_memory_safety.c
 endif
 ifeq ($(CONFIG_TC_KERNEL_IRQ),y)
   CSRCS += tc_irq.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_MEM_LEAK_CHECKER),y)
+ifeq ($(CONFIG_MEM_LEAK_CHECKER),y)
+  CSRCS += tc_mem_leak_checker.c
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_REBOOT_REASON),y)
+ifeq ($(CONFIG_SYSTEM_REBOOT_REASON),y)
+  CSRCS += tc_reboot_reason.c
+endif
 endif
 ifeq ($(CONFIG_ITC_KERNEL_ENVIRON),y)
   CSRCS += itc_environ.c

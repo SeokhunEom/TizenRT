@@ -30,8 +30,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sched.h>
+#include <sys/ioctl.h>
 #include <sys/wait.h>
 #include <tinyara/mm/mm.h>
+#include <tinyara/os_api_test_drv.h>
 #include <tinyara/sched.h>
 #include "tc_internal.h"
 
@@ -522,6 +524,104 @@ static int umm_test(int argc, char *argv[])
 	return 0;
 }
 
+#if defined(CONFIG_DRIVERS_OS_API_TEST) && defined(CONFIG_MM_KERNEL_HEAP)
+enum tc_kmm_heap_case_e {
+	TC_KMM_HEAP_ALL = 0,
+	TC_KMM_HEAP_NEGATIVE_INDEX,
+	TC_KMM_HEAP_ZERO_INDEX,
+	TC_KMM_HEAP_NONZERO_INDEX,
+	TC_KMM_HEAP_UPPER_BOUND_INDEX,
+	TC_KMM_HEAP_USER_ADDRESS,
+	TC_KMM_HEAP_ALLOC_FAIL_TRAVERSAL,
+	TC_KMM_HEAP_ALLOCATIONS,
+};
+
+static void tc_kmm_heap_negative_index(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_NEGATIVE_INDEX);
+	TC_ASSERT_EQ("kmm_heap_negative_index", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+static void tc_kmm_heap_zero_index(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_ZERO_INDEX);
+	TC_ASSERT_EQ("kmm_heap_zero_index", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+#if CONFIG_KMM_NHEAPS > 1
+static void tc_kmm_heap_nonzero_index(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_NONZERO_INDEX);
+	TC_ASSERT_EQ("kmm_heap_nonzero_index", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+
+static void tc_kmm_heap_upper_bound_index(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_UPPER_BOUND_INDEX);
+	TC_ASSERT_EQ("kmm_heap_upper_bound_index", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+#ifdef CONFIG_BUILD_PROTECTED
+static void tc_kmm_heap_user_address(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_USER_ADDRESS);
+	TC_ASSERT_EQ("kmm_heap_user_address", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(CONFIG_DEBUG_MM_HEAPINFO)
+static void tc_kmm_alloc_fail_traversal(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_ALLOC_FAIL_TRAVERSAL);
+	TC_ASSERT_EQ("kmm_alloc_fail_traversal", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+
+#if CONFIG_KMM_NHEAPS == 1
+static void tc_kmm_heap_allocations(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_KMM_HEAP_TEST,
+		TC_KMM_HEAP_ALLOCATIONS);
+	TC_ASSERT_EQ("kmm_heap_allocations", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+#endif
+
 /****************************************************************************
  * Public functions
  ****************************************************************************/
@@ -530,6 +630,25 @@ int umm_heap_main(void)
 {
 	int pid;
 	int stat_loc;
+
+#if defined(CONFIG_DRIVERS_OS_API_TEST) && defined(CONFIG_MM_KERNEL_HEAP)
+	tc_kmm_heap_negative_index();
+	tc_kmm_heap_zero_index();
+#if CONFIG_KMM_NHEAPS > 1
+	tc_kmm_heap_nonzero_index();
+#endif
+	tc_kmm_heap_upper_bound_index();
+#ifdef CONFIG_BUILD_PROTECTED
+	tc_kmm_heap_user_address();
+#endif
+#if defined(CONFIG_APP_BINARY_SEPARATION) && defined(CONFIG_DEBUG_MM_HEAPINFO)
+	tc_kmm_alloc_fail_traversal();
+#endif
+#if CONFIG_KMM_NHEAPS == 1
+	tc_kmm_heap_allocations();
+#endif
+#endif
+
 	pid = task_create("umm_test", 150, 2048, umm_test, (char * const *)NULL);
 	pid = waitpid(pid, &stat_loc, 0);	// wait umm_test task termination for atomic test
 	if (pid < 0) {

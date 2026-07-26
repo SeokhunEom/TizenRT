@@ -178,6 +178,33 @@ static void tc_clock_clock_abstime2ticks(void)
 	TC_SUCCESS_RESULT();
 }
 
+/**
+* @fn                   :tc_clock_clock_conversion
+* @brief                :Convert between timespec and ticks in kernel clock helpers
+* @scenario             :Validate clock_time2ticks, clock_ticks2time, and clock_abstime2ticks edge cases
+* API's covered         :clock_time2ticks, clock_ticks2time, clock_abstime2ticks
+* Preconditions         :none
+* Postconditions        :none
+* @return               :void
+ */
+static void tc_clock_clock_conversion(void)
+{
+	int fd;
+	int ret;
+
+	fd = tc_get_drvfd();
+	ret = ioctl(fd, TESTIOC_CLOCK_CONVERSION_TEST, 0);
+
+	TC_ASSERT_EQ("clock_conversion", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void clock_conversion_main(void)
+{
+	tc_clock_clock_conversion();
+}
+
 /****************************************************************************
  * Name: clock
  ****************************************************************************/

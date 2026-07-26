@@ -435,6 +435,24 @@ static void tc_semaphore_sem_tickwait(void)
 
 	TC_SUCCESS_RESULT();
 }
+
+static void tc_semaphore_kernel(void)
+{
+	int fd;
+	int ret_chk;
+
+	fd = tc_get_drvfd();
+	ret_chk = ioctl(fd, TESTIOC_SEM_KERNEL_TEST, 0);
+	TC_ASSERT_EQ("semaphore", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void semaphore_kernel_main(void)
+{
+	tc_semaphore_kernel();
+}
+
 /****************************************************************************
  * Name: semaphore
  ****************************************************************************/

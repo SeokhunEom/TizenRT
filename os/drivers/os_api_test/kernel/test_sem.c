@@ -25,11 +25,14 @@
 #include <debug.h>
 #include <time.h>
 #include <semaphore.h>
+#include <string.h>
 
+#include <tinyara/semaphore.h>
 #include <tinyara/sched.h>
 #include <tinyara/os_api_test_drv.h>
 
 #include "clock/clock.h"
+#include "semaphore/semaphore.h"
 
 /****************************************************************************
  * Private Function
@@ -41,6 +44,8 @@ static int test_sem_tick_wait(unsigned long arg)
 	sem_t sem;
 	struct timespec cur_time;
 	struct timespec base_time;
+
+	(void)arg;
 
 	/* init sem count to 1 */
 
@@ -127,6 +132,248 @@ errout_with_sem_init:
 	return ERROR;
 }
 
+static int test_sem_reset(unsigned long arg)
+{
+	sem_t sem;
+
+	(void)arg;
+
+	set_errno(0);
+	if (sem_reset(NULL, 0) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_reset accepted NULL semaphore.\n");
+		return ERROR;
+	}
+
+	memset(&sem, 0, sizeof(sem));
+	set_errno(0);
+	if (sem_reset(&sem, 1) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_reset accepted uninitialized semaphore.\n");
+		return ERROR;
+	}
+
+	if (sem_init(&sem, 0, 2) != OK) {
+		dbg("sem_init failed.\n");
+		return ERROR;
+	}
+
+	set_errno(0);
+	if (sem_reset(&sem, -1) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_reset accepted negative count.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_reset(&sem, 5) != OK || sem.semcount != 5) {
+		dbg("sem_reset did not update semaphore count.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_reset(&sem, 0) != OK || sem.semcount != 0) {
+		dbg("sem_reset did not reset semaphore count.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_destroy(&sem) != OK) {
+		dbg("sem_destroy failed.\n");
+		return ERROR;
+	}
+
+	return OK;
+
+errout_with_sem_init:
+	sem_destroy(&sem);
+	return ERROR;
+}
+
+static int test_sem_recover(unsigned long arg)
+{
+	struct tcb_s tcb;
+	sem_t sem;
+
+	(void)arg;
+
+	if (sem_init(&sem, 0, 0) != OK) {
+		dbg("sem_init failed.\n");
+		return ERROR;
+	}
+
+	sem.semcount = -2;
+	memset(&tcb, 0, sizeof(tcb));
+	tcb.task_state = TSTATE_WAIT_SEM;
+	tcb.waitsem = &sem;
+
+	sem_recover(&tcb);
+	if (sem.semcount != -1 || tcb.waitsem != NULL) {
+		dbg("sem_recover did not release a waiting semaphore count.\n");
+		goto errout_with_sem_init;
+	}
+
+	memset(&tcb, 0, sizeof(tcb));
+	tcb.task_state = TSTATE_TASK_RUNNING;
+	tcb.waitsem = &sem;
+
+	sem_recover(&tcb);
+	if (sem.semcount != -1 || tcb.waitsem != &sem) {
+		dbg("sem_recover changed non-waiting task state.\n");
+		goto errout_with_sem_init;
+	}
+
+	sem.semcount = 0;
+	if (sem_destroy(&sem) != OK) {
+		dbg("sem_destroy failed.\n");
+		return ERROR;
+	}
+
+	return OK;
+
+errout_with_sem_init:
+	sem.semcount = 0;
+	sem_destroy(&sem);
+	return ERROR;
+}
+
+static int test_sem_protocol(unsigned long arg)
+{
+	(void)arg;
+
+#ifdef CONFIG_PRIORITY_INHERITANCE
+	sem_t sem;
+
+	set_errno(0);
+	if (sem_setprotocol(NULL, SEM_PRIO_NONE) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_setprotocol accepted NULL semaphore.\n");
+		return ERROR;
+	}
+
+	memset(&sem, 0, sizeof(sem));
+	set_errno(0);
+	if (sem_setprotocol(&sem, SEM_PRIO_NONE) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_setprotocol accepted uninitialized semaphore.\n");
+		return ERROR;
+	}
+
+	if (sem_init(&sem, 0, 1) != OK) {
+		dbg("sem_init failed.\n");
+		return ERROR;
+	}
+
+	set_errno(0);
+	if (sem_setprotocol(&sem, SEM_PRIO_PROTECT) != ERROR || get_errno() != ENOSYS) {
+		dbg("sem_setprotocol accepted unsupported protect protocol.\n");
+		goto errout_with_sem_init;
+	}
+
+	set_errno(0);
+	if (sem_setprotocol(&sem, -1) != ERROR || get_errno() != EINVAL) {
+		dbg("sem_setprotocol accepted invalid protocol.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_setprotocol(&sem, SEM_PRIO_NONE) != OK ||
+		(sem.flags & PRIOINHERIT_FLAGS_DISABLE) == 0) {
+		dbg("sem_setprotocol failed to disable priority inheritance.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_setprotocol(&sem, SEM_PRIO_INHERIT) != OK ||
+		(sem.flags & PRIOINHERIT_FLAGS_DISABLE) != 0) {
+		dbg("sem_setprotocol failed to enable priority inheritance.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_destroy(&sem) != OK) {
+		dbg("sem_destroy failed.\n");
+		return ERROR;
+	}
+
+	return OK;
+
+errout_with_sem_init:
+	sem_destroy(&sem);
+	return ERROR;
+#else
+	return OK;
+#endif
+}
+
+static int test_sem_holder(unsigned long arg)
+{
+	(void)arg;
+
+#ifdef SAVE_SEM_HOLDER
+	FAR struct semholder_s *holder;
+	FAR struct tcb_s *self;
+	sem_t sem;
+
+	self = sched_self();
+	if (self == NULL) {
+		dbg("sched_self failed.\n");
+		return ERROR;
+	}
+
+	if (sem_init(&sem, 0, 1) != OK) {
+		dbg("sem_init failed.\n");
+		return ERROR;
+	}
+
+	if (sem_wait(&sem) != OK) {
+		dbg("sem_wait failed.\n");
+		goto errout_with_sem_init;
+	}
+
+	holder = sem_findholder(&sem, self);
+	if (holder == NULL || holder->counts != 1) {
+		dbg("sem_wait did not register the current task holder.\n");
+		goto errout_with_post;
+	}
+
+	if (sem_post(&sem) != OK) {
+		dbg("sem_post failed.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_findholder(&sem, self) != NULL) {
+		dbg("sem_post did not release the current task holder.\n");
+		goto errout_with_sem_init;
+	}
+
+	if (sem_destroy(&sem) != OK) {
+		dbg("sem_destroy failed.\n");
+		return ERROR;
+	}
+
+	return OK;
+
+errout_with_post:
+	sem_post(&sem);
+errout_with_sem_init:
+	sem_destroy(&sem);
+	return ERROR;
+#else
+	return OK;
+#endif
+}
+
+static int test_sem_kernel(unsigned long arg)
+{
+	if (test_sem_reset(arg) != OK) {
+		return ERROR;
+	}
+
+	if (test_sem_recover(arg) != OK) {
+		return ERROR;
+	}
+
+	if (test_sem_protocol(arg) != OK) {
+		return ERROR;
+	}
+
+	if (test_sem_holder(arg) != OK) {
+		return ERROR;
+	}
+
+	return OK;
+}
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -137,6 +384,9 @@ int test_sem(int cmd, unsigned long arg)
 	switch (cmd) {
 	case TESTIOC_SEM_TICK_WAIT_TEST:
 		ret = test_sem_tick_wait(arg);
+		break;
+	case TESTIOC_SEM_KERNEL_TEST:
+		ret = test_sem_kernel(arg);
 		break;
 	}
 	return ret;

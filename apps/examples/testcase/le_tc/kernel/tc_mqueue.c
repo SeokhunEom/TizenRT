@@ -62,10 +62,12 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <ctype.h>
+#include <sys/ioctl.h>
 #ifndef CONFIG_DISABLE_SIGNALS
 #include <signal.h>
 #endif
 #include <fcntl.h>
+#include <tinyara/os_api_test_drv.h>
 #include "tc_internal.h"
 
 /**************************************************************************
@@ -938,12 +940,22 @@ errout:
 	mq_unlink("mqsetattr");	
 }
 
+static void tc_mqueue_kernel(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_MQUEUE_TEST, 0);
+	TC_ASSERT_EQ("mqueue", ret, OK);
+	TC_SUCCESS_RESULT();
+}
+
 
 /****************************************************************************
  * Name: mqueue
  ****************************************************************************/
 int mqueue_main(void)
 {
+	tc_mqueue_kernel();
 	tc_mqueue_mq_open_close_send_receive();
 	tc_mqueue_mq_notify();
 	tc_mqueue_mq_timedsend_timedreceive();

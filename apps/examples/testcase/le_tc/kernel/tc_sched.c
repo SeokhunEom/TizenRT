@@ -60,10 +60,13 @@
 
 pthread_t thread1, thread2;
 
+#ifndef CONFIG_BUILD_PROTECTED
 pid_t g_task_pid;
 bool g_callback = false;
+#endif
 bool g_pthread_callback = true;
 
+#ifndef CONFIG_BUILD_PROTECTED
 /**
 * @fn                   :sched_foreach_callback
 * @description          :Function for tc_sched_sched_foreach
@@ -76,12 +79,12 @@ static void sched_foreach_callback(struct tcb_s *tcb, void *arg)
 		g_callback = true;
 	}
 }
+#endif
 
 #ifdef CONFIG_SCHED_WAITPID
 static int sleep1sec_taskdel(int argc, char *argv[])
 {
 	sleep(1);
-	task_delete(0);
 	return 0;
 }
 
@@ -89,7 +92,6 @@ static int sleep1sec_taskdel(int argc, char *argv[])
 static int sleep2sec_taskdel(int argc, char *argv[])
 {
 	sleep(2);
-	task_delete(0);
 	return 0;
 }
 #endif /* CONFIG_SCHED_HAVE_PARENT */
@@ -428,13 +430,16 @@ static void tc_sched_wait(void)
 	/* child which exits first is handled by wait, here child1_pid exits earlier. */
 	sleep(1);
 
-	/* wait for child to exit, and store child's exit status */
-	ret_chk = wait(&status);
-	TC_ASSERT_NEQ("wait", ret_chk, ERROR);
-	TC_ASSERT_EQ("wait", (child1_pid == (pid_t)ret_chk || child2_pid == (pid_t)ret_chk), true);
+	/* wait for child1 specifically to exit, and store child's exit status */
+	ret_chk = waitpid(child1_pid, &status, 0);
+	TC_ASSERT_NEQ("waitpid(child1)", ret_chk, ERROR);
+	TC_ASSERT_EQ("waitpid(child1)", (child1_pid == (pid_t)ret_chk), true);
 
-	/* wait for second child to exit */
-	sleep(2);
+	/* wait for second child to exit and reap it as well */
+	sleep(1);
+	ret_chk = waitpid(child2_pid, &status, 0);
+	TC_ASSERT_NEQ("waitpid(child2)", ret_chk, ERROR);
+	TC_ASSERT_EQ("waitpid(child2)", (child2_pid == (pid_t)ret_chk), true);
 	TC_SUCCESS_RESULT();
 }
 
@@ -774,14 +779,23 @@ static void tc_sched_sched_self(void)
 */
 static void tc_sched_sched_foreach(void)
 {
-	g_callback = false;
 	int fd;
+	int ret_chk;
+
 	fd = tc_get_drvfd();
+
+#ifdef CONFIG_BUILD_PROTECTED
+	ret_chk = ioctl(fd, TESTIOC_SCHED_FOREACH_TEST, 0);
+	TC_ASSERT_EQ("sched_foreach", ret_chk, OK);
+#else
+	g_callback = false;
 	g_task_pid = getpid();
 
 	/* provides TCB to user callback function "sched_foreach_callback" */
-	(void)ioctl(fd, TESTIOC_SCHED_FOREACH, (unsigned long)sched_foreach_callback);
+	ret_chk = ioctl(fd, TESTIOC_SCHED_FOREACH, (unsigned long)sched_foreach_callback);
+	TC_ASSERT_EQ("sched_foreach", ret_chk, OK);
 	TC_ASSERT_EQ("sched_foreach", g_callback, true);
+#endif
 
 	TC_SUCCESS_RESULT();
 }
@@ -844,7 +858,53 @@ static void tc_sched_sched_getstreams(void)
 }
 #endif
 
-#if !defined(CONFIG_BUILD_PROTECTED)
+#ifdef CONFIG_BUILD_PROTECTED
+/**
+ * @fn                   :tc_sched_task_setcancelstate
+ * @brief                :This tc tests sched_task_setcancelstate()
+ * @scenario             :If state is invalid, it will return ERROR and set errno to EINVAL
+ *                        Else it will return OK and set canclestate to TASK_CANCEL_DISABLE or TASK_CANCEL_ENABLE
+ * API's covered         :task_setcancelstate
+ * Preconditions         :none
+ * Postconditions        :none
+ * @return               :void
+ */
+
+static void tc_sched_task_setcancelstate(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_TASK_SETCANCELSTATE_TEST, 0);
+	TC_ASSERT_EQ("task_setcancelstate", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+/**
+ * @fn                   :tc_sched_task_setcanceltype
+ * @brief                :This tc tests tc_sched_task_setcanceltype()
+ * @Scenario             :The task_setcanceltype() function atomically both sets the calling
+ *                        task's cancelability type to the indicated type and returns the
+ *                        previous cancelability type at the location referenced by oldtype
+ *                        If successful pthread_setcanceltype() function shall return zero;
+ *                        otherwise, an error number shall be returned to indicate the error.
+ * @API'scovered         :task_setcanceltype
+ * @Preconditions        :none
+ * @Postconditions       :none
+ * @return               :void
+ */
+#ifdef CONFIG_CANCELLATION_POINTS
+static void tc_sched_task_setcanceltype(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_TASK_SETCANCELTYPE_TEST, 0);
+	TC_ASSERT_EQ("task_setcanceltype", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
+#else
 /**
  * @fn                   :tc_sched_task_setcancelstate
  * @brief                :This tc tests sched_task_setcancelstate()
@@ -894,6 +954,7 @@ static void tc_sched_task_setcancelstate(void)
 	TC_SUCCESS_RESULT();
 
 errout:
+	tcb->flags &= ~TCB_FLAG_NONCANCELABLE;
 	tcb->flags |= noncancelable_flag;
 }
 
@@ -948,10 +1009,11 @@ static void tc_sched_task_setcanceltype(void)
 	TC_SUCCESS_RESULT();
 
 errout:
+	tcb->flags &= ~TCB_FLAG_CANCEL_DEFERRED;
 	tcb->flags |= defferred_flag;
 }
-#endif
-#endif
+#endif /* CONFIG_CANCELLATION_POINTS */
+#endif /* CONFIG_BUILD_PROTECTED */
 
 
 /**
@@ -980,6 +1042,41 @@ static void tc_sched_set_get_affinity(void)
 	TC_SUCCESS_RESULT();
 }
 
+static void tc_sched_kernel_affinity(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_SCHED_AFFINITY_TEST, 0);
+	TC_ASSERT_EQ("sched_affinity", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+static void tc_sched_kernel_state(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_SCHED_STATE_TEST, 0);
+	TC_ASSERT_EQ("sched_state", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void sched_foreach_main(void)
+{
+	tc_sched_sched_foreach();
+}
+
+void sched_affinity_main(void)
+{
+	tc_sched_kernel_affinity();
+}
+
+void sched_state_main(void)
+{
+	tc_sched_kernel_state();
+}
+
 /****************************************************************************
  * Name: sched
  ****************************************************************************/
@@ -1003,16 +1100,13 @@ int sched_main(void)
 	tc_sched_sched_yield();
 	tc_sched_sched_lock_unlock();
 	tc_sched_sched_self();
-	tc_sched_sched_foreach();
 	tc_sched_sched_lockcount();
 #if CONFIG_NFILE_STREAMS > 0
 	tc_sched_sched_getstreams();
 #endif
-#ifndef CONFIG_BUILD_PROTECTED
 	tc_sched_task_setcancelstate();
 #ifdef CONFIG_CANCELLATION_POINTS
 	tc_sched_task_setcanceltype();
-#endif
 #endif
 	tc_sched_set_get_affinity();
 

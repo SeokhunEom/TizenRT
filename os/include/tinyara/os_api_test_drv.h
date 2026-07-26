@@ -30,6 +30,10 @@
 #include <tinyara/config.h>
 #include <tinyara/fs/ioctl.h>
 
+#if defined(CONFIG_TC_NET_PBUF)
+#include <lwip/pbuf.h>
+#endif
+
 #ifdef CONFIG_DRIVERS_OS_API_TEST
 
 /****************************************************************************
@@ -81,14 +85,37 @@
 #ifdef CONFIG_EXAMPLES_STACK_PROTECTION
 #define TESTIOC_KTHREAD_STACK_PROTECTION_TEST	_TESTIOC(22)
 #endif
-#ifdef CONFIG_TC_NET_PBUF
+#if defined(CONFIG_TC_NET_PBUF) || defined(CONFIG_TC_KERNEL_NET_PBUF)
 #define TESTIOC_NET_PBUF			_TESTIOC(23)
 #endif
 #if defined(CONFIG_AUTOMOUNT_USERFS) && defined(CONFIG_EXAMPLES_TESTCASE_FILESYSTEM)
 #define TESTIOC_GET_FS_PARTNO			_TESTIOC(24)
 #endif
+#define TESTIOC_TIMER_CREATE_DELETE_TEST	_TESTIOC(25)
+#define TESTIOC_TASK_SETCANCELSTATE_TEST	_TESTIOC(26)
+#ifdef CONFIG_CANCELLATION_POINTS
+#define TESTIOC_TASK_SETCANCELTYPE_TEST		_TESTIOC(27)
+#endif
+#define TESTIOC_WORK_QUEUE_TEST			_TESTIOC(28)
+
+#define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
+	enum { symbol = _TESTIOC(id) };
+#include "../../drivers/os_api_test/os_api_test_kernel_registry.inc"
+#undef OS_API_TEST_KERNEL_DESCRIPTOR
 
 #define OS_API_TEST_DRVPATH	"/dev/os_api_test"
+
+/****************************************************************************
+ * Public Types
+ ****************************************************************************/
+
+#if defined(CONFIG_TC_NET_PBUF)
+struct pbuf_test_args {
+	pbuf_layer layer;
+	u16_t len;
+	pbuf_type type;
+};
+#endif
 
 /****************************************************************************
  * Public Data
