@@ -46,6 +46,7 @@
 #define MPS2_IRQ_UART0_RX               (MPS2_IRQ_FIRST + 32)
 #define MPS2_IRQ_UART0_TX               (MPS2_IRQ_FIRST + 33)
 #define MPS2_IRQ_UART0_COMBINED         (MPS2_IRQ_FIRST + 42)
+#define MPS2_IRQ_LAN9118                (MPS2_IRQ_FIRST + 48)
 
 #define NR_IRQS                         (MPS2_IRQ_FIRST + ARMV8M_PERIPHERAL_INTERRUPTS)
 #define NR_VECTORS                      (NR_IRQS - MPS2_IRQ_FIRST)

@@ -34,6 +34,7 @@ struct nic_config {
 	int flag;
 	int mtu;
 	int hwaddr_len;
+	uint8_t hwaddr[NM_MAX_HWADDR_LEN];
 	/*	Device address */
 	struct sockaddr addr; // ipv6, ipv4
 	struct sockaddr netmask;

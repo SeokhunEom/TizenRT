@@ -70,7 +70,9 @@
 #include "lwip/sys.h"
 #include "lwip/ip.h"
 #include "lwip/netif/etharp.h"
+#if defined(CONFIG_NET_SECURITY_TLS) && !defined(CONFIG_BUILD_PROTECTED)
 #include <mbedtls/sha256.h>
+#endif
 
 #if ENABLE_LOOPBACK
 #if LWIP_NETIF_LOOPBACK_MULTITHREADING
@@ -1193,6 +1195,24 @@ static err_t netif_null_output_ip6(struct netif *netif, struct pbuf *p, const ip
 
 err_t netif_gen_stable_private_id(struct netif *netif, s8_t addr_idx, ip6_addr_t *addr)
 {
+#if !defined(CONFIG_NET_SECURITY_TLS) || defined(CONFIG_BUILD_PROTECTED)
+	LWIP_UNUSED_ARG(addr_idx);
+	memset(addr, 0, sizeof(ip6_addr_t));
+
+	if (netif->hwaddr_len != 6) {
+		return ERR_ARG;
+	}
+
+	addr->addr[2] = lwip_htonl((((u32_t)(netif->hwaddr[0] ^ 0x02)) << 24) |
+		((u32_t)(netif->hwaddr[1]) << 16) |
+		((u32_t)(netif->hwaddr[2]) << 8) |
+		0xff);
+	addr->addr[3] = lwip_htonl((0xfeul << 24) |
+		((u32_t)(netif->hwaddr[3]) << 16) |
+		((u32_t)(netif->hwaddr[4]) << 8) |
+		netif->hwaddr[5]);
+	return ERR_OK;
+#else
 	int i;
 
 	union {
@@ -1219,14 +1239,12 @@ err_t netif_gen_stable_private_id(struct netif *netif, s8_t addr_idx, ip6_addr_t
 	for (i = 0; i < netif->hwaddr_len; i++) {
 		param.mac[i] = netif->hwaddr[i];
 	}
-	// ToDo : mbedTLS is in userspace. so mbedtls_sha256 can't be called.
-#ifndef CONFIG_BUILD_PROTECTED
 	mbedtls_sha256(param.data, sizeof(param.data), rid.val, 0);
-#endif
 	addr->addr[0] = addr->addr[1] = 0;
 	addr->addr[2] = rid.addr[0];
 	addr->addr[3] = rid.addr[1];
 
 	return ERR_OK;
+#endif
 }
 #endif							/* LWIP_IPV6 */

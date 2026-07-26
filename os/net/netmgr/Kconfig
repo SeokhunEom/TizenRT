@@ -4,7 +4,6 @@
 #
 config NET_NETMGR
 	bool "Network manager"
-	select LWNL80211
 	default n
 	---help---
 		network refactoring
@@ -12,6 +11,7 @@ config NET_NETMGR
 if NET_NETMGR
 config NET_NETMGR_ZEROCOPY
 	bool "Enable zero-copy in Network Manager"
+	depends on !ARCH_BOARD_QEMU_ARMV8M
 	default n
 	---help---
 		Enable zero copy to have Wi-Fi driver handle pbuf directly and vice versa
