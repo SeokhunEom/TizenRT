@@ -357,6 +357,10 @@ void board_initialize(void)
 			return;
 		}
 
+#ifdef CONFIG_AUTOMOUNT
+		automount_fs_partition(&partinfo);
+#endif
+
 #if defined(CONFIG_BINARY_MANAGER) && defined(CONFIG_USE_BP)
 		ret = binary_manager_check_bootparam_set();
 		if (ret != OK) {

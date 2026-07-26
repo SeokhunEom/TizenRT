@@ -211,8 +211,19 @@ PATH="$(brew --prefix)/bin:$PATH" \
 TASH 프롬프트가 나오면 다음을 입력한다.
 
 ```text
+help
+ps
+mount
+ls /mnt
+smartfs_test 4 /mnt/test 4096 1 y
 kernel_tc
 ```
+
+`mount` 출력에 `/mnt type smartfs`가 보이고 `smartfs_test`가 `run_time`을
+출력하면 QEMU RAM-backed SmartFS와 TASH 명령이 동작한 것이다. QEMU
+`hello`는 `CONFIG_RAMMTD_ERASE_ON_INIT=y`이므로 재부팅하면 SmartFS 내용이
+초기화된다. 첫 `TASH>>` 직후 명령이 `not registered`이면 `help`를 입력해
+등록 완료를 확인한 뒤 다시 시도한다.
 
 자동 runner의 성공 조건과 동일하게 `Kernel TC End [PASS : n, FAIL : 0]`을 확인한다. 터미널 입력과 QEMU 표준 입출력 연결이 불안정하면 수동 결과 대신 runner 결과를 사용한다.
 

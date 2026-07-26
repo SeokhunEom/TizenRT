@@ -5,6 +5,7 @@
 - [Mac QEMU ARMv8-M 빌드, TASH, `kernel_tc`](docs/AI/Mac_QEMU_ARMv8M_TASH_KernelTC.md)
 - [AI Build Runbook](docs/AI/AI_Build_Runbook.md)
 - [대표 보드와 빌드 레시피](docs/AI/Representative_Boards.md)
+- [`bk7239n/hello`와 `qemu-armv8m/hello` defconfig 비교](docs/AI/BK7239N_QEMU_ARMv8M_Hello_Defconfig_Comparison.md)
 - [사람용 QEMU 터미널 실행 가이드](docs/Human/QEMU_ARMv8M_Terminal_Guide.md)
 
 ## AI 작업 기본 규칙
