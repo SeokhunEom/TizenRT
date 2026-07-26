@@ -2,7 +2,10 @@
 
 이 문서는 사람이 Apple Silicon Mac mini의 터미널에서 `qemu-armv8m`을 빌드하고 QEMU를 직접 실행한 뒤, TASH 명령과 `kernel_tc`를 입력해 보는 절차다.
 
-이 가이드는 `qemu-armv8m/hello`를 기준으로 한다. `hello`는 TASH와 `kernel_tc`가 포함된 flat 커널 이미지이므로 실물 보드 없이 가장 빠르게 빌드와 부팅을 확인할 수 있다.
+이 가이드는 `qemu-armv8m/hello`를 기준으로 한다. `hello`는 TASH와
+`kernel_tc`가 포함된 flat 커널 이미지이므로 실물 보드 없이 가장 빠르게
+빌드와 부팅을 확인할 수 있다. loadable/XIP 패키지와 A/B state는 아래의
+runner smoke 절차로 확인한다.
 
 ## 1. 준비물
 
@@ -225,6 +228,42 @@ QEMU가 계속 실행 중이면 QEMU 터미널 단축키를 사용한다.
 
 터미널에 `QEMU: Terminated`가 출력되면 종료된 것이다.
 
+## 9. loadable/XIP 로컬 smoke 실행
+
+사람이 메뉴에서 빌드한 뒤 loadable/XIP 패키지를 확인할 때는 raw QEMU
+옵션을 직접 조립하지 않고 repository runner를 사용한다. runner가
+RAM-backed flash state, boot parameter, package slot을 준비한다.
+
+저장소 루트에서 다음처럼 실행한다.
+
+```bash
+cd "$TIZENRT_ROOT"
+python3 .github/scripts/qemu-armv8m-kernel-tc.py \
+  --config loadable_all \
+  --state-image build/qemu-armv8m/qemu.state \
+  --max-reboots 1 \
+  --timeout 1200 \
+  --verbose
+```
+
+`xip_all`은 `--config xip_all`로 바꾼다. `loadable_apps`도 동일한 방식으로
+실행할 수 있다. 이번 검증에서는 common/app1/app2를 로드하고 TASH에
+진입했지만 semaphore holder assertion 뒤 timeout되었다. `--state-image`를 생략하면 임시 state를 사용하며, 새
+패키지를 빌드한 뒤에는 기존 state image를 삭제해야 최신 패키지를 다시
+staging한다.
+
+결과는 두 단계로 읽는다.
+
+- TASH 부팅, binary-manager의 package 탐색, XIP package 배치가 보이면 boot
+  smoke 성공이다.
+- full `kernel_tc` 성공은 result JSON의 `status`가 `pass`이고 마지막 줄이
+  `Kernel TC End [PASS : n, FAIL : 0]`일 때만 인정한다.
+
+현재 구현 검증에서는 `hello`가 `PASS : 457, FAIL : 2`였고,
+`loadable_all`과 `xip_all`은 package boot smoke는 확인했지만 full Kernel TC는
+각각 timeout이 발생했다. 이 결과는 QEMU 소프트웨어 검증이며 실제 BK/RTL
+보드 동작을 대신하지 않는다.
+
 ## `make download`가 실패할 때
 
 현재 저장소의 `qemu-armv8m/Make.defs`는 macOS에서 `make download`를 실행할 때 다음 문제가 나타날 수 있다.
@@ -242,7 +281,7 @@ PATH="$(brew --prefix)/bin:$PATH" \
   qemu-system-arm -M mps2-an505 -kernel ../build/output/bin/tinyara -nographic
 ```
 
-## 다른 QEMU config
+## 10. 다른 QEMU config
 
 지원 config는 다음 네 가지다.
 
@@ -260,7 +299,11 @@ cd "$TIZENRT_ROOT/os"
 ./dbuild.sh menu
 ```
 
-`loadable_all`과 `loadable_apps`는 `app1`, `xip_all`은 `app1`과 `common` 패키지도 필요하다. 사람이 터미널에서 먼저 확인할 대상은 `hello`이며, loadable/XIP 패키지의 로딩과 거부 케이스는 [QEMU ARMv8-M 기술 문서](../AI/Mac_QEMU_ARMv8M_TASH_KernelTC.md)와 저장소 runner/CI 절차를 따른다.
+`loadable_all`과 `loadable_apps`는 `common`, `app1`, `app2` 패키지를
+사용하고, `xip_all`은 `common`과 `app1`을 사용한다. 새 package로 실행하려면
+`build/qemu-armv8m/qemu.state`를 삭제한다. package 거부 케이스와 세부
+메모리/A-B 레이아웃은 [QEMU ARMv8-M 기술 문서](../AI/Mac_QEMU_ARMv8M_TASH_KernelTC.md)와
+저장소 runner/CI 절차를 따른다.
 
 ## 문제 해결
 
@@ -276,12 +319,17 @@ cd "$TIZENRT_ROOT/os"
 
 ## 직접 검증 기록
 
-이 가이드는 2026-07-23에 다음 순서로 직접 확인했다.
+이 가이드는 2026-07-24에 다음 순서로 직접 확인했다.
 
 1. `qemu-armv8m/hello`를 ARM64 Docker 이미지로 clean build
 2. `qemu-system-arm -M mps2-an505 ... -nographic`로 현재 터미널에서 부팅
 3. TASH에서 `help` 실행
 4. TASH에서 `kernel_tc` 실행
-5. `Kernel TC End [PASS : 458, FAIL : 0]` 확인
+5. `Kernel TC End [PASS : 457, FAIL : 2]`를 확인했으며, 따라서 full suite
+   pass가 아님을 기록
+
+같은 세션에서 `loadable_all`과 `xip_all`은 각각 binary-manager/XIP package
+부팅 smoke를 확인했지만 full `kernel_tc`는 timeout이었다. `loadable_apps`는
+이 세션에서 local runtime을 실행하지 않았다.
 
 QEMU 결과는 QEMU 소프트웨어 경로의 검증 결과이며, 실제 보드의 주변장치나 하드웨어 동작을 의미하지 않는다.

@@ -11,12 +11,12 @@
 | Config | 빌드 모델 | 패키지 구성 |
 | --- | --- | --- |
 | `hello` | TASH와 `kernel_tc`가 포함된 flat 커널 | 커널만 사용 |
-| `loadable_all` | protected 커널과 loadable ELF 앱 | 커널과 `app1` |
-| `loadable_apps` | XIP 커널과 loadable ELF 앱 | 커널과 `app1` |
+| `loadable_all` | protected 커널과 loadable ELF 앱 | 커널, `common`, `app1`, `app2` |
+| `loadable_apps` | protected 커널과 loadable ELF 앱 | 커널, `common`, `app1`, `app2` |
 | `xip_all` | XIP 커널과 XIP common/app 패키지 | 커널, `common`, `app1` |
 
-모든 지원 구성은 하나의 앱 패키지 `app1`만 사용합니다. `app2` 이후는
-지원하지 않습니다. `xip_all`에서는 `common`을 `app1`보다 먼저 처리해야
+loadable 구성에서는 `app1`과 `app2`를 지원하고, `xip_all`은 하나의 XIP
+앱을 사용합니다. `xip_all`에서는 `common`을 `app1`보다 먼저 처리해야
 하며, 누락 또는 거부된 common 패키지 뒤에 app 시작을 기대하면 안 됩니다.
 
 ## 빌드
@@ -44,8 +44,21 @@ runner가 보드별 실행 명령, TASH 프롬프트, `kernel_tc`, serial log와
 경계 및 artifact 위치는 영문 README의 **Validate with the QEMU runner**와
 **Local and CI validation boundary**를 따릅니다.
 
-로컬 QEMU runtime 검증은 `hello`로 제한됩니다. loadable, XIP, 패키지 거부
-runtime 검증은 후보 commit/push 승인 뒤 CI에서만 증명합니다.
+로컬 runtime 증거는 ARM64 이미지와 persistent-state runner를 사용한
+`hello`, `loadable_all`, `loadable_apps`, `xip_all`에 대해 확보했습니다.
+TASH 부팅, binary-manager 패키지 탐색, 앱 로드와 XIP 패키지 배치를
+확인했습니다. `loadable_apps`는 common/app1/app2 로드와 TASH 진입 뒤
+semaphore holder assertion으로 timeout되었습니다. 모든 구성에서 full `Kernel TC`가
+성공한 것은 아니며, 현재 로컬 결과에는 semaphore/multiheap 실패 또는
+timeout이 포함됩니다. 따라서 build/boot smoke test를 full `kernel_tc`
+통과로 보고하지 않습니다.
+
+loadable/XIP 구성은 runner에 `--state-image`를 지정하면 RAM-backed flash와
+A/B boot parameter를 persistent image로 보존할 수 있습니다. 패키지를 다시
+빌드한 뒤 새 이미지가 필요하면 기존 state image를 삭제합니다.
+
+후보 commit/push 승인 뒤에는 CI의 positive/negative matrix를 별도로
+확인합니다. 로컬 증거와 CI 증거를 섞지 않습니다.
 
 ## CI 유지보수와 artifact
 
