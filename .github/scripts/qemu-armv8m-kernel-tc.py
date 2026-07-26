@@ -21,6 +21,11 @@ from qemu_armv8m_protocol import PreflightError, RunRequest, run_protocol
 
 
 SUPPORTED_CONFIGS: Final = ("hello", "loadable_all", "loadable_apps", "xip_all")
+USER_NIC: Final = (
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,"
+    "ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,"
+    "mac=52:54:00:12:34:56"
+)
 
 
 def repo_root() -> Path:
@@ -63,8 +68,14 @@ def qemu_command(
         if not app1.is_file():
             raise FileNotFoundError(f"missing app package: {app1}")
         command.extend(["-device", f"loader,file={app1},addr=0x10360000,force-raw=on"])
-    command.extend(["-display", "none", "-serial", "stdio", "-monitor", "none"])
+    command.extend(["-nic", USER_NIC, "-display", "none", "-serial", "stdio", "-monitor", "none"])
     return command
+
+
+def with_user_nic(command: list[str]) -> list[str]:
+    if "-nic" in command:
+        return command
+    return [*command, "-nic", USER_NIC]
 
 
 def command_for_request(request: RunRequest) -> list[str]:
@@ -107,7 +118,7 @@ def _run_ab_attempts(request: RunRequest, state: Path) -> int:
             log_path=_attempt_path(request.log_path, attempt),
             result_path=_attempt_path(request.result_path, attempt),
         )
-        code = run_protocol(attempt_request, lambda _request: ab_qemu_command(state, kernel))
+        code = run_protocol(attempt_request, lambda _request: with_user_nic(ab_qemu_command(state, kernel)))
         _promote_result(attempt_request, state, attempt)
         if code == 0 or attempt == request.max_reboots:
             if attempt_request.result_path != request.result_path:
@@ -209,6 +220,7 @@ def main() -> int:
         expected_once=tuple(args.expect_once),
         state_image=args.state_image,
         max_reboots=args.max_reboots,
+        validate_network=True,
     )
     return run_kernel_tc(request)
 

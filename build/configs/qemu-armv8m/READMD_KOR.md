@@ -39,16 +39,18 @@ make
 
 런타임 검증은 항상 저장소의
 `python3 .github/scripts/qemu-armv8m-kernel-tc.py` runner로 실행합니다. 이
-runner가 보드별 실행 명령, TASH 프롬프트, `kernel_tc`, serial log와 결과 JSON을
-일관되게 관리합니다. 정확한 네 config별 명령과 PASS/FAIL, 거부 마커, 로컬/CI
-경계 및 artifact 위치는 영문 README의 **Validate with the QEMU runner**와
+runner가 LAN9118 user network, TASH 프롬프트, DHCP, IPv4/IPv6 gateway,
+DNS, `network_tc`, `kernel_tc`, serial log와 결과 JSON을 일관되게
+관리합니다. 정확한 네 config별 명령과 PASS/FAIL, 거부 마커, 로컬/CI 경계
+및 artifact 위치는 영문 README의 **Validate with the QEMU runner**와
 **Local and CI validation boundary**를 따릅니다.
 
 로컬 runtime 증거는 ARM64 이미지와 persistent-state runner를 사용한
 `hello`, `loadable_all`, `loadable_apps`, `xip_all`에 대해 확보했습니다.
 TASH 부팅, binary-manager 패키지 탐색, 앱 로드와 XIP 패키지 배치를
-확인했습니다. 2026-07-25 clean build와 새 runner 실행에서 `hello`는
-`PASS : 459, FAIL : 0`, loadable/XIP 세 구성은 각각
+확인했습니다. 2026-07-26 clean build와 새 runner 실행에서 network TC는
+네 구성 모두 `PASS : 161, FAIL : 0`, kernel TC는 `hello`가
+`PASS : 459, FAIL : 0`, loadable/XIP 세 구성이 각각
 `PASS : 447, FAIL : 0`으로 완료되었습니다. 이 결과는 QEMU 소프트웨어
 경로의 로컬 증거이며 실제 보드 검증을 대신하지 않습니다.
 

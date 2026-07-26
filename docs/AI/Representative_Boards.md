@@ -130,8 +130,9 @@ main RAM 4 MiB, loaded-app RAM 8 MiB, SSRAM heap 512 KiB를 사용한다. heap
 index는 각각 `0,1`과 `0,2,1`이다. SSRAM 상단 512 KiB는 heap으로 예약하며,
 loadable/XIP package는 main RAM 상단의 RAM-backed flash A/B state에 보관한다.
 
-2026-07-25 local evidence에서는 네 config를 각각 clean build한 뒤 full
-Kernel TC까지 확인했다. `hello`는 `PASS : 459, FAIL : 0`,
+2026-07-26 local evidence에서는 네 config를 각각 clean build한 뒤
+LAN9118 network TC와 full Kernel TC까지 확인했다. network TC는 모두
+`PASS : 161, FAIL : 0`이고, kernel TC는 `hello`가 `PASS : 459, FAIL : 0`,
 `loadable_all`, `loadable_apps`, `xip_all`은 각각
 `PASS : 447, FAIL : 0`이었다. 이 결과는 QEMU 소프트웨어 경로의 증거이며
 실제 보드 동작은 CI/하드웨어에서 별도로 확인한다.

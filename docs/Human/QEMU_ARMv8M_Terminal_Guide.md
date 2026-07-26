@@ -172,6 +172,7 @@ cd "$TIZENRT_ROOT/os"
 "$QEMU_BIN" \
   -M mps2-an505 \
   -kernel ../build/output/bin/tinyara \
+  -nic user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,mac=52:54:00:12:34:56 \
   -nographic
 ```
 
@@ -225,7 +226,49 @@ QEMU `hello`는 `CONFIG_RAMMTD_ERASE_ON_INIT=y`이므로 부팅 때 RAM flash를
 첫 `TASH>>` 직후 `not registered`가 나오면 `help`를 입력해 명령 등록이
 끝났는지 확인한 뒤 다시 실행한다.
 
-## 7. `kernel_tc` 실행
+## 7. Ethernet 네트워크 확인
+
+QEMU MPS2-AN505의 LAN9118 장치는 TizenRT에서 `eth0`으로 보인다. 다음
+명령을 순서대로 입력한다.
+
+```text
+ifdown eth0
+ifup eth0
+ifconfig eth0 dhcp
+ifconfig eth0 fec0::15
+sleep 2
+ifconfig eth0
+ping -c 3 10.0.2.2
+ping6 -c 3 fec0::2
+netdb --host example.com
+net_stats
+```
+
+정상 결과는 다음과 같다.
+
+- DHCP가 `get IP address 10.0.2.15`를 출력한다.
+- `ifconfig eth0`에 MAC `52:54:00:12:34:56`, IPv4 `10.0.2.15`,
+  MTU `1500`이 보인다.
+- IPv4 `10.0.2.2`와 IPv6 `fec0::2` ping이 각각 한 개 이상 수신된다.
+- `netdb --host example.com`이 IPv4 주소를 출력한다.
+
+공인 ICMP도 관찰하려면 `ping -c 1 1.1.1.1`을 실행할 수 있다. QEMU
+user-mode network나 Mac 방화벽이 public ICMP를 전달하지 않을 수 있으므로
+0/1만으로 DNS/TCP/UDP 전체가 실패했다고 판단하지 않는다.
+
+전체 socket/pbuf/TCP/UDP/DHCP/netdb UTC/ITC를 실행한다.
+
+```text
+network_tc
+sleep 2
+```
+
+성공 기준은 마지막 줄의 `Network TC End [PASS : n, FAIL : 0]`이다. 현재
+네 recipe의 기준값은 `PASS : 161, FAIL : 0`이다. 다음 `kernel_tc`를
+실행하기 전에 2초를 기다려 network testcase의 보조 thread가 정리되도록
+한다.
+
+## 8. `kernel_tc` 실행
 
 TASH 프롬프트에서 다음을 입력한다.
 
@@ -246,7 +289,7 @@ kernel_tc
 
 `PASS`가 일부 보인다는 이유만으로 성공 처리하지 말고, 반드시 마지막 `Kernel TC End` 줄을 확인한다.
 
-## 8. QEMU 종료
+## 9. QEMU 종료
 
 TASH에서 `exit`가 동작하는 설정이면 다음을 입력할 수 있다.
 
@@ -262,7 +305,7 @@ QEMU가 계속 실행 중이면 QEMU 터미널 단축키를 사용한다.
 
 터미널에 `QEMU: Terminated`가 출력되면 종료된 것이다.
 
-## 9. loadable/XIP 로컬 smoke 실행
+## 10. loadable/XIP 로컬 smoke 실행
 
 사람이 메뉴에서 빌드한 뒤 loadable/XIP 패키지를 확인할 때는 raw QEMU
 옵션을 직접 조립하지 않고 repository runner를 사용한다. runner가
@@ -294,9 +337,10 @@ staging한다.
 - `Assertion failed at file:`이 나오면 runner는 기다리지 않고
   `reason=kernel-assert`로 실패한다. 해당 assertion이 첫 원인이다.
 
-2026-07-25 clean build/runtime 검증에서는 `hello`가
+2026-07-26 clean build/runtime 검증에서는 `hello`가
 `PASS : 459, FAIL : 0`, `loadable_all`, `loadable_apps`, `xip_all`이 각각
-`PASS : 447, FAIL : 0`이었다. 이 결과는 QEMU 소프트웨어 검증이며 실제
+`PASS : 447, FAIL : 0`이었다. 네 config 모두 `network_tc`는
+`PASS : 161, FAIL : 0`이었다. 이 결과는 QEMU 소프트웨어 검증이며 실제
 BK/RTL 보드 동작을 대신하지 않는다.
 
 ## `make download` 사용
@@ -313,7 +357,7 @@ PATH="$(brew --prefix)/bin:$PATH" make download
 현재 터미널에서 TASH를 직접 조작하려면 위의 “QEMU를 현재 터미널에서 직접
 실행” 절차를 사용한다.
 
-## 10. 다른 QEMU config
+## 11. 다른 QEMU config
 
 지원 config는 다음 네 가지다.
 
@@ -353,14 +397,16 @@ cd "$TIZENRT_ROOT/os"
 
 ## 직접 검증 기록
 
-이 가이드는 2026-07-25에 다음 순서로 직접 확인했다.
+이 가이드는 2026-07-26에 다음 순서로 직접 확인했다.
 
 1. `qemu-armv8m/hello`를 ARM64 Docker 이미지로 clean build
 2. `qemu-system-arm -M mps2-an505 ... -nographic`로 현재 터미널에서 부팅
 3. TASH에서 `help`, `ps`, `mount`, `ls /mnt` 실행
 4. TASH에서 `smartfs_test 4 /mnt/test 4096 1 y` 실행
-5. TASH에서 `kernel_tc` 실행
-6. `Kernel TC End [PASS : 459, FAIL : 0]` 확인
+5. TASH에서 LAN9118 DHCP, IPv4/IPv6 gateway ping, DNS, `network_tc` 실행
+6. `Network TC End [PASS : 161, FAIL : 0]` 확인 후 2초 대기
+7. TASH에서 `kernel_tc` 실행
+8. `Kernel TC End [PASS : 459, FAIL : 0]` 확인
 
 같은 변경 상태에서 `loadable_all`, `loadable_apps`, `xip_all`도 각각
 distclean/reconfigure 조건으로 build하고 runner를 실행해

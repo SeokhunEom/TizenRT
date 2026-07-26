@@ -11,7 +11,7 @@
   branch `codex/qemu-armv8m-kernel-tc`
 - `dbuild.sh menu` 직접 빌드 checkout: `/Volumes/T7/Dev/TizenRT/main`,
   HEAD `85056ad92` (2026-07-24)
-- 현재 checkout QEMU clean build/runtime 재검증일: 2026-07-25
+- 현재 checkout QEMU clean build/runtime 재검증일: 2026-07-26
 
 이 문서는 빌드 재현 절차를 정의한다. 보드의 실제 플래시, UART, 무선, 센서 동작은 별도 하드웨어 검증이 필요하다.
 
@@ -276,20 +276,22 @@ loadable/XIP에서 main RAM 4 MiB + loaded RAM 8 MiB + SSRAM heap 512 KiB를
 사용한다. runner의 persistent state는 RAM-backed flash, A/B kernel/user
 slot, boot parameter를 보존한다.
 
-runner는 `Kernel TC End` 집계 전이라도
-`Assertion failed at file:`을 감지하면 `reason=kernel-assert`로 즉시
-실패시킨다. timeout까지 기다리거나 negative-package 성공으로 잘못 분류하지
-않는다.
+runner는 `Kernel TC End` 집계 전이라도 완전한
+`Assertion failed at file:... line:...`을 감지하면
+`reason=kernel-assert`로 즉시 실패시킨다. 잘린 serial prefix는 file/line이
+완성될 때까지 기다리며, timeout이나 negative-package 성공으로 잘못
+분류하지 않는다.
 
-2026-07-25에 각 config를 메뉴 흐름과 동일한 distclean/reconfigure 조건으로
-clean build한 뒤 full Kernel TC를 실행한 결과는 다음과 같다.
+2026-07-26에 각 config를 메뉴 흐름과 동일한 distclean/reconfigure 조건으로
+clean build한 뒤 Ethernet/network TC와 full Kernel TC를 실행한 결과는
+다음과 같다.
 
-| config | Kernel TC 결과 |
-| --- | --- |
-| `hello` | `PASS : 459, FAIL : 0` |
-| `loadable_all` | `PASS : 447, FAIL : 0` |
-| `loadable_apps` | `PASS : 447, FAIL : 0` |
-| `xip_all` | `PASS : 447, FAIL : 0` |
+| config | Network TC | Kernel TC |
+| --- | --- | --- |
+| `hello` | `PASS : 161, FAIL : 0` | `PASS : 459, FAIL : 0` |
+| `loadable_all` | `PASS : 161, FAIL : 0` | `PASS : 447, FAIL : 0` |
+| `loadable_apps` | `PASS : 161, FAIL : 0` | `PASS : 447, FAIL : 0` |
+| `xip_all` | `PASS : 161, FAIL : 0` | `PASS : 447, FAIL : 0` |
 
 이 결과는 해당 checkout의 QEMU 소프트웨어 경로에 대한 로컬 증거이며 실제
 보드 동작을 의미하지 않는다.

@@ -114,11 +114,26 @@ class QemuArmv8mKernelTcTest(RunnerHarness):
         omitted = self.runner.qemu_command(self.root, "xip_all", app1_path=app1, omit_common=True)
 
         self.assertNotIn("-device", hello)
+        for command in (hello, loadable, loadable_apps, xip, omitted):
+            self.assertEqual(1, command.count("-nic"))
+            self.assertIn(
+                "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,"
+                "ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,"
+                "mac=52:54:00:12:34:56",
+                command,
+            )
         self.assertIn(f"loader,file={app1},addr=0x10300000,force-raw=on", loadable)
         self.assertIn(f"loader,file={app1},addr=0x10300000,force-raw=on", loadable_apps)
         self.assertIn(f"loader,file={common},addr=0x102c0000,force-raw=on", xip)
         self.assertIn(f"loader,file={app1},addr=0x10360000,force-raw=on", xip)
         self.assertNotIn("addr=0x102c0000,force-raw=on", " ".join(omitted))
+
+    def test_ab_qemu_command_gets_exactly_one_user_nic(self) -> None:
+        base = ["qemu-system-arm", "-M", "mps2-an505"]
+        with_nic = self.runner.with_user_nic(base)
+
+        self.assertEqual(1, with_nic.count("-nic"))
+        self.assertEqual(with_nic, self.runner.with_user_nic(with_nic))
 
     def test_preflight_failure_still_creates_log_and_result(self) -> None:
         def missing_image(_request):
