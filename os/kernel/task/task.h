@@ -103,6 +103,12 @@ void task_start(void);
 int task_schedsetup(FAR struct task_tcb_s *tcb, int priority, start_t start, main_t main, uint8_t ttype);
 int task_argsetup(FAR struct task_tcb_s *tcb, FAR const char *name, FAR char *const argv[]);
 
+#if defined(CONFIG_DRIVERS_OS_API_TEST) && defined(CONFIG_SCHED_STARTHOOK)
+int task_create_with_starthook(FAR const char *name, int priority, int stack_size,
+		main_t entry, FAR char *const argv[], starthook_t starthook,
+		FAR void *starthook_arg);
+#endif
+
 /* Task exit */
 
 int task_exit(void);

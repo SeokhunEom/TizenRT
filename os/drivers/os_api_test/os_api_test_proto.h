@@ -18,12 +18,20 @@
 
 #ifndef __DRIVERS_OS_API_TEST_KERNEL_TEST_PROTO_H
 #define __DRIVERS_OS_API_TEST_KERNEL_TEST_PROTO_H
-int test_task(int cmd, unsigned long arg);
 int test_sem(int cmd, unsigned long arg);
 int test_group(int cmd, unsigned long arg);
 int test_clock(int cmd, unsigned long arg);
 int test_timer(int cmd, unsigned long arg);
 int test_sched(int cmd, unsigned long arg);
+int test_wqueue(int cmd, unsigned long arg);
+#define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
+	int provider(int cmd, unsigned long arg);
+#include "os_api_test_kernel_registry.inc"
+#undef OS_API_TEST_KERNEL_DESCRIPTOR
+#ifndef CONFIG_DISABLE_PTHREAD
+int test_pthread(int cmd, unsigned long arg);
+#endif
+int test_irq(int cmd, unsigned long arg);
 #ifndef CONFIG_DISABLE_SIGNALS
 int test_signal(int cmd, unsigned long arg);
 #endif
@@ -34,7 +42,7 @@ int test_tz(void);
 #ifdef CONFIG_EXAMPLES_STACK_PROTECTION
 int test_kthread_stack_overflow_protection(int cmd, unsigned long arg);
 #endif
-#ifdef CONFIG_TC_NET_PBUF
+#if defined(CONFIG_TC_NET_PBUF) || defined(CONFIG_TC_KERNEL_NET_PBUF)
 int test_net_pbuf(int cmd, unsigned long arg);
 #endif
 #if defined(CONFIG_AUTOMOUNT_USERFS) && defined(CONFIG_EXAMPLES_TESTCASE_FILESYSTEM)

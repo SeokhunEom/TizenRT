@@ -19,15 +19,142 @@
 
 ifeq ($(CONFIG_DRIVERS_OS_API_TEST),y)
 
+ifeq ($(CONFIG_TC_KERNEL_TASK),y)
 CSRCS += test_task.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_SCHED),y)
 CSRCS += test_sched.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_CLOCK),y)
 CSRCS += test_clock.c
-CSRCS += test_timer.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_SEMAPHORE),y)
 CSRCS += test_sem.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_GROUP),y)
 CSRCS += test_group.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_WORK_QUEUE),y)
+ifeq ($(CONFIG_SCHED_WORKQUEUE),y)
+ifneq ($(filter y,$(CONFIG_SCHED_HPWORK) $(CONFIG_SCHED_LPWORK)),)
+CSRCS += test_wqueue.c
+endif
+endif
+endif
+ifeq ($(CONFIG_TC_KERNEL_UMM_HEAP),y)
+ifeq ($(CONFIG_MM_KERNEL_HEAP),y)
+CSRCS += test_kmm.c
+endif
+endif
 
+ifeq ($(CONFIG_TC_KERNEL_ERRNO),y)
+CSRCS += test_errno.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_IRQ),y)
+CSRCS += test_irq.c
+endif
+ifeq ($(CONFIG_TC_KERNEL_VFS),y)
+CSRCS += test_vfs.c
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_PTHREAD),y)
+ifneq ($(CONFIG_DISABLE_PTHREAD),y)
+CSRCS += test_pthread.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_TERMIOS),y)
+ifeq ($(CONFIG_SERIAL_TERMIOS),y)
+CSRCS += test_termios.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_TIMER),y)
+ifneq ($(CONFIG_DISABLE_POSIX_TIMERS),y)
+CSRCS += test_timer.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_WDOG),y)
+ifeq ($(CONFIG_WATCHDOG),y)
+CSRCS += test_wdog.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_BINFMT),y)
+ifeq ($(CONFIG_BINFMT_ENABLE),y)
+CSRCS += test_binfmt.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_ENVIRON),y)
+ifneq ($(CONFIG_DISABLE_ENVIRON),y)
+CSRCS += test_environ.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_MQUEUE),y)
+ifneq ($(CONFIG_DISABLE_MQUEUE),y)
+CSRCS += test_mqueue.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_LOG_DUMP),y)
+ifeq ($(CONFIG_LOG_DUMP),y)
+CSRCS += test_log_dump.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_BINARY_MANAGER),y)
+ifeq ($(CONFIG_BINARY_MANAGER),y)
+CSRCS += test_binary_manager.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_MEM_LEAK_CHECKER),y)
+ifeq ($(CONFIG_MEM_LEAK_CHECKER),y)
+CSRCS += test_mem_leak_checker.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_REBOOT_REASON),y)
+ifeq ($(CONFIG_SYSTEM_REBOOT_REASON),y)
+CSRCS += test_reboot_reason.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_PM),y)
+ifeq ($(CONFIG_PM),y)
+CSRCS += test_pm.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_PROCFS),y)
+ifeq ($(CONFIG_FS_PROCFS),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_UPTIME),y)
+ifneq ($(CONFIG_FS_PROCFS_EXCLUDE_VERSION),y)
+CSRCS += test_procfs.c
+endif
+endif
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_RTC),y)
+ifeq ($(CONFIG_RTC_DRIVER),y)
+CSRCS += test_rtc.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_PIPE),y)
+ifeq ($(CONFIG_PIPES),y)
+CSRCS += test_pipe.c
+endif
+endif
+
+ifeq ($(CONFIG_TC_KERNEL_SIGNAL),y)
 ifneq ($(CONFIG_DISABLE_SIGNALS),y)
 CSRCS += test_signal.c
+endif
 endif
 
 ifeq ($(CONFIG_TC_COMPRESS_READ),y)

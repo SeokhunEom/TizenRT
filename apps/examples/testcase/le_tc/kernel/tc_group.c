@@ -26,6 +26,7 @@
 #include <tinyara/config.h>
 #include <stdio.h>
 #include <errno.h>
+#include <sys/ioctl.h>
 #include <tinyara/os_api_test_drv.h>
 #include "tc_internal.h"
 
@@ -107,6 +108,32 @@ static void tc_group_group_removechildren(void)
 
 	TC_SUCCESS_RESULT();
 }
+
+#ifndef CONFIG_DISABLE_SIGNALS
+/**
+ * @fn                           :tc_group_group_signal
+ * @brief                        :Dispatch a signal to the current task group
+ * API's covered                 :group_signal
+ * Preconditions                 :Callback (sched_self) should return valid tcb_s*
+ * @return                       :void
+ */
+static void tc_group_group_signal(void)
+{
+	int fd;
+	int ret_chk;
+
+	fd = tc_get_drvfd();
+	ret_chk = ioctl(fd, TESTIOC_GROUP_SIGNAL_TEST, 0);
+	TC_ASSERT_EQ("group_signal", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void group_signal_main(void)
+{
+	tc_group_group_signal();
+}
+#endif
 
 /****************************************************************************
  * Name: group

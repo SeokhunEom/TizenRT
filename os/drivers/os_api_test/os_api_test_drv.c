@@ -90,29 +90,47 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 
 	case TESTIOC_ANALOG:
 		break;
-#ifndef CONFIG_DISABLE_SIGNALS
+#if defined(CONFIG_TC_KERNEL_SIGNAL) && !defined(CONFIG_DISABLE_SIGNALS)
 	case TESTIOC_GET_SIG_FINDACTION_ADD:
 	case TESTIOC_SIGNAL_PAUSE:
 	case TESTIOC_GET_TCB_SIGPROCMASK:
 		ret = test_signal(cmd, arg);
 		break;
 #endif
+#ifdef CONFIG_TC_KERNEL_SCHED
 	case TESTIOC_GET_SELF_PID:
 	case TESTIOC_IS_ALIVE_THREAD:
 	case TESTIOC_GET_TCB_ADJ_STACK_SIZE:
 	case TESTIOC_SCHED_FOREACH:
+	case TESTIOC_TASK_SETCANCELSTATE_TEST:
+#ifdef CONFIG_CANCELLATION_POINTS
+	case TESTIOC_TASK_SETCANCELTYPE_TEST:
+#endif
 		ret = test_sched(cmd, arg);
 		break;
+#endif
+#ifdef CONFIG_TC_KERNEL_CLOCK
 	case TESTIOC_CLOCK_ABSTIME2TICKS_TEST:
 		ret = test_clock(cmd, arg);
 		break;
+#endif
+#if defined(CONFIG_TC_KERNEL_TIMER) && !defined(CONFIG_DISABLE_POSIX_TIMERS)
 	case TESTIOC_TIMER_INITIALIZE_TEST:
+	case TESTIOC_TIMER_CREATE_DELETE_TEST:
 		ret = test_timer(cmd, arg);
 		break;
+#endif
+#if defined(CONFIG_TC_KERNEL_WORK_QUEUE) && defined(CONFIG_SCHED_WORKQUEUE) && (defined(CONFIG_SCHED_HPWORK) || defined(CONFIG_SCHED_LPWORK))
+	case TESTIOC_WORK_QUEUE_TEST:
+		ret = test_wqueue(cmd, arg);
+		break;
+#endif
+#ifdef CONFIG_TC_KERNEL_SEMAPHORE
 	case TESTIOC_SEM_TICK_WAIT_TEST:
 		ret = test_sem(cmd, arg);
 		break;
-#if defined(CONFIG_SCHED_HAVE_PARENT) && defined(CONFIG_SCHED_CHILD_STATUS)
+#endif
+#if defined(CONFIG_TC_KERNEL_GROUP) && defined(CONFIG_SCHED_HAVE_PARENT) && defined(CONFIG_SCHED_CHILD_STATUS)
 	case TESTIOC_GROUP_ADD_FINED_REMOVE_TEST:
 	case TESTIOC_GROUP_ALLOC_FREE_TEST:
 	case TESTIOC_GROUP_EXIT_CHILD_TEST:
@@ -120,10 +138,12 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 		ret = test_group(cmd, arg);
 		break;
 #endif
+#ifdef CONFIG_TC_KERNEL_TASK
 	case TESTIOC_TASK_REPARENT:
 	case TESTIOC_TASK_INIT_TEST:
 		ret = test_task(cmd, arg);
 		break;
+#endif
 #ifdef CONFIG_TC_COMPRESS_READ
 	case TESTIOC_COMPRESSION_TEST:
 		ret = test_compress_decompress(cmd, arg);
@@ -134,7 +154,7 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_MEM_PROTECTTEST:
 		ret = OK;
 		struct mem_protecttest_arg_s *obj = (struct mem_protecttest_arg_s*)arg;
-		
+
 		if (!obj) {
 			return -EINVAL;
 		}
@@ -185,7 +205,7 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 		break;
 #endif
 
-#ifdef CONFIG_TC_NET_PBUF
+#if defined(CONFIG_TC_NET_PBUF) || defined(CONFIG_TC_KERNEL_NET_PBUF)
 	/* Run the test case for pbuf   */
 	case TESTIOC_NET_PBUF:
 		ret = test_net_pbuf(cmd, arg);
@@ -195,7 +215,11 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	case TESTIOC_GET_FS_PARTNO:
 		ret = test_fs_get_devname();
 		break;
-#endif		
+#endif
+#define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
+	case symbol: ret = provider(cmd, arg); break;
+#include "os_api_test_kernel_registry.inc"
+#undef OS_API_TEST_KERNEL_DESCRIPTOR
 	default:
 		vdbg("Unrecognized cmd: %d arg: %ld\n", cmd, arg);
 		break;

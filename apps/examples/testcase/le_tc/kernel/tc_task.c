@@ -59,9 +59,10 @@ static int tc_reparent_chk = 0;
 #ifndef CONFIG_BUILD_PROTECTED
 static volatile int task_cnt;
 static volatile pid_t ppid;
-#endif
 static bool task_init_flag;
 static sem_t task_sem;
+#endif
+static sem_t g_restart_sem;
 
 /**
 * @fn                   :create_task
@@ -102,6 +103,7 @@ static int delete_task(int argc, char *argv[])
 static int restart_task(int argc, char *argv[])
 {
 	g_callback++;
+	sem_post(&g_restart_sem);
 	sleep(1);
 	return OK;
 }
@@ -184,6 +186,7 @@ static int getpid_task(int argc, char *argv[])
 	return OK;
 }
 
+#ifndef CONFIG_BUILD_PROTECTED
 /**
 * @fn                   :test_task_entry
 * @brief                :utility function for tc_task_task_init
@@ -197,6 +200,7 @@ static int test_task_entry(int argc, char *argv[])
 
 	return OK;
 }
+#endif
 
 /**
 * @fn                   :tc_task_task_create
@@ -285,9 +289,13 @@ static void tc_task_task_restart(void)
 
 	/* Check for reinitialization of task using task_restart */
 
+	TC_ASSERT_EQ("sem_init", sem_init(&g_restart_sem, 0, 0), OK);
+
 	pid = task_create("tc_task_re", SCHED_PRIORITY_MAX - 1, 1024, restart_task, (char * const *)NULL);
 	TC_ASSERT_GT("task_create", pid, 0);
 
+	/* Wait until task has run and incremented g_callback before restarting */
+	sem_wait(&g_restart_sem);
 	ret_chk = task_restart(pid);
 
 	sleep(SEC_1);
@@ -297,6 +305,7 @@ static void tc_task_task_restart(void)
 	waitpid(pid, &recv_status, 0);
 	TC_ASSERT_EQ("task_restart", g_callback, 2);
 
+	sem_destroy(&g_restart_sem);
 	TC_SUCCESS_RESULT();
 }
 
@@ -553,6 +562,9 @@ static void tc_task_task_reparent(void)
 */
 static void tc_task_task_init(void)
 {
+#ifdef CONFIG_BUILD_PROTECTED
+	TC_ASSERT_EQ("task_init", ioctl(tc_get_drvfd(), TESTIOC_TASK_INIT_TEST, 0), OK);
+#else
 	int ret = 0;
 
 	task_init_flag = false;
@@ -567,9 +579,39 @@ static void tc_task_task_init(void)
 
 	sem_destroy(&task_sem);
 
+#endif
 
 	TC_SUCCESS_RESULT();
 }
+
+#if defined(CONFIG_SCHED_STARTHOOK) && defined(CONFIG_BUILD_PROTECTED) && defined(CONFIG_DRIVERS_OS_API_TEST)
+static void tc_task_lifecycle_test(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_TASK_LIFECYCLE_TEST, 0);
+	TC_ASSERT_EQ("task_lifecycle", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void task_lifecycle_main(void)
+{
+	tc_task_lifecycle_test();
+}
+#endif
+
+#if defined(CONFIG_SCHED_STARTHOOK) && defined(CONFIG_DRIVERS_OS_API_TEST)
+void task_starthook_main(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_TASK_STARTHOOK_TEST, 0);
+	TC_ASSERT_EQ("task_starthook", ret, OK);
+
+	TC_SUCCESS_RESULT();
+}
+#endif
 
 /****************************************************************************
  * Name: task

@@ -62,6 +62,7 @@ config TC_NET_SOCKET_SHARE
 config TC_NET_PBUF
 	bool "pbuf() api "
 	default n
+	depends on NET_LWIP
 	select DRIVERS_OS_API_TEST
 
 config TC_NET_SETSOCKOPT

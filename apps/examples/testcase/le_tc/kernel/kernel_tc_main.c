@@ -37,6 +37,11 @@ int tc_get_drvfd(void)
 	return g_tc_fd;
 }
 
+int tc_run_os_api_ioctl(int fd, int request)
+{
+	return ioctl(fd, request, 0);
+}
+
 #ifdef CONFIG_BUILD_KERNEL
 int main(int argc, FAR char *argv[])
 #else
@@ -63,14 +68,6 @@ int tc_kernel_main(int argc, char *argv[])
 
 #ifdef CONFIG_TC_KERNEL_CLOCK
 	clock_main();
-#endif
-
-#ifdef CONFIG_TC_KERNEL_ENVIRON
-	environ_main();
-#endif
-
-#ifdef CONFIG_TC_KERNEL_ERRNO
-	errno_main();
 #endif
 
 #ifdef CONFIG_TC_KERNEL_GROUP
@@ -147,8 +144,8 @@ int tc_kernel_main(int argc, char *argv[])
 	libc_unistd_main();
 #endif
 
-#ifdef CONFIG_TC_KERNEL_MQUEUE
-	mqueue_main();
+#ifdef CONFIG_TC_KERNEL_NET_PBUF
+	kernel_net_pbuf_main();
 #endif
 
 #ifdef CONFIG_TC_KERNEL_PTHREAD
@@ -175,16 +172,8 @@ int tc_kernel_main(int argc, char *argv[])
 	task_main();
 #endif
 
-#ifdef CONFIG_TC_KERNEL_TERMIOS
-	termios_main();
-#endif
-
 #ifdef CONFIG_TC_KERNEL_TIMER
 	timer_tc_main();
-#endif
-
-#ifdef CONFIG_TC_KERNEL_UMM_HEAP
-	umm_heap_main();
 #endif
 
 #ifdef CONFIG_TC_KERNEL_WORK_QUEUE
@@ -198,6 +187,12 @@ int tc_kernel_main(int argc, char *argv[])
 #ifdef CONFIG_TC_KERNEL_IRQ
 	irq_main();
 #endif
+
+#define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
+	wrapper();
+#include "../../../../../os/drivers/os_api_test/os_api_test_kernel_registry.inc"
+#undef OS_API_TEST_KERNEL_DESCRIPTOR
+
 #ifdef CONFIG_ITC_KERNEL_ENVIRON
 	itc_environ_main();
 #endif

@@ -33,7 +33,9 @@
 #include <sched.h>
 #include <pthread.h>
 #include <errno.h>
+#include <sys/ioctl.h>
 #include <sys/types.h>
+#include <tinyara/os_api_test_drv.h>
 #include "tc_internal.h"
 
 /****************************************************************************
@@ -1644,6 +1646,31 @@ static void tc_pthread_set_get_affinity(void)
 	TC_ASSERT_EQ("pthread_join", ret_chk, OK);
 
 	TC_SUCCESS_RESULT();
+}
+
+/**
+* @fn                   :tc_pthread_kernel
+* @brief                :runs pthread kernel API tests through os_api_test driver
+* @Scenario             :validates pthread core APIs in kernel context
+* API's covered         :pthread_create, pthread_join, pthread_tryjoin_np, pthread_detach,
+*                        pthread_mutex_*, pthread_cond_*, pthread_key_*, pthread_*sched*
+* Preconditions         :CONFIG_DRIVERS_OS_API_TEST
+* Postconditions        :none
+* @return               :void
+*/
+static void tc_pthread_kernel(void)
+{
+	int ret_chk;
+
+	ret_chk = ioctl(tc_get_drvfd(), TESTIOC_PTHREAD_TEST, 0);
+	TC_ASSERT_EQ("pthread", ret_chk, OK);
+
+	TC_SUCCESS_RESULT();
+}
+
+void pthread_kernel_main(void)
+{
+	tc_pthread_kernel();
 }
 
 /****************************************************************************

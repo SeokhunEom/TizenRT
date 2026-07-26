@@ -1,0 +1,3 @@
+#ifndef __TASK16_TINYARA_CONFIG_H
+#define __TASK16_TINYARA_CONFIG_H
+#endif

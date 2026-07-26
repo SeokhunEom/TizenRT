@@ -22,14 +22,20 @@
 #include <tinyara/config.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <tinyara/timer.h>
 #include <tinyara/irq.h>
+#include <tinyara/os_api_test_drv.h>
+#ifdef CONFIG_TIMER
+#include <tinyara/timer.h>
+#endif
 #include "tc_internal.h"
 
+#ifdef CONFIG_TIMER
 # define TIMER_DEVNAME  "/dev/timer0"
 # define INTERVAL	100
+#endif
 
 /**
  * @fn                  :tc_irq
@@ -41,7 +47,22 @@
  * @return              :void
  */
 
-static void tc_irq_fin_wait(void)
+static void tc_irq_kernel(void)
+{
+	int ret;
+
+	ret = ioctl(tc_get_drvfd(), TESTIOC_IRQ_TEST, 0);
+	TC_ASSERT_EQ("irq", ret, OK);
+	TC_SUCCESS_RESULT();
+}
+
+void irq_kernel_main(void)
+{
+	tc_irq_kernel();
+}
+
+#ifdef CONFIG_TIMER
+static void tc_irq_fin_wait_by_timer(void)
 {
 	struct timer_notify_s notify;
 	notify.arg   = NULL;
@@ -74,10 +95,13 @@ static void tc_irq_fin_wait(void)
 
 	TC_SUCCESS_RESULT();
 }
+#endif
 
 int irq_main(void)
 {
-	tc_irq_fin_wait();
+#ifdef CONFIG_TIMER
+	tc_irq_fin_wait_by_timer();
+#endif
 
 	return 0;
 }
