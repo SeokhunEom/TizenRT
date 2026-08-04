@@ -11,6 +11,9 @@
 - 실제 RTL/BK 보드의 플래시, UART, 무선, 센서 동작은 이 문서의 QEMU 결과로 검증할 수 없다.
 - 저장소 경로가 다르면 아래 `TIZENRT_ROOT`만 현재 checkout 경로로 바꾼다.
 
+네 recipe의 목적과 BK7239N 대비 설정 차이는 [네 recipe defconfig 비교](../Human/BK7239N_QEMU_ARMv8M_4Recipe_Defconfig_Comparison.md),
+이 브랜치의 기준선과 변경 흐름은 [origin/master부터 QEMU ARMv8-M까지 변경 이력](../Human/OriginMaster_to_QEMU_ARMv8M_Change_History.md)에서 확인한다.
+
 ## 사전 확인
 
 ```bash
