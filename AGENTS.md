@@ -7,6 +7,8 @@
 - [대표 보드와 빌드 레시피](docs/AI/Representative_Boards.md)
 - [`bk7239n/hello`와 `qemu-armv8m/hello` defconfig 비교](docs/AI/BK7239N_QEMU_ARMv8M_Hello_Defconfig_Comparison.md)
 - [사람용 QEMU 터미널 실행 가이드](docs/Human/QEMU_ARMv8M_Terminal_Guide.md)
+- [BK7239N과 QEMU 네 recipe defconfig 비교](docs/Human/BK7239N_QEMU_ARMv8M_4Recipe_Defconfig_Comparison.md)
+- [origin/master부터 QEMU ARMv8-M까지 변경 이력](docs/Human/OriginMaster_to_QEMU_ARMv8M_Change_History.md)
 
 ## AI 작업 기본 규칙
 

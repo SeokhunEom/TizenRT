@@ -6,13 +6,29 @@
 commit message에는 해당 커밋의 실제 파일별 상태와 소유 계층별 수정
 이유가 들어 있다.
 
+아래의 `origin/main` 표기는 이 브랜치를 정리할 당시의 historical baseline을
+뜻한다. Git remote branch는 이후에도 이동할 수 있으므로, 현재 remote와의
+관계는 별도 live snapshot으로 기록한다.
+
 ## 범위와 기준선
 
 | 기준 | SHA | 의미 |
 | --- | --- | --- |
-| `origin/master` | `149e1628f` | QEMU 작업이 시작된 upstream/master 기준 |
-| `origin/main` | `85056ad92` | ARM64 Docker 문서까지 포함한 작업 기준선 |
+| `origin/master` historical baseline | `149e1628f` | QEMU 작업이 시작된 upstream/master 기준 |
+| `origin/main` historical baseline | `85056ad92` | ARM64 Docker 문서까지 포함한 작업 기준선 |
 | 정리 전 tip | `2f5a6936b` | 네 recipe 네트워크 문서까지 포함한 기존 tip |
+
+2026-08-04에 live remote를 다시 확인한 결과는 다음과 같다.
+
+| live ref | SHA | 해석 |
+| --- | --- | --- |
+| `origin/main` | `080481ee8` | ARM64 Docker 이미지 workflow까지 포함한 현재 main |
+| `origin/codex/qemu-armv8m-kernel-tc` | `fc907ccb7` | 이 문서가 기록하는 현재 QEMU branch |
+
+현재 QEMU branch는 live `origin/main`을 직계 기준으로 rebase한 상태가
+아니다. 따라서 아래의 5개 baseline 커밋과 18개 논리 커밋은 branch 정리
+당시의 history를 재현하는 기록이며, live main과의 최신 merge/rebase
+상태를 의미하지 않는다.
 
 `origin/master..origin/main`의 5개 커밋은 사용자가 지정한 “main 이전은
 신경쓰지 않음” 범위에 따라 변경하지 않고 기준선으로 보존했다. 다만

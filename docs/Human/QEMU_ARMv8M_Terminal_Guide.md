@@ -7,6 +7,9 @@
 빌드와 부팅을 확인할 수 있다. loadable/XIP 패키지와 A/B state는 아래의
 runner smoke 절차로 확인한다.
 
+네 recipe의 용도와 defconfig 차이는 [네 recipe defconfig 비교](BK7239N_QEMU_ARMv8M_4Recipe_Defconfig_Comparison.md),
+브랜치가 `origin/master`에서 QEMU ARMv8-M까지 확장된 흐름은 [변경 이력](OriginMaster_to_QEMU_ARMv8M_Change_History.md)을 참고한다.
+
 ## 1. 준비물
 
 다음 프로그램을 준비한다.
