@@ -1,0 +1,14 @@
+diff --git a/testcases/open_posix_testsuite/include/affinity.h b/testcases/open_posix_testsuite/include/affinity.h
+index 5e1f7e3..a8b2c4d 100644
+--- a/testcases/open_posix_testsuite/include/affinity.h
++++ b/testcases/open_posix_testsuite/include/affinity.h
+@@ -103,7 +103,7 @@
+ #include <errno.h>
+ 
+ static int set_affinity_single(void)
+ {
+-	errno = ENOSYS;
++	set_errno(ENOSYS);
+ 	return -1;
+ }
+ #endif

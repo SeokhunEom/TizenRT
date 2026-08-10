@@ -1,0 +1,30 @@
+#
+# For a description of the syntax of this configuration file,
+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+#
+
+config EXAMPLES_LTP
+	bool "Linux Test Project (LTP) tests"
+	default n
+	---help---
+		Enable the Linux Test Project (LTP) POSIX conformance tests.
+		LTP is a comprehensive test suite for validating POSIX
+		conformance and system functionality. This port integrates
+		a subset of LTP (version 20230516) for TizenRT.
+
+if EXAMPLES_LTP
+
+config EXAMPLES_LTP_STACKSIZE
+	int "LTP test stack size"
+	default 8192
+	---help---
+		Stack size for LTP test tasks. Increase for complex tests
+		that use deep call chains or large local variables.
+
+config EXAMPLES_LTP_PRIORITY
+	int "LTP test task priority"
+	default 100
+	---help---
+		Priority for LTP test tasks.
+
+endif # EXAMPLES_LTP

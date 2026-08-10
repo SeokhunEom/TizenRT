@@ -1,0 +1,24 @@
+--- a/testcases/open_posix_testsuite/include/affinity.h	2026-08-10 17:19:37.875928136 +0530
++++ b/testcases/open_posix_testsuite/include/affinity.h	2026-08-10 17:20:23.436976258 +0530
+@@ -98,6 +98,21 @@
+ 	return set_affinity(cpu);
+ }
+ 
++#elif defined(__TIZENRT__) && defined(CONFIG_SMP)
++#include <pthread.h>
++#include <sched.h>
++#include <errno.h>
++
++static int set_affinity_single(void)
++{
++	cpu_set_t mask;
++
++	CPU_ZERO(&mask);
++	CPU_SET(0, &mask);
++
++	return pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &mask);
++}
++
+ #else
+ #include <errno.h>
+ 
