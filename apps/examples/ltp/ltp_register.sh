@@ -6,11 +6,13 @@
 # registry entries (.mdat and .pdat files) in the builtin registry.
 #
 # This script is called from the Makefile during the context phase,
-# after the LTP source has been downloaded and patched.
+# after the bundled LTP source has been extracted and patched.
 #
 # For each test file, it generates:
-#   <funcname>.mdat: { "cmdname", funcname, EXECTYPE, PRIORITY, STACKSIZE },
-#   <funcname>.pdat: int funcname(int argc, char *argv[]);
+#   <funcname>.mdat: { "cmdname", ltp_runner_main, ... },
+#   <funcname>.pdat: int ltp_runner_main(int argc, char *argv[]);
+# The runner dispatches the command to the renamed function through the
+# generated ltp_registry.inc mapping.
 #
 # The function name is derived from the file path:
 #   .../condvar/pthread_cond_wait_1.c -> ltp_condvar_pthread_cond_wait_1_main
@@ -168,6 +170,13 @@ fi
 test_count=$(echo ${MAINCSRCS} | wc -w)
 echo "ltp_register: registering TASH commands for ${test_count} tests..."
 
+# Generate the table consumed by ltp_runner.c.  The runner launches each test
+# as a child task so waitpid() can expose the POSIX test exit status.
+RUNNER_REGISTRY="${CURDIR}/ltp_registry.inc"
+TEST_MANIFEST="${CURDIR}/ltp_manifest.tsv"
+: > "${RUNNER_REGISTRY}"
+: > "${TEST_MANIFEST}"
+
 # Generate .mdat and .pdat files for each test
 # TASH command names are limited to 15 chars (TASH_CMD_MAXSTRLENGTH - 1).
 # Use indexed short names (ltp_t1, ltp_t2, ...) for the command name,
@@ -183,10 +192,18 @@ for f in ${MAINCSRCS}; do
     idx=$((idx + 1))
 
     # Generate .mdat file (command metadata)
-    echo "{ \"${cmdname}\", ${funcname}, ${EXECTYPE}, ${PRIORITY}, ${STACKSIZE} }," > "${REGISTRY}/${funcname}.mdat"
+    echo "{ \"${cmdname}\", ltp_runner_main, ${EXECTYPE}, ${PRIORITY}, ${STACKSIZE} }," > "${REGISTRY}/${funcname}.mdat"
 
     # Generate .pdat file (function prototype)
-    echo "int ${funcname}(int argc, char *argv[]);" > "${REGISTRY}/${funcname}.pdat"
+    echo "int ltp_runner_main(int argc, char *argv[]);" > "${REGISTRY}/${funcname}.pdat"
+
+    # Generate the command-to-test entry mapping used by ltp_runner.c.
+    echo "LTP_TEST(\"${cmdname}\", ${funcname})" >> "${RUNNER_REGISTRY}"
+
+    # Record the exact source selected for reproducible host-side reporting.
+    source_rel=${f#${CURDIR}/}
+    printf '%s\t%s\tapps/examples/ltp/%s\n' \
+        "${cmdname}" "${funcname}" "${source_rel}" >> "${TEST_MANIFEST}"
 
     echo "  Registered: ${cmdname} -> ${funcname}"
 done

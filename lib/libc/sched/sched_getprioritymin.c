@@ -57,6 +57,7 @@
 #include <tinyara/config.h>
 
 #include <tinyara/arch.h>
+#include <errno.h>
 
 /************************************************************************
  * Definitions
@@ -97,8 +98,7 @@
  *   policy - Scheduling policy requested.
  *
  * Return Value:
- *   The minimum priority value or -1 (ERROR)
- *   (errno is not set)
+ *   The minimum priority value or -1 (ERROR), with errno set to EINVAL.
  *
  * Assumptions:
  *
@@ -107,6 +107,7 @@
 int sched_get_priority_min(int policy)
 {
 	if (policy != SCHED_FIFO && policy != SCHED_RR) {
+		set_errno(EINVAL);
 		return ERROR;
 	} else {
 		return SCHED_PRIORITY_MIN;

@@ -1,149 +1,91 @@
-# LTP (Linux Test Project) for TizenRT
+# LTP POSIX tests for TizenRT
 
-This directory contains a port of the [Linux Test Project (LTP)](https://github.com/linux-test-project/ltp)
-POSIX conformance test suite to TizenRT, based on the [NuttX LTP integration](https://github.com/apache/nuttx/tree/master/apps/testing/ltp).
+This directory integrates selected Linux Test Project (LTP) 20230516 Open
+POSIX tests into TizenRT. The source archive is stored locally, patched during
+the build, and compiled into the firmware. The current selection contains 46
+scheduler and pthread tests.
 
-## Overview
+## Build for QEMU ARMv8-M
 
-LTP version **20230516** is downloaded, patched, and compiled into TizenRT
-as TASH commands. Each test file's `main()` function is renamed to a unique
-entry point (e.g., `ltp_condvar_pthread_cond_wait_1_main`) using the
-`-Dmain=<funcname>` compiler flag, and registered as a TASH command.
+From the repository root:
 
-## Current Status
-
-This is a **minimal initial port** that includes only the
-`functional/threads` test category (4 test files):
-
-| TASH Command | Test File | Description |
-|---|---|---|
-| `ltp_t1` | `condvar/pthread_cond_wait_1.c` | pthread_cond_signal wakes high priority thread |
-| `ltp_t2` | `condvar/pthread_cond_wait_2.c` | pthread_cond_signal wakes high priority thread (variant) |
-| `ltp_t3` | `schedule/1-1.c` | pthread_barrier_wait wakes high priority thread |
-| `ltp_t4` | `schedule/1-2.c` | pthread_barrier_wait wakes high priority thread (variant) |
-
-## Build Instructions
-
-### 1. Enable LTP in configuration
-
-```
-cd build/<board>
-make menuconfig
+```sh
+cd os
+./dbuild.sh qemu-armv8m hello
+./dbuild.sh build
 ```
 
-Navigate to **Application Configuration → Examples → Linux Test Project (LTP) tests**
-and enable it.
+The `qemu-armv8m/hello` defconfig enables LTP with an 8192-byte child-task
+stack. A clean build extracts `ltp-20230516.zip`, applies every patch in
+`patches/`, and fails if any patch cannot be applied.
 
-### 2. Build
+## Run
 
-```
-make
-```
+Run all registered tests in one fresh QEMU session and save both serial and
+JSON evidence:
 
-**Note:** On the first build, the LTP source is downloaded and patched during
-the `context` phase. The test files are discovered at Makefile parse time,
-so the first build will not compile any tests. Run `make` a second time to
-compile the test files. This is the same behavior as NuttX's LTP integration.
-
-### 3. Run tests
-
-```
-TizenRT> ltp_t1
-TizenRT> ltp_t2
-TizenRT> ltp_t3
-TizenRT> ltp_t4
+```sh
+python3 .github/scripts/qemu-armv8m-ltp.py \
+  --log build/qemu-armv8m-ltp/ltp-serial.log \
+  --result build/qemu-armv8m-ltp/ltp-result.json
 ```
 
-## Directory Structure
+Run selected test indices with `--tests`, for example:
 
-```
-apps/examples/ltp/
-├── Make.defs           # Build integration (adds to CONFIGURED_APPS)
-├── Makefile            # Main build logic: download, patch, compile, register
-├── Kconfig             # Configuration options (EXAMPLES_LTP, stack size, priority)
-├── config.h            # Feature detection macros for LTP
-├── ltp_register.sh     # TASH command registration script
-├── patches/            # TizenRT-specific patches (adapted from NuttX)
-│   ├── 0001-pthread_rwlock_unlock-follow-linux.patch
-│   ├── 0002-Use-ifdef-instead-of-if-for-__linux__.patch
-│   └── ... (12 patches total)
-├── .gitignore          # Ignores downloaded LTP source
-└── README.md           # This file
+```sh
+python3 .github/scripts/qemu-armv8m-ltp.py --tests 1 20 46
 ```
 
-## How It Works
+The runner validates the generated command/source manifest against the TASH
+registry before booting `qemu-system-arm -M mps2-an505`. It stops on a target
+crash or timeout and returns a nonzero host exit status unless every selected
+test reports `PASS`.
 
-### main() Renaming
+For manual execution, the generated commands are `ltp_t1` through `ltp_t46`.
+The exact command, entry function, and source mapping is generated in
+`ltp_manifest.tsv` during the build.
 
-LTP test files each contain a `main()` function. Since TizenRT links all
-applications into a single binary, multiple `main()` functions would conflict.
-The solution is to rename each `main()` to a unique function name using the
-`-Dmain=<funcname>` compiler flag:
+## Integration design
 
-```bash
-# Source: functional/threads/condvar/pthread_cond_wait_1.c
-# Compiled with: -Dmain=ltp_condvar_pthread_cond_wait_1_main
-# Result: int ltp_condvar_pthread_cond_wait_1_main(int argc, char *argv[]) { ... }
+Each selected LTP source contains a `main()` function. The Makefile compiles
+it with `-Dmain=<unique_entry>` so all tests can coexist in `libapps.a`.
+`ltp_register.sh` then generates:
+
+- TASH `.mdat` and `.pdat` entries;
+- `ltp_registry.inc`, which maps each short command to its renamed entry;
+- `ltp_manifest.tsv`, used by the host runner for reproducible reporting.
+
+All TASH commands enter `ltp_runner_main`. It launches the selected LTP entry
+as a child task, waits for its exit status, and prints one machine-readable
+line:
+
+```text
+LTP_RESULT ltp_t1 PASS exit=0
 ```
 
-### TASH Command Registration
+This wrapper is necessary because an asynchronous TASH callback alone does
+not expose the test function's return status to the host.
 
-TizenRT uses a builtin registry system. The `ltp_register.sh` script
-discovers test files and generates `.mdat` (metadata) and `.pdat` (prototype)
-files in `apps/builtin/registry/`. These are compiled into `builtin_list.c`
-and registered as TASH commands at startup.
+## Selection and compatibility patches
 
-**TASH command name limit:** TASH limits command names to 15 characters
-(`TASH_CMD_MAXSTRLENGTH - 1`). Since LTP test names can be very long
-(e.g., `ltp_condvar_pthread_cond_wait_1`), short indexed names (`ltp_t1`,
-`ltp_t2`, ...) are used for TASH commands, while the C function names remain
-descriptive.
+`LTP_TEST_SUBDIR` in the Makefile defines the selected scheduler and pthread
+categories. Content and source-path blacklists exclude tests that require
+unsupported TizenRT facilities such as `SCHED_OTHER`, `fork()`, or user
+identity APIs. Keep the Makefile and `ltp_register.sh` filters aligned when
+changing coverage.
 
-### Blacklist
+The patches adapt upstream tests to supported TizenRT semantics. In
+particular, TizenRT pthread defaults use explicit scheduling at priority 100,
+and signal actions are associated with individual TCBs. The compatibility
+patches make priority and handler ownership explicit where upstream tests
+otherwise assume Linux process behavior.
 
-Some LTP tests use POSIX features not available in TizenRT (e.g.,
-`pthread_mutexattr_setprioceiling`, `ucontext.h`). These are filtered out
-via a blacklist mechanism in both the Makefile and `ltp_register.sh`.
+## Configuration
 
-## Expanding Test Coverage
-
-To add more test categories, modify `LTP_TEST_SUBDIR` in the Makefile:
-
-```makefile
-# Current: functional/threads only
-LTP_TEST_SUBDIR  = $(TESTDIR)/functional/threads
-
-# Expanded: all functional tests
-LTP_TEST_SUBDIR  = $(TESTDIR)/functional
-
-# Full: all conformance interface tests
-LTP_TEST_SUBDIR  = $(TESTDIR)/conformance/interfaces
-```
-
-## Patches
-
-The 12 patches in `patches/` are adapted from NuttX's LTP integration,
-with `__NuttX__` replaced by `__TIZENRT__`. They fix:
-
-1. `pthread_rwlock_unlock` behavior on non-Linux
-2. `#ifdef` instead of `#if` for `__linux__`
-3. Static variable re-initialization for multiple runs
-4. Test case updates for compatibility
-5. `pthread_cond_timedwait` testcase fixes
-6. rwlock initialization fixes
-7. `pthread_kill` usleep to avoid semcount overturn
-8. `sigaction` deadloop fix
-9. fdcheck compatibility
-10. Build warning fixes
-11. `proc.h` duplicate inclusion fix
-12. Build error fixes
-
-## Configuration Options
-
-| Option | Default | Description |
-|---|---|---|
-| `CONFIG_EXAMPLES_LTP` | n | Enable LTP tests |
-| `CONFIG_EXAMPLES_LTP_STACKSIZE` | 8192 | Stack size for LTP test tasks |
-| `CONFIG_EXAMPLES_LTP_PRIORITY` | 100 | Priority for LTP test tasks |
-| `CONFIG_DISABLE_PTHREAD` | n | Must be `n` (pthread enabled) for LTP tests |
-| `CONFIG_BUILTIN_APPS` | y | Required for TASH command registration |
+| Option | Value for QEMU | Purpose |
+| --- | ---: | --- |
+| `CONFIG_EXAMPLES_LTP` | `y` | Build and register LTP tests |
+| `CONFIG_EXAMPLES_LTP_STACKSIZE` | `8192` | LTP child-task stack size |
+| `CONFIG_EXAMPLES_LTP_PRIORITY` | `100` | TASH wrapper priority |
+| `CONFIG_DISABLE_PTHREAD` | unset | Keep pthread support enabled |
+| `CONFIG_BUILTIN_APPS` | `y` | Register TASH commands |

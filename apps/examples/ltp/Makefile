@@ -19,19 +19,18 @@
 # apps/examples/ltp/Makefile
 #
 # Port of NuttX LTP integration to TizenRT.
-# Downloads LTP v20230516, applies TizenRT-specific patches, discovers
+# Extracts the bundled LTP v20230516 archive, applies TizenRT-specific patches, discovers
 # test files with main(), renames main() to unique entry points via
 # -Dmain=xxx_main, and registers each as a TASH command.
 #
 # Build flow:
-#   1. make context  - downloads LTP source, applies patches, generates
+#   1. make context  - extracts LTP source, applies patches, generates
 #                      TASH command registry (.mdat/.pdat files)
 #   2. make          - compiles test files with main() renaming
 #
-# Note: On the first build, the LTP source is downloaded during context.
-# The test discovery happens at Makefile parse time, so on the very first
-# build no tests are discovered. Run the build a second time to compile
-# the tests. This is the same behavior as NuttX's LTP integration.
+# The source archive is a local build input, so Docker builds do not require
+# network access. The extraction target is touched after patching because the
+# zip tool preserves the archive's old directory timestamp.
 #
 ############################################################################
 
@@ -180,7 +179,7 @@ THREADEXEC    = TASH_EXECMD_ASYNC
 
 # Source files
 ASRCS =
-CSRCS = $(LTP_CSRCS)
+CSRCS = ltp_runner.c $(LTP_CSRCS)
 MAINSRC = $(LTP_MAINCSRCS)
 
 AOBJS = $(ASRCS:.S=$(OBJEXT))
@@ -274,12 +273,13 @@ $(AOBJS): %$(OBJEXT): %.S
 $(LTP_UNPACK): ltp-$(LTP_VERSION).zip
 	$(Q) echo "Extracting LTP source..."
 	$(Q) rm -rf $(LTP_UNPACK)
-	$(Q) unzip -oX ltp-$(LTP_VERSION).zip
+	$(Q) unzip -q -oX ltp-$(LTP_VERSION).zip
 	$(Q) mv ltp-$(LTP_VERSION) $(LTP_UNPACK)
 #	$(Q) chmod -R u+w $(LTP_UNPACK)
 #	$(Q) chown -R $(shell id -u):$(shell id -g) $(LTP_UNPACK) 2>/dev/null || true
 	$(Q) echo "Applying TizenRT-specific patches..."
-	$(Q) for p in patches/*.patch; do patch -N -d $(LTP_UNPACK) -p1 < $$p || true; done
+	$(Q) set -e; for p in patches/*.patch; do patch -d $(LTP_UNPACK) -p1 < $$p; done
+	$(Q) touch $(LTP_UNPACK)
 
 # --- TASH command registration ---
 # Register each LTP test as a TASH command using the builtin registry.
@@ -309,7 +309,7 @@ endif
 
 install:
 
-.depend: Makefile $(SRCS)
+.depend: Makefile ltp_registry.inc $(SRCS)
 	@$(MKDEP) $(ROOTDEPPATH) "$(CC)" -- $(CFLAGS) -- $(SRCS) >Make.dep
 	@touch $@
 

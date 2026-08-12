@@ -19,6 +19,7 @@ cscope.out
 tags
 *.pyc
 /submodule
+/build/qemu-armv8m-ltp/
 
 # ctags index file
 .tags

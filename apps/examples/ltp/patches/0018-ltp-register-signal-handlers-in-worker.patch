@@ -1,0 +1,120 @@
+diff --git a/testcases/open_posix_testsuite/conformance/interfaces/pthread_setschedparam/5-1.c b/testcases/open_posix_testsuite/conformance/interfaces/pthread_setschedparam/5-1.c
+--- a/testcases/open_posix_testsuite/conformance/interfaces/pthread_setschedparam/5-1.c
++++ b/testcases/open_posix_testsuite/conformance/interfaces/pthread_setschedparam/5-1.c
+@@ -81,6 +81,7 @@
+ #ifdef WITH_SYNCHRO
+ static sem_t semsig1;
+ static sem_t semsig2;
++static sem_t semready;
+ static unsigned long count_sig = 0;
+ #endif
+ 
+@@ -160,6 +161,7 @@
+ 	int ret = 0;
+ 	int pol1, pol2;
+ 
++	struct sigaction sa;
+ 	struct sched_param sp1, sp2;
+ 
+ 	pol1 = SCHED_FIFO;
+@@ -175,6 +177,25 @@
+ 			   "Unable to unblock SIGUSR1 and SIGUSR2 in worker thread");
+ 	}
+ 
++	/* TizenRT keeps signal actions per thread rather than per process. */
++	sigemptyset(&sa.sa_mask);
++	sa.sa_flags = 0;
++	sa.sa_handler = sighdl1;
++	if ((ret = sigaction(SIGUSR1, &sa, NULL))) {
++		UNRESOLVED(ret, "Unable to register worker signal handler1");
++	}
++
++	sa.sa_handler = sighdl2;
++	if ((ret = sigaction(SIGUSR2, &sa, NULL))) {
++		UNRESOLVED(ret, "Unable to register worker signal handler2");
++	}
++
++#ifdef WITH_SYNCHRO
++	if (sem_post(&semready)) {
++		UNRESOLVED(errno, "Unable to signal worker readiness");
++	}
++#endif
++
+ 	while (do_it) {
+ 		count_ope++;
+ 		ret = pthread_setschedparam(*(pthread_t *) arg, pol1, &sp1);
+@@ -198,13 +219,31 @@
+ {
+ 	int ret;
+ 	pthread_t th_work, th_sig1, th_sig2, me;
++	pthread_attr_t thread_attr;
+ 	thestruct arg1, arg2;
+ 
+ 	struct sigaction sa;
++	struct sched_param thread_sp;
+ 
+ 	/* Initialize output routine */
+ 	output_init();
+ 
++	/* Keep all test threads at the priority assigned to the main thread. */
++	if ((ret = pthread_attr_init(&thread_attr))) {
++		UNRESOLVED(ret, "Thread attribute initialization failed");
++	}
++	if ((ret = pthread_attr_setinheritsched(&thread_attr,
++			PTHREAD_EXPLICIT_SCHED))) {
++		UNRESOLVED(ret, "Unable to select explicit scheduling");
++	}
++	if ((ret = pthread_attr_setschedpolicy(&thread_attr, SCHED_RR))) {
++		UNRESOLVED(ret, "Unable to select SCHED_RR");
++	}
++	thread_sp.sched_priority = sched_get_priority_min(SCHED_RR);
++	if ((ret = pthread_attr_setschedparam(&thread_attr, &thread_sp))) {
++		UNRESOLVED(ret, "Unable to select the minimum priority");
++	}
++
+ 	/* We prepare a signal set which includes SIGUSR1 and SIGUSR2 */
+ 	sigemptyset(&usersigs);
+ 
+@@ -231,6 +270,10 @@
+ 	if (sem_init(&semsig2, 0, 1)) {
+ 		UNRESOLVED(errno, "Semsig2  init");
+ 	}
++
++	if (sem_init(&semready, 0, 0)) {
++		UNRESOLVED(errno, "Semready init");
++	}
+ #endif
+ 
+ 	/* We need to register the signal handlers for the PROCESS */
+@@ -250,10 +293,16 @@
+ 
+ 	me = pthread_self();
+ 
+-	if ((ret = pthread_create(&th_work, NULL, test, &me))) {
++	if ((ret = pthread_create(&th_work, &thread_attr, test, &me))) {
+ 		UNRESOLVED(ret, "Worker thread creation failed");
+ 	}
+ 
++#ifdef WITH_SYNCHRO
++	if (sem_wait(&semready)) {
++		UNRESOLVED(errno, "Waiting for worker readiness failed");
++	}
++#endif
++
+ 	arg1.sig = SIGUSR1;
+ 	arg2.sig = SIGUSR2;
+ #ifdef WITH_SYNCHRO
+@@ -261,11 +310,11 @@
+ 	arg2.sem = &semsig2;
+ #endif
+ 
+-	if ((ret = pthread_create(&th_sig1, NULL, sendsig, (void *)&arg1))) {
++	if ((ret = pthread_create(&th_sig1, &thread_attr, sendsig, (void *)&arg1))) {
+ 		UNRESOLVED(ret, "Signal 1 sender thread creation failed");
+ 	}
+ 
+-	if ((ret = pthread_create(&th_sig2, NULL, sendsig, (void *)&arg2))) {
++	if ((ret = pthread_create(&th_sig2, &thread_attr, sendsig, (void *)&arg2))) {
+ 		UNRESOLVED(ret, "Signal 2 sender thread creation failed");
+ 	}
+ 
