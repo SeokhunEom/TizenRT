@@ -1,0 +1,87 @@
+#
+# For a description of the syntax of this configuration file,
+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+#
+
+config TESTING_OSTEST
+	bool "NuttX OS test example"
+	default n
+	---help---
+		Enable the Apache NuttX ostest port as the "ostest" TASH command.
+
+if TESTING_OSTEST
+
+config TESTING_OSTEST_LOOPS
+	int "OS test loop count"
+	default 1
+	---help---
+		Number of executions.  Zero runs the test forever.
+
+config TESTING_OSTEST_STACKSIZE
+	int "OS test stack size"
+	default 8192
+	---help---
+		Stack size used by the ostest command and its main test task.
+
+config TESTING_OSTEST_NBARRIER_THREADS
+	int "Number of barrier threads"
+	default 8
+	---help---
+		Number of threads created by the barrier test.
+
+config TESTING_OSTEST_AIO
+	bool "Asynchronous I/O tests"
+	default n
+	depends on FS_AIO
+
+if TESTING_OSTEST_AIO
+
+config TESTING_OSTEST_AIOPATH
+	string "AIO scratch path"
+	default "/tmp"
+
+endif
+
+config TESTING_OSTEST_RR_RANGE
+	int "Round-robin test end of search range"
+	default 30000
+	range 1 32767
+
+config TESTING_OSTEST_RR_RUNS
+	int "Round-robin test number of runs"
+	default 10
+	range 1 32767
+
+if ARCH_FPU && SCHED_WAITPID
+
+config TESTING_OSTEST_FPUTESTDISABLE
+	bool "Disable FPU test"
+	default n
+
+if !TESTING_OSTEST_FPUTESTDISABLE
+
+config TESTING_OSTEST_FPULOOPS
+	int "Number of FPU test loops"
+	default 16
+
+config TESTING_OSTEST_FPUMSDELAY
+	int "FPU test delay in milliseconds"
+	default 750
+
+config TESTING_OSTEST_FPUPRIORITY
+	int "FPU test thread priority"
+	default 100
+
+config TESTING_OSTEST_FPUSTACKSIZE
+	int "FPU test thread stack size"
+	default 2048
+
+endif
+endif
+
+config TESTING_OSTEST_WAITRESULT
+	bool "Wait for and return the test result"
+	default y
+	depends on SCHED_WAITPID
+
+endif
