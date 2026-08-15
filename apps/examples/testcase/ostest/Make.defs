@@ -8,10 +8,6 @@ ifeq ($(CONFIG_TESTING_OSTEST),y)
 
 CSRCS += ostest_entry.c restart.c ostest_sighelper.c
 
-ifneq ($(CONFIG_STDIO_DISABLE_BUFFERING),y)
-CSRCS += setvbuf.c
-endif
-
 ifeq ($(CONFIG_DEV_NULL),y)
 CSRCS += dev_null.c
 endif

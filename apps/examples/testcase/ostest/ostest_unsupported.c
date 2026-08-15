@@ -27,6 +27,15 @@ int memmem_test(void)
   return 0;
 }
 
+#ifndef CONFIG_STDIO_DISABLE_BUFFERING
+int setvbuf_test(void)
+{
+  ostest_skip("setvbuf",
+              "TizenRT lib_fwrite loops on an unbuffered stream");
+  return 0;
+}
+#endif
+
 #ifndef CONFIG_DISABLE_ALL_SIGNALS
 void sigprocmask_test(void)
 {
