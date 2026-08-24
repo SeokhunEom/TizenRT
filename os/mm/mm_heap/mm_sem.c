@@ -67,6 +67,11 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+#define MM_SEM_RELEASING_HOLDER ((pid_t)-2)
+#endif
+
 /****************************************************************************
  * Private Data
  ****************************************************************************/
@@ -117,6 +122,16 @@ int mm_trysemaphore(FAR struct mm_heap_s *heap)
 
 		heap->mm_counts_held++;
 		return OK;
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+	} else if (heap->mm_holder == MM_SEM_RELEASING_HOLDER) {
+		/*
+		 * A signal handler on the releasing task borrows the final
+		 * reference.  mm_givesemaphore() will complete the semaphore post.
+		 */
+
+		return OK;
+#endif
 	} else {
 		/* Try to take the semaphore (perhaps waiting) */
 
@@ -160,6 +175,14 @@ bool mm_takesemaphore(FAR struct mm_heap_s *heap)
 		/* Yes, just increment the number of references that I have */
 
 		heap->mm_counts_held++;
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+	} else if (heap->mm_holder == MM_SEM_RELEASING_HOLDER) {
+		/*
+		 * The signal handler is executing on the task that is about to
+		 * post this heap semaphore, so it must not wait for itself.
+		 */
+#endif
 	} else {
 		/* Take the semaphore (perhaps waiting) */
 
@@ -196,6 +219,18 @@ void mm_givesemaphore(FAR struct mm_heap_s *heap)
 	pid_t my_pid = getpid();
 #endif
 
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+	/*
+	 * A signal handler which borrowed a release in progress does not own a
+	 * semaphore count.  The interrupted release path will post it.
+	 */
+
+	if (heap->mm_holder == MM_SEM_RELEASING_HOLDER) {
+		return;
+	}
+#endif
+
 	/* I better be holding at least one reference to the semaphore */
 
 	DEBUGASSERT(heap->mm_holder == my_pid);
@@ -214,9 +249,28 @@ void mm_givesemaphore(FAR struct mm_heap_s *heap)
 		mvdbg("PID=%d giving\n", my_pid);
 #endif
 
-		heap->mm_holder      = -1;
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+		/*
+		 * In the single-CPU protected user heap, the scheduler lock excludes
+		 * another task during this handoff.  A signal action on this task can
+		 * borrow the release instead of waiting on its not-yet-posted semaphore.
+		 */
+
+		ASSERT(sched_lock() == 0);
+		heap->mm_holder = MM_SEM_RELEASING_HOLDER;
+#else
+		heap->mm_holder = -1;
+#endif
+
 		heap->mm_counts_held = 0;
 		ASSERT(sem_post(&heap->mm_semaphore) == 0);
+
+#if defined(CONFIG_BUILD_PROTECTED) && !defined(__KERNEL__) && \
+	!defined(CONFIG_SMP)
+		heap->mm_holder = -1;
+		ASSERT(sched_unlock() == 0);
+#endif
 	}
 }
 
