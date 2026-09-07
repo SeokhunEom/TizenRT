@@ -1,0 +1,11 @@
+config HEALTH_MONITOR
+	bool "Opt-in Health Monitor core"
+	default n
+	depends on !SMP && !SCHED_TICKLESS && !SCHED_TICKSUPPRESS
+	depends on !APP_BINARY_SEPARATION
+	help
+		Self-only non-blocking start/stop/kick with a lazy deadline heap.
+		Requires single CPU periodic ticks. No automatic registrations.
+		Timeout or exit without stop dumps diagnostics and panics in the
+		tick ISR. Does not provision a hardware watchdog. task_monitor is
+		independent and remains available. See docs/health_monitor.md.

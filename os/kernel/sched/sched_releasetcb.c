@@ -55,6 +55,7 @@
  ************************************************************************/
 
 #include <tinyara/config.h>
+#include "health_monitor/health_monitor_internal.h"
 
 #include <sys/types.h>
 #include <sched.h>
@@ -139,6 +140,9 @@ int sched_releasetcb(FAR struct tcb_s *tcb, uint8_t ttype)
 		 * the process ID was never allocated to this TCB.
 		 */
 		if (tcb->pid) {
+#ifdef CONFIG_HEALTH_MONITOR
+			health_monitor_release(tcb->pid);
+#endif
 #ifndef CONFIG_DISABLE_POSIX_TIMERS
 			/* Release any timers that the task might hold.  We do this
 			 * before release the PID because it may still be trying to

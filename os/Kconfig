@@ -653,6 +653,7 @@ endmenu
 
 menu "Task Monitor"
 source kernel/task_monitor/Kconfig
+source kernel/health_monitor/Kconfig
 endmenu
 
 menu "Task manager"

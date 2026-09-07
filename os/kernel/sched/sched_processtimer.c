@@ -66,6 +66,7 @@
 #include "sched/sched.h"
 #include "wdog/wdog.h"
 #include "clock/clock.h"
+#include "health_monitor/health_monitor_internal.h"
 
 /************************************************************************
  * Pre-processor Definitions
@@ -272,6 +273,9 @@ static inline void sched_process_scheduler(void)
 
 void sched_process_timer(void)
 {
+#ifdef CONFIG_HEALTH_MONITOR
+	health_monitor_tick();
+#endif
 #ifdef CONFIG_WATCHDOG_FOR_IRQ
 	up_wdog_keepalive();
 #endif

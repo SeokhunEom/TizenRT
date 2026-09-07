@@ -1,0 +1,5 @@
+ifeq ($(CONFIG_HEALTH_MONITOR),y)
+CSRCS += health_monitor.c
+DEPPATH += --dep-path health_monitor
+VPATH += :health_monitor
+endif
