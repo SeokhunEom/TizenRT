@@ -55,6 +55,19 @@ with tempfile.TemporaryDirectory(prefix='health-monitor-arm-') as directory:
         # no waiting/allocation/VFS primitive may appear in their call graph.
         assert not re.search(r'\b(?:sem_wait|sem_post|sched_lock|spin_lock|spin_trylock|malloc|calloc|ioctl|sleep|usleep)\b', text)
         print('PASS:', board, 'enabled/disabled objects and no-atomic assembly')
+        flat_config = config
+        for symbol in ['BUILD_PROTECTED', 'BUILD_KERNEL']:
+            flat_config = flat_config.replace('CONFIG_'+symbol+'=y', '# CONFIG_'+symbol+' is not set')
+        if 'CONFIG_BUILD_FLAT=y' not in flat_config:
+            flat_config += '\nCONFIG_BUILD_FLAT=y\n'
+        (tmp / '.config').write_text(flat_config + '\nCONFIG_HEALTH_MONITOR=y\n')
+        with (tmp / 'tinyara/config.h').open('w') as header:
+            subprocess.run([str(tmp / 'mkconfig'), str(tmp)], stdout=header, check=True)
+        example_args = [arg for arg in args if arg != '-D__KERNEL__']
+        subprocess.run(example_args + ['-c', 'apps/examples/health_monitor/health_monitor_main.c',
+                                      '-o', str(tmp / 'example.o')], cwd=ROOT, check=True)
+        print('PASS:', board, 'flat example object')
+
     # Enabling another SMP architecture without a publication port is rejected.
     header = tmp / 'tinyara/config.h'
     header.write_text(header.read_text()+'\n#undef CONFIG_ARCH_CHIP_AMEBASMART\n')

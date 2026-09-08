@@ -240,3 +240,6 @@ arm-none-eabi-gcc on PATH. Clang object compilation is not firmware build eviden
 
 Implementation commit and dated Korean validation report:
 [Health Monitor SMP 구현 및 검증 보고서](health_monitor_implementation_validation.md).
+
+A flat-build TASH example is available at
+[apps/examples/health_monitor](../apps/examples/health_monitor/README.md).

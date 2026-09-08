@@ -1,0 +1,10 @@
+config EXAMPLES_HEALTH_MONITOR
+	bool "Health Monitor example"
+	default n
+	depends on HEALTH_MONITOR && BUILD_FLAT
+	depends on TASH && BUILTIN_APPS
+	help
+		Adds the asynchronous health_monitor shell command. Exercises normal
+		checkpoints, repeated scopes, API errors and SMP migration. Explicit
+		timeout and exit modes intentionally trigger kernel fatal diagnostics.
+		Requires flat build: Health Monitor has no protected-user syscall ABI.
