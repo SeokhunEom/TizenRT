@@ -1,0 +1,18 @@
+mesg: ttyname failed: Inappropriate ioctl for device
+Tue Sep  8 14:30:42 UTC 2026
+aarch64
+arm-none-eabi-gcc (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 2.7.12
+GNU Make 4.1
+Built for aarch64-unknown-linux-gnu
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+/usr/bin/arm-none-eabi-gcc: cannot open `/usr/bin/arm-none-eabi-gcc' (No such file or directory)
+sha256:16b314997d3ed7901fe711ff85e1cd8e90885f44bb3d683fc7040699ebe2b74c arm64
+sha256:aa453f25ebf1648620f34af905d0891e8899efb1e62046d6e6806238426c9a5b arm64

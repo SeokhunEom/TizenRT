@@ -1,0 +1,194 @@
+{
+  ".gitignore": {
+    "bytes": 3,
+    "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2"
+  },
+  "APP.trace": {
+    "bytes": 59879,
+    "sha256": "a3056ebe934980c1f38e80efd0ac81ada661d91b442c7ad06a91100cbe8d9d4b"
+  },
+  "System.map": {
+    "bytes": 452911,
+    "sha256": "ac562c9f58a0423d34c1bb0c131bccc02416b978f4a52dead3ec28153acb3851"
+  },
+  "ap_image_all.bin": {
+    "bytes": 1109226,
+    "sha256": "3fc3c87fe1282a166edec9044f037d332161d7a1a810fc6d34c4f03bd2b57a7f"
+  },
+  "app1": {
+    "bytes": 449,
+    "sha256": "a6495f6d21a420bac68a418aed2ba8396cc63e1d86d012f7d6f3054a71380d9f"
+  },
+  "app1.bin": {
+    "bytes": 401,
+    "sha256": "fc55281305594829912c53637d92706af603a024acc9cff138c63686c1a53f7a"
+  },
+  "app1.relelf": {
+    "bytes": 10440,
+    "sha256": "8d0198a5bfe33cc6c7796bd775228a4e001e93e13af0c34d570dbf0e511faef0"
+  },
+  "app1_0.ld": {
+    "bytes": 165,
+    "sha256": "e9d1b463f221775e51c4855d0cd1cc3eddeab0befb10da76240a29e970515158"
+  },
+  "app1_1.ld": {
+    "bytes": 165,
+    "sha256": "6e19a3170247f2f9bfe41244c43128e3ce046ef379c04f06fbf231803b70d581"
+  },
+  "app1_dbg": {
+    "bytes": 102856,
+    "sha256": "050fa29a9bd21a41866e75b0dc11437fdea0c495668ed43b41412b2969d3e23f"
+  },
+  "app1_rtl8730e_190412.trpk": {
+    "bytes": 449,
+    "sha256": "a6495f6d21a420bac68a418aed2ba8396cc63e1d86d012f7d6f3054a71380d9f"
+  },
+  "app1_without_header": {
+    "bytes": 401,
+    "sha256": "fc55281305594829912c53637d92706af603a024acc9cff138c63686c1a53f7a"
+  },
+  "bl1.bin": {
+    "bytes": 14057,
+    "sha256": "8eb5e7e5d52d6190b546abb81edac86279434c99f7045abf99e349b3a5d2a830"
+  },
+  "bl1_prepend.bin": {
+    "bytes": 14089,
+    "sha256": "d15884cf19291e65f91b2a95f71aa1b189df16da5eaa566fd1cd1e5553119007"
+  },
+  "bl1_sram.bin": {
+    "bytes": 32,
+    "sha256": "719f701558a385a27032e0f03538a2e17080d06a8bbd699ee7abd7bd0d02c98c"
+  },
+  "bl1_sram_prepend.bin": {
+    "bytes": 64,
+    "sha256": "c32bb2d54c80abf33de57795bad5c12699eacd5ab64ca412ac1bece5be71feb5"
+  },
+  "bootparam.bin": {
+    "bytes": 8192,
+    "sha256": "636f24936d363b98a837494d624899e8ccb10751a1643c1589ceeb5ba392a87c"
+  },
+  "ca32_image2_all.bin": {
+    "bytes": 15588,
+    "sha256": "d4505a81044a3e3352d59df0d4cceff315e89554110f0e8f4d2481228fa696f7"
+  },
+  "common": {
+    "bytes": 150258,
+    "sha256": "832831bc6eb0a6f812ffa48e313b4eec83622ab40715daee3336bc8697f6983a"
+  },
+  "common.bin": {
+    "bytes": 150242,
+    "sha256": "1a20f3936ae99a6fc3c9f9d1f81957136cfde7e370f2ad78d0bd2209b6a08775"
+  },
+  "common.map": {
+    "bytes": 749357,
+    "sha256": "66ef5b4252f6c6a62ef8b0c64e72b7e01d8877a256ff41b5a67c7ad051809795"
+  },
+  "common_0.ld": {
+    "bytes": 164,
+    "sha256": "b66f6f18b72446ec241b018790036978cbf88e9ad191591a2e4c7375720961b2"
+  },
+  "common_1.ld": {
+    "bytes": 164,
+    "sha256": "95f6699bc5263c04c9a08a4d385970b4f2f45a496496411038e1fa7b065d91ac"
+  },
+  "common_dbg": {
+    "bytes": 1459264,
+    "sha256": "3e79b140a7bbc7ab499b2946e4e45c5c6fe0cdd498f9b766f764d07b8a5d9e24"
+  },
+  "common_rtl8730e_200204.trpk": {
+    "bytes": 150258,
+    "sha256": "832831bc6eb0a6f812ffa48e313b4eec83622ab40715daee3336bc8697f6983a"
+  },
+  "common_without_header": {
+    "bytes": 150242,
+    "sha256": "1a20f3936ae99a6fc3c9f9d1f81957136cfde7e370f2ad78d0bd2209b6a08775"
+  },
+  "fip.bin": {
+    "bytes": 290817,
+    "sha256": "c06100d7e47e5ad1e1aa002e886a26665ba74d2cf0c6992d5181864e92f5dcf0"
+  },
+  "fip_prepend.bin": {
+    "bytes": 290849,
+    "sha256": "951cad123b718dcd08ef2ef1705a42cebeea127b61f325509a18c68047475325"
+  },
+  "flash_loader_ram_1.bin": {
+    "bytes": 1888,
+    "sha256": "8ce54cb4ea4447fab93da8928e43b46a0b7f357bf612cfed371fa296400c88e6"
+  },
+  "kernel_rtl8730e_200204.trpk": {
+    "bytes": 1547498,
+    "sha256": "6444c3ebe2a1dbacfd9d30cbe54aadb90a56e7c1716d3fca3987cd0f568871de"
+  },
+  "km0_km4_ap_image_all.bin": {
+    "bytes": 1547498,
+    "sha256": "6444c3ebe2a1dbacfd9d30cbe54aadb90a56e7c1716d3fca3987cd0f568871de"
+  },
+  "km0_km4_ap_image_all.hex": {
+    "bytes": 4352785,
+    "sha256": "cca845fa3fc0933974c310f92c53d9f3e73fde9ef01ad7293e21459f71bc5494"
+  },
+  "km0_km4_ap_image_all_without_header.bin": {
+    "bytes": 1547482,
+    "sha256": "a471390b8a16ee11705dae071f0c340832c234ba978288da2663b0944f98d1fb"
+  },
+  "km0_km4_app.bin": {
+    "bytes": 434720,
+    "sha256": "9d1258f6f3da8fbb45b6906d8d7f938ca7ed095877b4d8c6e2850360027d4d56"
+  },
+  "km4_boot_all.bin": {
+    "bytes": 54176,
+    "sha256": "4be5e9a304763c969cf8f689bcf04e367d0e1d6465a32277e6c71268f3c4fcef"
+  },
+  "lib_symbols.txt": {
+    "bytes": 555,
+    "sha256": "ae0ca4dbacbe963dd45d21b277c53e258f232d0ab226f2cf1b3edd72edcf9bb9"
+  },
+  "manifest.bin": {
+    "bytes": 4096,
+    "sha256": "2c4a0eb44cd07ee021f365a13cf306d9505f2b03f491c9711b920b8f3f6b1b07"
+  },
+  "ram_2.bin": {
+    "bytes": 15588,
+    "sha256": "d4505a81044a3e3352d59df0d4cceff315e89554110f0e8f4d2481228fa696f7"
+  },
+  "target_FPGA.axf": {
+    "bytes": 38520,
+    "sha256": "3c6f2647cb8f28e281ed234c5a562338243bb554a835d26525f57925fa8ed805"
+  },
+  "target_img2.asm": {
+    "bytes": 10745219,
+    "sha256": "869b3e6241d4093d68adcafeb1460898769ee1aea9f0bb78eddc4d9ba896b454"
+  },
+  "target_img2.axf": {
+    "bytes": 7608352,
+    "sha256": "7dc4a915a89ebe504de4ae05d7089bd455cfce80b2bbc0d6fc7bcd8065444153"
+  },
+  "target_img2.map": {
+    "bytes": 232143,
+    "sha256": "238486782e9995f526f542a14ccf06d326df895e93e59253541a554fc633eb7b"
+  },
+  "target_pure_img2.axf": {
+    "bytes": 1043796,
+    "sha256": "666ee88911f0255863f01f34b7a09eae091271c08837702a10e8933ac2b2bae8"
+  },
+  "tinyara.axf": {
+    "bytes": 7608352,
+    "sha256": "7dc4a915a89ebe504de4ae05d7089bd455cfce80b2bbc0d6fc7bcd8065444153"
+  },
+  "tinyara.map": {
+    "bytes": 3293395,
+    "sha256": "778b0bffae682b0ff421528b836390fdfdd23339d7cd5f7a2ee3bc87d2f34d8c"
+  },
+  "tinyara_binarysize.txt": {
+    "bytes": 74,
+    "sha256": "db3e83e1b6d7c4f9cf67854b77b7de0850a03bd466bb2d95ea7f4d9154020f17"
+  },
+  "xip_image2.bin": {
+    "bytes": 800096,
+    "sha256": "58bedbc6bf57900ae60fa8b5d4a69b6d07ace621b4368b3c2beaa2a1e779f0b5"
+  },
+  "xip_image2_prepend.bin": {
+    "bytes": 800128,
+    "sha256": "ae1c3ed9d01e5c39727675d786768230849c64082b77b934f86b2e226954951b"
+  }
+}
