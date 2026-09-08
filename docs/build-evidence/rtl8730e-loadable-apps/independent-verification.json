@@ -1,0 +1,36 @@
+[
+  {
+    "name": "app1_rtl8730e_190412.trpk",
+    "bytes": 449,
+    "header_bytes": 44,
+    "payload_bytes": 401,
+    "crc32_ok": true,
+    "length_ok": true,
+    "same_sha256_as_configure": true
+  },
+  {
+    "name": "common_rtl8730e_200204.trpk",
+    "bytes": 150258,
+    "header_bytes": 12,
+    "payload_bytes": 150242,
+    "crc32_ok": true,
+    "length_ok": true,
+    "same_sha256_as_configure": false
+  },
+  {
+    "name": "kernel_rtl8730e_200204.trpk",
+    "bytes": 1547498,
+    "header_bytes": 12,
+    "payload_bytes": 1547482,
+    "crc32_ok": true,
+    "length_ok": true,
+    "same_sha256_as_configure": false
+  },
+  {
+    "name": "bootparam.bin",
+    "bytes": 8192,
+    "bp1_crc32_ok": true,
+    "bp2_erased": true,
+    "same_sha256_as_configure": true
+  }
+]
