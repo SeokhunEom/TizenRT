@@ -1,11 +1,14 @@
 config HEALTH_MONITOR
 	bool "Opt-in Health Monitor core"
 	default n
-	depends on !SMP && !SCHED_TICKLESS && !SCHED_TICKSUPPRESS
+	depends on !SMP || ARCH_CHIP_AMEBASMART
+	depends on !SCHED_TICKLESS && !SCHED_TICKSUPPRESS
 	depends on !APP_BINARY_SEPARATION
+	depends on !SUPPRESS_INTERRUPTS && !SUPPRESS_TIMER_INTS
 	help
-		Self-only non-blocking start/stop/kick with a lazy deadline heap.
-		Requires single CPU periodic ticks. No automatic registrations.
-		Timeout or exit without stop dumps diagnostics and panics in the
-		tick ISR. Does not provision a hardware watchdog. task_monitor is
-		independent and remains available. See docs/health_monitor.md.
+		Self-only non-blocking start/stop/kick with a CPU0 lazy heap.
+		SMP uses single-writer publication and per-CPU bounded queues;
+		no atomic API, exclusive instructions or shared locks. Requires
+		coherent amebasmart RAM and real periodic CPU0 ticks. No automatic
+		registrations or hardware watchdog provisioning. See
+		docs/health_monitor.md for queue errors and publication limits.

@@ -30,6 +30,12 @@ extern "C" {
  * No allocation, blocking synchronization, scheduler lock or I/O. Not signal
  * safe. One contract per task; stop before cooperative exit. Timeout is in ms.
  * kick declares meaningful progress, not merely that the task was scheduled.
+ * -EAGAIN: concurrent clock publication, no state change; retry later.
+ * -ENOSPC: local membership queue full, no state change; retry later.
+ * Never retry in a spin loop. A failed stop remains armed.
+ * -EIO/-EOVERFLOW: publication/counter failure reported to CPU0.
+ * CPU0 owns final fault confirmation; concurrent calls may complete before
+ * observing shutdown. See docs/health_monitor.md for boundary semantics.
  */
 int health_monitor_start(uint32_t timeout_ms);
 int health_monitor_stop(void);

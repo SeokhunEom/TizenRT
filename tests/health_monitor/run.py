@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the production core against a UP kernel/IRQ/panic test adapter."""
+"""Compile the production core against deterministic UP/SMP word-access adapters."""
 import os
 from pathlib import Path
 import subprocess
@@ -7,8 +7,8 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 HEADERS = {
-    'tinyara/config.h': '#define CONFIG_HEALTH_MONITOR 1\n#define CONFIG_MAX_TASKS 16\n',
-    'tinyara/arch.h': '#include <stdbool.h>\nbool up_interrupt_context(void);\nint up_putc(int);\n',
+    'tinyara/config.h': '#define CONFIG_HEALTH_MONITOR 1\n#define CONFIG_MAX_TASKS 16\n#ifdef TEST_SMP\n#define CONFIG_SMP 1\n#define CONFIG_SMP_NCPUS 2\n#define CONFIG_ARCH_CHIP_AMEBASMART 1\n#endif\n',
+    'tinyara/arch.h': '#include <stdbool.h>\nbool up_interrupt_context(void);\nint up_putc(int);\nint up_cpu_index(void);\n',
     'tinyara/irq.h': 'typedef unsigned int irqstate_t;\nirqstate_t irqsave(void);\nvoid irqrestore(irqstate_t);\n',
     'tinyara/clock.h': '#define USEC_PER_TICK 10000\n',
     'tinyara/sched.h': '''#include <sys/types.h>
@@ -33,5 +33,13 @@ with tempfile.TemporaryDirectory(prefix='health-monitor-') as directory:
     (tmp / 'tinyara/health_monitor.h').write_text(
         (ROOT / 'os/include/tinyara/health_monitor.h').read_text())
     command.remove('-I'+str(ROOT / 'os/include'))
-    subprocess.run(command, check=True)
+    for smp in (False, True):
+        subprocess.run(command + (['-DTEST_SMP=1'] if smp else []), check=True)
+        subprocess.run([str(tmp / 'test_core')], check=True)
+
+    thread_command = command.copy()
+    thread_command[thread_command.index(str(Path(__file__).with_name('test_core.c')))] = str(Path(__file__).with_name('test_threads.c'))
+    if os.environ.get('HEALTH_TSAN') == '1':
+        thread_command[thread_command.index('-fsanitize=address,undefined')] = '-fsanitize=thread'
+    subprocess.run(thread_command + ['-DTEST_SMP=1', '-pthread'], check=True)
     subprocess.run([str(tmp / 'test_core')], check=True)

@@ -64,6 +64,7 @@
 #endif
 
 #include "sched/sched.h"
+#include "irq/irq.h"
 #include "wdog/wdog.h"
 #include "clock/clock.h"
 #include "health_monitor/health_monitor_internal.h"
