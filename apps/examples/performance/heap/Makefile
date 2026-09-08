@@ -24,7 +24,7 @@ include $(APPDIR)/Make.defs
 
 APPNAME = heaptest
 FUNCNAME = $(APPNAME)_main
-THREADEXEC = TASH_EXECMD_ASYNC
+THREADEXEC = TASH_EXECMD_SYNC
 
 # Example for heap test
 

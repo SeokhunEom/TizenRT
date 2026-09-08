@@ -5,9 +5,12 @@
 
 config EXAMPLES_HEAP_PERFORMANCE_TEST
 	bool "Heap performance test"
+	depends on !DISABLE_PTHREAD
+	select CLOCK_MONOTONIC
+	select LIBC_LONG_LONG
 	default n
 	---help---
-		Measure the elapsed time while simply repeating memory allocation and release.
+		Measure allocation/free batch timings and task competition on one shared heap.
 
 config USER_ENTRYPOINT
 	string
