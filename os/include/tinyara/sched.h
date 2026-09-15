@@ -523,6 +523,17 @@ struct task_group_s {
 					&& (((struct task_tcb_s *)tcb)->bininfo != NULL))
 #endif
 
+#ifdef CONFIG_HEALTH_MONITOR
+/* Health monitor code resolves this storage through health_monitor_state().
+ * Access to registered state is protected by the health monitor lock.
+ */
+
+struct health_monitor_s {
+	uint32_t deadline;		/* Absolute system tick, modulo 2^32 */
+	uint32_t timeout;		/* Timeout in ticks; zero means unregistered */
+};
+#endif
+
 /* struct tcb_s ******************************************************************/
 
 FAR struct wdog_s;				/* Forward reference                   */
@@ -581,6 +592,10 @@ struct tcb_s {
 	int timeslice;				/* RR timeslice interval remaining     */
 #endif
 	FAR struct wdog_s *waitdog;	/* All timed waits used this wdog      */
+
+#ifdef CONFIG_HEALTH_MONITOR
+	struct health_monitor_s health_monitor;
+#endif
 
 	/* Stack-Related Fields ****************************************************** */
 

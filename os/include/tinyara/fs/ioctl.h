@@ -107,6 +107,7 @@
 #define _MIPIDSIBASE    (0x3900) 	/* Mipidsi device ioctl commands */
 #define _CSIIOCBASE     (0x3a00) 	/* Wifi CSI ioctl commands */
 #define _SILENTRBCBASE  (0x3b00) 	/* Silent reboot ioctl commands */
+#define _HMIOCBASE      (0x3c00)	/* Thread health monitor ioctl commands */
 
 
 /* boardctl() commands share the same number space */
@@ -135,6 +136,11 @@
 
 #define _WDIOCVALID(c)  (_IOC_TYPE(c) == _WDIOCBASE)
 #define _WDIOC(nr)      _IOC(_WDIOCBASE, nr)
+
+/* Thread health monitor ioctl commands ************************************/
+
+#define _HMIOCVALID(c)  (_IOC_TYPE(c) == _HMIOCBASE)
+#define _HMIOC(nr)      _IOC(_HMIOCBASE, nr)
 
 /* TinyAra file system ioctl definitions **************************************/
 
