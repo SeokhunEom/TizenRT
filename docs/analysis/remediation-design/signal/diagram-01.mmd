@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant O as 등록 또는 종료 요청자
+    participant P as Producer
+    participant Q as 모듈 transport
+    participant W as 소유 binary의 worker
+    participant C as 사용자 callback
+    O->>Q: worker와 등록 자원 생성
+    O->>P: 등록 활성화
+    P->>Q: 이벤트 enqueue 및 소유권 전달
+    Q->>W: 일반 실행에서 receive
+    W->>C: callback 호출
+    C-->>W: 완료
+    W->>P: 필요한 ACK 전송
+    O->>P: 등록 해제와 신규 이벤트 중단
+    P-->>O: 더 이상 enqueue하지 않음
+    O->>W: drain 또는 명시적인 cancel 요청
+    W->>W: 실행 중 callback 및 잔여 이벤트 정리
+    W-->>O: quiescent 완료
+    O->>O: thread join 및 객체 해제
+    Note over O,C: 그 이후에는 callback 주소나 context에 접근하지 않음

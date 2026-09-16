@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant A as MM 작업 스레드
+    participant G as TCB 취소 guard
+    participant H as Heap lock
+    participant K as 종료 요청자
+    A->>G: 첫 진입 전에 취소 보류
+    A->>H: 토큰 획득 및 소유 상태 확정
+    A->>H: allocator 변경
+    K->>G: cancel 요청
+    G-->>K: pending 기록
+    Note over A,H: 작업 중에는 recovery가 토큰을 반환하지 않음
+    A->>H: 변경 완료 및 최종 unlock
+    A->>G: 중첩 0에서 원래 취소 상태 복원
+    G->>A: 실행 가능한 pending 취소 처리
+    A->>A: exit cleanup
+    Note over A,H: cleanup 시작 시 이전 MM 소유권 없음

@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant O as AIFW 호출자
+    participant T as 기존 timer thread
+    participant K as POSIX timer
+    participant C as 수집 callback
+    O->>T: start 및 초기화 대기
+    T->>T: timer와 control signal 차단
+    T->>K: timer 생성 및 시작
+    T-->>O: 준비 완료
+    loop 실행 중
+        T->>T: sigwaitinfo 또는 sigtimedwait
+        K-->>T: timer event를 동기 대기로 반환
+        T->>C: 일반 스레드 실행에서 callback
+        C-->>T: 완료
+    end
+    O->>T: stop 상태 게시 및 control wake
+    T->>K: disarm 및 delete
+    T->>T: pending event와 자원 정리
+    T-->>O: 종료 완료
+    O->>O: join 후 timer 객체 해제

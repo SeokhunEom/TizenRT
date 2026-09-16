@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant A as MM 작업 중인 스레드
+    participant S as Signal delivery
+    participant P as 사전 확보 pool과 회수 큐
+    participant W as 안전한 회수 worker
+    A->>S: signal 전달로 잠시 중단
+    S->>S: 최소 handler 실행
+    S->>P: pending 객체 재사용 또는 반환
+    S->>P: 동적 객체는 enqueue-only
+    Note over S,P: malloc, inline free, blocking lock 없음
+    S-->>A: 중단한 MM 작업으로 복귀
+    A->>A: allocator 작업과 unlock 완료
+    W->>P: 회수 대상 분리
+    W->>W: 올바른 heap에서 실제 free
+    Note over A,W: 다른 worker의 정상적인 lock 대기는 허용

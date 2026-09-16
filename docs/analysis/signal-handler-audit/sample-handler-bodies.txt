@@ -1,0 +1,598 @@
+apps/examples/libcoap/server/libcoap-server.c:83 handle_sigint:
+
+{
+	quit = 1;
+}
+
+apps/examples/rtc/rtc_main.c:198 alarm_handler: close, get_errno, ioctl, open, printf
+
+{
+	int ret;
+	int fd;
+	int secs;
+	int almndx;
+	FAR struct rtc_time alarm_recieve_time;
+
+	fd = open(RTC_DEVPATH, O_WRONLY);
+	if (fd < 0) {
+		printf("ERROR: Failed to open %s: %d\n", RTC_DEVPATH, get_errno());
+		return;
+	}
+	almndx = info->si_value.sival_int;
+	if (almndx >= 0 && almndx < CONFIG_RTC_NALARMS) {
+		ret = ioctl(fd, RTC_RD_TIME, (unsigned long)&alarm_recieve_time);
+		if (ret < 0) {
+			printf("ERROR: RTC_RD_TIME ioctl failed: %d\n", get_errno());
+			close(fd);
+			return;
+		}
+		if (g_command_mode == REL_TIME_MODE) {
+			secs = (alarm_recieve_time.tm_hour - g_alarm_time.tm_hour) * 3600 + (alarm_recieve_time.tm_min - g_alarm_time.tm_min) * 60 + (alarm_recieve_time.tm_sec - g_alarm_time.tm_sec);
+			printf("Alarm received after %d seconds\n", secs);
+		} else {
+			printf("Alarm recieved at %d:%d:%d\n",alarm_recieve_time.tm_hour, alarm_recieve_time.tm_min, alarm_recieve_time.tm_sec);
+		}
+	}
+	close(fd);
+}
+
+apps/examples/testcase/le_tc/drivers/tc_rtc.c:167 alarm_handler:
+
+{
+	int almndx = info->si_value.sival_int;
+	if (almndx >= 0 && almndx < CONFIG_RTC_NALARMS) {
+		alarm_received[almndx] = true;
+	}
+}
+
+apps/examples/testcase/le_tc/kernel/tc_mqueue.c:138 mq_notify_handler:
+
+{
+	enter_notify_handler = 1;
+}
+
+apps/examples/testcase/le_tc/kernel/tc_pthread.c:208 sighand:
+
+{
+	g_bpthreadcallback = true;
+}
+
+apps/examples/testcase/le_tc/kernel/tc_pthread.c:110 sigmask_handler: printf
+
+{
+	if (signo != SIGQUIT) {
+		printf("tc_pthread_pthread_sigmask FAIL sigquit_handler error\n");
+		return;
+	}
+	g_sig_handle = true;
+}
+
+apps/examples/testcase/le_tc/kernel/tc_signal.c:116 sigaction_handler:
+
+{
+}
+
+apps/examples/testcase/le_tc/kernel/tc_signal.c:60 sigquit_handler: TC_ASSERT_EQ
+
+{
+	g_sig_handle = true;
+	TC_ASSERT_EQ("sigquit_handler", signo, SIGQUIT);
+}
+
+apps/examples/testcase/le_tc/kernel/tc_signal.c:71 sigint_handler: TC_ASSERT_EQ
+
+{
+	g_sig_handle = true;
+	TC_ASSERT_EQ("sigint handler", info->si_value.sival_int, VAL_100);
+}
+
+apps/examples/testcase/le_tc/stress/stress_mm_sem_signal.c:119 mm_signal_handler: defined, mq_send, sem_post
+
+{
+	char message = 's';
+
+	if (mq_send(g_mm_signal_queue, &message, 1, 0) != 0) {
+		g_mm_signal_errors++;
+	}
+	g_mm_signal_done++;
+
+#if defined(CONFIG_SMP) && CONFIG_SMP_NCPUS > 1
+	sem_post(&g_mm_done_sem);
+#endif
+}
+
+apps/examples/testcase/ostest/sighand.c:107 wakeup_action: ASSERT, sigfillset, sigprocmask, sigset_isequal
+
+{
+  sigset_t oldset;
+  sigset_t allsigs;
+  int status;
+
+  /* Use of printf in a signal handler is NOT safe! It can cause deadlocks! */
+
+  sigreceived = true;
+
+  /* Check signo */
+
+  if (signo != WAKEUP_SIGNAL)
+    {
+      ASSERT(false);
+    }
+
+  /* Check siginfo */
+
+  if (info->si_value.sival_int != SIGVALUE_INT)
+    {
+      ASSERT(false);
+    }
+
+  if (info->si_signo != WAKEUP_SIGNAL)
+    {
+      ASSERT(false);
+    }
+
+  /* Check sigprocmask */
+
+  sigfillset(&allsigs);
+  status = sigprocmask(SIG_SETMASK, NULL, &oldset);
+  if (status != OK)
+    {
+      ASSERT(false);
+    }
+
+  if (!sigset_isequal(&oldset, &allsigs))
+    {
+      ASSERT(false);
+    }
+}
+
+apps/examples/testcase/ostest/sighand.c:83 death_of_child: getpid, printf
+
+{
+  /* Use of printf in a signal handler is NOT safe! It can cause deadlocks!
+   * Also, signals are not queued by NuttX.  As a consequence, some
+   * notifications will get lost (or the info data can be overwrittedn)!
+   * Because POSIX  does not require signals to be queued, I do not think
+   * that this is a bug (the overwriting is a bug, however).
+   */
+
+  if (info)
+    {
+      printf("death_of_child: PID %d received signal=%d code=%d "
+             "pid=%d status=%d\n",
+             getpid(), signo, info->si_code, info->si_pid,
+             info->si_status);
+    }
+  else
+    {
+      printf("death_of_child: PID %d received signal=%d (no info?)\n",
+             getpid(), signo);
+    }
+}
+
+apps/examples/testcase/ostest/signest.c:124 waiter_action: ASSERT, printf, pthread_self, sched_lock, sched_unlock, sem_post
+
+{
+  int nest_level;
+
+  pthread_t pid = pthread_self();
+  if (pid != g_waiterpid)
+    {
+      printf("waiter_action: Delivered to wrong TID %d, expected %d\n",
+             pid, g_waiterpid);
+      ASSERT(false);
+    }
+
+  sched_lock();
+  nest_level = g_nest_level++;
+
+  if ((signo & 1) != 0)
+    {
+      g_odd_handled++;
+      if (nest_level > 0)
+        {
+          g_odd_nested++;
+        }
+    }
+  else
+    {
+      g_even_handled++;
+      if (nest_level > 0)
+        {
+          g_even_nested++;
+        }
+    }
+
+  g_nest_level = nest_level;
+  sched_unlock();
+
+  sem_post(&g_sem_signal_finish);
+}
+
+apps/examples/testcase/ostest/signest.c:113 interfere_action: ASSERT, printf, pthread_self
+
+{
+  pthread_t pid = pthread_self();
+  if (pid != g_interferepid)
+    {
+      printf("interfere_action: Delivered to wrong TID %d, expected %d\n",
+             pid, g_interferepid);
+      ASSERT(false);
+    }
+}
+
+external/gmock/gtest/test/gtest-death-test_test.cc:379 SigprofAction:
+
+{ /* no op */ }
+
+external/iotivity/iotivity_1.2-rel/extlibs/gtest/gtest-1.7.0/test/gtest-death-test_test.cc:379 SigprofAction:
+
+{ /* no op */ }
+
+external/iotivity/iotivity_1.2-rel/plugins/samples/linux/IotivityandZigbeeClient.c:470 processCancel: processSignal
+
+{
+    if (signal == SIGINT)
+    {
+        processSignal(true);
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/plugins/samples/linux/IotivityandZigbeeServer.c:164 processCancel: processSignal
+
+{
+    if(signal == SIGINT)
+    {
+        processSignal(true);
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/connectivity/lib/libcoap-4.1.1/examples/etsi_iot_01.c:73 handle_sigint:
+
+{
+    quit = 1;
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/connectivity/lib/libcoap-4.1.1/examples/rd.c:84 handle_sigint:
+
+{
+    quit = 1;
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/connectivity/lib/libcoap-4.1.1/examples/server.c:51 handle_sigint:
+
+{
+    quit = 1;
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/resource-directory/samples/rd_main.c:85 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        g_quitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/sample/sampleserver_justworks.cpp:400 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/sample/sampleserver_mfg.cpp:400 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/sample/sampleserver_mvjustworks.cpp:439 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/sample/sampleserver_preconfpin.cpp:400 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/sample/sampleserver_randompin.cpp:436 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/unittest/sampleserver1.cpp:467 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/security/provisioning/unittest/sampleserver2.cpp:467 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/occlient.cpp:82 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/occlientbasicops.cpp:63 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/occlientcoll.cpp:114 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/occlientslow.cpp:59 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocremoteaccessclient.cpp:64 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocrouting.cpp:39 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocserver.cpp:696 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocserverbasicops.cpp:302 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocservercoll.cpp:460 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocserverslow.cpp:277 AlarmHandler: OCPayloadDestroy, OICFree, OIC_LOG, OIC_LOG_V, ProcessGetPutRequest, alarm, empty, front, pop_front
+
+{
+#ifdef SIGALRM
+    if (sig == SIGALRM)
+#endif
+    {
+        OIC_LOG (INFO, TAG, "Server starting slow response");
+        if (gRequestList.empty())
+        {
+            OIC_LOG (INFO, TAG, "No requests to service");
+            return;
+        }
+
+        // Get the request from the list
+        OCEntityHandlerRequest *entityHandlerRequest = gRequestList.front();
+        gRequestList.pop_front();
+        if (entityHandlerRequest->method == OC_REST_GET)
+        {
+            OIC_LOG (INFO, TAG, "Received OC_REST_GET from client");
+            ProcessGetPutRequest (entityHandlerRequest);
+        }
+        else if (entityHandlerRequest->method == OC_REST_PUT)
+        {
+            OIC_LOG (INFO, TAG, "Received OC_REST_PUT from client");
+            ProcessGetPutRequest (entityHandlerRequest);
+        }
+        else
+        {
+            OIC_LOG_V (INFO, TAG, "Received unsupported method %d from client",
+                    entityHandlerRequest->method);
+        }
+        // Free the request
+        OICFree(entityHandlerRequest->query);
+        OCPayloadDestroy(entityHandlerRequest->payload);
+        OICFree(entityHandlerRequest);
+
+        // If there are more requests in list, re-arm the alarm signal
+        if (gRequestList.empty())
+        {
+            alarm(SLOW_RESPONSE_DELAY_SEC);
+        }
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/SimpleClientServer/ocserverslow.cpp:267 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/secure/ocamsservice.cpp:29 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/secure/occlientbasicops.cpp:73 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/secure/occlientdirectpairing.cpp:83 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/linux/secure/ocserverbasicops.cpp:309 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/tizen/SimpleClientServer/occlient.cpp:88 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/tizen/SimpleClientServer/ocrouting.cpp:44 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/samples/tizen/SimpleClientServer/ocserver.cpp:649 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/test/linux/occlient.c:41 handleSigInt:
+
+{
+    if (signum == SIGINT) {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/resource/csdk/stack/test/linux/ocserver.c:49 handleSigInt:
+
+{
+    if (signum == SIGINT) {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/service/coap-http-proxy/samples/proxy_client.c:62 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        gQuitFlag = 1;
+    }
+}
+
+external/iotivity/iotivity_1.2-rel/service/coap-http-proxy/samples/proxy_main.c:116 handleSigInt:
+
+{
+    if (signum == SIGINT)
+    {
+        g_quitFlag = 1;
+    }
+}
+
+external/wakaama/examples/server/lwm2mserver.c:789 handle_sigint:
+
+{
+    g_quit = 2;
+}
+
+external/wakaama/examples/shared/tinydtls/tests/dtls-client.c:232 dtls_handle_signal: dtls_free_context, getpid, kill, signal
+
+{
+  dtls_free_context(dtls_context);
+  signal(sig, SIG_DFL);
+  kill(getpid(), sig);
+}
+
+os/board/bk7239n/src/components/psa_mbedtls/mbedtls/programs/test/benchmark.c:425 sighandler: signal
+
+{
+    mbedtls_timing_alarmed = 1;
+    signal(signum, sighandler);
+}
+
+os/board/bk7239n/src/components/tfm_mbedtls/mbedtls/programs/test/benchmark.c:438 sighandler: signal
+
+{
+    mbedtls_timing_alarmed = 1;
+    signal( signum, sighandler );
+}

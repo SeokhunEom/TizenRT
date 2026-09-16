@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant B as Binary Manager
+    participant R as 대상 owner 회수 helper
+    participant S as Semaphore와 holder
+    participant T as Task recovery
+    B->>R: 종료 대상 A의 보유분 회수
+    R->>S: A의 보유분 확인 및 소진
+    R->>S: 소진한 토큰만 반환하고 대기자 처리
+    Note over R,S: holder와 token accounting을 같은 보호 아래 갱신
+    R-->>B: 회수 완료
+    T->>R: 같은 A의 보유분 회수
+    R->>S: 남은 보유분 조회
+    S-->>R: 없음
+    R-->>T: 추가 post 없이 완료
