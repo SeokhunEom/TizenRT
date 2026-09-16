@@ -33,6 +33,7 @@
  * unsigned long, not a pointer. Round up to system ticks. Valid timeouts
  * convert to 1..INT32_MAX ticks (1..2147483647 ms with a 1 ms tick).
  * Returns EINVAL for an invalid timeout and EEXIST if already registered.
+ * Returns ENOSPC if the statically sized registration storage is full.
  */
 
 #define HMIOC_START _HMIOC(0x0001)

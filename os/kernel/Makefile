@@ -66,6 +66,7 @@ include sched/Make.defs
 include task/Make.defs
 include errno/Make.defs
 include wdog/Make.defs
+include health_monitor/Make.defs
 include semaphore/Make.defs
 include binary_manager/Make.defs
 include signal/Make.defs

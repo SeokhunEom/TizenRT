@@ -43,8 +43,8 @@ struct health_monitor_entry_s {
 	uint32_t check_at;
 };
 
-/* Resolve state only here so storage can later move out of the TCB. The
- * caller supplies a live TCB with an assigned PID and protects state access
+/* Resolve the embedded TCB health state in O(1).
+ * The caller supplies a live TCB with an assigned PID and protects access
  * with the health monitor lock. This helper only computes an address; it
  * neither locks nor allocates. Retain the TCB, not the returned state
  * pointer, across operations.
@@ -55,9 +55,16 @@ static inline FAR struct health_monitor_s *health_monitor_state(FAR struct tcb_s
 	return &tcb->health_monitor;
 }
 
-/* Convert with a 64-bit intermediate to avoid overflow and round up, rather
- * than using MSEC2TICK's nearest-tick rounding. Zero denotes an invalid
- * timeout and is reserved for the unregistered TCB state.
+/* Convert a requested duration in milliseconds to ticks, in O(1).
+ * Reject values below the minimum; multiply by microseconds per millisecond
+ * in 64 bits, add tick_us - 1 and divide by tick_us to round UP. This avoids
+ * overflow and never shortens the requested duration through rounding,
+ * unlike MSEC2TICK's nearest-tick rounding.
+ *
+ * Return 1..INT32_MAX ticks, or zero if the requested duration is invalid
+ * or too large for the signed half-range time comparisons. Zero remains
+ * reserved for the unregistered state. This is pure arithmetic: it does
+ * not read the current tick, modify state or acquire a lock.
  */
 
 static inline uint32_t health_monitor_timeout_ticks(uint32_t timeout_ms)
@@ -76,7 +83,12 @@ static inline uint32_t health_monitor_timeout_ticks(uint32_t timeout_ms)
 	return (uint32_t)ticks;
 }
 
-/* Read time as (uint32_t)clock_systimer(), including PM compensation. Direct
+/* Test whether lhs is strictly before rhs in wrapping 32-bit tick time.
+ * Subtract as unsigned ticks, then interpret the difference as signed;
+ * this also works across UINT32_MAX -> 0. Equal instants return false.
+ * Used for pairwise time tests, not arbitrary heap-key ordering.
+ *
+ * Read time as (uint32_t)clock_systimer(), including PM compensation. Direct
  * comparisons are unambiguous only for instants less than 2^31 ticks apart.
  * Zero is a valid tick value. For heap ordering, compare signed offsets
  * from one common now: an overdue key and a far-future key can otherwise
@@ -93,8 +105,14 @@ static inline bool health_monitor_tick_before(uint32_t lhs, uint32_t rhs)
 extern "C" {
 #endif
 
+/* Initialize a new, not-yet-runnable TCB after PID assignment. This is not
+ * an alternative to cleanup for a registered or restarting task.
+ */
+
+void health_monitor_task_init(FAR struct tcb_s *tcb);
+
 /* START and STOP return zero or a negative errno. KICK is a no-op if
- * unregistered. Their implementations are added with the registry.
+ * unregistered. Call these operations only from thread context.
  */
 
 int health_monitor_start(uint32_t timeout_ms);
@@ -107,6 +125,18 @@ int health_monitor_stop(void);
  */
 
 void health_monitor_cleanup(FAR struct tcb_s *tcb);
+
+/* Read the cached earliest reservation without locking or dereferencing a
+ * TCB. Returns 1 and writes check_at for a stable nonempty snapshot, 0 for
+ * an empty snapshot, or -EAGAIN if the attempt detects publication overlap.
+ * The output is unchanged for 0/-EAGAIN. Zero itself is a valid check_at.
+ *
+ * This is a scheduling hint, not a timeout verdict. On -EAGAIN callers
+ * must defer inspection/sleep rather than treating the monitor as empty.
+ * Consumers are connected in the timer and PM implementation stages.
+ */
+
+int health_monitor_next_check(FAR uint32_t *check_at);
 
 #ifdef __cplusplus
 }
