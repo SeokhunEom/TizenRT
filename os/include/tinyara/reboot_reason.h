@@ -43,6 +43,7 @@ typedef enum {
 	REBOOT_SYSTEM_PERIODIC_REBOOT      = 59, /* Periodic reboot */
 	REBOOT_SYSTEM_ASSERT               = 60, /* Reboot from ASSERT or PANIC */
 	REBOOT_SYSTEM_WITHOUT_SET_REASON   = 61, /* Software reboot without setting reboot reason beforehand */
+	REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT = 62, /* Registered thread deadline expired */
 
 	/* User initiated reboot reasons */
 	REBOOT_USER_DATAABORT              = 71, /* Data abort by User */

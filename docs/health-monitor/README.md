@@ -2,7 +2,7 @@
 
 [설계 기준](../HealthMonitorImplementationPlan.md)의 기능을 사용자가 순차적으로 확인할 수 있도록 분리한 실행 계획이다. 설계 기준은 동작 정책을, 이 문서는 진행 순서와 확인 지점을 관리한다.
 
-1·2단계는 사용자 검토·커밋을 완료했다. 3단계 앱용 ioctl 드라이버는 구현·검증 결과 제출 후 사용자 승인을 받아 본 커밋으로 완료한다. 4단계 이후 구현은 시작하지 않았으며 사용자 지시를 기다린다.
+1~3단계는 사용자 검토·커밋을 완료했다. 4단계 tick 검사·PANIC·reboot reason 연결도 구현·검증과 셀프 리뷰 후 사용자 커밋 승인을 받아 본 커밋으로 완료한다. 5단계 이후 구현은 시작하지 않았다.
 
 ## 진행 방식
 
@@ -55,8 +55,8 @@
 |---|---|---|---|
 | 1 | 완료 | [구현·검증 결과](01-interface-and-storage.md). TCB 내장 + 내부 접근 함수로 사용자 확인 완료. 커널 OFF/ON 빌드 통과, 전체 Kconfig 검증 제한 있음 | `9d4f19a19` |
 | 2 | 완료 | [구현·검증 결과](02-registry-and-lifecycle.md). OFF/ON 커널 빌드, 호스트 테스트·ARM 컴파일 통과. 사용자도 보드 빌드·실행에 문제가 없다고 보고했으나 등록·SMP 수명 시나리오는 미검증 | `d76d143c8` |
-| 3 | 완료 | [구현·검증 결과](03-driver-ioctl.md). 사용자 커밋 승인. 실제 driver/VFS를 포함한 UP/SMP 호스트 테스트, ON/OFF kernel·driver 빌드와 보드 초기화 객체, 공개 헤더 기반 ARM C/C++ 예제 컴파일 통과. 보드 ioctl 실행은 미검증 | 본 커밋: `health_monitor: expose task operations through ioctl` |
-| 4 | 대기 | — | — |
+| 3 | 완료 | [구현·검증 결과](03-driver-ioctl.md). 사용자 커밋 승인. 실제 driver/VFS를 포함한 UP/SMP 호스트 테스트, ON/OFF kernel·driver 빌드와 보드 초기화 객체, 공개 헤더 기반 ARM C/C++ 예제 컴파일 통과. 보드 ioctl 실행은 미검증 | `7f1e3a003` |
+| 4 | 완료 | [구현·검증 결과](04-timer-and-panic.md). Linux ASan/UBSan 7종, ARM kernel ON/OFF·엄격 컴파일·reason OFF 구성 및 추가 모델 비교 통과. 셀프 리뷰 후 사용자 커밋 승인. 실제 보드 PANIC·리셋·실행 시간은 미검증 | 본 커밋: `health_monitor: check deadlines from the system tick` |
 | 5 | 대기 | — | — |
 | 6 | 대기 | — | — |
 | 7 | 대기 | — | — |

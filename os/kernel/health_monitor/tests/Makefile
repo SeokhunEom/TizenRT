@@ -8,6 +8,7 @@ SANITIZERS ?= -fsanitize=address,undefined -fno-sanitize-recover=all
 TEST_FLAGS = -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread $(SANITIZERS)
 TEST_INCLUDES = -I$(TEST_DIR)/include -I$(OS_DIR)/kernel -idirafter $(OS_DIR)/include
 TEST_DEPS = $(TEST_DIR)/registry_test.c $(wildcard $(TEST_DIR)/include/tinyara/*.h) \
+	$(TEST_DIR)/include/assert.h $(TEST_DIR)/include/debug.h \
 	$(TEST_DIR)/include/sched/sched.h $(TEST_DIR)/../health_monitor.c \
 	$(TEST_DIR)/../health_monitor.h $(OS_DIR)/include/tinyara/health_monitor.h
 DRIVER_INCLUDES = -I$(TEST_DIR)/driver_include $(TEST_INCLUDES)
@@ -19,13 +20,23 @@ DRIVER_DEPS = $(TEST_DEPS) $(TEST_DIR)/driver_test.c \
 	$(OS_DIR)/fs/vfs/fs_open.c $(OS_DIR)/fs/vfs/fs_close.c \
 	$(OS_DIR)/fs/vfs/fs_ioctl.c $(OS_DIR)/fs/vfs/fs_getfilep.c \
 	$(OS_DIR)/fs/inode/fs_fileclose.c
+TIMER_INCLUDES = -I$(TEST_DIR)/timer_include $(TEST_INCLUDES)
+TIMER_DEPS = $(TEST_DEPS) $(TEST_DIR)/timer_test.c \
+	$(wildcard $(TEST_DIR)/timer_include/*/*.h) \
+	$(OS_DIR)/kernel/sched/sched_processtimer.c \
+	$(OS_DIR)/arch/arm/src/common/up_reboot_reason.c \
+	$(OS_DIR)/include/tinyara/reboot_reason.h
 
 .PHONY: test
-test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up
+test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
+	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason
 	$(OUT_DIR)/registry-smp
 	$(OUT_DIR)/registry-up
 	$(OUT_DIR)/driver-smp
 	$(OUT_DIR)/driver-up
+	$(OUT_DIR)/timer-smp
+	$(OUT_DIR)/timer-up
+	$(OUT_DIR)/timer-no-reason
 
 $(OUT_DIR)/registry-smp: $(TEST_DEPS)
 	mkdir -p $(OUT_DIR)
@@ -42,3 +53,15 @@ $(OUT_DIR)/driver-smp: $(DRIVER_DEPS)
 $(OUT_DIR)/driver-up: $(DRIVER_DEPS)
 	mkdir -p $(OUT_DIR)
 	$(HOSTCC) $(TEST_FLAGS) -DHEALTH_MONITOR_TEST_UP $(DRIVER_INCLUDES) $(TEST_DIR)/driver_test.c -o $@
+
+$(OUT_DIR)/timer-smp: $(TIMER_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) $(TIMER_INCLUDES) $(TEST_DIR)/timer_test.c -o $@
+
+$(OUT_DIR)/timer-up: $(TIMER_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) -DHEALTH_MONITOR_TEST_UP $(TIMER_INCLUDES) $(TEST_DIR)/timer_test.c -o $@
+
+$(OUT_DIR)/timer-no-reason: $(TIMER_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) -DHEALTH_MONITOR_TEST_NO_REASON $(TIMER_INCLUDES) $(TEST_DIR)/timer_test.c -o $@

@@ -28,4 +28,22 @@ Inode registration/allocation, fd allocation/release, and cancellation behavior 
 
 Add [board_smoke.c](board_smoke.c) to a test application's sources and call `health_monitor_smoke()` from a thread while `CONFIG_HEALTH_MONITOR=y`. It returns zero or negative errno after open → START → KICK → STOP → close, using only public headers and unsigned-long ioctl arguments. It is not included in the product or host-test build automatically.
 
-Stage 3 connects registration operations only. Timer/PANIC, PM wakeup, and hardware watchdog integration are still outside this stage. A successful smoke run does not verify deadline enforcement or reset.
+The smoke example exercises registration operations only. A successful smoke run does not verify deadline enforcement or reset. The system tick now enforces deadlines, but PM wakeup and hardware watchdog integration are still pending. Keep the target awake when testing timeout behavior; the example itself stops before its deadline.
+
+## Timer tests
+
+`timer_test.c` compiles the production registry, `sched_process_timer()` and the common assert reboot-reason helper. Host shims supply the clock increment, CPU identity, local IRQ/global-lock state and reboot-reason storage. PANIC is intercepted with `setjmp`/`longjmp`: it verifies the lock/reason ordering but does not execute ARM diagnostics or reset the host.
+
+UP, SMP and reboot-reason-disabled variants run with the same ASan/UBSan flags as the registry/driver tests. Together these are seven executables. The SMP registry/driver tests use POSIX pthread barriers; run the full suite on a Linux host or in a Linux container. The new timer tests do not need those barriers.
+
+Coverage includes:
+
+- Empty/future/publishing hints, CPU0-only inspection, exact deadline equality and a late KICK accepted before inspection.
+- Sustained normal KICK, STOP/cleanup before inspection, wraparound through tick zero and overdue versus far-future reservations.
+- All 256 candidates, both equal and different reservation times, including a single expired target behind renewed roots.
+- Exactly one lock attempt on contention or injected weak-CAS failure, followed by inspection on a later tick.
+- A cached due hint changed by STOP/KICK before acquisition, and KICK/cleanup/free after the final verdict but before PANIC.
+- One fixed `now` per pass, updated system time before inspection, inspection before CPU-load/global-lock/watchdog work, and repeated tick calls as used by board catch-up processing.
+- New reason 62 written outside the registry lock and retained by the actual common assert-reason helper; PANIC also works when reason recording is disabled.
+
+Only the CAS primitive is interposed to inject failure and deterministic interleavings; the production weak/acquire/relaxed parameters are checked and successful attempts use the host's real CAS. The native ARM instruction sequence must be inspected separately to verify that the target compiler emits no retry loop or atomic helper call. These tests do not prove ARM cache ordering, ISR latency, real scheduler teardown races, board reboot-reason persistence or hardware reset.

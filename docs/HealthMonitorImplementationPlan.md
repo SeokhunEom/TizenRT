@@ -193,7 +193,7 @@ PM의 다음 wakeup 계산에 health monitor의 최소 검사 예약 시각을 �
 
 기존 [assert reason 기록 함수](../os/arch/arm/src/common/up_reboot_reason.c)는 이미 기록된 reason이 있으면 assert reason을 덮어쓰지 않는 경로를 갖고 있다. 실제 보드에서 신규 reason이 유지되는지 검증한다.
 
-초안은 기존 PANIC 출력만 활용한다. [ARMv7-A assert](../os/arch/arm/src/armv7-a/arm_assert.c)의 기본 진단 대상은 해당 CPU에서 실행 중이던 스레드이므로, 다른 스레드의 deadline 만료가 그 스레드의 콜스택 출력으로 자동 연결된다고 가정하지 않는다. 이를 위한 추가 덤프 체계는 구현하지 않는다.
+만료 PID와 판정 시각/최신 deadline의 작은 값 사본을 전용 잠금 안에서 보존하고, 잠금 해제 및 reason 기록 뒤 기존 low-level 오류 로그로 출력한다. 로그는 제품의 DEBUG_ERROR 및 low-level 출력 설정을 따른다. 잠금 밖에서 만료 TCB를 다시 참조하지 않는다. [ARMv7-A assert](../os/arch/arm/src/armv7-a/arm_assert.c)의 기본 진단 대상은 해당 CPU에서 실행 중이던 스레드이므로, 다른 스레드의 deadline 만료가 그 스레드의 콜스택 출력으로 자동 연결된다고 가정하지 않는다. 이를 위한 추가 덤프 체계는 구현하지 않는다.
 
 ### 8.2 HW watchdog 연결
 

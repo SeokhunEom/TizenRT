@@ -133,10 +133,18 @@ void health_monitor_cleanup(FAR struct tcb_s *tcb);
  *
  * This is a scheduling hint, not a timeout verdict. On -EAGAIN callers
  * must defer inspection/sleep rather than treating the monitor as empty.
- * Consumers are connected in the timer and PM implementation stages.
+ * The timer uses this hint; PM wakeup selection is connected separately.
  */
 
 int health_monitor_next_check(FAR uint32_t *check_at);
+
+/* CPU0 tick hook, after clock_timer() and before scheduler global locks.
+ * Inspect due reservations without waiting for the registry lock. On an
+ * expired latest deadline, unlock and enter the existing fatal path.
+ * Call only from the system timer interrupt with local IRQs disabled.
+ */
+
+void health_monitor_timer(void);
 
 #ifdef __cplusplus
 }

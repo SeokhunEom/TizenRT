@@ -18,8 +18,13 @@
 
 #include <tinyara/config.h>
 
+#include <assert.h>
 #include <errno.h>
+#include <debug.h>
 #include <tinyara/spinlock.h>
+#ifdef CONFIG_SYSTEM_REBOOT_REASON
+#include <arch/reboot_reason.h>
+#endif
 
 #include "sched/sched.h"
 #include "health_monitor/health_monitor.h"
@@ -30,7 +35,7 @@
  *    monitor lock. The root contains the earliest reserved check_at, which
  *    can be earlier than the latest deadline after KICK.
  * 2. sequence/next_count/next_tick form a separate, pointer-free copy of
- *    the root information. A future tick/PM caller can read this hint
+ *    the root information. The tick and future PM caller can read this hint
  *    without taking the lock or touching a possibly exiting TCB.
  *
  * Only the hint words need __atomic accesses: their reader does not take
@@ -48,6 +53,8 @@ _Static_assert(__atomic_always_lock_free(sizeof(uint32_t), 0),
 static struct health_monitor_entry_s g_health_heap[HEALTH_MONITOR_HEAP_CAPACITY];
 static unsigned int g_health_count;
 #ifdef CONFIG_SMP
+_Static_assert(__atomic_always_lock_free(sizeof(spinlock_t), 0),
+			   "Health monitor requires a native spinlock compare/exchange");
 static spinlock_t g_health_lock = SP_UNLOCKED;
 #endif
 static uint32_t g_health_sequence;
@@ -59,8 +66,8 @@ static uint32_t g_health_next_tick;
  * local IRQ masking alone is sufficient.
  *
  * This does not sleep, but the SMP spinlock can wait for another owner.
- * It is for the thread/lifecycle paths, not the future tick ISR path,
- * which must use a non-waiting trylock when it needs the actual heap.
+ * It is for the thread/lifecycle paths. The tick ISR uses trylock when
+ * it needs the actual heap.
  * Use non-instrumented operations so note callbacks cannot acquire another
  * lock here. The allowed order is scheduler lock -> health monitor lock;
  * code holding this lock must not acquire the scheduler lock in reverse.
@@ -90,10 +97,35 @@ static void health_monitor_unlock(irqstate_t flags)
 	irqrestore(flags);
 }
 
+/* Try the registry lock once with local IRQs masked. A failed attempt
+ * restores the original IRQ state; success leaves restoration to unlock.
+ * Do not use spin_trylock_wo_note(): its ARM up_testset() can retry STREX.
+ * A weak compare/exchange permits an exclusive-store failure to defer the
+ * inspection, just like contention. No instrumentation or wait is needed.
+ * Verify the generated instruction sequence when changing compiler/port;
+ * lock-free alone does not imply that an operation has no retry loop.
+ */
+
+static bool health_monitor_trylock(FAR irqstate_t *flags)
+{
+	*flags = irqsave();
+#ifdef CONFIG_SMP
+	spinlock_t expected = SP_UNLOCKED;
+
+	if (!__atomic_compare_exchange_n(&g_health_lock, &expected, SP_LOCKED,
+		true, __ATOMIC_ACQUIRE, __ATOMIC_RELAXED)) {
+		irqrestore(*flags);
+		return false;
+	}
+#endif
+	return true;
+}
+
 /* Publish the current heap root as a lockless scheduling hint, in O(1).
  * Call only while holding the registry lock, after the heap is consistent.
- * START and unregister publish; KICK does not, because it leaves check_at
- * unchanged. This function neither checks timeouts nor updates deadlines.
+ * START, unregister and timer heap repair publish; KICK does not, because
+ * it leaves check_at unchanged. This function neither checks timeouts nor
+ * updates deadlines.
  *
  * sequence is a version, not a task count or tick:
  *   even: the published count/tick pair is complete;
@@ -302,9 +334,8 @@ void health_monitor_task_init(FAR struct tcb_s *tcb)
  *
  * Return OK on success, -EINVAL for an unsupported timeout, -EEXIST for
  * duplicate registration, or -ENOSPC for a full static heap. Failures do
- * not alter the registration. Call from thread context only; registration
- * by itself does not run the timeout inspector (a later implementation
- * stage connects it to the timer).
+ * not alter the registration. Call from thread context only; the system
+ * tick inspects the published reservation independently.
  */
 
 int health_monitor_start(uint32_t timeout_ms)
@@ -349,8 +380,8 @@ int health_monitor_start(uint32_t timeout_ms)
  * a KICK accepted before inspection is allowed to extend it.
  *
  * Neither the heap's check_at nor the published hint changes. They may
- * therefore request an earlier, harmless inspection. The timer stage
- * will re-read the actual deadline under the same lock when check_at is
+ * therefore request an earlier, harmless inspection. The timer hook
+ * re-reads the actual deadline under the same lock when check_at is
  * due, and either reschedule that reservation or report expiry. This
  * lazy repair is what avoids O(log N) heap maintenance on every KICK.
  * Call from thread context; spinlock contention is separate from the
@@ -413,7 +444,7 @@ void health_monitor_cleanup(FAR struct tcb_s *tcb)
 
 /* Read the published earliest reservation with one O(1) snapshot attempt.
  * No spinlock, retry loop, heap access or TCB dereference is needed, making
- * this suitable for the future tick fast path and PM wakeup selection.
+ * this suitable for the tick fast path and future PM wakeup selection.
  * The caller supplies a valid output pointer.
  *
  * Read an even version, copy count/tick, then verify the version again.
@@ -434,8 +465,8 @@ void health_monitor_cleanup(FAR struct tcb_s *tcb)
  * The returned time is only a scheduling hint, not proof of expiry. A due
  * hint still requires locked inspection of the actual heap/TCB deadline.
  * On -EAGAIN, a tick caller must defer rather than spin; PM must defer
- * sleep rather than treating the registry as empty. Those callers are
- * connected in later stages, not by this read function.
+ * sleep rather than treating the registry as empty. PM wakeup selection
+ * is connected in a later stage.
  */
 
 int health_monitor_next_check(FAR uint32_t *check_at)
@@ -476,4 +507,86 @@ int health_monitor_next_check(FAR uint32_t *check_at)
 
 	*check_at = next;
 	return 1;
+}
+
+/* Inspect from the system tick after its time update, before scheduler
+ * global locks. CPU0 is the sole inspector on SMP. An empty/future hint
+ * or an overlapping publication returns in O(1) without touching a TCB.
+ * Contention (including a spurious weak-CAS failure) defers to another tick.
+ *
+ * Once locked, re-read the heap and capture one now for the whole pass.
+ * Every due reservation is either expired, or moved to its latest future
+ * deadline. Repairing the root cannot revisit that entry in this pass.
+ * Process all due entries: O(K log N), with no fixed candidate limit.
+ *
+ * Expiry is final at the locked deadline read. Release before recording
+ * the reason and invoking the existing PANIC path; never dereference the
+ * inspected TCB after unlock, even if another CPU kicks/stops/frees it.
+ * PM wakeup selection and hardware-watchdog progress are separate stages.
+ */
+
+void health_monitor_timer(void)
+{
+	uint32_t check_at;
+	uint32_t now;
+	irqstate_t flags;
+	bool expired = false;
+	bool changed = false;
+#ifdef CONFIG_DEBUG_ERROR
+	pid_t expired_pid = -1;
+	uint32_t expired_deadline = 0;
+#endif
+
+#ifdef CONFIG_SMP
+	if (this_cpu() != 0) {
+		return;
+	}
+#endif
+
+	if (health_monitor_next_check(&check_at) != 1 ||
+		health_monitor_tick_before((uint32_t)clock_systimer(), check_at)) {
+		return;
+	}
+
+	if (!health_monitor_trylock(&flags)) {
+		return;
+	}
+
+	now = (uint32_t)clock_systimer();
+	while (g_health_count > 0 &&
+		   !health_monitor_tick_before(now, g_health_heap[0].check_at)) {
+		uint32_t deadline = health_monitor_state(g_health_heap[0].tcb)->deadline;
+
+		if (!health_monitor_tick_before(now, deadline)) {
+			expired = true;
+#ifdef CONFIG_DEBUG_ERROR
+			expired_pid = g_health_heap[0].tcb->pid;
+			expired_deadline = deadline;
+#endif
+			break;
+		}
+
+		g_health_heap[0].check_at = deadline;
+		health_monitor_sift_down(0, now);
+		changed = true;
+	}
+
+	if (changed) {
+		health_monitor_publish();
+	}
+	health_monitor_unlock(flags);
+
+	if (expired) {
+#ifdef CONFIG_SYSTEM_REBOOT_REASON
+		up_reboot_reason_write(REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT);
+#endif
+#ifdef CONFIG_DEBUG_ERROR
+		lldbg("HEALTH MONITOR TIMEOUT pid=%d now=%lu deadline=%lu\n",
+			  (int)expired_pid, (unsigned long)now, (unsigned long)expired_deadline);
+		/* Some architectures omit low-level output even with DEBUG_ERROR. */
+		(void)expired_pid;
+		(void)expired_deadline;
+#endif
+		PANIC();
+	}
 }

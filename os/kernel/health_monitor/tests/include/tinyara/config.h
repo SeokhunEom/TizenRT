@@ -9,6 +9,9 @@
 #define CONFIG_SYSTEM_TIME64 1
 #ifndef HEALTH_MONITOR_TEST_UP
 #define CONFIG_SMP 1
+#define CONFIG_SMP_NCPUS 2
+#else
+#define CONFIG_SMP_NCPUS 1
 #endif
 #define OK 0
 #endif
