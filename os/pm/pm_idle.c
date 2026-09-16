@@ -22,11 +22,17 @@
 
 #include <tinyara/config.h>
 #include <assert.h>
+#include <limits.h>
 #include <tinyara/pm/pm.h>
 #include <tinyara/clock.h>
 #include <tinyara/irq.h>
 #include <tinyara/arch.h>
 #include "../kernel/sched/sched.h"
+#include "../kernel/clock/clock.h"
+#include "../kernel/wdog/wdog.h"
+#ifdef CONFIG_HEALTH_MONITOR
+#include "../kernel/health_monitor/health_monitor.h"
+#endif
 
 #include "pm.h"
 
@@ -42,7 +48,9 @@
 
 static clock_t stime;
 
+#ifdef CONFIG_SMP
 static cpu_set_t g_active_cpu_snapshot;
+#endif
 
 /****************************************************************************
  * Private Functions
@@ -229,17 +237,17 @@ static int disable_systick(void)
  *   None
  *
  ****************************************************************************/
-static void enable_and_compensate_systick(void)
+static void enable_and_compensate_systick(bool transition, bool slept)
 {
 #ifdef CONFIG_PM_TICKSUPPRESS
 	struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
 	clock_t missing_tick;
 
-	if (!sleep_ops || !sleep_ops->get_missingtick) {
+	if (!sleep_ops || (!transition && (!slept || !sleep_ops->get_missingtick))) {
 		goto enable_timer;
 	}
 
-	missing_tick = sleep_ops->get_missingtick();
+	missing_tick = transition ? sleep_ops->get_elapsedtick() : sleep_ops->get_missingtick();
 
 	pmllvdbg("missing_tick: %llu\n", missing_tick);
 	pm_metrics_update_missing_tick(missing_tick);
@@ -261,16 +269,19 @@ static void enable_and_compensate_systick(void)
 	}
 
 enable_timer:
+#else
+	(void)transition;
+	(void)slept;
 #endif
 	(void)up_timer_enable();
 }
 
-#ifdef CONFIG_PM_TIMEDWAKEUP
+#if defined(CONFIG_PM_TIMEDWAKEUP) || defined(CONFIG_HEALTH_MONITOR)
 /****************************************************************************
  * Name: get_next_wakeup_time
  *
  * Description:
- *   This function gets the next wakeup time from the watchdog timer.
+ *   Select the earlier watchdog or health monitor wakeup reservation.
  *   If the delay is too short (less than SLEEP_ENTRY_WAIT), it returns ERROR
  *   to abort sleep.
  *
@@ -278,23 +289,75 @@ enable_timer:
  *   None
  *
  * Returned Value:
- *   The next wakeup time in ticks, or ERROR if sleep should be aborted.
+ *   Positive delay in ticks, zero for no reservation, or ERROR to defer sleep.
  *
  ****************************************************************************/
-static int get_next_wakeup_time(void)
+static int get_next_wakeup_time(clock_t elapsed)
 {
-	clock_t delay;
+	clock_t delay = 0;
+	(void)elapsed;
 
+#ifdef CONFIG_PM_TIMEDWAKEUP
 	/* get wakeup timer */
 	delay = wd_getwakeupdelay();
+	if (delay > 0) {
+		if (elapsed >= delay) {
+			return ERROR;
+		}
+		delay -= elapsed;
+	}
+#endif
+#ifdef CONFIG_HEALTH_MONITOR
+	uint32_t check_at;
+	int status = health_monitor_next_check(&check_at);
+
+	/* PM holds the scheduler lock. Read only the published hint; never
+	 * acquire the registry lock or wait for an in-progress publication.
+	 */
+	if (status < 0) {
+		return ERROR;
+	}
+	if (status > 0) {
+#if defined(CONFIG_PM_TIMEDWAKEUP) && defined(CONFIG_PM_TICKSUPPRESS)
+		struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
+		int32_t remaining = (int32_t)(check_at - (uint32_t)clock_systimer());
+
+		/* Tick zero is a valid reservation, and a due reservation must not
+		 * be mistaken for no wakeup. Sleep must preserve elapsed time too.
+		 */
+		if (remaining <= 0 || elapsed >= (clock_t)remaining ||
+			!sleep_ops || !sleep_ops->sleep || !sleep_ops->set_timer ||
+			!sleep_ops->get_elapsedtick) {
+			return ERROR;
+		}
+		remaining -= elapsed;
+		if (delay == 0 || (clock_t)remaining < delay) {
+			delay = remaining;
+		}
+#else
+		/* Active monitoring needs timed wakeup and sleep-time accounting. */
+		return ERROR;
+#endif
+	}
+#endif
+
+#ifdef CONFIG_PM_TIMEDWAKEUP
 	if ((delay > 0) && (delay < MSEC2TICK(CONFIG_PM_SLEEP_ENTRY_WAIT_MS))) {
 		pmllvdbg("Wdog Timer Delay: %ldms is less than SLEEP_ENTRY_WAIT: %ldms\n", TICK2MSEC(delay), CONFIG_PM_SLEEP_ENTRY_WAIT_MS);
 		return ERROR;
 	}
+#endif
 
-	return delay;
+	/* The caller uses a signed result so ERROR remains distinct. A long
+	 * watchdog delay may exceed int even though monitor delays cannot.
+	 */
+	return delay > INT_MAX ? INT_MAX : (int)delay;
 }
+#else
+#define get_next_wakeup_time(elapsed) (0)
+#endif
 
+#ifdef CONFIG_PM_TIMEDWAKEUP
 /****************************************************************************
  * Name: set_pm_wakeup_timer
  *
@@ -312,15 +375,20 @@ static int get_next_wakeup_time(void)
 static int set_pm_wakeup_timer(int delay) 
 {
 	if (delay > 0) {
-		/* set wakeup timer */
+		/* Board timers accept unsigned microseconds. Clamp long delays
+		 * to an early wakeup instead of overflowing the conversion.
+		 */
+		uint64_t delay_us = (uint64_t)delay * USEC_PER_TICK;
+		if (delay_us > UINT_MAX) {
+			delay_us = UINT_MAX;
+		}
 		pmllvdbg("Setting timer and board will wake up after %ld millisecond\n", delay);
-		return g_pmglobals.sleep_ops->set_timer(TICK2USEC(delay));
+		return g_pmglobals.sleep_ops->set_timer((unsigned int)delay_us);
 	}
 
 	return OK;
 }
 #else
-#define get_next_wakeup_time()       (0)
 #define set_pm_wakeup_timer(delay)  (OK)
 #endif
 
@@ -400,14 +468,25 @@ static int check_pm_state(void)
 static void enter_sleep(void)
 {
 	int next_wakeup_time;
+	bool transition = false;
+	bool slept = false;
 	struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
 
 	DEBUGASSERT(sleep_ops);
 
-	next_wakeup_time = get_next_wakeup_time();
+	next_wakeup_time = get_next_wakeup_time(0);
 	if (next_wakeup_time < 0) {
 		return;
 	}
+
+#ifdef CONFIG_PM_TICKSUPPRESS
+	/* The board clock covers preparation and all abort paths, not just sleep. */
+	transition = sleep_ops->get_elapsedtick != NULL;
+	if (transition && disable_systick() != OK) {
+		enable_and_compensate_systick(true, false);
+		return;
+	}
+#endif
 
 	lldbg_noarg(PM_DEBUG_STR);
 	if (suspend_devices() != OK) {
@@ -419,7 +498,16 @@ static void enter_sleep(void)
 		goto CPUS_ENABLE;
 	}
 
-	if (disable_systick() != OK) {
+	/* Re-read the hint after quiescing other CPUs. OS ticks are frozen;
+	 * subtract the board's elapsed interval without changing the registry.
+	 * The HW watchdog already measures its own elapsed hardware time.
+	 */
+	next_wakeup_time = get_next_wakeup_time(transition ? sleep_ops->get_elapsedtick() : 0);
+	if (next_wakeup_time < 0) {
+		goto CPUS_ENABLE;
+	}
+
+	if (!transition && disable_systick() != OK) {
 		goto SYSTICK_ENABLE;
 	}
 
@@ -428,14 +516,17 @@ static void enter_sleep(void)
 	}
 
 	lldbg_noarg(PM_DEBUG_STR);
-	if (sleep_ops->sleep && sleep_ops->sleep() != 0) {
+	slept = sleep_ops->sleep != NULL;
+	if (slept && sleep_ops->sleep() != 0) {
 		goto SYSTICK_ENABLE;
 	}
 
 	update_wakeup_reason();
 
 SYSTICK_ENABLE:
-	enable_and_compensate_systick();
+	if (!transition) {
+		enable_and_compensate_systick(false, slept);
+	}
 	lldbg_noarg(PM_DEBUG_STR);
 
 CPUS_ENABLE:
@@ -444,6 +535,9 @@ CPUS_ENABLE:
 
 DEVICES_RESUME:
 	resume_devices();
+	if (transition) {
+		enable_and_compensate_systick(true, slept);
+	}
 	lldbg_noarg(PM_DEBUG_STR"\n");
 }
 

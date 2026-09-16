@@ -34,6 +34,14 @@
 #include "up_internal.h"
 #include "gic.h"
 #include "arch_timer.h"
+#ifdef CONFIG_PM_TICKSUPPRESS
+#include "ameba_soc.h"
+
+static uint32_t g_pm_start;
+static uint64_t g_pm_pending_cycles;
+static uint64_t g_pm_sample_cycles;
+static uint64_t g_pm_sample_count;
+#endif
 
 /****************************************************************************
  * Private Functions
@@ -108,14 +116,43 @@ void up_timer_initialize(void)
 int up_timer_disable(void)
 {
   arm_arch_timer_enable(0);
+#ifdef CONFIG_PM_TICKSUPPRESS
+  /* The compare register identifies the last accounted tick, even when
+   * CPU0 IRQs have been masked through PM state checks. The 32 kHz AON
+   * counter continues through power gating, where the ARM timer resets.
+   */
+  g_pm_start = SYSTIMER_TickGet();
+  g_pm_pending_cycles = arm_arch_timer_count() -
+    (arm_arch_timer_compare() - pdTICKS_TO_CNT);
+  (void)up_timer_get_elapsedtick();
+#endif
   return 0;
 }
+
+#ifdef CONFIG_PM_TICKSUPPRESS
+clock_t up_timer_get_elapsedtick(void)
+{
+  uint32_t elapsed = SYSTIMER_TickGet() - g_pm_start;
+  g_pm_sample_count = arm_arch_timer_count();
+  g_pm_sample_cycles = g_pm_pending_cycles +
+    (uint64_t)elapsed * GENERICTIMERFREQ / 32768;
+  return g_pm_sample_cycles / pdTICKS_TO_CNT;
+}
+#endif
 
 int up_timer_enable(void)
 {
 	/* When wake from pg, arm timer has been reset, so a new compare value is necessary to
 	trigger an timer interrupt */
+#ifdef CONFIG_PM_TICKSUPPRESS
+  /* PM accounted the last sample once. Preserve its fractional tick and
+   * let the next IRQ catch up time spent after the sample, including here.
+   */
+  arm_arch_timer_set_compare(g_pm_sample_count + pdTICKS_TO_CNT -
+    g_pm_sample_cycles % pdTICKS_TO_CNT);
+#else
   arm_arch_timer_set_compare(arm_arch_timer_count() + pdTICKS_TO_CNT);
+#endif
   arm_arch_timer_enable(1);
   return 0;
 }

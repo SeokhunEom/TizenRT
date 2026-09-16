@@ -15,6 +15,15 @@
 
 #ifndef _ASMLANGUAGE
 
+#include <time.h>
+
+#ifdef CONFIG_PM_TICKSUPPRESS
+/* Cumulative stopped-timer interval, sampled on CPU0 by PM. */
+clock_t up_timer_get_elapsedtick(void);
+#endif
+
+
+
 #if defined( __ICCARM__ )
 #define __asm__ __asm
 #endif

@@ -51,6 +51,9 @@ struct pm_sleep_ops rtl8730e_sleep_ops = {
 	.set_timer = up_set_pm_timer,
 	.get_wakeupreason = up_get_wakeupreason,
 	.get_missingtick = up_get_missingtick,
+#ifdef CONFIG_PM_TICKSUPPRESS
+	.get_elapsedtick = up_timer_get_elapsedtick,
+#endif
 };
 
 #ifdef CONFIG_PM_DVFS

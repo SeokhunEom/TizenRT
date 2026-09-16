@@ -238,6 +238,14 @@ struct pm_callback_s {
  * @get_wakeupreason: Get the wakeup reason after sleep.
  *  Returns the pm_wakeup_reason_code_t indicating the source of the wakeup.
  *
+ * @get_elapsedtick: Optional cumulative system ticks since up_timer_disable,
+ *  including ticks pending before disable and time in prepare/sleep/resume.
+ *  Must use a clock that runs in sleep, work even when sleep is aborted, and
+ *  allow repeated reads without consuming the interval. up_timer_enable must
+ *  resume at the last sample's next tick boundary, avoiding double accounting.
+ *  With PM_TICKSUPPRESS this replaces get_missingtick and permits stopping
+ *  the tick before device suspension. Called on CPU0 with IRQs disabled.
+ *
  * @get_missingtick: Get the number of ticks missed during sleep.
  *  Returns the number of system ticks that passed while the system was asleep.
  */
@@ -247,6 +255,7 @@ struct pm_sleep_ops {
 	int (*set_timer)(unsigned int delay_us);
 	pm_wakeup_reason_code_t (*get_wakeupreason)(void);
 	clock_t (*get_missingtick)(void);
+	clock_t (*get_elapsedtick)(void);
 };
 
 /*

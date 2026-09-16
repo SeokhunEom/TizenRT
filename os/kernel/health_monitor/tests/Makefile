@@ -26,10 +26,15 @@ TIMER_DEPS = $(TEST_DEPS) $(TEST_DIR)/timer_test.c \
 	$(OS_DIR)/kernel/sched/sched_processtimer.c \
 	$(OS_DIR)/arch/arm/src/common/up_reboot_reason.c \
 	$(OS_DIR)/include/tinyara/reboot_reason.h
+PM_INCLUDES = -I$(TEST_DIR)/pm_include $(TIMER_INCLUDES)
+PM_DEPS = $(TEST_DEPS) $(TEST_DIR)/pm_test.c $(OS_DIR)/pm/pm_idle.c \
+	$(wildcard $(TEST_DIR)/pm_include/tinyara/*.h $(TEST_DIR)/pm_include/tinyara/pm/*.h) \
+	$(TEST_DIR)/timer_include/tinyara/arch.h
+PM_TESTS = $(addprefix $(OUT_DIR)/,pm-smp pm-up pm-no-timed-wakeup pm-no-tick-suppress pm-off)
 
 .PHONY: test
 test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
-	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason
+	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason $(PM_TESTS)
 	$(OUT_DIR)/registry-smp
 	$(OUT_DIR)/registry-up
 	$(OUT_DIR)/driver-smp
@@ -37,6 +42,11 @@ test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT
 	$(OUT_DIR)/timer-smp
 	$(OUT_DIR)/timer-up
 	$(OUT_DIR)/timer-no-reason
+	$(OUT_DIR)/pm-smp
+	$(OUT_DIR)/pm-up
+	$(OUT_DIR)/pm-no-timed-wakeup
+	$(OUT_DIR)/pm-no-tick-suppress
+	$(OUT_DIR)/pm-off
 
 $(OUT_DIR)/registry-smp: $(TEST_DEPS)
 	mkdir -p $(OUT_DIR)
@@ -65,3 +75,12 @@ $(OUT_DIR)/timer-up: $(TIMER_DEPS)
 $(OUT_DIR)/timer-no-reason: $(TIMER_DEPS)
 	mkdir -p $(OUT_DIR)
 	$(HOSTCC) $(TEST_FLAGS) -DHEALTH_MONITOR_TEST_NO_REASON $(TIMER_INCLUDES) $(TEST_DIR)/timer_test.c -o $@
+
+$(OUT_DIR)/pm-up: PM_FLAGS = -DHEALTH_MONITOR_TEST_UP
+$(OUT_DIR)/pm-no-timed-wakeup: PM_FLAGS = -DHEALTH_MONITOR_TEST_NO_TIMEDWAKEUP
+$(OUT_DIR)/pm-no-tick-suppress: PM_FLAGS = -DHEALTH_MONITOR_TEST_NO_TICKSUPPRESS
+$(OUT_DIR)/pm-off: PM_FLAGS = -DHEALTH_MONITOR_TEST_OFF
+
+$(PM_TESTS): $(PM_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) $(PM_FLAGS) $(PM_INCLUDES) $(TEST_DIR)/pm_test.c -o $@

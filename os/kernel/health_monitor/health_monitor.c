@@ -35,7 +35,7 @@
  *    monitor lock. The root contains the earliest reserved check_at, which
  *    can be earlier than the latest deadline after KICK.
  * 2. sequence/next_count/next_tick form a separate, pointer-free copy of
- *    the root information. The tick and future PM caller can read this hint
+ *    the root information. The tick and PM callers can read this hint
  *    without taking the lock or touching a possibly exiting TCB.
  *
  * Only the hint words need __atomic accesses: their reader does not take
