@@ -63,6 +63,9 @@
 
 #include <tinyara/fs/mksmartfs.h>
 #include <tinyara/board.h>
+#ifdef CONFIG_HEALTH_MONITOR
+#include <tinyara/health_monitor.h>
+#endif
 #ifdef CONFIG_BINARY_MANAGER
 #include <tinyara/binary_manager.h>
 #endif
@@ -450,6 +453,14 @@ void board_initialize(void)
 
 #ifdef CONFIG_WATCHDOG
 	amebasmart_wdg_initialize(CONFIG_WATCHDOG_DEVPATH, 5000);
+#endif
+#ifdef CONFIG_HEALTH_MONITOR
+	{
+		int ret = health_monitor_register();
+		if (ret < 0) {
+			lldbg("Failed to register health monitor: %d\n", ret);
+		}
+	}
 #endif
 #ifdef CONFIG_TIMER
 	int i;

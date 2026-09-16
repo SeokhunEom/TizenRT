@@ -131,6 +131,11 @@ ifeq ($(CONFIG_WATCHDOG),y)
   CSRCS += watchdog.c
 endif
 
+ifeq ($(CONFIG_HEALTH_MONITOR),y)
+  CSRCS += health_monitor.c
+  CFLAGS += -I $(TOPDIR)/kernel
+endif
+
 ifeq ($(CONFIG_TIMER),y)
   CSRCS += timer.c
 endif

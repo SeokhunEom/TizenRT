@@ -272,6 +272,7 @@ config HEALTH_MONITOR
 	bool "Thread health monitor"
 	default n
 	depends on !SCHED_TICKLESS && !SUPPRESS_INTERRUPTS && !SUPPRESS_TIMER_INTS
+	depends on NFILE_DESCRIPTORS > 0
 	---help---
 		Monitor threads that register a timeout and periodically kick their
 		deadline. The system timer checks registered threads and enters the

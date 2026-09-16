@@ -24,7 +24,9 @@
 #define HEALTH_MONITOR_DEVPATH        "/dev/health_monitor"
 #define HEALTH_MONITOR_MIN_TIMEOUT_MS 1U
 
-/* Each command operates on the calling thread, even when an fd is shared.
+/* Open HEALTH_MONITOR_DEVPATH with O_RDWR and retain the fd for ioctl.
+ * Data read/write are unsupported and return ENOSYS through the VFS.
+ * Each command operates on the calling thread, even when an fd is shared.
  * Opening the device does not register a thread. Closing it does not stop
  * monitoring; use HMIOC_STOP or thread exit to release the registration.
  */
@@ -38,18 +40,34 @@
 
 #define HMIOC_START _HMIOC(0x0001)
 
-/* KICK: arg is zero. Refresh the deadline without checking the old deadline.
+/* KICK: arg is unused; pass 0UL. Refresh without checking the old deadline.
  * A kick accepted before inspection may renew an already elapsed deadline.
  * Kicking an unregistered thread succeeds without changing state.
  */
 
 #define HMIOC_KICK  _HMIOC(0x0002)
 
-/* STOP: arg is zero. Unregister the calling thread, or return ENOENT if it
+/* STOP: arg is unused; pass 0UL. Unregister the caller, or return ENOENT if it
  * is not registered. Unknown commands return ENOTTY. Successful commands
  * return zero; failures use the usual ioctl return value and errno rules.
  */
 
 #define HMIOC_STOP  _HMIOC(0x0003)
+
+/* Kernel/board startup only. Applications use open/ioctl/close, not this
+ * registration entry point. Returns zero or a negative errno from VFS.
+ */
+
+#if defined(CONFIG_HEALTH_MONITOR) && (!defined(CONFIG_BUILD_PROTECTED) || defined(__KERNEL__))
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int health_monitor_register(void);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
 
 #endif /* __INCLUDE_TINYARA_HEALTH_MONITOR_H */
