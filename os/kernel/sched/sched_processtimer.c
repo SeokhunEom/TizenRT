@@ -57,6 +57,9 @@
 #include <tinyara/config.h>
 #include <tinyara/compiler.h>
 #include <time.h>
+#ifdef CONFIG_WATCHDOG_FOR_IRQ
+#include <tinyara/arch.h>
+#endif
 
 #if CONFIG_RR_INTERVAL > 0
 #include <sched.h>
@@ -275,7 +278,7 @@ static inline void sched_process_scheduler(void)
 
 void sched_process_timer(void)
 {
-#ifdef CONFIG_WATCHDOG_FOR_IRQ
+#if defined(CONFIG_WATCHDOG_FOR_IRQ) && !defined(CONFIG_HEALTH_MONITOR)
 	up_wdog_keepalive();
 #endif
 	/* Increment the system time (if in the link) */
@@ -289,7 +292,16 @@ void sched_process_timer(void)
 #ifdef CONFIG_HEALTH_MONITOR
 	/* Inspect the updated time before scheduler/watchdog global locks. */
 
-	health_monitor_timer();
+#ifdef CONFIG_WATCHDOG_FOR_IRQ
+	if (health_monitor_timer()) {
+		/* No refresh after a deferred inspection or an expired deadline.
+		 * The hardware timeout is the fallback; no extra SW threshold.
+		 */
+		up_wdog_keepalive();
+	}
+#else
+	(void)health_monitor_timer();
+#endif
 #endif
 #if defined(CONFIG_SCHED_CPULOAD) && !defined(CONFIG_SCHED_CPULOAD_EXTCLK)
 	/* Perform CPU load measurements (before any timer-initiated context

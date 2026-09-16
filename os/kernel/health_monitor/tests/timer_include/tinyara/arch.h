@@ -1,2 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* No architecture operations are needed by the host assert-reason helper. */
+/* Host architecture seams for timer and watchdog integration tests. */
+void up_wdog_keepalive(void);
+int up_wdog_getwakeupdelay(void);
+unsigned int up_cpu_index(void);

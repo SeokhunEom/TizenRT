@@ -383,16 +383,22 @@ config WATCHDOG_FOR_IRQ
 	depends on !SUPPRESS_INTERRUPTS && !SUPPRESS_TIMER_INTS && !SYSTEMTICK_EXTCLK
 	---help---
 		If there is no irq within interval, watchdog resets the system.
+		On RTL8730E, the CPU0 tick exclusively owns WDG4 and the watchdog
+		device is not registered. With HEALTH_MONITOR, only a completed
+		non-expiring inspection refreshes the watchdog.
 
 if WATCHDOG_FOR_IRQ
 
 config WATCHDOG_FOR_IRQ_INTERVAL
 	int "Interval for resetting watchdog(ms)"
 	default 1000
+	range 1000 65000 if ARCH_CHIP_AMEBASMART
 	---help---
 		After this interval, watchdog for irq expires.
 		This value should be greater than USER_PER_TICK.
 		Default interval is 1000ms.
+		RTL8730E requires whole seconds (1000, 2000, ..., 65000 ms).
+		Its PM path reserves half the interval for wakeup and tick recovery.
 
 endif # WATCHDOG_FOR_IRQ
 

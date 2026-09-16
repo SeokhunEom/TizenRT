@@ -142,9 +142,11 @@ int health_monitor_next_check(FAR uint32_t *check_at);
  * Inspect due reservations without waiting for the registry lock. On an
  * expired latest deadline, unlock and enter the existing fatal path.
  * Call only from the system timer interrupt with local IRQs disabled.
+ * Return true for a completed non-expiring check, false on CPU1 or a
+ * deferred check. Only a true result permits the tick's HW WDT refresh.
  */
 
-void health_monitor_timer(void);
+bool health_monitor_timer(void);
 
 #ifdef __cplusplus
 }

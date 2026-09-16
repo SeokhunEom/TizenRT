@@ -117,6 +117,7 @@ config ARCH_CHIP_AMEBALITE
 
 config ARCH_CHIP_AMEBASMART
 	bool "Realtek AMEBASMART"
+	select ARCH_HAVE_WDOG_WAKEUP
 	select ARCH_CORTEXA32
 	select ARM_HAVE_NEON
 	select ARCH_HAVE_CRC32
@@ -429,6 +430,13 @@ config ARCH_ROMPGTABLE
 config ARCH_HAVE_TICKSUPPRESS
 	bool
 	default n
+
+config ARCH_HAVE_WDOG_WAKEUP
+	bool
+	default n
+	---help---
+		The IRQ watchdog port provides a conservative PM wakeup delay based
+		on elapsed hardware time since the last successful keepalive.
 
 config DEBUG_HARDFAULT
 	bool "Verbose Hard-Fault Debug"

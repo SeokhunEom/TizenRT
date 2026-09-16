@@ -465,8 +465,7 @@ void health_monitor_cleanup(FAR struct tcb_s *tcb)
  * The returned time is only a scheduling hint, not proof of expiry. A due
  * hint still requires locked inspection of the actual heap/TCB deadline.
  * On -EAGAIN, a tick caller must defer rather than spin; PM must defer
- * sleep rather than treating the registry as empty. PM wakeup selection
- * is connected in a later stage.
+ * sleep rather than treating the registry as empty.
  */
 
 int health_monitor_next_check(FAR uint32_t *check_at)
@@ -522,16 +521,19 @@ int health_monitor_next_check(FAR uint32_t *check_at)
  * Expiry is final at the locked deadline read. Release before recording
  * the reason and invoking the existing PANIC path; never dereference the
  * inspected TCB after unlock, even if another CPU kicks/stops/frees it.
- * PM wakeup selection and hardware-watchdog progress are separate stages.
+ * Return true only when CPU0 completed a non-expiring check (including
+ * an empty/future hint). A deferred check returns false, so the tick must
+ * not refresh the hardware watchdog while inspection cannot progress.
  */
 
-void health_monitor_timer(void)
+bool health_monitor_timer(void)
 {
 	uint32_t check_at;
 	uint32_t now;
 	irqstate_t flags;
 	bool expired = false;
 	bool changed = false;
+	int status;
 #ifdef CONFIG_DEBUG_ERROR
 	pid_t expired_pid = -1;
 	uint32_t expired_deadline = 0;
@@ -539,17 +541,21 @@ void health_monitor_timer(void)
 
 #ifdef CONFIG_SMP
 	if (this_cpu() != 0) {
-		return;
+		return false;
 	}
 #endif
 
-	if (health_monitor_next_check(&check_at) != 1 ||
+	status = health_monitor_next_check(&check_at);
+	if (status < 0) {
+		return false;
+	}
+	if (status == 0 ||
 		health_monitor_tick_before((uint32_t)clock_systimer(), check_at)) {
-		return;
+		return true;
 	}
 
 	if (!health_monitor_trylock(&flags)) {
-		return;
+		return false;
 	}
 
 	now = (uint32_t)clock_systimer();
@@ -589,4 +595,5 @@ void health_monitor_timer(void)
 #endif
 		PANIC();
 	}
+	return !expired;
 }

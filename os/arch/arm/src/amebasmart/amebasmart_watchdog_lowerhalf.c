@@ -59,10 +59,13 @@
 #include <tinyara/kmalloc.h>
 #include <tinyara/watchdog.h>
 #include <tinyara/irq.h>
+#include <tinyara/arch.h>
+#include <tinyara/clock.h>
 #include "wdt_api.h"
 
 #ifdef CONFIG_WATCHDOG
 
+#ifndef CONFIG_WATCHDOG_FOR_IRQ
 #define WDT_STOP	0
 #define WDT_START	1
 #define WDT_PAUSE	2
@@ -464,22 +467,109 @@ int amebasmart_wdg_initialize(const char *devpath, uint32_t timeout_ms)
 	return OK;
 }
 
-#ifdef CONFIG_WATCHDOG_FOR_IRQ
+#else /* CONFIG_WATCHDOG_FOR_IRQ */
+
+/* The vendor timeout conversion truncates to whole seconds. Reject values
+ * which would silently program a shorter period, and fit up_wdog_init's ABI.
+ */
+#if CONFIG_WATCHDOG_FOR_IRQ_INTERVAL < 1000 || CONFIG_WATCHDOG_FOR_IRQ_INTERVAL > 65000 || \
+	(CONFIG_WATCHDOG_FOR_IRQ_INTERVAL % 1000) != 0
+#error "RTL8730E IRQ watchdog interval must be 1000..65000 ms in whole seconds"
+#endif
+#if defined(CONFIG_PM) && !defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP)
+#error "RTL8730E IRQ watchdog PM requires CONFIG_ARCH_HAVE_WDOG_WAKEUP"
+#endif
+
+static bool g_irq_wdog_started;
+static uint32_t g_irq_wdog_last_refresh;
+static uint16_t g_irq_wdog_timeout;
+
+int amebasmart_wdg_initialize(const char *devpath, uint32_t timeout_ms)
+{
+	/* WDG4 has one owner. Never register an ioctl path which can overwrite
+	 * the tick watchdog's timeout, mode or keepalive policy.
+	 */
+	(void)devpath;
+	(void)timeout_ms;
+	return -EBUSY;
+}
+
 void up_wdog_init(uint16_t timeout)
 {
+	irqstate_t flags = irqsave();
+
+	DEBUGASSERT(timeout == CONFIG_WATCHDOG_FOR_IRQ_INTERVAL);
+	if (g_irq_wdog_started) {
+		irqrestore(flags);
+		return;
+	}
+
+	/* Reset-only mode: IRQ delivery and PANIC are not prerequisites for
+	 * the HW fallback. WDG4 cannot be stopped once enabled.
+	 */
 	watchdog_init(timeout);
+	WDG_INTConfig(WDG4_DEV, WDG_BIT_EIE, DISABLE);
+	g_irq_wdog_timeout = timeout;
+	g_irq_wdog_last_refresh = SYSTIMER_TickGet();
+	watchdog_start();
+	g_irq_wdog_started = true;
+	irqrestore(flags);
 }
 
 void up_wdog_keepalive(void)
 {
+#ifdef CONFIG_SMP
+	if (up_cpu_index() != 0) {
+		return;
+	}
+#endif
+	if (!g_irq_wdog_started) {
+		return;
+	}
+
+	/* Only the CPU0 timer calls this, after a completed monitor pass.
+	 * Timestamp before the hardware refresh for a conservative PM budget.
+	 */
+	g_irq_wdog_last_refresh = SYSTIMER_TickGet();
 	watchdog_refresh();
+}
+
+int up_wdog_getwakeupdelay(void)
+{
+	uint32_t elapsed;
+	uint64_t elapsed_ms;
+	uint32_t budget_ms;
+	uint32_t delay;
+
+	/* PM and the tick run on CPU0 with local IRQs disabled. No registry or
+	 * scheduler lock is needed. The 32-kHz counter also covers preparation
+	 * time while the system tick is masked, and subtraction handles wrap.
+	 */
+	if (!g_irq_wdog_started) {
+		return 0;
+	}
+	elapsed = SYSTIMER_TickGet() - g_irq_wdog_last_refresh;
+	elapsed_ms = ((uint64_t)elapsed * 1000 + 32767) / 32768;
+	budget_ms = g_irq_wdog_timeout / 2;
+	if (elapsed_ms >= budget_ms) {
+		return -EAGAIN;
+	}
+
+	/* Wake within half the nominal period, leaving the other half for
+	 * clock tolerance, entry/exit and the next successful tick. This also
+	 * works if WDG4 keeps counting in sleep; never pretend to pause it.
+	 */
+	delay = ((uint64_t)(budget_ms - elapsed_ms) * USEC_PER_MSEC) / USEC_PER_TICK;
+	return delay > 0 ? (int)delay : -EAGAIN;
 }
 #endif
 
 void up_watchdog_disable(void)
 {
+#ifndef CONFIG_WATCHDOG_FOR_IRQ
 	watchdog_stop();
+#endif
+	/* IRQ watchdog ownership preserves the fallback through PANIC. */
 }
 
 #endif							//CONFIG_WATCHDOG
-

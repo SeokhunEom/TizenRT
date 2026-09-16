@@ -31,10 +31,24 @@ PM_DEPS = $(TEST_DEPS) $(TEST_DIR)/pm_test.c $(OS_DIR)/pm/pm_idle.c \
 	$(wildcard $(TEST_DIR)/pm_include/tinyara/*.h $(TEST_DIR)/pm_include/tinyara/pm/*.h) \
 	$(TEST_DIR)/timer_include/tinyara/arch.h
 PM_TESTS = $(addprefix $(OUT_DIR)/,pm-smp pm-up pm-no-timed-wakeup pm-no-tick-suppress pm-off)
+RTL_DIR = $(OS_DIR)/board/rtl8730e/src/component
+WDOG_INCLUDES = -I$(TEST_DIR)/wdog_include $(PM_INCLUDES) -I$(RTL_DIR)/soc/amebad2/fwlib/include
+WDOG_DEPS = $(PM_DEPS) $(TEST_DIR)/watchdog_test.c \
+	$(wildcard $(TEST_DIR)/wdog_include/*.h $(TEST_DIR)/wdog_include/tinyara/*.h) \
+	$(OS_DIR)/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c \
+	$(OS_DIR)/arch/arm/src/amebasmart/amebasmart_reboot_reason.c \
+	$(OS_DIR)/arch/arm/src/amebasmart/amebasmart_reboot_reason.h \
+	$(RTL_DIR)/mbed/targets/hal/rtl8730e/wdt_api.c \
+	$(RTL_DIR)/soc/amebad2/fwlib/rom_common/ameba_wdg.c \
+	$(RTL_DIR)/soc/amebad2/fwlib/include/ameba_wdg.h \
+	$(RTL_DIR)/soc/amebad2/fwlib/include/sysreg_aon.h
+WDOG_TESTS = $(addprefix $(OUT_DIR)/,watchdog-smp watchdog-up watchdog-no-timed-wakeup watchdog-no-tick-suppress)
+TIMER_WDOG_TESTS = $(addprefix $(OUT_DIR)/,timer-watchdog-smp timer-watchdog-up timer-watchdog-no-reason)
 
 .PHONY: test
 test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
-	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason $(PM_TESTS)
+	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason $(PM_TESTS) \
+	$(TIMER_WDOG_TESTS) $(WDOG_TESTS) $(OUT_DIR)/watchdog-config.ok
 	$(OUT_DIR)/registry-smp
 	$(OUT_DIR)/registry-up
 	$(OUT_DIR)/driver-smp
@@ -47,6 +61,13 @@ test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT
 	$(OUT_DIR)/pm-no-timed-wakeup
 	$(OUT_DIR)/pm-no-tick-suppress
 	$(OUT_DIR)/pm-off
+	$(OUT_DIR)/timer-watchdog-smp
+	$(OUT_DIR)/timer-watchdog-up
+	$(OUT_DIR)/timer-watchdog-no-reason
+	$(OUT_DIR)/watchdog-smp
+	$(OUT_DIR)/watchdog-up
+	$(OUT_DIR)/watchdog-no-timed-wakeup
+	$(OUT_DIR)/watchdog-no-tick-suppress
 
 $(OUT_DIR)/registry-smp: $(TEST_DEPS)
 	mkdir -p $(OUT_DIR)
@@ -84,3 +105,38 @@ $(OUT_DIR)/pm-off: PM_FLAGS = -DHEALTH_MONITOR_TEST_OFF
 $(PM_TESTS): $(PM_DEPS)
 	mkdir -p $(OUT_DIR)
 	$(HOSTCC) $(TEST_FLAGS) $(PM_FLAGS) $(PM_INCLUDES) $(TEST_DIR)/pm_test.c -o $@
+
+$(OUT_DIR)/timer-watchdog-up: TIMER_WDOG_FLAGS = -DHEALTH_MONITOR_TEST_UP
+$(OUT_DIR)/timer-watchdog-no-reason: TIMER_WDOG_FLAGS = -DHEALTH_MONITOR_TEST_NO_REASON
+$(TIMER_WDOG_TESTS): $(TIMER_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) -DHEALTH_MONITOR_TEST_WDOG $(TIMER_WDOG_FLAGS) $(TIMER_INCLUDES) $(TEST_DIR)/timer_test.c -o $@
+
+$(OUT_DIR)/watchdog-up: WDOG_FLAGS = -DHEALTH_MONITOR_TEST_UP
+$(OUT_DIR)/watchdog-no-timed-wakeup: WDOG_FLAGS = -DHEALTH_MONITOR_TEST_NO_TIMEDWAKEUP
+$(OUT_DIR)/watchdog-no-tick-suppress: WDOG_FLAGS = -DHEALTH_MONITOR_TEST_NO_TICKSUPPRESS
+$(WDOG_TESTS): $(WDOG_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) $(WDOG_FLAGS) $(WDOG_INCLUDES) $(TEST_DIR)/watchdog_test.c -o $@
+
+$(OUT_DIR)/watchdog-config.ok: $(WDOG_DEPS)
+	mkdir -p $(OUT_DIR)
+	@set -e; for interval in 1000 65000; do \
+		$(HOSTCC) $(TEST_FLAGS) $(WDOG_INCLUDES) -fsyntax-only \
+			-DCONFIG_WATCHDOG_FOR_IRQ_INTERVAL=$$interval $(TEST_DIR)/watchdog_test.c; \
+	done; \
+	for interval in 0 999 1001 1500 65001 65536; do \
+		if $(HOSTCC) $(TEST_FLAGS) $(WDOG_INCLUDES) -fsyntax-only \
+			-DCONFIG_WATCHDOG_FOR_IRQ_INTERVAL=$$interval $(TEST_DIR)/watchdog_test.c \
+			>$(OUT_DIR)/watchdog-invalid-$$interval.log 2>&1; then \
+			echo "Invalid IRQ watchdog interval accepted: $$interval"; exit 1; \
+		fi; \
+		grep -q 'RTL8730E IRQ watchdog interval must be' $(OUT_DIR)/watchdog-invalid-$$interval.log; \
+	done
+	@if $(HOSTCC) $(TEST_FLAGS) $(WDOG_INCLUDES) -fsyntax-only \
+		-DHEALTH_MONITOR_TEST_NO_WDOG_WAKEUP $(TEST_DIR)/watchdog_test.c \
+		>$(OUT_DIR)/watchdog-missing-pm-hook.log 2>&1; then \
+		echo "IRQ watchdog PM without wakeup hook accepted"; exit 1; \
+	fi
+	@grep -q 'RTL8730E IRQ watchdog PM requires CONFIG_ARCH_HAVE_WDOG_WAKEUP' $(OUT_DIR)/watchdog-missing-pm-hook.log
+	touch $@

@@ -15,6 +15,9 @@
 #define HEALTH_MONITOR_TEST_TIMEOUT_LOG 1
 #define CONFIG_RR_INTERVAL 0
 #define CONFIG_SCHED_CPULOAD 1
+#ifdef HEALTH_MONITOR_TEST_WDOG
+#define CONFIG_WATCHDOG_FOR_IRQ 1
+#endif
 
 static unsigned int g_cpu;
 static void test_panic(void);
@@ -50,8 +53,10 @@ static unsigned int g_try_calls;
 static unsigned int g_panic_calls;
 static unsigned int g_wdog_calls;
 static unsigned int g_load_calls;
+static unsigned int g_keepalive_calls;
 static bool g_advance_time;
 static bool g_force_try_failure;
+static bool g_other_cpu_holds_lock;
 static void (*g_before_try)(void);
 static void (*g_after_unlock)(void);
 static jmp_buf g_panic_return;
@@ -163,10 +168,17 @@ void sched_process_cpuload(void)
 	g_load_calls++;
 }
 
+void up_wdog_keepalive(void)
+{
+	assert(g_irq_masked && !g_global_lock && !registry_locked());
+	assert(g_cpu == 0);
+	g_keepalive_calls++;
+}
+
 #ifdef CONFIG_SMP
 static irqstate_t enter_critical_section(void)
 {
-	assert(!registry_locked());
+	assert(!registry_locked() || g_other_cpu_holds_lock);
 	g_global_lock++;
 	return irqsave();
 }
@@ -223,6 +235,7 @@ static void reset_test(uint32_t now)
 	g_before_try = NULL;
 	g_after_unlock = NULL;
 	g_force_try_failure = false;
+	g_other_cpu_holds_lock = false;
 	g_advance_time = false;
 	g_health_count = 0;
 	memset(g_health_heap, 0, sizeof(g_health_heap));
@@ -231,6 +244,7 @@ static void reset_test(uint32_t now)
 	g_now = now;
 	g_current = &g_tasks[0];
 	g_clock_reads = g_try_calls = g_panic_calls = g_wdog_calls = g_load_calls = 0;
+	g_keepalive_calls = 0;
 	g_log_calls = 0;
 	g_expect_panic = false;
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
@@ -452,6 +466,47 @@ static void test_system_tick_catchup(void)
 	assert(g_now == 1000 && g_panic_calls == 0 && g_wdog_calls == 1000);
 }
 
+#ifdef HEALTH_MONITOR_TEST_WDOG
+static void __test_watchdog_progress(void)
+{
+	reset_test(100);
+	inspect(false, true); /* Empty is a completed check. */
+	assert(g_keepalive_calls == 1);
+	start(0, 10);
+	inspect(false, true); /* Future hint is also a completed check. */
+	assert(g_keepalive_calls == 2);
+	g_health_sequence |= 1u;
+	inspect(false, true);
+	assert(g_keepalive_calls == 2);
+	g_health_sequence++;
+
+#ifdef CONFIG_SMP
+	g_cpu = 1;
+	inspect(false, true);
+	assert(g_keepalive_calls == 2);
+	g_cpu = 0;
+	g_now = 111;
+	g_other_cpu_holds_lock = true;
+	__atomic_store_n(&g_health_lock, SP_LOCKED, __ATOMIC_RELAXED);
+	inspect(false, true);
+	assert(g_keepalive_calls == 2);
+	__atomic_store_n(&g_health_lock, SP_UNLOCKED, __ATOMIC_RELEASE);
+	g_other_cpu_holds_lock = false;
+	g_force_try_failure = true;
+	inspect(false, true);
+	assert(g_keepalive_calls == 2);
+	g_force_try_failure = false;
+#endif
+	g_now = 115;
+	health_monitor_kick();
+	inspect(false, true); /* Completed overdue reservation repair resumes feed. */
+	assert(g_keepalive_calls == 3);
+	g_now = 125;
+	inspect(true, true);
+	assert(g_keepalive_calls == 3); /* Expiry enters PANIC without a final feed. */
+}
+#endif
+
 int main(void)
 {
 	test_fast_paths_and_boundary();
@@ -461,6 +516,9 @@ int main(void)
 	test_interleavings();
 #endif
 	test_system_tick_catchup();
+#ifdef HEALTH_MONITOR_TEST_WDOG
+	__test_watchdog_progress();
+#endif
 	puts("PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry");
 	return 0;
 }

@@ -276,12 +276,13 @@ enable_timer:
 	(void)up_timer_enable();
 }
 
-#if defined(CONFIG_PM_TIMEDWAKEUP) || defined(CONFIG_HEALTH_MONITOR)
+#if defined(CONFIG_PM_TIMEDWAKEUP) || defined(CONFIG_HEALTH_MONITOR) || \
+	(defined(CONFIG_WATCHDOG_FOR_IRQ) && defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP))
 /****************************************************************************
  * Name: get_next_wakeup_time
  *
  * Description:
- *   Select the earlier watchdog or health monitor wakeup reservation.
+ *   Select the earliest software watchdog, monitor or HW watchdog wakeup.
  *   If the delay is too short (less than SLEEP_ENTRY_WAIT), it returns ERROR
  *   to abort sleep.
  *
@@ -336,6 +337,29 @@ static int get_next_wakeup_time(clock_t elapsed)
 		}
 #else
 		/* Active monitoring needs timed wakeup and sleep-time accounting. */
+		return ERROR;
+#endif
+	}
+#endif
+
+#if defined(CONFIG_WATCHDOG_FOR_IRQ) && defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP)
+	int wdog_delay = up_wdog_getwakeupdelay();
+
+	if (wdog_delay < 0) {
+		return ERROR;
+	}
+	if (wdog_delay > 0) {
+#if defined(CONFIG_PM_TIMEDWAKEUP) && defined(CONFIG_PM_TICKSUPPRESS)
+		struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
+		if (!sleep_ops || !sleep_ops->sleep || !sleep_ops->set_timer ||
+			(!sleep_ops->get_elapsedtick && !sleep_ops->get_missingtick)) {
+			return ERROR;
+		}
+		if (delay == 0 || (clock_t)wdog_delay < delay) {
+			delay = wdog_delay;
+		}
+#else
+		/* An unstoppable HW watchdog cannot allow untimed sleep. */
 		return ERROR;
 #endif
 	}

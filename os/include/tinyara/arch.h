@@ -2543,6 +2543,14 @@ void up_wdog_init(uint16_t timeout);
  ****************************************************************************/
 void up_wdog_keepalive(void);
 
+#ifdef CONFIG_ARCH_HAVE_WDOG_WAKEUP
+/* Called on CPU0 with local IRQs disabled. Returns a positive conservative
+ * sleep delay in system ticks, zero if not started, or a negative value
+ * to defer sleep. Does not refresh the watchdog or acquire a global lock.
+ */
+int up_wdog_getwakeupdelay(void);
+#endif
+
 #endif
 
 /****************************************************************************

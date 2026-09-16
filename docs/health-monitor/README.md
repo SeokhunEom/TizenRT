@@ -2,7 +2,7 @@
 
 [설계 기준](../HealthMonitorImplementationPlan.md)의 기능을 사용자가 순차적으로 확인할 수 있도록 분리한 실행 계획이다. 설계 기준은 동작 정책을, 이 문서는 진행 순서와 확인 지점을 관리한다.
 
-1~4단계는 사용자 검토·커밋을 완료했다. 5단계 PM wakeup 연동도 구현·검증과 독립 리뷰 후 사용자 커밋 승인을 받아 본 커밋으로 완료한다. 6단계 이후 구현은 시작하지 않았다.
+1~5단계는 사용자 검토·커밋을 완료했다. 6단계 HW watchdog 연결도 구현·호스트 검증·ARM 컴파일과 독립 리뷰 후 사용자 커밋 승인을 받아 본 커밋으로 완료한다. 실제 보드 HW 리셋·절전 동작은 미검증이며, 7단계 제품 설정 활성화는 시작하지 않았다.
 
 ## 진행 방식
 
@@ -57,8 +57,8 @@
 | 2 | 완료 | [구현·검증 결과](02-registry-and-lifecycle.md). OFF/ON 커널 빌드, 호스트 테스트·ARM 컴파일 통과. 사용자도 보드 빌드·실행에 문제가 없다고 보고했으나 등록·SMP 수명 시나리오는 미검증 | `d76d143c8` |
 | 3 | 완료 | [구현·검증 결과](03-driver-ioctl.md). 사용자 커밋 승인. 실제 driver/VFS를 포함한 UP/SMP 호스트 테스트, ON/OFF kernel·driver 빌드와 보드 초기화 객체, 공개 헤더 기반 ARM C/C++ 예제 컴파일 통과. 보드 ioctl 실행은 미검증 | `7f1e3a003` |
 | 4 | 완료 | [구현·검증 결과](04-timer-and-panic.md). Linux ASan/UBSan 7종, ARM kernel ON/OFF·엄격 컴파일·reason OFF 구성 및 추가 모델 비교 통과. 셀프 리뷰 후 사용자 커밋 승인. 실제 보드 PANIC·리셋·실행 시간은 미검증 | `93f49bf9b` |
-| 5 | 완료 | [구현·검증 결과](05-pm-wakeup.md). Linux ASan/UBSan 12종, ARM PM ON/OFF·kernel ON 및 PM 설정별 엄격 컴파일 통과. 독립 리뷰 후 사용자 커밋 승인. 실제 보드 sleep·wakeup은 미검증 | 본 커밋: `health_monitor: include deadlines in PM wakeup` |
-| 6 | 대기 | — | — |
+| 5 | 완료 | [구현·검증 결과](05-pm-wakeup.md). Linux ASan/UBSan 12종, ARM PM ON/OFF·kernel ON 및 PM 설정별 엄격 컴파일 통과. 독립 리뷰 후 사용자 커밋 승인. 실제 보드 sleep·wakeup은 미검증 | `3ea8a0e8e` |
+| 6 | 완료 | [구현·검증 결과](06-hardware-watchdog.md). Linux ASan/UBSan 19종, timeout 설정 경계, ARM kernel·PM ON/OFF 및 port·board 객체 검증 통과. 독립 리뷰 후 사용자 커밋·origin push 승인. 물리 HW 리셋·보드 절전은 미검증 | 본 커밋: `health_monitor: connect tick progress to hardware watchdog` |
 | 7 | 대기 | — | — |
 
 기능 검증의 전체 목록은 [설계 기준의 검증 계획](../HealthMonitorImplementationPlan.md)을 사용한다. 각 단계 문서에는 그 단계에서 확인할 항목만 둔다.
