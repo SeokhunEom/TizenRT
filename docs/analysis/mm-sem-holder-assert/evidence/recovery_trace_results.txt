@@ -1,0 +1,25 @@
+RECOVERY_CONFIG=False CASE=normal-recovery EXPECTED_EXIT=0
+valid A ownership: pid=10 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after binary manager phase: pid=40 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after per-task recovery: pid=40 semcount=1 MM=(holder:10,depth:1) low_holders=0 A_held=0
+C excluded; B released: pid=20 semcount=1 MM=(holder:-1,depth:0) low_holders=0 A_held=0
+
+RECOVERY_CONFIG=False CASE=binary-and-task-recovery EXPECTED_EXIT=0
+valid A ownership: pid=10 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after binary manager phase: pid=40 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after per-task recovery: pid=40 semcount=1 MM=(holder:10,depth:1) low_holders=0 A_held=0
+C excluded; B released: pid=20 semcount=1 MM=(holder:-1,depth:0) low_holders=0 A_held=0
+
+RECOVERY_CONFIG=True CASE=normal-recovery EXPECTED_EXIT=0
+valid A ownership: pid=10 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after binary manager phase: pid=40 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after per-task recovery: pid=40 semcount=1 MM=(holder:10,depth:1) low_holders=0 A_held=0
+C excluded; B released: pid=20 semcount=1 MM=(holder:-1,depth:0) low_holders=0 A_held=0
+
+RECOVERY_CONFIG=True CASE=binary-and-task-recovery EXPECTED_EXIT=86
+valid A ownership: pid=10 semcount=0 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after binary manager phase: pid=40 semcount=1 MM=(holder:10,depth:1) low_holders=1 A_held=1
+after per-task recovery: pid=40 semcount=2 MM=(holder:10,depth:1) low_holders=0 A_held=0
+C acquired while B still owns MM: pid=30 semcount=0 MM=(holder:30,depth:1) low_holders=2 A_held=0
+C completed before B resumes: pid=30 semcount=1 MM=(holder:-1,depth:0) low_holders=1 A_held=0
+ASSERT heap->mm_holder == my_pid at /Volumes/T7/Dev/TizenRT/master/os/mm/mm_heap/mm_sem.c:201

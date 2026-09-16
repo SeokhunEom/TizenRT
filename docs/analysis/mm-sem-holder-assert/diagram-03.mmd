@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant A as CPU 0 / 종료 중인 A
+    participant B as CPU 1 / 실행 중인 B
+    participant M as 공유 MM 정보 H, R
+    participant S as 하위 semaphore C, L
+    Note over M,S: A가 정상 보유: H=A, R=1 / C=0, L=A:1
+    A->>S: 자기 종료의 sem_release_all(A)
+    Note over M,S: H=A, R=1 유지 / C=1, L=없음
+    B->>S: sem_wait() 성공 후 내부 critical section 이탈
+    Note over B,M: B는 아직 H와 R을 기록하지 않음
+    Note over S: C=0, L=B:1
+    A->>A: task_exithook의 global critical section 진입
+    A->>M: sched_kfree의 try: H=A이므로 R=2
+    A->>M: mm_free의 take: H=A이므로 R=3
+    Note over A,M: mm_free의 정리 작업 후 안쪽 give 진입
+    A->>M: 안쪽 give의 H=A 검사 통과
+    B->>M: sem_wait 다음 명령: H=B, R=1 기록
+    Note over B,M: 이 기록은 semaphore critical section 밖
+    A->>M: R을 읽으니 1: 마지막 참조로 판단
+    A->>M: H=-1, R=0 기록
+    A->>S: sem_post(): C=1, 단일 하위 holder B 정리
+    A->>M: sched_kfree의 바깥 give
+    Note over A,M: H=-1이므로 H==A 검사 실패

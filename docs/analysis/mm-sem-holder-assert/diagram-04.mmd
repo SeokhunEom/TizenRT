@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant A as A의 원래 MM 호출
+    participant Q as 같은 A의 signal 처리
+    participant M as MM 소유 정보 H, R
+    participant S as 하위 semaphore C, L
+    Note over M,S: 초기 상태 H=-1, R=0 / C=1, L=없음
+    A->>S: sem_wait 또는 sem_trywait 성공
+    Note over S: C=0, L=A:1
+    A->>M: 첫 기록: H=A
+    Note over A,M: 아직 R=1 기록 전이므로 R=0
+    A-->>Q: 이 구간에서 signal 처리로 전환
+    Q->>M: 같은 heap 재귀 획득: H=A, R=0에서 1
+    Q->>M: 재진입한 경로의 give: R=1
+    Q->>M: 마지막 참조로 판단: H=-1, R=0
+    Q->>S: sem_post(): C=1, L=없음
+    Q-->>A: 원래 실행으로 복귀
+    A->>M: 남은 두 번째 기록: R=1
+    Note over M,S: H=-1, R=1 / C=1, L=없음
+    A->>M: 원래 MM 호출의 give
+    Note over A,M: H=-1이므로 H==A 검사 실패

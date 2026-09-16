@@ -1,0 +1,11 @@
+flowchart TD
+    A[스레드 A가 MM 보유] --> B[MM 보유 구간에서 SIGKILL 전달]
+    B --> C[thread_termination_handler]
+    C --> D[자기 PID로 pthread_cancel]
+    D --> E[취소 가능한 상태에서 pthread_exit]
+    E --> F[task_exithook]
+    F --> G[task_recover → sem_recover → sem_release_all]
+    G --> H[하위 토큰 반환, MM의 H와 R은 잔존]
+    H --> I[종료 정리 계속: group_leave 또는 sig_cleanup]
+    I --> J[같은 heap의 sched_kfree → mm_try → mm_free]
+    J --> K[H=A를 보고 하위 토큰 획득 없이 재귀 진입]

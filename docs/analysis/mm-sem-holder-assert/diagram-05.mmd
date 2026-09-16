@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant U as Binary Manager unload
+    participant S as 하위 semaphore semcount, L
+    participant B as MM 사용자 B
+    participant C as MM 사용자 C
+    participant M as MM 소유 정보 H, R
+    Note over U,M: A가 정상 보유: semcount=0, L=A:1 / H=A, R=1
+    U->>S: release_binary_sem: semcount 증가
+    Note over S: semcount=1, 그러나 L=A:1 유지
+    U->>S: sem_unblock_task → sem_restorebaseprio
+    Note over S: holder counts=1이므로 제거 조건 불충족
+    U->>S: 이어서 task_recover(A) → sem_release_all
+    Note over S: A holder 제거, semcount 재증가: semcount=2
+    B->>S: sem_wait 성공: semcount=1, L=B:1
+    B->>M: H=B, R=1
+    Note over B,M: B는 아직 MM을 반환하지 않음
+    C->>S: sem_wait도 성공: semcount=0, L=B:1과 C:1
+    C->>M: H=C, R=1
+    C->>M: C의 give: H=C 검사 통과, H=-1, R=0
+    C->>S: sem_post(): semcount=1, L=B:1
+    B->>M: B의 give
+    Note over B,M: H=-1이므로 H==B 검사 실패

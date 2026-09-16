@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant A as 스레드 A
+    participant M as MM 소유 정보 H, R
+    participant S as 하위 semaphore C, L
+    Note over M,S: 초기 상태 H=-1, R=0 / C=1, L=없음
+    A->>S: sem_wait()로 토큰 획득
+    S-->>A: C=0, L=A:1
+    A->>M: H=A, R=1 기록
+    A->>M: 같은 PID의 재귀 획득
+    Note over A,M: H=A이므로 R=2, 하위 sem_wait는 생략
+    A->>M: 안쪽 give: R=2에서 1로 감소
+    A->>M: 바깥 give: H=A 검사 통과
+    A->>M: 마지막 참조이므로 H=-1, R=0
+    A->>S: sem_post()로 토큰 반환
+    Note over M,S: 최종 상태 H=-1, R=0 / C=1, L=없음

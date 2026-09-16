@@ -1,0 +1,24 @@
+CASE=no-self-recovery EXPECTED_EXIT=0
+valid A owns MM before self exit: pid=10 IRQ_nesting=0 semcount=0 holder=10 recursion=1
+no recovery: B excluded: pid=10 IRQ_nesting=0 semcount=1 holder=-1 recursion=0
+
+CASE=single-cpu-control EXPECTED_EXIT=0
+valid A owns MM before self exit: pid=10 IRQ_nesting=0 semcount=0 holder=10 recursion=1
+self recovery returns token but preserves MM metadata: pid=10 IRQ_nesting=0 semcount=1 holder=10 recursion=1
+A inner free returned: pid=10 IRQ_nesting=1 semcount=0 holder=10 recursion=1
+B runs wholly before A cleanup; no overlap: pid=10 IRQ_nesting=0 semcount=1 holder=-1 recursion=0
+
+CASE=single-cpu-no-B EXPECTED_EXIT=0
+valid A owns MM before self exit: pid=10 IRQ_nesting=0 semcount=0 holder=10 recursion=1
+self recovery returns token but preserves MM metadata: pid=10 IRQ_nesting=0 semcount=1 holder=10 recursion=1
+A inner free returned: pid=10 IRQ_nesting=1 semcount=1 holder=10 recursion=2
+A cleanup alone leaves stale recursion, but does not assert: pid=10 IRQ_nesting=0 semcount=1 holder=10 recursion=1
+
+CASE=two-cpu-publish-during-cleanup EXPECTED_EXIT=86
+valid A owns MM before self exit: pid=10 IRQ_nesting=0 semcount=0 holder=10 recursion=1
+self recovery returns token but preserves MM metadata: pid=10 IRQ_nesting=0 semcount=1 holder=10 recursion=1
+B obtained low-level token and left IRQ critical section: pid=20 IRQ_nesting=0 semcount=0 holder=10 recursion=1
+A inner give ownership assertion passed: pid=10 IRQ_nesting=1 semcount=0 holder=10 recursion=3
+already-running CPU B publishes MM ownership: pid=20 IRQ_nesting=0 semcount=0 holder=20 recursion=1
+A inner free returned: pid=10 IRQ_nesting=1 semcount=1 holder=-1 recursion=0
+ASSERT heap->mm_holder == my_pid at /Volumes/T7/Dev/TizenRT/master/os/mm/mm_heap/mm_sem.c:201

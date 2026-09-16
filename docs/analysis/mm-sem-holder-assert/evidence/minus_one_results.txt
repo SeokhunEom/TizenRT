@@ -1,0 +1,19 @@
+CASE claim-take (expected exit 86):
+claim interrupted between holder and count stores: pid=10 semcount=0 mm_holder=10 mm_counts_held=0 low_level_holders=1
+nested same-PID MM call returned: pid=10 semcount=1 mm_holder=-1 mm_counts_held=0 low_level_holders=0
+outer acquisition completed: pid=10 semcount=1 mm_holder=-1 mm_counts_held=1 low_level_holders=0
+ASSERT heap->mm_holder == my_pid at /Volumes/T7/Dev/TizenRT/master/os/mm/mm_heap/mm_sem.c:201
+
+CASE claim-try (expected exit 86):
+claim interrupted between holder and count stores: pid=10 semcount=0 mm_holder=10 mm_counts_held=0 low_level_holders=1
+nested same-PID MM call returned: pid=10 semcount=1 mm_holder=-1 mm_counts_held=0 low_level_holders=0
+outer acquisition completed: pid=10 semcount=1 mm_holder=-1 mm_counts_held=1 low_level_holders=0
+ASSERT heap->mm_holder == my_pid at /Volumes/T7/Dev/TizenRT/master/os/mm/mm_heap/mm_sem.c:201
+
+CASE stale-release-completed (expected exit 86):
+stale A recovered while B still owns MM: pid=30 semcount=1 mm_holder=20 mm_counts_held=1 low_level_holders=1
+C entered and fully released before B resumes: pid=30 semcount=1 mm_holder=-1 mm_counts_held=0 low_level_holders=1
+ASSERT heap->mm_holder == my_pid at /Volumes/T7/Dev/TizenRT/master/os/mm/mm_heap/mm_sem.c:201
+
+CASE balanced-control (expected exit 0):
+ordinary nested acquisition/release: pid=10 semcount=1 mm_holder=-1 mm_counts_held=0 low_level_holders=0
