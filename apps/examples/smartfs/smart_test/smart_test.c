@@ -306,15 +306,32 @@ static int smart_seek_with_write_test(char *filename)
 			index -= g_lineCount;
 		}
 #endif
+		/* Validate lengths and I/O before using the data as array indexes. */
+
+		if (g_lineLen[index] <= 0 || g_lineLen[index] >= sizeof(readstring)) {
+			printf("ERROR: Invalid line length %d at line %d\n", g_lineLen[index], index);
+			pass = FALSE;
+			break;
+		}
+
 		/* Read the data into the buffer */
 
-		fseek(fd, g_linePos[index], SEEK_SET);
-		fread(readstring, 1, g_lineLen[index], fd);
+		if (fseek(fd, g_linePos[index], SEEK_SET) != OK ||
+			fread(readstring, 1, g_lineLen[index], fd) != g_lineLen[index]) {
+			printf("ERROR: Read failed at line %d, errno %d\n", index, errno);
+			pass = FALSE;
+			break;
+		}
 		readstring[g_lineLen[index]] = '\0';
 
 		/* Scramble the data in the line */
 
 		len = strlen(readstring);
+		if (len != g_lineLen[index]) {
+			printf("ERROR: Invalid data length %d (expected %d) at line %d\n", len, g_lineLen[index], index);
+			pass = FALSE;
+			break;
+		}
 		for (c = 0; c < 100; c++) {
 			s1 = rand() % len;
 			s2 = rand() % len;
@@ -326,14 +343,22 @@ static int smart_seek_with_write_test(char *filename)
 
 		/* Now write the data back to the file */
 
-		fseek(fd, g_linePos[index], SEEK_SET);
-		fwrite(readstring, 1, g_lineLen[index], fd);
-		fflush(fd);
+		if (fseek(fd, g_linePos[index], SEEK_SET) != OK ||
+			fwrite(readstring, 1, g_lineLen[index], fd) != g_lineLen[index] ||
+			fflush(fd) != OK) {
+			printf("ERROR: Write failed at line %d, errno %d\n", index, errno);
+			pass = FALSE;
+			break;
+		}
 
 		/* Now read the data back and compare it */
 
-		fseek(fd, g_linePos[index], SEEK_SET);
-		fread(cmpstring, 1, g_lineLen[index], fd);
+		if (fseek(fd, g_linePos[index], SEEK_SET) != OK ||
+			fread(cmpstring, 1, g_lineLen[index], fd) != g_lineLen[index]) {
+			printf("ERROR: Readback failed at line %d, errno %d\n", index, errno);
+			pass = FALSE;
+			break;
+		}
 		cmpstring[g_lineLen[index]] = '\0';
 
 		if (strcmp(readstring, cmpstring) != 0) {
@@ -363,7 +388,7 @@ static int smart_seek_with_write_test(char *filename)
 	}
 
 	fclose(fd);
-	return OK;
+	return pass ? OK : ERROR;
 }
 
 /****************************************************************************

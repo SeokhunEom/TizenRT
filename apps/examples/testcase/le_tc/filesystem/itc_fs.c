@@ -1317,6 +1317,62 @@ static void itc_libc_stdio_fwrite_fread_p(void)
 	TC_SUCCESS_RESULT();
 }
 
+#ifdef CONFIG_FS_SMARTFS
+/* A short overwrite must preserve all bytes outside the requested range,
+ * including when the request crosses a SMART sector boundary.
+ */
+static void itc_fs_vfs_write_preserve_p(void)
+{
+	const char *filename = VFS_FILE_PATH ".overwrite";
+	size_t length = 2 * CONFIG_MTD_SMART_SECTOR_SIZE;
+	size_t offsets[] = {13, CONFIG_MTD_SMART_SECTOR_SIZE - 16};
+	size_t counts[] = {16, 32};
+	char *expected = malloc(length);
+	char *buffer = malloc(length);
+	int fd = -1;
+	int ret;
+	int i;
+
+	TC_ASSERT_NEQ_CLEANUP("malloc", expected, NULL, goto cleanup);
+	TC_ASSERT_NEQ_CLEANUP("malloc", buffer, NULL, goto cleanup);
+	memset(expected, 'a', length);
+	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0666);
+	TC_ASSERT_GEQ_CLEANUP("open", fd, 0, goto cleanup);
+	ret = write(fd, expected, length);
+	TC_ASSERT_EQ_CLEANUP("write", ret, length, goto cleanup);
+
+	for (i = 0; i < 2; i++) {
+		/* Back the short request with a full buffer so an over-read is
+		 * detected as file corruption, without accessing unrelated RAM.
+		 */
+		memset(buffer, 'Z', length);
+		ret = lseek(fd, offsets[i], SEEK_SET);
+		TC_ASSERT_EQ_CLEANUP("lseek", ret, offsets[i], goto cleanup);
+		ret = write(fd, buffer, counts[i]);
+		TC_ASSERT_EQ_CLEANUP("short write", ret, counts[i], goto cleanup);
+		memset(expected + offsets[i], 'Z', counts[i]);
+		ret = close(fd);
+		fd = -1;
+		TC_ASSERT_EQ_CLEANUP("close", ret, OK, goto cleanup);
+		fd = open(filename, O_RDWR);
+		TC_ASSERT_GEQ_CLEANUP("reopen", fd, 0, goto cleanup);
+		ret = read(fd, buffer, length);
+		TC_ASSERT_EQ_CLEANUP("read", ret, length, goto cleanup);
+		ret = memcmp(buffer, expected, length);
+		TC_ASSERT_EQ_CLEANUP("preserve surrounding bytes", ret, 0, goto cleanup);
+	}
+	TC_SUCCESS_RESULT();
+
+cleanup:
+	if (fd >= 0) {
+		close(fd);
+	}
+	unlink(filename);
+	free(buffer);
+	free(expected);
+}
+#endif
+
 void itc_fs_main(void)
 {
 	int ret;
@@ -1331,6 +1387,9 @@ void itc_fs_main(void)
 	itc_fs_vfs_umount_n_twice();
 	itc_fs_vfs_mount_p_read_mode();
 	itc_fs_vfs_mount_n_twice();
+#ifdef CONFIG_FS_SMARTFS
+	itc_fs_vfs_write_preserve_p();
+#endif
 	itc_fs_vfs_open_n();
 	itc_fs_vfs_close_n();
 	itc_fs_vfs_read_p_empty_file();

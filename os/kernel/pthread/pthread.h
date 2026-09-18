@@ -109,6 +109,7 @@ extern "C" {
  * Public Function Prototypes
  ****************************************************************************/
 
+struct tcb_s;				/* Forward reference */
 struct pthread_tcb_s;			/* Forward reference */
 struct task_group_s;			/* Forward reference */
 
@@ -132,7 +133,7 @@ int pthread_sem_give(sem_t *sem);
 int pthread_mutex_take(FAR struct pthread_mutex_s *mutex);
 int pthread_mutex_trytake(FAR struct pthread_mutex_s *mutex);
 int pthread_mutex_give(FAR struct pthread_mutex_s *mutex);
-void pthread_mutex_inconsistent(FAR struct pthread_tcb_s *tcb);
+void pthread_mutex_inconsistent(FAR struct tcb_s *tcb);
 #else
 #define pthread_mutex_take(m) pthread_sem_take(&(m)->sem)
 #define pthread_mutex_trytake(m) pthread_sem_trytake(&(m)->sem)

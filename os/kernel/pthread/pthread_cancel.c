@@ -232,7 +232,7 @@ int pthread_cancel(pthread_t thread)
 
 #ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
 	/* Recover any mutexes still held by the canceled thread */
-	pthread_mutex_inconsistent(tcb);
+	pthread_mutex_inconsistent(&tcb->cmn);
 #endif
 
 	/* Then let task_terminate do the real work */

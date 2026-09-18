@@ -672,6 +672,12 @@ struct tcb_s {
 
 	int fin_data;			/* Irq notification Data to be handled */
 	int pending_fin_data;		/* Pended irq notification data */
+
+	/* Tasks and pthreads can both own POSIX mutexes. */
+
+#if !defined(CONFIG_DISABLE_PTHREAD) && !defined(CONFIG_PTHREAD_MUTEX_UNSAFE)
+	FAR struct pthread_mutex_s *mhead;	/* List of mutexes held by thread      */
+#endif
 };
 
 /* struct task_tcb_s *************************************************************/
@@ -726,12 +732,6 @@ struct pthread_tcb_s {
 
 	pthread_addr_t arg;			/* Startup argument                    */
 	FAR void *joininfo;			/* Detach-able info to support join    */
-
-	/* Robust mutex support *********************************************/
-
-#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
-	FAR struct pthread_mutex_s *mhead;	/* List of mutexes held by thread      */
-#endif
 
 	/* Clean-up stack ***************************************************/
 

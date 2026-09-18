@@ -74,21 +74,20 @@
  * Name: pthread_mutex_inconsistent
  *
  * Description:
- *   This function is called when a pthread is terminated via either
- *   pthread_exit() or pthread_cancel().  It will check for any mutexes
- *   held by exitting thread.  It will mark them as inconsistent and
+ *   This function is called when a task or pthread is terminated.  It checks
+ *   for mutexes held by the exiting thread.  It will mark them as inconsistent and
  *   then wake up the highest priority waiter for the mutex.  That
  *   instance of pthread_mutex_lock() will then return EOWNERDEAD.
  *
  * Input Parameters:
- *   tcb -- a reference to the TCB of the exitting pthread.
+ *   tcb -- a reference to the TCB of the exiting task or pthread.
  *
  * Returned Value:
  *   None.
  *
  ****************************************************************************/
 
-void pthread_mutex_inconsistent(FAR struct pthread_tcb_s *tcb)
+void pthread_mutex_inconsistent(FAR struct tcb_s *tcb)
 {
 	FAR struct pthread_mutex_s *mutex;
 	irqstate_t flags;

@@ -32,6 +32,7 @@
 #include <signal.h>
 #include <sched.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <errno.h>
 #include <sys/types.h>
 #include "tc_internal.h"
@@ -1646,12 +1647,130 @@ static void tc_pthread_set_get_affinity(void)
 	TC_SUCCESS_RESULT();
 }
 
+#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
+static pthread_mutex_t g_task_mutex[2];
+static sem_t g_task_mutex_ready;
+static sem_t g_task_mutex_park;
+static int g_task_mutex_result;
+static int g_task_mutex_mode;
+
+static int task_mutex_owner(int argc, char *argv[])
+{
+	int ret;
+
+	if (g_task_mutex_mode >= 2) {
+		task_setcanceltype(TASK_CANCEL_ASYNCHRONOUS, NULL);
+	}
+
+	/* Exercise a non-head removal, then leave one mutex owned at exit. */
+
+	ret = pthread_mutex_lock(&g_task_mutex[0]);
+	if (ret == OK) {
+		ret = pthread_mutex_lock(&g_task_mutex[1]);
+	}
+	if (ret == OK) {
+		ret = pthread_mutex_unlock(&g_task_mutex[0]);
+	}
+	if (ret == OK) {
+		ret = pthread_mutex_unlock(&g_task_mutex[1]);
+	}
+	if (ret == OK) {
+		ret = pthread_mutex_trylock(&g_task_mutex[0]);
+	}
+
+	g_task_mutex_result = ret;
+	sem_post(&g_task_mutex_ready);
+	if (g_task_mutex_mode == 3 && ret == OK) {
+		/* NORMAL mutexes deadlock on a second lock by their owner. */
+		pthread_mutex_lock(&g_task_mutex[0]);
+	} else if (g_task_mutex_mode != 0) {
+		while (sem_wait(&g_task_mutex_park) < 0 && errno == EINTR) {
+		}
+	}
+	return OK;
+}
+
+static void tc_pthread_task_mutex_owner(void)
+{
+	pthread_mutexattr_t attr;
+	struct sched_param param;
+	pid_t pid = -1;
+	int ret;
+	int mode;
+	int retry;
+
+	ret = pthread_mutexattr_init(&attr);
+	TC_ASSERT_EQ("pthread_mutexattr_init", ret, OK);
+	ret = pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST);
+	TC_ASSERT_EQ_CLEANUP("pthread_mutexattr_setrobust", ret, OK, pthread_mutexattr_destroy(&attr));
+	ret = pthread_mutex_init(&g_task_mutex[0], &attr);
+	TC_ASSERT_EQ_CLEANUP("pthread_mutex_init", ret, OK, pthread_mutexattr_destroy(&attr));
+	ret = pthread_mutex_init(&g_task_mutex[1], &attr);
+	pthread_mutexattr_destroy(&attr);
+	TC_ASSERT_EQ_CLEANUP("pthread_mutex_init", ret, OK, pthread_mutex_destroy(&g_task_mutex[0]));
+	sem_init(&g_task_mutex_ready, 0, 0);
+	sem_init(&g_task_mutex_park, 0, 0);
+
+	for (mode = 0; mode < 4; mode++) {
+		g_task_mutex_mode = mode;
+		g_task_mutex_result = ERROR;
+		ret = sched_getparam(0, &param);
+		TC_ASSERT_EQ_CLEANUP("sched_getparam", ret, OK, goto cleanup);
+		/* Run the owner through its blocking call before the parent resumes. */
+		pid = task_create("mutex_owner", param.sched_priority + 1, 2048, task_mutex_owner, NULL);
+		TC_ASSERT_GT_CLEANUP("task_create", pid, 0, goto cleanup);
+		do {
+			ret = sem_wait(&g_task_mutex_ready);
+		} while (ret < 0 && errno == EINTR);
+		TC_ASSERT_EQ_CLEANUP("sem_wait", ret, OK, goto cleanup);
+		TC_ASSERT_EQ_CLEANUP("task mutex operations", g_task_mutex_result, OK, goto cleanup);
+
+		if (mode != 0) {
+			ret = task_delete(pid);
+			TC_ASSERT_EQ_CLEANUP("task_delete", ret, OK, goto cleanup);
+		}
+		/* CHILD_STATUS need not be enabled. Wait for the TCB to disappear. */
+		for (retry = 0; retry < 1000 && sched_getparam(pid, &param) == OK; retry++) {
+			usleep(1000);
+		}
+		TC_ASSERT_LT_CLEANUP("task exit", retry, 1000, goto cleanup);
+		pid = -1;
+
+		ret = pthread_mutex_trylock(&g_task_mutex[0]);
+		TC_ASSERT_EQ_CLEANUP("dead task mutex", ret, EOWNERDEAD, goto cleanup);
+		ret = pthread_mutex_consistent(&g_task_mutex[0]);
+		TC_ASSERT_EQ_CLEANUP("pthread_mutex_consistent", ret, OK, goto cleanup);
+		ret = pthread_mutex_trylock(&g_task_mutex[0]);
+		TC_ASSERT_EQ_CLEANUP("recovered task mutex", ret, OK, goto cleanup);
+		ret = pthread_mutex_unlock(&g_task_mutex[0]);
+		TC_ASSERT_EQ_CLEANUP("pthread_mutex_unlock", ret, OK, goto cleanup);
+		ret = pthread_mutex_trylock(&g_task_mutex[1]);
+		TC_ASSERT_EQ_CLEANUP("released task mutex", ret, OK, goto cleanup);
+		ret = pthread_mutex_unlock(&g_task_mutex[1]);
+		TC_ASSERT_EQ_CLEANUP("pthread_mutex_unlock", ret, OK, goto cleanup);
+	}
+	TC_SUCCESS_RESULT();
+
+cleanup:
+	if (pid > 0 && sched_getparam(pid, &param) == OK) {
+		task_delete(pid);
+	}
+	sem_destroy(&g_task_mutex_ready);
+	sem_destroy(&g_task_mutex_park);
+	pthread_mutex_destroy(&g_task_mutex[0]);
+	pthread_mutex_destroy(&g_task_mutex[1]);
+}
+#endif
+
 /****************************************************************************
  * Name: pthread_main
  ****************************************************************************/
 
 int pthread_main(void)
 {
+#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
+	tc_pthread_task_mutex_owner();
+#endif
 	tc_pthread_pthread_barrier_init_destroy_wait();
 	tc_pthread_pthread_create_exit_join();
 	tc_pthread_pthread_tryjoin_np();

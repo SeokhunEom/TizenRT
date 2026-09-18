@@ -99,9 +99,9 @@ void sem_initialize(void);
 
 void sem_waitirq(FAR struct tcb_s *wtcb, int errcode);
 
-/* Recover semaphore resources with a task or thread is destroyed  */
+/* Cancel a semaphore wait when a task or thread is destroyed. */
 
-void sem_recover(FAR struct tcb_s *tcb);
+void sem_recover_wait(FAR struct tcb_s *tcb);
 
 /* Special logic needed only by priority inheritance to manage collections of
  * holders of semaphores.

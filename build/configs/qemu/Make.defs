@@ -110,19 +110,11 @@ ifneq ($(CONFIG_DEBUG_NOOPT),y)
 endif
 
 ARCHCFLAGS = -fno-builtin
-ARCHCXXFLAGS = -fno-builtin -fno-rtti
+ARCHCXXFLAGS = -fno-builtin -fpermissive
 ARCHWARNINGS = -Wall -Werror -Wstrict-prototypes -Wshadow -Wundef
 ARCHWARNINGSXX = -Wall
 ARCHDEFINES =
 ARCHPICFLAGS = -fpic -msingle-pic-base -mpic-register=r10
-ARCHCXXFLAGS += -fexceptions -mcpu=cortex-r4 -mfpu=vfpv3 -fpermissive
-ifeq ($(CONFIG_CXX_VERSION_17),y)
-  ARCHCXXFLAGS += -std=c++17
-else ifeq ($(CONFIG_CXX_VERSION_14),y)
-  ARCHCXXFLAGS += -std=c++14
-else
-  ARCHCXXFLAGS += -std=c++11
-endif
 ARCHWARNINGS += -Wno-implicit-function-declaration -Wno-unused-function -Wno-unused-but-set-variable
 ARCHWARNINGSXX += -Wno-sign-compare -Wshadow
 
@@ -145,8 +137,20 @@ else ifeq ($(CONFIG_CXX_VERSION_14),y)
 else
   CXXFLAGS += -std=c++11
 endif
-CXXFLAGS += -fno-builtin -fno-exceptions -fcheck-new
-CXXFLAGS += -D_DEBUG -D_LIBCPP_BUILD_STATIC -D_LIBCPP_NO_EXCEPTIONS -ffunction-sections -fdata-sections
+CXXFLAGS += -fcheck-new -frtti
+CXXFLAGS += -D_DEBUG -D_LIBCPP_BUILD_STATIC -ffunction-sections -fdata-sections
+ifeq ($(CONFIG_LIBCXX_EXCEPTION),y)
+CXXFLAGS += -fexceptions
+else
+CXXFLAGS += -fno-exceptions -D_LIBCPP_NO_EXCEPTIONS
+endif
+
+# Select the ABI library with the same Cortex/Thumb/float ABI as the firmware.
+ifeq ($(CONFIG_LIBCXX_HAVE_LIBSUPCXX),y)
+LIBSUPXX = ${shell $(CXX) $(ARCHCPUFLAGS) -print-file-name=libsupc++.a}
+EXTRA_LIBS += $(LIBSUPXX)
+CXXFLAGS += -D__GLIBCXX__
+endif
 ifeq ($(CONFIG_LIBCXX),y)
 CXXFLAGS += -DCONFIG_WCHAR_BUILTIN
 endif

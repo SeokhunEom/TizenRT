@@ -10,7 +10,7 @@ import selectors
 import subprocess
 import time
 
-SUITES = {'kernel_tc': 'Kernel TC', 'drivers_tc': 'Drivers TC', 'filesystem_tc': 'FileSystem TC'}
+SUITES = {'kernel_tc': 'Kernel TC', 'drivers_tc': 'Drivers TC', 'filesystem_tc': 'FileSystem TC', 'libcxx_utc': 'Libc++ TC'}
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--root', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
@@ -137,9 +137,9 @@ finally:
     selector.close()
     result['elapsed_seconds'] = round(time.monotonic() - started, 3)
     result['observed_pass_lines'] = len(re.findall(rb'\] PASS\s*(?:\r?\n|$)', transcript))
-    result['observed_fail_lines'] = len(re.findall(rb'\] FAIL\b', transcript))
+    result['observed_fail_lines'] = len(re.findall(rb'\] FAIL\b|TC Assertion FAIL', transcript))
     result['failure_lines'] = [line for line in transcript.decode('utf-8', 'replace').splitlines()
-                               if '[FAIL]' in line or re.search(r'\]\s+FAIL\b', line)]
+                               if '[FAIL]' in line or 'TC Assertion FAIL' in line or re.search(r'\]\s+FAIL\b', line)]
     (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps({key: result[key] for key in ('suite','status','completed','pass','fail','elapsed_seconds')}, indent=2))
     if 'error' in result:
