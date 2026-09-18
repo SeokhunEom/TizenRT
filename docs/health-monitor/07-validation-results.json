@@ -1,0 +1,335 @@
+{
+  "date": "2026-09-18",
+  "baseline_commit": "d1839f0704c8e78f0b9328158e3553f9a2de7758",
+  "reference_config": "rtl8730e/loadable_ext_ddr_st7785",
+  "docker_image": "tizenrt/tizenrt:2.0.1-arm64-rtl8730e-local",
+  "docker_image_id": "sha256:aa453f25ebf1648620f34af905d0891e8899efb1e62046d6e6806238426c9a5b",
+  "arm_compiler": "GNU Arm Embedded Toolchain 10.3-2021.10, GCC 10.3.1",
+  "host_compiler": "Ubuntu/Linaro GCC 5.4.0 (Linux AArch64)",
+  "physical_board_tested": false,
+  "host_runtime_variants_passed": 21,
+  "host_full_regression_log": "host-tests.log",
+  "host_final_example_log": "example-tests.log",
+  "arm_example_up_smp_strict_compile_passed": true,
+  "source_sha256": {
+    "apps/examples/health_monitor/health_monitor_main.c": "aedcecfc3509b97bec6629455b041254e248a89ad717dc8b2bea135856030e8c",
+    "apps/examples/health_monitor/Makefile": "61d87fa740b398fe2400033a156402d997897a2e56f5c861c1ea9c3145a068f0",
+    "apps/examples/health_monitor/Make.defs": "3e87accbc4c1aae43b536518e7682a595a621f5d4e2db7bd7781f68fe69a7588",
+    "apps/examples/health_monitor/Kconfig": "bbe3778d050234e3059d6d31b33840cc4a7d1055e4be66e24eef7aebb6929056",
+    "os/kernel/health_monitor/tests/example_test.c": "6df22031c8c50deb8550c68059fc48fbe05ed77a067817965e16e8bf19b84231",
+    "os/kernel/health_monitor/tests/Makefile": "4efea93a3bdbd959b97cd00020f783388b46efbf98496c9dff2caa60797f8a3d",
+    "docs/health-monitor/rtl8730e-health-monitor.config": "5145ca74c0eeb4466d185fe0a987ae3b60aafb4439354757d45f9c85ccada524",
+    "docs/health-monitor/configure-validation.py": "c812cd24d6ce71d9d6d837b2bb3ade199c97e3e7573390130d56509defa1be4c"
+  },
+  "builds": {
+    "off": {
+      "config_sha256": "54974c094f10b03dec1173f2865873207c9fc13db1ef824d85445cfe1d74858c",
+      "elf": {
+        "tinyara.axf": {
+          "sha256": "3533642bff2ef1d936907706d10215b7d622353e11cb815621b3c3320fa7d497",
+          "arm_elf32_le": true,
+          "sections": {
+            ".xip_image2.text": 928188,
+            ".code": 12288,
+            ".ARM.exidx": 8,
+            ".fini_array": 1564,
+            ".data": 7364,
+            ".bss": 127800,
+            ".heap": 8192,
+            ".stack": 2048,
+            ".psram_heap.start": 0,
+            ".bluetooth_trace.text": 59879
+          }
+        },
+        "common_dbg": {
+          "sha256": "95ea30b254abeee9277c343468c663bc6dfda2754f43137c9923498eccbbecc1",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 714704,
+            ".ARM.extab": 16532,
+            ".ARM.exidx": 14048,
+            ".rodata": 203408,
+            ".ctors": 32,
+            ".data": 1768,
+            ".bss": 9304
+          }
+        },
+        "app1_dbg": {
+          "sha256": "91c09db8200995f379aaae5af12cccedf70f2be817b37c6462c9da91c7e1d244",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 228,
+            ".rodata": 169,
+            ".data": 4,
+            ".bss": 28
+          }
+        }
+      },
+      "packages": [
+        {
+          "name": "app1_rtl8730e_190412.trpk",
+          "bytes": 449,
+          "header_bytes": 44,
+          "payload_bytes": 401,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "385a88ea5fc863d53dc64b11d171c3aee9155b211089774cf2395dbd15ff6755"
+        },
+        {
+          "name": "common_rtl8730e_200204.trpk",
+          "bytes": 950512,
+          "header_bytes": 12,
+          "payload_bytes": 950496,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "65833f25d3bf23351a8d78fe73a25f82658fac2c9303c6d06b57fa400cb66947"
+        },
+        {
+          "name": "kernel_rtl8730e_200204.trpk",
+          "bytes": 1679690,
+          "header_bytes": 12,
+          "payload_bytes": 1679674,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "bcd862b783fb9f12588bcb4358ab8277a831f5192811dcc26297d322571833d3"
+        },
+        {
+          "name": "resource_rtl8730e_240421.trpk",
+          "bytes": 40960,
+          "header_bytes": 10,
+          "payload_bytes": 36864,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "9f8216afba56c2596aa8bb1c31c9879ce958136b0b2e60aa217ba9fe4893e37d"
+        }
+      ],
+      "bootparam": {
+        "bytes": 8192,
+        "bp1_crc32_ok": true,
+        "bp2_erased": true
+      },
+      "tcb_bytes": {
+        "tcb": 232,
+        "task_tcb": 252,
+        "pthread_tcb": 320
+      },
+      "kernel_psram_heap_start": "60126900",
+      "health_monitor_kernel_symbols": false,
+      "health_monitor_example_symbol": false,
+      "fip_bl2_bl32_bl33": true,
+      "make_exit_code": 0,
+      "partition_checks_pass": [
+        "KERNEL",
+        "APP1",
+        "COMMON",
+        "RESOURCE"
+      ]
+    },
+    "on": {
+      "config_sha256": "e768db79dc1a71d931218b2ac6bdbaf11ff0f10e5cb87c2324f7a4dff5f1786c",
+      "elf": {
+        "tinyara.axf": {
+          "sha256": "443f564f4a620942b77b7fe016da50106f64f0532702b67e15c9eaff7d0c4f4d",
+          "arm_elf32_le": true,
+          "sections": {
+            ".xip_image2.text": 928516,
+            ".code": 12288,
+            ".ARM.exidx": 8,
+            ".fini_array": 1236,
+            ".data": 7356,
+            ".bss": 129896,
+            ".heap": 8192,
+            ".stack": 2048,
+            ".psram_heap.start": 0,
+            ".bluetooth_trace.text": 59879
+          }
+        },
+        "common_dbg": {
+          "sha256": "24d2a91ebdd23efbcaea07a4b0f49083db741c5a34238b1c07e4f3825eb30510",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 714704,
+            ".ARM.extab": 16532,
+            ".ARM.exidx": 14048,
+            ".rodata": 203408,
+            ".ctors": 32,
+            ".data": 1768,
+            ".bss": 9304
+          }
+        },
+        "app1_dbg": {
+          "sha256": "36b61f06742cd39790b888e32ce22ae8590dae82f343309d6f4cf8111a4285bf",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 228,
+            ".rodata": 169,
+            ".data": 4,
+            ".bss": 28
+          }
+        }
+      },
+      "packages": [
+        {
+          "name": "app1_rtl8730e_190412.trpk",
+          "bytes": 449,
+          "header_bytes": 44,
+          "payload_bytes": 401,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "385a88ea5fc863d53dc64b11d171c3aee9155b211089774cf2395dbd15ff6755"
+        },
+        {
+          "name": "common_rtl8730e_200204.trpk",
+          "bytes": 950512,
+          "header_bytes": 12,
+          "payload_bytes": 950496,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "05f579313e4a3287688b6b54307777f58dfd05c406c9a4e87b731cda6dab90f4"
+        },
+        {
+          "name": "kernel_rtl8730e_200204.trpk",
+          "bytes": 1680002,
+          "header_bytes": 12,
+          "payload_bytes": 1679986,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "f77a112829624a3041782c5ec9d34f999a9fb8ee6c0d9709a8eb25972931393d"
+        },
+        {
+          "name": "resource_rtl8730e_240421.trpk",
+          "bytes": 40960,
+          "header_bytes": 10,
+          "payload_bytes": 36864,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "9f8216afba56c2596aa8bb1c31c9879ce958136b0b2e60aa217ba9fe4893e37d"
+        }
+      ],
+      "bootparam": {
+        "bytes": 8192,
+        "bp1_crc32_ok": true,
+        "bp2_erased": true
+      },
+      "tcb_bytes": {
+        "tcb": 240,
+        "task_tcb": 260,
+        "pthread_tcb": 328
+      },
+      "kernel_psram_heap_start": "60127100",
+      "health_monitor_kernel_symbols": true,
+      "health_monitor_example_symbol": false,
+      "fip_bl2_bl32_bl33": true,
+      "make_exit_code": 0,
+      "partition_checks_pass": [
+        "KERNEL",
+        "APP1",
+        "COMMON",
+        "RESOURCE"
+      ]
+    },
+    "test": {
+      "config_sha256": "54aa8521203c6ad537a940874aa0521c959f753553d1eaca7398468e241a2503",
+      "elf": {
+        "tinyara.axf": {
+          "sha256": "38d297030def0bbade317557f53b3c3bf32149b4e83e0040ec4d83f8865812e1",
+          "arm_elf32_le": true,
+          "sections": {
+            ".xip_image2.text": 928516,
+            ".code": 12288,
+            ".ARM.exidx": 8,
+            ".fini_array": 1236,
+            ".data": 7356,
+            ".bss": 129896,
+            ".heap": 8192,
+            ".stack": 2048,
+            ".psram_heap.start": 0,
+            ".bluetooth_trace.text": 59879
+          }
+        },
+        "common_dbg": {
+          "sha256": "29da46cfa33f0d66bde7e125f12d7afb3b936bad8bf99bcc9b1b06ded363cd24",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 716004,
+            ".ARM.extab": 16532,
+            ".ARM.exidx": 14064,
+            ".rodata": 204192,
+            ".ctors": 32,
+            ".data": 1768,
+            ".bss": 9336
+          }
+        },
+        "app1_dbg": {
+          "sha256": "f15ddc7b2fa1b9e8ae74059c6ee95d2ff50e7145d1975b213da76d5a4f878001",
+          "arm_elf32_le": true,
+          "sections": {
+            ".text": 228,
+            ".rodata": 169,
+            ".data": 4,
+            ".bss": 28
+          }
+        }
+      },
+      "packages": [
+        {
+          "name": "app1_rtl8730e_190412.trpk",
+          "bytes": 449,
+          "header_bytes": 44,
+          "payload_bytes": 401,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "385a88ea5fc863d53dc64b11d171c3aee9155b211089774cf2395dbd15ff6755"
+        },
+        {
+          "name": "common_rtl8730e_200204.trpk",
+          "bytes": 952608,
+          "header_bytes": 12,
+          "payload_bytes": 952592,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "71bdb4d1a693f3539d9b4410e21d8b6fbac6946f3d245fc53d7a2889fedb2aa6"
+        },
+        {
+          "name": "kernel_rtl8730e_200204.trpk",
+          "bytes": 1680002,
+          "header_bytes": 12,
+          "payload_bytes": 1679986,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "0890d56919c2da8a0427db467203f958a53897d177955029504b3af64a175c51"
+        },
+        {
+          "name": "resource_rtl8730e_240421.trpk",
+          "bytes": 40960,
+          "header_bytes": 10,
+          "payload_bytes": 36864,
+          "crc32_ok": true,
+          "length_ok": true,
+          "sha256": "9f8216afba56c2596aa8bb1c31c9879ce958136b0b2e60aa217ba9fe4893e37d"
+        }
+      ],
+      "bootparam": {
+        "bytes": 8192,
+        "bp1_crc32_ok": true,
+        "bp2_erased": true
+      },
+      "tcb_bytes": {
+        "tcb": 240,
+        "task_tcb": 260,
+        "pthread_tcb": 328
+      },
+      "kernel_psram_heap_start": "60127100",
+      "health_monitor_kernel_symbols": true,
+      "health_monitor_example_symbol": true,
+      "fip_bl2_bl32_bl33": true,
+      "make_exit_code": 0,
+      "partition_checks_pass": [
+        "KERNEL",
+        "APP1",
+        "COMMON",
+        "RESOURCE"
+      ]
+    }
+  }
+}

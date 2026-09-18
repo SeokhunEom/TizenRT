@@ -44,11 +44,14 @@ WDOG_DEPS = $(PM_DEPS) $(TEST_DIR)/watchdog_test.c \
 	$(RTL_DIR)/soc/amebad2/fwlib/include/sysreg_aon.h
 WDOG_TESTS = $(addprefix $(OUT_DIR)/,watchdog-smp watchdog-up watchdog-no-timed-wakeup watchdog-no-tick-suppress)
 TIMER_WDOG_TESTS = $(addprefix $(OUT_DIR)/,timer-watchdog-smp timer-watchdog-up timer-watchdog-no-reason)
+EXAMPLE_TESTS = $(addprefix $(OUT_DIR)/,example-smp example-up)
+EXAMPLE_DEPS = $(DRIVER_DEPS) $(TEST_DIR)/example_test.c \
+	$(OS_DIR)/../apps/examples/health_monitor/health_monitor_main.c
 
 .PHONY: test
 test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
 	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason $(PM_TESTS) \
-	$(TIMER_WDOG_TESTS) $(WDOG_TESTS) $(OUT_DIR)/watchdog-config.ok
+	$(TIMER_WDOG_TESTS) $(WDOG_TESTS) $(EXAMPLE_TESTS) $(OUT_DIR)/watchdog-config.ok
 	$(OUT_DIR)/registry-smp
 	$(OUT_DIR)/registry-up
 	$(OUT_DIR)/driver-smp
@@ -68,6 +71,13 @@ test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT
 	$(OUT_DIR)/watchdog-up
 	$(OUT_DIR)/watchdog-no-timed-wakeup
 	$(OUT_DIR)/watchdog-no-tick-suppress
+	$(OUT_DIR)/example-smp
+	$(OUT_DIR)/example-up
+
+$(OUT_DIR)/example-up: EXAMPLE_FLAGS = -DHEALTH_MONITOR_TEST_UP
+$(EXAMPLE_TESTS): $(EXAMPLE_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) $(EXAMPLE_FLAGS) $(DRIVER_INCLUDES) $(TEST_DIR)/example_test.c -o $@
 
 $(OUT_DIR)/registry-smp: $(TEST_DEPS)
 	mkdir -p $(OUT_DIR)

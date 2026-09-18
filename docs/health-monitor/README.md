@@ -2,7 +2,7 @@
 
 [설계 기준](../HealthMonitorImplementationPlan.md)의 기능을 사용자가 순차적으로 확인할 수 있도록 분리한 실행 계획이다. 설계 기준은 동작 정책을, 이 문서는 진행 순서와 확인 지점을 관리한다.
 
-1~5단계는 사용자 검토·커밋을 완료했다. 6단계 HW watchdog 연결도 구현·호스트 검증·ARM 컴파일과 독립 리뷰 후 사용자 커밋 승인을 받아 본 커밋으로 완료한다. 실제 보드 HW 리셋·절전 동작은 미검증이며, 7단계 제품 설정 활성화는 시작하지 않았다.
+1~6단계는 사용자 검토·커밋과 origin push를 완료했다. 7단계는 검증 예제·설정 활성화안·전체 빌드·메모리 비교 및 보드 시험 절차 준비를 완료했다. 사용자가 현재 보드를 사용할 수 없다고 답했으므로 실제 HW 리셋·절전·성능은 미검증으로 구분한다. 이후 사용자 지시에 따라 `rtl8730e/loadable_ext_ddr_st7785` 한 구성에 활성화 설정을 적용했다.
 
 ## 진행 방식
 
@@ -19,7 +19,7 @@
 ## 중간 단계의 동작
 
 - 각 커밋은 그 단계까지 존재하는 구성으로 빌드 가능하게 유지한다. 아직 구현하지 않은 기능을 성공처럼 보이게 하는 임시 stub은 만들지 않는다.
-- 기본 `CONFIG_HEALTH_MONITOR`는 비활성으로 두고, 기준 defconfig의 제품 동작 활성화는 7단계에서 다룬다. 중간 단계 검증에 사용한 활성 설정과 PM 조건은 결과에 명시한다.
+- Kconfig 기본값 `CONFIG_HEALTH_MONITOR`는 비활성으로 두고, 기준 defconfig의 제품 동작 활성화는 7단계에서 다룬다. 중간 단계 검증에 사용한 활성 설정과 PM 조건은 결과에 명시한다.
 - 1~3단계는 인터페이스와 등록 상태를 만드는 단계다. 실제 tick timeout 리셋은 4단계부터, 정상 절전과 HW WDT를 포함한 전체 동작은 5~7단계에서 확인한다.
 - 보드·빌드 환경이 없어 수행하지 못한 검증은 미실행으로 기록한다. 빌드 통과, 코드 검토, 호스트 검증, 실제 보드 검증을 구분한다.
 
@@ -33,7 +33,7 @@
 | 4 | [tick 검사·PANIC·reboot reason](04-timer-and-panic.md) | 최신 deadline 판정, 도래한 후보 전부 처리, 잠금 밖 PANIC | `health_monitor: check deadlines from the system tick` |
 | 5 | [PM wakeup 연동](05-pm-wakeup.md) | sleep 시간 포함, 다음 wakeup 선택, 복귀 시 판정 | `health_monitor: include deadlines in PM wakeup` |
 | 6 | [HW watchdog 연결](06-hardware-watchdog.md) | 실제 WDT 시작, keepalive 조건, 정상 sleep과 장애 리셋 | `health_monitor: connect tick progress to hardware watchdog` |
-| 7 | [통합 검증·기준 설정 활성화](07-integration-validation.md) | SMP·절전·리셋 실측 결과와 최종 적용 설정 | `health_monitor: validate and enable the rtl8730e configuration` |
+| 7 | [통합 검증·기준 설정 활성화](07-integration-validation.md) | SMP·절전·리셋 실측 결과와 최종 적용 설정 | `health_monitor: enable rtl8730e and add validation example` |
 
 기존 계획 문서는 1단계 구현 커밋에 함께 포함한다. 후속 단계의 계획 문서가 포함돼 있어도 해당 단계의 구현 완료를 의미하지 않는다.
 
@@ -58,7 +58,7 @@
 | 3 | 완료 | [구현·검증 결과](03-driver-ioctl.md). 사용자 커밋 승인. 실제 driver/VFS를 포함한 UP/SMP 호스트 테스트, ON/OFF kernel·driver 빌드와 보드 초기화 객체, 공개 헤더 기반 ARM C/C++ 예제 컴파일 통과. 보드 ioctl 실행은 미검증 | `7f1e3a003` |
 | 4 | 완료 | [구현·검증 결과](04-timer-and-panic.md). Linux ASan/UBSan 7종, ARM kernel ON/OFF·엄격 컴파일·reason OFF 구성 및 추가 모델 비교 통과. 셀프 리뷰 후 사용자 커밋 승인. 실제 보드 PANIC·리셋·실행 시간은 미검증 | `93f49bf9b` |
 | 5 | 완료 | [구현·검증 결과](05-pm-wakeup.md). Linux ASan/UBSan 12종, ARM PM ON/OFF·kernel ON 및 PM 설정별 엄격 컴파일 통과. 독립 리뷰 후 사용자 커밋 승인. 실제 보드 sleep·wakeup은 미검증 | `3ea8a0e8e` |
-| 6 | 완료 | [구현·검증 결과](06-hardware-watchdog.md). Linux ASan/UBSan 19종, timeout 설정 경계, ARM kernel·PM ON/OFF 및 port·board 객체 검증 통과. 독립 리뷰 후 사용자 커밋·origin push 승인. 물리 HW 리셋·보드 절전은 미검증 | 본 커밋: `health_monitor: connect tick progress to hardware watchdog` |
-| 7 | 대기 | — | — |
+| 6 | 완료 | [구현·검증 결과](06-hardware-watchdog.md). Linux ASan/UBSan 19종, timeout 설정 경계, ARM kernel·PM ON/OFF 및 port·board 객체 검증 통과. 독립 리뷰 후 사용자 커밋·origin push 승인. 물리 HW 리셋·보드 절전은 미검증 | `d1839f070` |
+| 7 | 대표 설정 적용·시험 준비 완료, 보드 미실행 | [통합 검증 결과](07-integration-validation.md), [사용·보드 시험 절차](board-validation.md), [활성화 설정](rtl8730e-health-monitor.config). Linux ASan/UBSan 21종, ARM 예제 UP/SMP 엄격 컴파일, OFF/ON/test 전체 빌드·패키지 검사·메모리 비교 완료. `loadable_ext_ddr_st7785`에만 사용자 지시로 활성화 설정 적용. 사용자 커밋·origin push 승인 | 본 커밋: `health_monitor: enable rtl8730e and add validation example` |
 
 기능 검증의 전체 목록은 [설계 기준의 검증 계획](../HealthMonitorImplementationPlan.md)을 사용한다. 각 단계 문서에는 그 단계에서 확인할 항목만 둔다.
