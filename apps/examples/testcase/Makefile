@@ -188,6 +188,9 @@ ifeq ($(CONFIG_EXAMPLES_TESTCASE_MQTT_ITC),y)
 endif
 ifeq ($(CONFIG_EXAMPLES_TESTCASE_NETWORK),y)
 	$(Q) $(call REGISTER,network_tc,tc_network_main,TASH_EXECMD_ASYNC,100,4096)
+ifeq ($(CONFIG_TC_NET_PEER),y)
+	$(Q) $(call REGISTER,network_peer,tc_network_peer_main,TASH_EXECMD_ASYNC,100,4096)
+endif
 endif
 ifeq ($(CONFIG_EXAMPLES_TESTCASE_PREFERENCE_UTC),y)
 	$(Q) $(call REGISTER,preference_utc,utc_preference_main,TASH_EXECMD_ASYNC,100,2048)

@@ -10,7 +10,7 @@ import selectors
 import subprocess
 import time
 
-SUITES = {'kernel_tc': 'Kernel TC', 'drivers_tc': 'Drivers TC', 'filesystem_tc': 'FileSystem TC', 'libcxx_utc': 'Libc++ TC'}
+SUITES = {'network_tc': 'Network TC', 'kernel_tc': 'Kernel TC', 'drivers_tc': 'Drivers TC', 'filesystem_tc': 'FileSystem TC', 'libcxx_utc': 'Libc++ TC'}
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--root', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)

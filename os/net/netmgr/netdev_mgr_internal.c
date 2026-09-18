@@ -27,6 +27,7 @@
 #include <tinyara/lwnl/lwnl.h>
 #include <tinyara/net/if/wifi.h>
 #include <tinyara/net/if/ethernet.h>
+#include <tinyara/net/ethernet.h>
 #include <tinyara/netmgr/netdev_mgr.h>
 #include "netdev_mgr_internal.h"
 #include <tinyara/net/netlog.h>
@@ -145,10 +146,10 @@ struct netdev *nm_register(struct netdev_config *config)
 		return NULL;
 	}
 
-	// to do calculate exact size of tx_buf
-	dev->tx_buf = (uint8_t *)kmm_malloc(config->mtu + 12); // 12 is padding.
+	/* lwIP uses mtu for the IP packet; linkoutput also copies its Ethernet header. */
+	dev->tx_buf = (uint8_t *)kmm_malloc(config->mtu + ETH_HDRLEN);
 	if (!dev->tx_buf) {
-		NET_LOGKE(TAG, "create txbuf fail(%d)\n", config->mtu + 12);
+		NET_LOGKE(TAG, "create txbuf fail(%d)\n", config->mtu + ETH_HDRLEN);
 		return NULL;
 	}
 	struct nic_config nconfig;

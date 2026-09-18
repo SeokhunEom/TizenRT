@@ -12,6 +12,15 @@ menuconfig EXAMPLES_TESTCASE_NETWORK
 
 if EXAMPLES_TESTCASE_NETWORK
 
+config TC_NET_PEER
+	bool "Bounded TCP/UDP runtime peer"
+	depends on NET_IPv4 && NET_TCP && NET_UDP
+	depends on NET_SO_SNDTIMEO && NET_SO_RCVTIMEO && NET_SO_REUSE
+	default n
+	---help---
+		Register network_peer for binary payload checks with a loopback
+		or external peer. This command runs separately from network_tc.
+
 config TC_NET_ALL
 	bool "All"
 	default n

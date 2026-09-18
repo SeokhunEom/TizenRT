@@ -26,6 +26,7 @@
 #include <tinyara/lwnl/lwnl.h>
 #include <tinyara/net/if/wifi.h>
 #include <tinyara/net/if/ethernet.h>
+#include <tinyara/net/ethernet.h>
 #include <tinyara/netmgr/netdev_mgr.h>
 #include <tinyara/netmgr/netctl.h>
 #include "lwip/opt.h"
@@ -337,6 +338,9 @@ static err_t lwip_linkoutput(struct netif *nic, struct pbuf *buf)
 	int offset = 0;
 	struct pbuf *tbuf = buf;
 	while (tbuf) {
+		if (offset + tbuf->len > nic->mtu + ETH_HDRLEN) {
+			return ERR_BUF;
+		}
 		memcpy((void *)&dev->tx_buf[offset], (void *)tbuf->payload, tbuf->len);
 		offset += tbuf->len;
 		tbuf = tbuf->next;
