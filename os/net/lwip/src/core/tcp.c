@@ -852,6 +852,22 @@ err_t tcp_connect(struct tcp_pcb *pcb, const ip_addr_t *ipaddr, u16_t port, tcp_
 
 	LWIP_ERROR("tcp_connect: can only connect from state CLOSED", pcb->state == CLOSED, return ERR_ISCONN);
 
+	/* RFC 9293: an active OPEN must reject broadcast/multicast destinations.
+	 * Validate before changing the PCB or starting SYN retransmissions.
+	 */
+	if (ip_addr_ismulticast(ipaddr)) {
+		return ERR_VAL;
+	}
+#if LWIP_IPV4
+	if (IP_IS_V4(ipaddr) && !ip_addr_isany(ipaddr)) {
+		struct netif *outif = ip_route(&pcb->local_ip, ipaddr);
+		if (ip4_addr_get_u32(ip_2_ip4(ipaddr)) == IPADDR_BROADCAST ||
+			(outif != NULL && ip_addr_isbroadcast(ipaddr, outif))) {
+			return ERR_VAL;
+		}
+	}
+#endif
+
 	LWIP_DEBUGF(TCP_DEBUG, ("tcp_connect to port %" U16_F "\n", port));
 	ip_addr_set(&pcb->remote_ip, ipaddr);
 	pcb->remote_port = port;

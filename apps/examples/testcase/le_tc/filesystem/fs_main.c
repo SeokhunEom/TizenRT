@@ -5719,6 +5719,10 @@ static void tc_libc_stdio_tempnam_p(void)
 
 	/* Deinit */
 errout:
+	if (fp) {
+		fclose(fp);
+	}
+	free(ret);
 #if defined(CONFIG_FS_TMPFS) || defined(CONFIG_FS_SMARTFS)
 	if (false == tmpfs_mount_exist) {
 		umount(CONFIG_LIBC_TMPDIR);
@@ -5770,6 +5774,10 @@ static void tc_libc_stdio_tempnam_null_arg_n(void)
 
 	/* Deinit */
 errout:
+	if (fp) {
+		fclose(fp);
+	}
+	free(ret);
 #if defined(CONFIG_FS_TMPFS) || defined(CONFIG_FS_SMARTFS)
 	if (false == tmpfs_mount_exist) {
 		umount(CONFIG_LIBC_TMPDIR);

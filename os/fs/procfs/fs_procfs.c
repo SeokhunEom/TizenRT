@@ -334,6 +334,8 @@ static int procfs_open(FAR struct file *filep, FAR const char *relpath, int ofla
 				DEBUGASSERT(filep->f_priv);
 
 				((struct procfs_file_s *)filep->f_priv)->procfsentry = &g_procfsentries[x];
+				/* Overlapping patterns must not reopen and replace f_priv. */
+				break;
 			}
 		}
 	}

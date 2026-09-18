@@ -249,6 +249,22 @@ static void *client_connect(void *ptr_id)
 	pthread_exit(pret);
 }
 
+/* Each worker returns an allocated status; join owns and frees it. */
+static int _join_result(pthread_t thread)
+{
+	void *result = NULL;
+	int ret = pthread_join(thread, &result);
+	if (ret != OK) {
+		return ret;
+	}
+	if (result == NULL) {
+		return ERROR;
+	}
+	ret = *(int *)result;
+	free(result);
+	return ret;
+}
+
 /**
 * @testcase         :itc_net_connect_p
 * @brief            :connects the socket referred to by the file descriptor
@@ -264,7 +280,6 @@ static void itc_net_connect_p(void)
 	int num_clients = 1;
 	int id = 1;
 	int ret;
-	int *pret = OK;
 
 	g_port = 8880;
 	_initialize_test();
@@ -273,17 +288,13 @@ static void itc_net_connect_p(void)
 	sem_wait(&g_sig_srvtomain);
 	pthread_create(&client_thread, NULL, client_connect, (void *)&id);
 
-	ret = pthread_join(server_thread, (void *)&pret);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK, free(pret); pthread_join(client_thread, NULL));
-	TC_ASSERT_EQ_CLEANUP("pthread_join", *pret, OK, free(pret); pthread_join(client_thread, NULL));
+	ret = _join_result(server_thread);
+	TC_ASSERT_EQ_CLEANUP("server result", ret, OK, _join_result(client_thread); _deinitialize_test());
+	ret = _join_result(client_thread);
+	TC_ASSERT_EQ_CLEANUP("client result", ret, OK, _deinitialize_test());
 
-	ret = pthread_join(client_thread, (void *)&pret);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK, free(pret));
-	TC_ASSERT_EQ_CLEANUP("pthread_join", *pret, OK, free(pret));
-
-	free(pret);
-	TC_SUCCESS_RESULT();
 	_deinitialize_test();
+	TC_SUCCESS_RESULT();
 }
 
 /**
@@ -305,9 +316,7 @@ static void itc_net_connect_p_multiple_clients(void)
 	int id2 = 2;
 	int id3 = 3;
 	int ret;
-	int *pret = OK;
 
-	_initialize_test();
 	g_port = 8890;
 	_initialize_test();
 
@@ -317,41 +326,20 @@ static void itc_net_connect_p_multiple_clients(void)
 	pthread_create(&client2_thread, NULL, client_connect, (void *)&id2);
 	pthread_create(&client3_thread, NULL, client_connect, (void *)&id3);
 
-	ret = pthread_join(server_thread, (void *)&pret);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK,
-						 free(pret);
-						 pthread_join(client3_thread, NULL);
-						 pthread_join(client2_thread, NULL);
-						 pthread_join(client1_thread, NULL));
-	TC_ASSERT_EQ_CLEANUP("pthread_join", *pret, OK,
-						 free(pret);
-						 pthread_join(client3_thread, NULL);
-						 pthread_join(client2_thread, NULL);
-						 pthread_join(client1_thread, NULL));
-	ret = pthread_join(client3_thread, (void *)&pret);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK,
-						 free(pret);
-						 pthread_join(client2_thread, NULL);
-						 pthread_join(client1_thread, NULL));
-	TC_ASSERT_EQ_CLEANUP("pthread_join", *pret, OK,
-						 free(pret);
-						 pthread_join(client2_thread, NULL);
-						 pthread_join(client1_thread, NULL));
+	ret = _join_result(server_thread);
+	TC_ASSERT_EQ_CLEANUP("server result", ret, OK,
+	                     _join_result(client3_thread); _join_result(client2_thread);
+	                     _join_result(client1_thread); _deinitialize_test());
+	ret = _join_result(client3_thread);
+	TC_ASSERT_EQ_CLEANUP("client3 result", ret, OK,
+	                     _join_result(client2_thread); _join_result(client1_thread); _deinitialize_test());
+	ret = _join_result(client2_thread);
+	TC_ASSERT_EQ_CLEANUP("client2 result", ret, OK, _join_result(client1_thread); _deinitialize_test());
+	ret = _join_result(client1_thread);
+	TC_ASSERT_EQ_CLEANUP("client1 result", ret, OK, _deinitialize_test());
 
-	ret = pthread_join(client2_thread, (void *)&pret);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK,
-						 free(pret);
-						 pthread_join(client1_thread, NULL));
-	TC_ASSERT_EQ_CLEANUP("pthread_join", *pret, OK,
-						 free(pret);
-						 pthread_join(client1_thread, NULL));
-
-	ret = pthread_join(client1_thread, NULL);
-	TC_ASSERT_EQ_CLEANUP("pthread_join", ret, OK, free(pret));
-
-	free(pret);
-	TC_SUCCESS_RESULT();
 	_deinitialize_test();
+	TC_SUCCESS_RESULT();
 }
 
 int itc_net_connect_main(void)

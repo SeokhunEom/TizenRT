@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "3533019f4792376ca0f47e4a876f2d0706e219c0",
+  "reason": "No PWM, watchdog or ADC device nodes in the QEMU build_test fixture. Retain raw 14 PASS / 8 FAIL; reject any other failure or newly present device.",
+  "absent_devices": [
+    "pwm0",
+    "watchdog0",
+    "adc0"
+  ],
+  "failure_signatures": [
+    "[tc_driver_pwm_open_close] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_pwm_read_write] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_pwm_ioctl] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_watchdog_open_close] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_watchdog_read_write] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_watchdog_ioctl] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_adc_open_close] FAIL adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+    "[tc_driver_adc_read] FAIL adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)"
+  ]
+}
