@@ -158,7 +158,7 @@ OBJEXT = .o
 LIBEXT = .a
 EXEEXT =
 
-LDFLAGS += -nostartfiles -nodefaultlibs
+# Link directly with ld; GCC startup/default-library options do not apply.
 ifeq ($(CONFIG_DEBUG_SYMBOLS),y)
   LDFLAGS += -g
 endif
