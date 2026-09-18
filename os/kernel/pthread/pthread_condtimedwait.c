@@ -103,9 +103,8 @@
  *   the condition is signaled.
  *
  * Parameters:
- *   argc      - the number of arguments (should be 3)
+ *   argc      - the number of arguments (should be 2)
  *   pid       - the task ID of the task to wakeup
- *   signo     - The signal to use to wake up the task
  *   cond_ptr  - The condition variable pointer cast to uint32_t
  *
  * Return Value:
@@ -115,7 +114,7 @@
  *
  ****************************************************************************/
 
-static void pthread_condtimedout(int argc, uint32_t pid, uint32_t signo, uint32_t cond_ptr)
+static void pthread_condtimedout(int argc, uint32_t pid, uint32_t cond_ptr)
 {
 	FAR pthread_cond_t *cond = (FAR pthread_cond_t *)cond_ptr;
 	irqstate_t flags;
@@ -158,7 +157,7 @@ static void pthread_condtimedout(int argc, uint32_t pid, uint32_t signo, uint32_
 	if (tcb) {
 		/* Create the siginfo structure */
 
-		info.si_signo = signo;
+		info.si_signo = SIGCONDTIMEDOUT;
 		info.si_code = SI_QUEUE;
 		info.si_value.sival_ptr = NULL;
 #ifdef CONFIG_SCHED_HAVE_PARENT
@@ -185,9 +184,9 @@ static void pthread_condtimedout(int argc, uint32_t pid, uint32_t signo, uint32_
 	/* Send the specified signal to the specified task. */
 
 	value.sival_ptr = NULL;
-	(void)sigqueue((int)pid, (int)signo, value);
+	(void)sigqueue((int)pid, SIGCONDTIMEDOUT, value);
 #else
-	(void)sigqueue((int)pid, (int)signo, NULL);
+	(void)sigqueue((int)pid, SIGCONDTIMEDOUT, NULL);
 #endif
 
 #endif							/* HAVE_GROUP_MEMBERS */
@@ -307,34 +306,44 @@ int pthread_cond_timedwait(FAR pthread_cond_t *cond, FAR pthread_mutex_t *mutex,
 
 						leave_critical_section(int_state);
 					} else {
-						/* Start the watchdog */
-
-						wd_start(rtcb->waitdog, ticks, (wdentry_t)pthread_condtimedout, 3, (uint32_t)mypid, (uint32_t)SIGCONDTIMEDOUT, (uint32_t)cond);
-
-						/* Increment the waiter count */
-						cond->waiters++;
-
-						/* Take the condition semaphore.  Do not restore interrupts
-						 * until we return from the wait.  This is necessary to
-						 * make sure that the watchdog timer and the condition wait
-						 * are started atomically.
+						/* The timeout signal is fixed, so only pass the task and
+						 * condition to support two-parameter watchdogs.
 						 */
 
-						status = sem_wait((sem_t *)&cond->sem);
+						ret = wd_start(rtcb->waitdog, ticks, (wdentry_t)pthread_condtimedout, 2, (uint32_t)mypid, (uint32_t)cond);
 
-						/* Did we get the condition semaphore. */
-
-						if (status != OK) {
-							/* Handle the special case where the semaphore wait
-							 * was awakened by the receipt of a signal --
-							 * presumably the signal posted by
-							 * pthread_condtimedout().
+						if (ret != OK) {
+							/* Never wait without an armed timeout.  Preserve errno
+							 * before restoring interrupts and reacquiring the mutex.
 							 */
-							if (get_errno() == EINTR) {
-								sdbg("Timedout!\n");
-								ret = ETIMEDOUT;
-							} else {
-								ret = EINVAL;
+
+							ret = get_errno();
+						} else {
+							/* Increment the waiter count */
+							cond->waiters++;
+
+							/* Take the condition semaphore.  Do not restore interrupts
+							 * until we return from the wait.  This is necessary to
+							 * make sure that the watchdog timer and the condition wait
+							 * are started atomically.
+							 */
+
+							status = sem_wait((sem_t *)&cond->sem);
+
+							/* Did we get the condition semaphore. */
+
+							if (status != OK) {
+								/* Handle the special case where the semaphore wait
+								 * was awakened by the receipt of a signal --
+								 * presumably the signal posted by
+								 * pthread_condtimedout().
+								 */
+								if (get_errno() == EINTR) {
+									sdbg("Timedout!\n");
+									ret = ETIMEDOUT;
+								} else {
+									ret = EINVAL;
+								}
 							}
 						}
 

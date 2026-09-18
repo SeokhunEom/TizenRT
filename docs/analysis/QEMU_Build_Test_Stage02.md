@@ -4,6 +4,8 @@
 먼저 0~1단계를 `988dbe77e766890f60cd8a9d2e536f760aa96111`로 커밋한 뒤 실행했다.
 이 문서는 현재 활성화된 테스트의 실행 결과와 미충족 전제조건을 기록한다. 전체 테스트 통과 상태는 아니다.
 
+후속 진단과 수정 결과는 [condition timeout 정지 수정](QEMU_Build_Test_CondTimeout_Fix.md)에 기록했다. 아래는 수정 전 baseline 증거다.
+
 ## 실행 대상
 
 [0~1단계](QEMU_Build_Test_Stage01.md)의 동일 ELF를 사용했다. 각 suite마다 새 QEMU를 시작해 테스트 간 장치·마운트·전역 카운터 영향을 분리했다.

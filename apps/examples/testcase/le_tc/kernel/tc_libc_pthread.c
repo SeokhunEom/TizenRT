@@ -1086,6 +1086,47 @@ static void tc_libc_pthread_pthread_rwlock_rdlock_wrlock(void)
 }
 
 /**
+* @brief An unsignaled condition wait must time out and return with its mutex.
+* @scenario Repeat the wait on the same condition to check timeout cleanup.
+*/
+static void tc_libc_pthread_pthread_cond_timedwait_timeout(void)
+{
+	pthread_mutex_t mutex;
+	pthread_cond_t cond;
+	struct timespec deadline;
+	int status;
+	int i;
+
+	status = pthread_mutex_init(&mutex, NULL);
+	TC_ASSERT_EQ("pthread_mutex_init", status, OK);
+	status = pthread_cond_init(&cond, NULL);
+	TC_ASSERT_EQ_CLEANUP("pthread_cond_init", status, OK, pthread_mutex_destroy(&mutex));
+
+	for (i = 0; i < 2; i++) {
+		status = pthread_mutex_lock(&mutex);
+		TC_ASSERT_EQ_CLEANUP("pthread_mutex_lock", status, OK, pthread_cond_destroy(&cond); pthread_mutex_destroy(&mutex));
+		status = clock_gettime(CLOCK_REALTIME, &deadline);
+		TC_ASSERT_EQ_CLEANUP("clock_gettime", status, OK, pthread_mutex_unlock(&mutex); pthread_cond_destroy(&cond); pthread_mutex_destroy(&mutex));
+		deadline.tv_nsec += 100000000;
+		if (deadline.tv_nsec >= 1000000000) {
+			deadline.tv_sec++;
+			deadline.tv_nsec -= 1000000000;
+		}
+
+		status = pthread_cond_timedwait(&cond, &mutex, &deadline);
+		TC_ASSERT_EQ_CLEANUP("pthread_cond_timedwait", status, ETIMEDOUT, pthread_mutex_unlock(&mutex); pthread_cond_destroy(&cond); pthread_mutex_destroy(&mutex));
+		status = pthread_mutex_unlock(&mutex);
+		TC_ASSERT_EQ_CLEANUP("pthread_mutex_unlock", status, OK, pthread_cond_destroy(&cond); pthread_mutex_destroy(&mutex));
+	}
+
+	status = pthread_cond_destroy(&cond);
+	TC_ASSERT_EQ_CLEANUP("pthread_cond_destroy", status, OK, pthread_mutex_destroy(&mutex));
+	status = pthread_mutex_destroy(&mutex);
+	TC_ASSERT_EQ("pthread_mutex_destroy", status, OK);
+	TC_SUCCESS_RESULT();
+}
+
+/**
 * @fn                   :tc_libc_pthread_pthread_rwlock_timedwrlock_timedrdlock
 * @Description          :creates and initializes a new read-write lock object with specified attributes and \
 *                        tries acquiring timed read & write lock referenced rwlock multple times and checks whether it times out correctly \
@@ -1327,6 +1368,7 @@ int libc_pthread_main(void)
 	tc_libc_pthread_pthread_rwlock_tryrdlock();
 	tc_libc_pthread_pthread_rwlock_trywrlock();
 	tc_libc_pthread_pthread_rwlock_rdlock_wrlock();
+	tc_libc_pthread_pthread_cond_timedwait_timeout();
 	tc_libc_pthread_pthread_rwlock_timedwrlock_timedrdlock();
 	tc_libc_pthread_pthread_setcancelstate();
 #ifndef CONFIG_CANCELLATION_POINTS
