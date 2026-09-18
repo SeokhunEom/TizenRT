@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--root', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--suite', choices=SUITES, required=True)
+parser.add_argument('--check-storage', action='store_true', help='Check /mnt contents survive the suite')
 parser.add_argument('--timeout', type=float, default=600)
 parser.add_argument('--image', default='tizenrt/qemu-build-test:2.12.0-16m')
 args = parser.parse_args()
@@ -31,6 +32,7 @@ command = ['docker', 'run', '--rm', '--pull=never', '--platform', 'linux/arm64',
 result = {'suite': args.suite, 'status': 'fail', 'completed': False, 'pass': None, 'fail': None,
           'command': command, 'timeout_seconds': args.timeout,
           'firmware_sha256': hashlib.sha256((root / 'build/output/bin/tinyara').read_bytes()).hexdigest(),
+          'effective_config_sha256': hashlib.sha256((root / 'os/.config').read_bytes()).hexdigest(),
           'defconfig_sha256': hashlib.sha256((root / 'build/configs/qemu/build_test/defconfig').read_bytes()).hexdigest(),
           'source_commit': subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()}
 started = time.monotonic()
@@ -84,6 +86,15 @@ try:
         result['inventory'][probe] = shell(probe)
     if args.suite not in result['inventory']['help']:
         raise RuntimeError('Requested suite is absent from the TASH command registry')
+    if args.check_storage:
+        for device in ('smart0', 'smart1', 'mtdblock1'):
+            if not re.search(r'(?m)^\s*' + device + r'\s*$', result['inventory']['ls /dev']):
+                raise RuntimeError('Missing storage fixture: ' + device)
+        shell('echo QEMU-storage-guard > /mnt/qemu-storage-guard')
+        before = shell('cat /mnt/qemu-storage-guard')
+        if 'QEMU-storage-guard' not in before.splitlines():
+            raise RuntimeError('Could not create storage guard')
+        result['storage_guard_survived'] = False
     suite_label = SUITES[args.suite].encode()
     send(args.suite)
     wait_for(re.compile(re.escape(suite_label) + rb' Start'), 30)
@@ -94,7 +105,14 @@ try:
     result['status'] = 'pass' if result['pass'] > 0 and result['fail'] == 0 else 'fail'
     # Empty input obtains a new prompt after the asynchronous end marker.
     shell('')
-    result['post_suite'] = {probe: shell(probe) for probe in ('ps', 'free')}
+    result['post_suite'] = {probe: shell(probe) for probe in ('ps', 'free', 'mount', 'ls /dev')}
+    if args.check_storage:
+        after = shell('cat /mnt/qemu-storage-guard')
+        result['storage_guard_output'] = after
+        if 'QEMU-storage-guard' not in after.splitlines():
+            raise RuntimeError('Suite changed /mnt backing storage or removed its guard file')
+        result['storage_guard_survived'] = True
+        shell('rm /mnt/qemu-storage-guard')
 except Exception as exc:
     result['status'] = 'fail'
     result['error'] = str(exc)

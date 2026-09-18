@@ -4645,15 +4645,14 @@ static int smart_allocsector(FAR struct smart_struct_s *dev, unsigned long reque
 	/* Test for an error allocating a sector. */
 
 	if (logsector == 0xFFFF) {
-		/* Hmmm.  We think we had enough logical sectors, but
-		 * something happened and we didn't find any free
-		 * logical sectors.  What do do?  Report an error?
-		 * rescan and try again to "self heal" in case of a
-		 * bug in our code? */
+		/* Free physical sectors can remain after all allocatable logical
+		 * sector numbers are in use. This is volume exhaustion, not an
+		 * I/O failure.
+		 */
 
 		fdbg("No free logical sector numbers!  Free sectors = %d\n", dev->freesectors);
 
-		return -EIO;
+		return -ENOSPC;
 	}
 
 	/* Check if we need to do garbage collection.  We have to

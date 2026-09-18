@@ -58,6 +58,10 @@ ASRCS		=
 AOBJS		= $(ASRCS:.S=$(OBJEXT))
 CSRCS		= up_boot.c up_leds.c up_ethernet.c up_ssi.c
 
+ifeq ($(CONFIG_QEMU_TEST_STORAGE),y)
+CSRCS		+= qemu_test_storage.c
+endif
+
 COBJS		= $(CSRCS:.c=$(OBJEXT))
 
 SRCS		= $(ASRCS) $(CSRCS)
