@@ -1,0 +1,63 @@
+name: QEMU build_test
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qemu-build-test-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full-set:
+    name: ARMv7-M flat full set (3 rounds)
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 190
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: tmp/qemu-build-test-ci
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check result validators
+        run: |
+          python3 tools/qemu-build-test/test-full-set.py -v
+          python3 tools/qemu-build-test/test-qemu-common.py -v
+          python3 tools/qemu-build-test/test-ci-summary.py -v
+          python3 tools/qemu-build-test/test-ci-build.py -v
+
+      - name: Prepare image and clean-build qemu/build_test
+        timeout-minutes: 40
+        run: bash tools/qemu-build-test/ci-build.sh "$EVIDENCE_DIR"
+
+      - name: Run three full rounds without rebooting
+        timeout-minutes: 140
+        run: |
+          python3 tools/qemu-build-test/full-set.py --root . \
+            --image "$(cat "$EVIDENCE_DIR/image-id.txt")" \
+            --rounds 3 --output "$EVIDENCE_DIR/full-set"
+
+      - name: Summarize validation
+        if: always()
+        run: |
+          python3 tools/qemu-build-test/ci-summary.py --output "$EVIDENCE_DIR" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload firmware and evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qemu-build-test-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tmp/qemu-build-test-ci/
+          retention-days: 7
+          if-no-files-found: warn
