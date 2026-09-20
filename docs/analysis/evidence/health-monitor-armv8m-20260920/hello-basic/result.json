@@ -1,0 +1,13 @@
+{
+  "status": "fail",
+  "profile": "hello",
+  "case": "basic",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+  "effective_config_sha256": "35f1b09794021d8bd63a18c395addecd07b19cb997b6f2706738e508d953e7f4",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "error": "unsupported operand type(s) for |: 'type' and 'type'",
+  "elapsed_seconds": 0.033,
+  "qemu_command": null,
+  "qemu_exit_after_cleanup": null
+}

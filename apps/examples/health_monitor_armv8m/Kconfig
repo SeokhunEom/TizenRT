@@ -1,0 +1,7 @@
+config EXAMPLES_HEALTH_MONITOR_ARMV8M
+	bool "Temporary ARMv8-M protected Health Monitor verification"
+	default n
+	depends on HEALTH_MONITOR && ARCH_CHIP_MPS2_AN505 && APP_BINARY_SEPARATION && !SMP && DRIVERS_OS_API_TEST && SCHED_LPWORK
+	---help---
+		Test-only kernel observation and Binary Manager recovery commands,
+		plus public-API tests in the app1/app2 user binaries.

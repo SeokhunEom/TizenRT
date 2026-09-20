@@ -1,8 +1,8 @@
 /* Temporary single-core QEMU verification controls. Not a product API. */
 #ifndef HM_QEMU_PROBE_H
 #define HM_QEMU_PROBE_H
-#if defined(CONFIG_SMP) || !defined(CONFIG_BUILD_FLAT) || !defined(CONFIG_ARCH_CHIP_LM3S6965)
-#error "Health Monitor QEMU probes require the single-core LM3S flat test target"
+#if defined(CONFIG_SMP) || !defined(CONFIG_BUILD_FLAT) || (!defined(CONFIG_ARCH_CHIP_LM3S6965) && !defined(CONFIG_ARCH_CHIP_MPS2_AN505))
+#error "Health Monitor QEMU probes require the single-core LM3S or MPS2-AN505 flat test target"
 #endif
 #include <stdbool.h>
 #include <stdint.h>

@@ -1,0 +1,105 @@
+cc00205af test(health-monitor): preserve ARMv8-M validation and fault-message coverage
+eddceb966 health_monitor: preserve QEMU validation and test fixtures
+8d10c93bd health_monitor: enable rtl8730e and add validation example
+d1839f070 health_monitor: connect tick progress to hardware watchdog
+3ea8a0e8e health_monitor: include deadlines in PM wakeup
+93f49bf9b health_monitor: check deadlines from the system tick
+7f1e3a003 health_monitor: expose task operations through ioctl
+d76d143c8 health_monitor: implement registry and task cleanup
+9d4f19a19 health_monitor: define interfaces and task state
+3afba1b6f kernel: retire legacy task monitor
+79afdbf91 external/webserver: fix gpt cyber issue of webserver (#7527)
+34db6c44e Use stream buffer capacity for PCM process buffer
+5047e58f1 Fix InputHandler process buffer initialization race
+b10a905d6 framework/media: Adjust read timeout during playback
+37155d75b ndp120: Change changeDSPFlow logic.
+0a7e1f578 ndp120: Change the flow order to fix recording issue
+c07348581 audio/driver/npu : Do not enqueue data if media request enqueue buffer during firmware loading
+1a74a90e4 aft: add missing extra line.
+5cf093dc3 framework/media: Fix mProcessBuffer overflow during decoding
+b59aba190 framework/media: Set requested PCM data size to output buffer size
+272cfe2b6 framework/media: Release mutex before sem_wait in Media Player APIs
+3b607e7b9 framework/media: Change medvdbg to meddbg in MediaPlayerImpl.cpp
+0558cb6ae framework/media: Merge PlayerWorker & FocusManagerWorker
+306418a07 framework/media: Add debugging logs in the remaining sync APIs
+4ef707242 Delete mock_audio_manager file
+baa044c54 framework/src/media: Add null pointer safety checks
+6d64bf02a framework/InputHandler: Fix memory leak
+a06b70cf5 framework/InputHandler: Clean if else condition in processWorker()
+d6bcefaa4 framework/src: Added saftey bound checks in Inputhandler thread
+b268d7620 framework/media: Avoid repeated allocation/deallocation in InputHandler
+3b8d340b6 framework/src/media: Change snyc logic from condv to local sem in MediaRecorder.
+0e2c6c5f6 os/kernel/binary_manager: Fix address in signature failure log
+28afa1dd3 os/kernel/signal: add sig_waitirq() to handle signal wait cancellation
+42c77a42a build/rtl8730e: enable CONFIG_PTHREAD_CLEANUP and CONFIG_CANCELLATION_POINTS
+35ef446b7 kernel/binary_manager: Support binary update with boot mode
+7875030b7 os/board/bk7239n: Fix mismatch CONFIG_FLASH_ENCRYPT_ENABLE
+1ce1b82e7 os/kernel/preference/: Fix callback registration and add proper cleanup
+f1c276e2f os/fs/driver/mtd/mtd_jedec.c: Add jedec_waitwritecomplete() in jedec_set_4byte_addr_mode()
+29d2ed503 framework/src/ble_manager: separate scanner and whitelist commands in ble_manager_state
+e851672d1 TizenRT\os\board\bk7239n: Reduce scanning time for scanning multiple APs (#7490)
+1770e1261 os/mm: Add use-after-free detection to the heap allocator
+52d5449d5 os/arch/arm/src/armv7-a: Fix Thumb operand constraints
+2f03e881d os/arch/arm/src/armv7-m: Preserve EXC_RETURN across trampoline
+b93f00867 os/arch/arm/armv8-m: Guard REG_EXC_RETURN signal state
+f7e23a56e os/board/bk7239n:Fix intermittent ble advertising data check failure
+1638e69c1 build/configs/bk7239n: Enable ps command
+f569916bd framework/src/ble_manager: improve cyclomatic complexity for ble_manager_state
+a7760e4c8 kernel/sched/sched_waitpid: Fix SIGCHLD race in waitpid
+bdc32cf47 build/configs: Remove FOTA related configs
+60e94b222 os/kernel/pthread: Move cond waiter count decrement to pthread_condtimedout()
+2d3b244e1 apps/examples/testcase/le_tc/stress: Add mm semaphore signal stress test
+0df9b54df lib/libc/unistd/lib_getopt: Add optional argument support in getopt
+8575175d7 os/kernel/sched: refine round-robin scheduling on SMP
+e15a9cfed apps/examples/testcase/le_tc/stress: Increase task stack size
+388086fce apps/shell: fix memory leaks in TASH security functions
+d00141631 lib/libc/stdio/lib_libfwrite: Fix fwrite for unbuffered streams
+e8758bc52 apps/examples/testcase/stress: Add semaphore priority inheritance stress test
+5409d5d0c apps/examples/testcase/stress: Add task create terminate stress test
+7f257954e apps/examples/kernel_sample: Remove kernel_sample
+0e5ca310a apps/examples/testcase/ostest: Integrate ostest with TizenRT build
+978886754 apps/examples/testcase/ostest: Make compatible with TizenRT
+7449808bb apps/examples/testcase/ostest: Add new ostest 3
+f29bfc17a apps/examples/testcase/ostest: Add new ostest 2
+a482e8a33 apps/examples/testcase/ostest: Add new ostest 1
+28544a41d apps/examples: Add pthread_cleanup_test for cleanup and cancellation APIs
+f18372726 os/kernel/pthread: Add pthread_cleanup_push/pop syscall support
+b6d9ec014 blemgr: Allow nullable advertising address
+115ecc0d0 os/kernel posix: Do not call assert and add posix return values for incorrect api usage
+798b78219 Address review comments
+835a11d14 Updated as suggested
+0c2940830 Updtate Model download
+3832b79dc Add PDM clock configuration and remove debuging code
+90460fb2f Add PDM clock configuration
+f0d8b6ac0 Fix model name
+ab5ba43c2 Rename new model to customer model
+4e7af8353 audio/driver/adam110: Optimize audio buffer initialization
+3e35cd2bc audio/driver/adam110: Improve debug support and support additional AI models
+64e8028f1 os/kernel/pthread: Add bounds check to prevent cond waiter count underflow
+93cde6811 system_file : verify littlefs mount before format and corruption
+ef2601645 apps/examples/reboot_reason_test: Fix expected reboot reason
+b6cb7546b g# This is a combination of 2 commits.
+61052a7f3 os/pm: Fix uninitialized domain_position causing data abort crash in pm_procfs
+3675ee0ba apps/examples/reboot_reason_test: Add Data Abort and Assert to example
+542d47be3 os/kernel/sched/sched_waitpid.c: Fix return value.
+e705013c1 os/kernel: Fix incorrect bitmask operator
+033e21b91 os/kernel/group/group_signal.c: Add missing semicolon
+5664b4ec0 apps/shell: bound TASH history expansion
+3ab0768e9 apps/system/sysinfo: Print /proc/version as system information
+a387b30b2 os/fs/procfs: Add CONFIG_BOARD_BUILD_DATE into /proc/version
+e6c09a34f wifi_manager: Introduce Wi-Fi reset
+928f94be3 os/net/netmgr: remove ifdown in deinit
+328a63769 fs/smartfs : Do not read if offset reached EOF
+a1374495a fs/smartfs : Update sector buffer after read When smartfs read some sectors, sector buffer holds first sector info. Because of this, append happened after read, some sectors points same sector as a next sector To prevent this, update sector buffer for every read operation
+837f0d419 aft: queue copied audio buffers for async streaming.
+9aba9080d smartfs: fix line breaking sync ecode
+7ee8204a6 adam110: fix line breaking and tab for sync ecode
+7e441d2b6 amebasmart_i2s: Atomically dequeue done buffers
+50b740735 amebasmart/i2s: Release audio buffers from done queues on stop
+f35e3bdd3 blemgr: Validate BLE LWNL request payloads (#7468)
+1183cd377 os/board/bk7239n/src/middleware/driver/flash/flash_driver.c: Add bk_flash_get_protect_type() API - Implement bk_flash_get_protect_type() to return current flash protect type
+5dad7bae2 apps/examples/board_specific_demo/secure_storage_demo: Add support of secure storage test for TP1X plus board
+474bf67cb build/tools/amebasmart/gnu_utility: Add CRC on Secure Storage Read/Write and Init
+eacfb187e configs: update defconfigs to disable FOTA
+e242b59f0 apps: remove FOTA sample and HAL applications
+644085272 drivers, include, fs: remove FOTA driver and kernel support

@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "scope": "static ARMv8-M UP code and protected syscall; no SMP execution or SMP CAS proof",
+  "native_acquire_hint_load": true,
+  "atomic_helper_in_hint": false,
+  "protected_ioctl_svc": true,
+  "user_control_read": true
+}

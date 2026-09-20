@@ -17,12 +17,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <termios.h>
 #include <unistd.h>
 #include "sched/sched.h"
 #include "health_monitor/health_monitor.h"
 #include "health_monitor/tests/qemu/probe.h"
 
 #define WORKERS 7
+/* Controlled scenarios express intervals as ticks; natural tests keep ms. */
+#define TICK_MS(n) ((unsigned long)((uint64_t)(n) * USEC_PER_TICK / 1000))
+#define MAX_MS ((unsigned long)(((uint64_t)INT32_MAX * USEC_PER_TICK / 1000) > UINT32_MAX ? UINT32_MAX : ((uint64_t)INT32_MAX * USEC_PER_TICK / 1000)))
+_Static_assert(USEC_PER_TICK >= 1000 && USEC_PER_TICK % 1000 == 0, "QEMU fixture requires whole-millisecond ticks");
 #define OP_QUIT (-100)
 #define OP_PTHREAD_EXIT (-101)
 #define OP_PULSE (-102)
@@ -155,7 +160,7 @@ static int api(void)
 	uint32_t at;
 	struct health_monitor_s before, after;
 	unsigned int i;
-	const unsigned int ms[] = { 1, 9, 10, 11, 1000, UINT32_MAX };
+	const unsigned int ms[] = { 1, 9, 10, 11, 1000, INT32_MAX, (uint32_t)INT32_MAX + 1U, UINT32_MAX };
 	hm_qemu_control(true, true, 100);
 	CHECK(hm_qemu_count() == 0);
 	fd = open(HEALTH_MONITOR_DEVPATH, O_RDWR);
@@ -172,7 +177,12 @@ static int api(void)
 	CHECK(read(fd, &value, 0) == -1 && errno == ENOSYS);
 	CHECK(write(fd, &value, 0) == -1 && errno == ENOSYS);
 	for (i = 0; i < sizeof(ms) / sizeof(ms[0]); i++) {
-		uint32_t ticks = ((uint64_t)ms[i] + 9) / 10;
+		uint64_t ticks = ((uint64_t)ms[i] * 1000 + USEC_PER_TICK - 1) / USEC_PER_TICK;
+		if (ticks > INT32_MAX) {
+			CHECK(ioctl(fd, HMIOC_START, (unsigned long)ms[i]) == -1 && errno == EINVAL);
+			CHECK(state_of(getpid()).timeout == 0 && hm_qemu_count() == 0);
+			continue;
+		}
 		CHECK(ioctl(fd, HMIOC_START, (unsigned long)ms[i]) == 0);
 		before = state_of(getpid());
 		CHECK(before.timeout == ticks && before.deadline == 100 + ticks);
@@ -182,13 +192,13 @@ static int api(void)
 		CHECK(ioctl(fd, HMIOC_STOP, 0UL) == 0);
 		CHECK(state_of(getpid()).timeout == 0 && hm_qemu_count() == 0);
 	}
-	CHECK(ioctl(fd, HMIOC_START, 100UL) == 0);
+	CHECK(ioctl(fd, HMIOC_START, TICK_MS(10)) == 0);
 	CHECK(close(fd) == 0);
 	CHECK(hm_qemu_count() == 1 && state_of(getpid()).timeout == 10);
 	CHECK(ioctl(fd, HMIOC_KICK, 0UL) == -1 && errno == EBADF);
 	again = open(HEALTH_MONITOR_DEVPATH, O_RDWR);
 	CHECK(again >= 0);
-	CHECK(ioctl(again, HMIOC_START, 100UL) == -1 && errno == EEXIST);
+	CHECK(ioctl(again, HMIOC_START, TICK_MS(10)) == -1 && errno == EEXIST);
 	hm_qemu_control(true, true, 105);
 	CHECK(ioctl(again, HMIOC_KICK, 0UL) == 0 && state_of(getpid()).deadline == 115);
 	CHECK(ioctl(again, HMIOC_STOP, 0UL) == 0);
@@ -206,8 +216,8 @@ static int shared(void)
 	CHECK(fd >= 0);
 	hm_qemu_control(true, true, 100);
 	CHECK(actor_open(&a[0], fd) == 0 && actor_open(&a[1], fd) == 0);
-	CHECK(actor_call(&a[0], HMIOC_START, 100) == 0);
-	CHECK(actor_call(&a[1], HMIOC_START, 200) == 0);
+	CHECK(actor_call(&a[0], HMIOC_START, TICK_MS(10)) == 0);
+	CHECK(actor_call(&a[1], HMIOC_START, TICK_MS(20)) == 0);
 	CHECK(hm_qemu_count() == 2);
 	CHECK(state_of(a[0].pid).deadline == 110 && state_of(a[1].pid).deadline == 120);
 	hm_qemu_control(true, true, 105);
@@ -279,7 +289,7 @@ static int lifecycle(void)
 	first = g_task_tcb;
 	CHECK(task_restart(pid) == 0 && sem_take(&g_task_ready) == 0);
 	CHECK(g_task_runs == 2 && g_task_clean && g_task_result == 0);
-	CHECK(g_task_tcb == first && state_of(pid).timeout == 50 && hm_qemu_count() == 1);
+	CHECK(g_task_tcb == first && state_of(pid).timeout == 500000 / USEC_PER_TICK && hm_qemu_count() == 1);
 	CHECK(task_delete(pid) == 0 && reap(pid) == 0 && hm_qemu_count() == 0);
 	CHECK(delay_ms(550) == 0);
 	g_task_return = true;
@@ -363,6 +373,27 @@ static int active_or_stress(bool stress)
 	return 0;
 }
 
+static int many(void)
+{
+	unsigned int i, count = CONFIG_MAX_TASKS > 140 ? 128 : CONFIG_MAX_TASKS - 12;
+	struct actor *a = calloc(count, sizeof(*a));
+	int fd = open(HEALTH_MONITOR_DEVPATH, O_RDWR);
+	CHECK(a != NULL && fd >= 0 && count >= WORKERS);
+	for (i = 0; i < count; i++) {
+		CHECK(actor_open(&a[i], fd) == 0);
+		CHECK(actor_call(&a[i], HMIOC_START, 5000 + i) == 0);
+	}
+	CHECK(hm_qemu_count() == count);
+	for (i = 0; i < count; i++) actor_send(&a[i], OP_PULSE, 10);
+	for (i = 0; i < count; i++) CHECK(sem_take(&a[i].reply) == 0 && a[i].result == 0);
+	for (i = 0; i < count; i++) CHECK(actor_close(&a[i], 0) == 0);
+	CHECK(hm_qemu_count() == 0);
+	CHECK(delay_ms(5200) == 0 && close(fd) == 0);
+	free(a);
+	printf("HM_QEMU many real_workers=%u all_registered=1 exited_registered=1 survived_old_deadlines=1\n", count);
+	return 0;
+}
+
 static int capacity(void)
 {
 	struct actor a[WORKERS];
@@ -400,7 +431,7 @@ static int boundary(void)
 	uint32_t at;
 	CHECK(fd >= 0);
 	hm_qemu_control(true, true, 100);
-	CHECK(ioctl(fd, HMIOC_START, 20UL) == 0);
+	CHECK(ioctl(fd, HMIOC_START, TICK_MS(2)) == 0);
 	CHECK(settle(101) == 0 && hm_qemu_count() == 1);
 	hm_qemu_control(true, true, 103);
 	CHECK(ioctl(fd, HMIOC_KICK, 0UL) == 0 && state_of(getpid()).deadline == 105);
@@ -411,7 +442,7 @@ static int boundary(void)
 	CHECK(ioctl(fd, HMIOC_STOP, 0UL) == 0);
 	CHECK(settle(110) == 0 && hm_qemu_count() == 0);
 	hm_qemu_control(true, true, UINT32_MAX - 1);
-	CHECK(ioctl(fd, HMIOC_START, 30UL) == 0 && state_of(getpid()).deadline == 1);
+	CHECK(ioctl(fd, HMIOC_START, TICK_MS(3)) == 0 && state_of(getpid()).deadline == 1);
 	CHECK(health_monitor_next_check(&at) == 1 && at == 1);
 	CHECK(settle(UINT32_MAX) == 0 && settle(0) == 0);
 	CHECK(ioctl(fd, HMIOC_KICK, 0UL) == 0 && state_of(getpid()).deadline == 3);
@@ -419,7 +450,7 @@ static int boundary(void)
 	CHECK(health_monitor_next_check(&at) == 1 && at == 3);
 	CHECK(ioctl(fd, HMIOC_STOP, 0UL) == 0 && settle(5) == 0);
 	hm_qemu_control(true, true, 100);
-	CHECK(ioctl(fd, HMIOC_START, 20UL) == 0);
+	CHECK(ioctl(fd, HMIOC_START, TICK_MS(2)) == 0);
 	hm_qemu_hint_busy(true);
 	CHECK(settle(103) == 0);
 	CHECK(health_monitor_next_check(&at) == -EAGAIN && hm_qemu_count() == 1);
@@ -427,7 +458,7 @@ static int boundary(void)
 	CHECK(ioctl(fd, HMIOC_STOP, 0UL) == 0);
 	CHECK(close(fd) == 0 && hm_qemu_count() == 0);
 	hm_qemu_control(false, false, 0);
-	printf("HM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_systick=1\n");
+	printf("HM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_timer_irq=1\n");
 	return 0;
 }
 
@@ -460,13 +491,13 @@ static int fatal(const char *mode)
 	} else {
 		if (!strcmp(mode, "wrap")) {
 			hm_qemu_control(true, true, UINT32_MAX - 1);
-			CHECK(ioctl(fd, HMIOC_START, 20UL) == 0);
+			CHECK(ioctl(fd, HMIOC_START, TICK_MS(2)) == 0);
 			now = 0; deadline = 0;
 		} else if (!strcmp(mode, "stale") || !strcmp(mode, "equal") || !strcmp(mode, "far")) {
 			for (i = 0; i < 3; i++) CHECK(actor_open(&a[i], fd) == 0);
-			CHECK(actor_call(&a[0], HMIOC_START, !strcmp(mode, "far") ? UINT32_MAX : 20) == 0);
-			CHECK(actor_call(&a[1], HMIOC_START, !strcmp(mode, "equal") ? 20 : 30) == 0);
-			CHECK(actor_call(&a[2], HMIOC_START, !strcmp(mode, "equal") ? 20 : 40) == 0);
+			CHECK(actor_call(&a[0], HMIOC_START, !strcmp(mode, "far") ? MAX_MS : TICK_MS(2)) == 0);
+			CHECK(actor_call(&a[1], HMIOC_START, !strcmp(mode, "equal") ? TICK_MS(2) : TICK_MS(3)) == 0);
+			CHECK(actor_call(&a[2], HMIOC_START, !strcmp(mode, "equal") ? TICK_MS(2) : TICK_MS(4)) == 0);
 			if (!strcmp(mode, "stale")) {
 				hm_qemu_control(true, true, 102);
 				CHECK(actor_call(&a[0], HMIOC_KICK, 0) == 0);
@@ -476,7 +507,7 @@ static int fatal(const char *mode)
 			now = !strcmp(mode, "equal") ? 102 : 103;
 			deadline = now;
 		} else {
-			CHECK(ioctl(fd, HMIOC_START, 20UL) == 0);
+			CHECK(ioctl(fd, HMIOC_START, TICK_MS(2)) == 0);
 			now = !strcmp(mode, "overdue") ? 103 : 102;
 			if (!strcmp(mode, "unstable")) {
 				uint32_t at;
@@ -503,6 +534,26 @@ static int fatal(const char *mode)
 	return -1;
 }
 
+/* Reapplying console settings must leave TASH receive interrupts working. */
+static int serial_settings(void)
+{
+#ifdef CONFIG_SERIAL_TERMIOS
+	struct termios settings;
+	unsigned i;
+	int fd = open("/dev/console", O_RDWR);
+	CHECK(fd >= 0);
+	for (i = 0; i < 4; i++) {
+		CHECK(tcgetattr(fd, &settings) == 0);
+		CHECK(tcsetattr(fd, TCSANOW, &settings) == 0);
+		CHECK(tcgetattr(fd, &settings) == 0);
+	}
+	CHECK(close(fd) == 0);
+	return 0;
+#else
+	return -1;
+#endif
+}
+
 int hm_qemu_main(int argc, char *argv[])
 {
 	int ret = -1;
@@ -511,11 +562,13 @@ int hm_qemu_main(int argc, char *argv[])
 	printf("HM_QEMU BEGIN case=%s capacity=%d\n", g_case, HEALTH_MONITOR_HEAP_CAPACITY);
 	if (argc == 2) {
 		if (!strcmp(g_case, "api")) ret = api();
+		else if (!strcmp(g_case, "serial")) ret = serial_settings();
 		else if (!strcmp(g_case, "shared")) ret = shared();
 		else if (!strcmp(g_case, "lifecycle")) ret = lifecycle();
 		else if (!strcmp(g_case, "reuse")) ret = reuse();
 		else if (!strcmp(g_case, "active")) ret = active_or_stress(false);
 		else if (!strcmp(g_case, "stress")) ret = active_or_stress(true);
+		else if (!strcmp(g_case, "many")) ret = many();
 		else if (!strcmp(g_case, "capacity")) ret = capacity();
 		else if (!strcmp(g_case, "boundary")) ret = boundary();
 	} else if (argc == 3 && !strcmp(g_case, "fatal")) ret = fatal(argv[2]);

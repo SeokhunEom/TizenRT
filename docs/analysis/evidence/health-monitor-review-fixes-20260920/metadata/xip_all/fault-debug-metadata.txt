@@ -1,0 +1,664 @@
+HMDBG message_size=24
+HMDBG message_cmd=0
+HMDBG message_binidx=4
+HMDBG pid_offset=20
+HMDBG pid_size=2
+HMDBG group_offset=16
+HMDBG binidx_offset=12
+HMDBG health_timeout_offset=60
+HMDBG health_deadline_offset=56
+HMDBG ready_list=2147490032
+HMDBG system_timer=2147502480
+HMDBG usage_entry=268439612
+HMDBG hard_entry=268439928
+HMDBG mpu_entry=268439104
+HMDBG recovery_entry=268463864
+HMDBG userfault_entry=268463616
+HMDBG sender_tcb=2147496208
+Dump of assembler code for function binary_manager_faultmsg_sender:
+   0x10006e80 <+0>:	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+   0x10006e84 <+4>:	sub	sp, #24
+   0x10006e86 <+6>:	mrs	r3, BASEPRI
+   0x10006e8a <+10>:	movs	r3, #32
+   0x10006e8c <+12>:	msr	BASEPRI, r3
+   0x10006e90 <+16>:	ldr	r1, [pc, #84]	; (0x10006ee8 <binary_manager_faultmsg_sender+104>)
+   0x10006e92 <+18>:	ldr	r5, [pc, #88]	; (0x10006eec <binary_manager_faultmsg_sender+108>)
+   0x10006e94 <+20>:	add.w	r0, r1, #16
+   0x10006e98 <+24>:	bl	0x1000a678 <sq_addlast>
+   0x10006e9c <+28>:	ldr	r6, [pc, #80]	; (0x10006ef0 <binary_manager_faultmsg_sender+112>)
+   0x10006e9e <+30>:	add.w	r7, r5, #12
+   0x10006ea2 <+34>:	movs	r1, #7
+   0x10006ea4 <+36>:	ldr	r0, [r6, #0]
+   0x10006ea6 <+38>:	bl	0x1000d250 <up_block_task>
+   0x10006eaa <+42>:	ldr.w	r8, [pc, #72]	; 0x10006ef4 <binary_manager_faultmsg_sender+116>
+   0x10006eae <+46>:	ldr	r3, [r5, #12]
+   0x10006eb0 <+48>:	cmp	r3, #0
+   0x10006eb2 <+50>:	beq.n	0x10006ea2 <binary_manager_faultmsg_sender+34>
+   0x10006eb4 <+52>:	mov	r0, r7
+   0x10006eb6 <+54>:	bl	0x1000a6e0 <sq_remfirst>
+   0x10006eba <+58>:	movs	r3, #10
+   0x10006ebc <+60>:	str	r3, [sp, #0]
+   0x10006ebe <+62>:	ldr	r3, [r0, #4]
+   0x10006ec0 <+64>:	mov	r4, r0
+   0x10006ec2 <+66>:	str	r3, [sp, #4]
+   0x10006ec4 <+68>:	bl	0x10004014 <binary_manager_get_mqfd>
+   0x10006ec8 <+72>:	movs	r3, #100	; 0x64
+   0x10006eca <+74>:	movs	r2, #24
+   0x10006ecc <+76>:	mov	r1, sp
+   0x10006ece <+78>:	bl	0x10007850 <mq_send>
+   0x10006ed2 <+82>:	cbz	r0, 0x10006ede <binary_manager_faultmsg_sender+94>
+   0x10006ed4 <+84>:	movw	r1, #299	; 0x12b
+   0x10006ed8 <+88>:	mov	r0, r8
+   0x10006eda <+90>:	bl	0x1000089c <up_assert>
+   0x10006ede <+94>:	mov	r0, r4
+   0x10006ee0 <+96>:	ldr	r1, [pc, #4]	; (0x10006ee8 <binary_manager_faultmsg_sender+104>)
+   0x10006ee2 <+98>:	bl	0x1000a678 <sq_addlast>
+   0x10006ee6 <+102>:	b.n	0x10006eae <binary_manager_faultmsg_sender+46>
+   0x10006ee8 <+104>:	adds	r1, #20
+   0x10006eea <+106>:	strh	r0, [r0, #0]
+   0x10006eec <+108>:	adds	r1, #16
+   0x10006eee <+110>:	strh	r0, [r0, #0]
+   0x10006ef0 <+112>:	adds	r0, r6, r3
+   0x10006ef2 <+114>:	strh	r0, [r0, #0]
+   0x10006ef4 <+116>:	subs	r2, #190	; 0xbe
+   0x10006ef6 <+118>:	asrs	r3, r0, #32
+End of assembler dump.
+Dump of assembler code for function binary_manager:
+   0x1000402a <+0>:	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+   0x1000402e <+4>:	sub	sp, #60	; 0x3c
+   0x10004030 <+6>:	bl	0x1000589c <binary_manager_update_bpinfo>
+   0x10004034 <+10>:	mov	r5, r0
+   0x10004036 <+12>:	cmp	r0, #0
+   0x10004038 <+14>:	bne.w	0x1000421c <binary_manager+498>
+   0x1000403c <+18>:	bl	0x10005fdc <binary_manager_dump_bpdata>
+   0x10004040 <+22>:	bl	0x10004814 <binary_manager_get_kcount>
+   0x10004044 <+26>:	cmp	r0, #0
+   0x10004046 <+28>:	bne.n	0x100040b4 <binary_manager+138>
+   0x10004048 <+30>:	movs	r4, #1
+   0x1000404a <+32>:	movs	r6, #0
+   0x1000404c <+34>:	mov	r5, r4
+   0x1000404e <+36>:	ldr	r7, [pc, #476]	; (0x1000422c <binary_manager+514>)
+   0x10004050 <+38>:	ldr.w	r8, [pc, #476]	; 0x10004230 <binary_manager+518>
+   0x10004054 <+42>:	ldr.w	r9, [pc, #476]	; 0x10004234 <binary_manager+522>
+   0x10004058 <+46>:	mov	r0, r7
+   0x1000405a <+48>:	bl	0x1000971a <printf>
+   0x1000405e <+52>:	mov	r1, r8
+   0x10004060 <+54>:	mov	r0, r9
+   0x10004062 <+56>:	bl	0x1000971a <printf>
+   0x10004066 <+60>:	ldr	r1, [pc, #464]	; (0x10004238 <binary_manager+526>)
+   0x10004068 <+62>:	ldr	r0, [pc, #464]	; (0x1000423c <binary_manager+530>)
+   0x1000406a <+64>:	bl	0x1000971a <printf>
+   0x1000406e <+68>:	ldr	r1, [pc, #464]	; (0x10004240 <binary_manager+534>)
+   0x10004070 <+70>:	ldr	r0, [pc, #464]	; (0x10004244 <binary_manager+538>)
+   0x10004072 <+72>:	bl	0x1000971a <printf>
+   0x10004076 <+76>:	ldr	r0, [pc, #464]	; (0x10004248 <binary_manager+542>)
+   0x10004078 <+78>:	bl	0x1000971a <printf>
+   0x1000407c <+82>:	cbnz	r5, 0x1000408a <binary_manager+96>
+   0x1000407e <+84>:	ldr	r0, [pc, #460]	; (0x1000424c <binary_manager+546>)
+   0x10004080 <+86>:	bl	0x1000971a <printf>
+   0x10004084 <+90>:	ldr	r0, [pc, #456]	; (0x10004250 <binary_manager+550>)
+   0x10004086 <+92>:	bl	0x1000971a <printf>
+   0x1000408a <+96>:	cbnz	r4, 0x10004098 <binary_manager+110>
+   0x1000408c <+98>:	ldr	r0, [pc, #444]	; (0x1000424c <binary_manager+546>)
+   0x1000408e <+100>:	bl	0x1000971a <printf>
+   0x10004092 <+104>:	ldr	r0, [pc, #448]	; (0x10004254 <binary_manager+554>)
+   0x10004094 <+106>:	bl	0x1000971a <printf>
+   0x10004098 <+110>:	cbnz	r6, 0x100040a6 <binary_manager+124>
+   0x1000409a <+112>:	ldr	r0, [pc, #444]	; (0x10004258 <binary_manager+558>)
+   0x1000409c <+114>:	bl	0x1000971a <printf>
+   0x100040a0 <+118>:	ldr	r0, [pc, #440]	; (0x1000425c <binary_manager+562>)
+   0x100040a2 <+120>:	bl	0x1000971a <printf>
+   0x100040a6 <+124>:	ldr	r0, [pc, #440]	; (0x10004260 <binary_manager+566>)
+   0x100040a8 <+126>:	bl	0x1000971a <printf>
+   0x100040ac <+130>:	movs	r0, #10
+   0x100040ae <+132>:	bl	0x1000a2b0 <sleep>
+   0x100040b2 <+136>:	b.n	0x10004058 <binary_manager+46>
+   0x100040b4 <+138>:	bl	0x10004984 <binary_manager_scan_kbin>
+   0x100040b8 <+142>:	cmp	r0, #0
+   0x100040ba <+144>:	beq.n	0x10004048 <binary_manager+30>
+   0x100040bc <+146>:	bl	0x10004acc <binary_manager_get_ucount>
+   0x100040c0 <+150>:	mov	r4, r0
+   0x100040c2 <+152>:	cmp	r0, #0
+   0x100040c4 <+154>:	beq.w	0x10004224 <binary_manager+506>
+   0x100040c8 <+158>:	add	r0, sp, #12
+   0x100040ca <+160>:	bl	0x1000a5a6 <sigfillset>
+   0x100040ce <+164>:	movs	r1, #9
+   0x100040d0 <+166>:	add	r0, sp, #12
+   0x100040d2 <+168>:	bl	0x1000a584 <sigdelset>
+   0x100040d6 <+172>:	mov	r2, r5
+   0x100040d8 <+174>:	add	r1, sp, #12
+   0x100040da <+176>:	movs	r0, #3
+   0x100040dc <+178>:	bl	0x10006fcc <sigprocmask>
+   0x100040e0 <+182>:	mov.w	r2, #1024	; 0x400
+   0x100040e4 <+186>:	movs	r1, #205	; 0xcd
+   0x100040e6 <+188>:	ldr	r3, [pc, #380]	; (0x10004264 <binary_manager+570>)
+   0x100040e8 <+190>:	ldr	r0, [pc, #380]	; (0x10004268 <binary_manager+574>)
+   0x100040ea <+192>:	str	r5, [sp, #0]
+   0x100040ec <+194>:	bl	0x10002e10 <kernel_thread>
+   0x100040f0 <+198>:	cmp	r0, #0
+   0x100040f2 <+200>:	ble.n	0x1000412e <binary_manager+260>
+   0x100040f4 <+202>:	sxth	r0, r0
+   0x100040f6 <+204>:	bl	0x10006e70 <binary_manager_set_faultmsg_sender>
+   0x100040fa <+208>:	movs	r3, #32
+   0x100040fc <+210>:	strh.w	r3, [sp, #16]
+   0x10004100 <+214>:	movs	r3, #24
+   0x10004102 <+216>:	mov.w	r2, #438	; 0x1b6
+   0x10004106 <+220>:	strd	r3, r5, [sp, #20]
+   0x1000410a <+224>:	movs	r1, #7
+   0x1000410c <+226>:	ldr	r0, [pc, #348]	; (0x1000426c <binary_manager+578>)
+   0x1000410e <+228>:	add	r3, sp, #16
+   0x10004110 <+230>:	bl	0x100214dc <mq_open>
+   0x10004114 <+234>:	ldr	r6, [pc, #344]	; (0x10004270 <binary_manager+582>)
+   0x10004116 <+236>:	str	r0, [r6, #0]
+   0x10004118 <+238>:	adds	r0, #1
+   0x1000411a <+240>:	bne.n	0x10004140 <binary_manager+278>
+   0x1000411c <+242>:	bl	0x10003574 <get_errno_ptr>
+   0x10004120 <+246>:	ldr	r2, [pc, #336]	; (0x10004274 <binary_manager+586>)
+   0x10004122 <+248>:	ldr	r3, [r0, #0]
+   0x10004124 <+250>:	ldr	r1, [pc, #336]	; (0x10004278 <binary_manager+590>)
+   0x10004126 <+252>:	movs	r0, #3
+   0x10004128 <+254>:	bl	0x1000a348 <syslog>
+   0x1000412c <+258>:	b.n	0x10004138 <binary_manager+270>
+   0x1000412e <+260>:	movs	r0, #3
+   0x10004130 <+262>:	ldr	r2, [pc, #320]	; (0x10004274 <binary_manager+586>)
+   0x10004132 <+264>:	ldr	r1, [pc, #328]	; (0x1000427c <binary_manager+594>)
+   0x10004134 <+266>:	bl	0x1000a348 <syslog>
+   0x10004138 <+270>:	movs	r0, #0
+   0x1000413a <+272>:	add	sp, #60	; 0x3c
+   0x1000413c <+274>:	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+   0x10004140 <+278>:	mov	r1, r5
+   0x10004142 <+280>:	movs	r0, #1
+   0x10004144 <+282>:	bl	0x10006714 <binary_manager_execute_loader>
+   0x10004148 <+286>:	cbnz	r0, 0x10004174 <binary_manager+330>
+   0x1000414a <+288>:	ldr	r5, [pc, #296]	; (0x10004274 <binary_manager+586>)
+   0x1000414c <+290>:	ldr	r7, [pc, #304]	; (0x10004280 <binary_manager+598>)
+   0x1000414e <+292>:	movs	r3, #0
+   0x10004150 <+294>:	movs	r2, #24
+   0x10004152 <+296>:	ldr	r0, [r6, #0]
+   0x10004154 <+298>:	add	r1, sp, #32
+   0x10004156 <+300>:	bl	0x10007ab0 <mq_receive>
+   0x1000415a <+304>:	subs	r4, r0, #0
+   0x1000415c <+306>:	bgt.n	0x1000418c <binary_manager+354>
+   0x1000415e <+308>:	bl	0x10003574 <get_errno_ptr>
+   0x10004162 <+312>:	ldr	r3, [r0, #0]
+   0x10004164 <+314>:	mov	r2, r5
+   0x10004166 <+316>:	str	r3, [sp, #0]
+   0x10004168 <+318>:	mov	r1, r7
+   0x1000416a <+320>:	mov	r3, r4
+   0x1000416c <+322>:	movs	r0, #3
+   0x1000416e <+324>:	bl	0x1000a348 <syslog>
+   0x10004172 <+328>:	b.n	0x1000414e <binary_manager+292>
+   0x10004174 <+330>:	ldr	r2, [pc, #252]	; (0x10004274 <binary_manager+586>)
+   0x10004176 <+332>:	ldr	r1, [pc, #268]	; (0x10004284 <binary_manager+602>)
+   0x10004178 <+334>:	movs	r0, #3
+   0x1000417a <+336>:	bl	0x1000a348 <syslog>
+   0x1000417e <+340>:	ldr	r0, [r6, #0]
+   0x10004180 <+342>:	bl	0x100216c0 <mq_close>
+   0x10004184 <+346>:	ldr	r0, [pc, #228]	; (0x1000426c <binary_manager+578>)
+   0x10004186 <+348>:	bl	0x100216f4 <mq_unlink>
+   0x1000418a <+352>:	b.n	0x10004138 <binary_manager+270>
+   0x1000418c <+354>:	ldr	r3, [sp, #32]
+   0x1000418e <+356>:	cmp	r3, #12
+   0x10004190 <+358>:	bhi.n	0x1000414e <binary_manager+292>
+   0x10004192 <+360>:	tbb	[pc, r3]
+   0x10004196 <+364>:	asrs	r3, r1, #32
+   0x10004198 <+366>:	cmp	r4, #34	; 0x22
+   0x1000419a <+368>:	adds	r1, r6, r0
+   0x1000419c <+370>:	adds	r6, #29
+   0x1000419e <+372>:	subs	r7, #58	; 0x3a
+   0x100041a0 <+374>:	cmp	r0, #7
+   0x100041a2 <+376>:	movs	r4, r2
+   0x100041a4 <+378>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041a6 <+380>:	bl	0x10006ef8 <binary_manager_recovery>
+   0x100041aa <+384>:	b.n	0x1000414e <binary_manager+292>
+   0x100041ac <+386>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041ae <+388>:	add	r1, sp, #40	; 0x28
+   0x100041b0 <+390>:	bl	0x10004460 <binary_manager_get_info_with_name>
+   0x100041b4 <+394>:	b.n	0x1000414e <binary_manager+292>
+   0x100041b6 <+396>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041b8 <+398>:	bl	0x10004570 <binary_manager_get_info_all>
+   0x100041bc <+402>:	b.n	0x1000414e <binary_manager+292>
+   0x100041be <+404>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041c0 <+406>:	bl	0x10004680 <binary_manager_get_inactive_info_all>
+   0x100041c4 <+410>:	b.n	0x1000414e <binary_manager+292>
+   0x100041c6 <+412>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041c8 <+414>:	add	r1, sp, #40	; 0x28
+   0x100041ca <+416>:	bl	0x1000467c <binary_manager_get_inactive_path>
+   0x100041ce <+420>:	b.n	0x1000414e <binary_manager+292>
+   0x100041d0 <+422>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041d2 <+424>:	add	r1, sp, #40	; 0x28
+   0x100041d4 <+426>:	bl	0x10004678 <binary_manager_get_active_path>
+   0x100041d8 <+430>:	b.n	0x1000414e <binary_manager+292>
+   0x100041da <+432>:	ldrb.w	r1, [sp, #40]	; 0x28
+   0x100041de <+436>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041e0 <+438>:	bl	0x10005d70 <binary_manager_update_bootparam>
+   0x100041e4 <+442>:	b.n	0x1000414e <binary_manager+292>
+   0x100041e6 <+444>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041e8 <+446>:	bl	0x100060d4 <binary_manager_swap_bootparam>
+   0x100041ec <+450>:	b.n	0x1000414e <binary_manager+292>
+   0x100041ee <+452>:	movs	r1, #0
+   0x100041f0 <+454>:	movs	r0, #2
+   0x100041f2 <+456>:	bl	0x10006714 <binary_manager_execute_loader>
+   0x100041f6 <+460>:	b.n	0x1000414e <binary_manager+292>
+   0x100041f8 <+462>:	ldr	r0, [sp, #36]	; 0x24
+   0x100041fa <+464>:	add	r1, sp, #40	; 0x28
+   0x100041fc <+466>:	bl	0x100043cc <binary_manager_get_state_with_name>
+   0x10004200 <+470>:	b.n	0x1000414e <binary_manager+292>
+   0x10004202 <+472>:	ldr	r0, [sp, #36]	; 0x24
+   0x10004204 <+474>:	bl	0x10004ffc <binary_manager_update_running_state>
+   0x10004208 <+478>:	b.n	0x1000414e <binary_manager+292>
+   0x1000420a <+480>:	ldrd	r0, r1, [sp, #36]	; 0x24
+   0x1000420e <+484>:	bl	0x10006a3c <binary_manager_register_statecb>
+   0x10004212 <+488>:	b.n	0x1000414e <binary_manager+292>
+   0x10004214 <+490>:	ldr	r0, [sp, #36]	; 0x24
+   0x10004216 <+492>:	bl	0x10006998 <binary_manager_unregister_statecb>
+   0x1000421a <+496>:	b.n	0x1000414e <binary_manager+292>
+   0x1000421c <+498>:	movs	r4, #1
+   0x1000421e <+500>:	movs	r5, #0
+   0x10004220 <+502>:	mov	r6, r4
+   0x10004222 <+504>:	b.n	0x1000404e <binary_manager+36>
+   0x10004224 <+506>:	movs	r5, #1
+   0x10004226 <+508>:	mov	r6, r5
+   0x10004228 <+510>:	b.n	0x1000404e <binary_manager+36>
+   0x1000422a <+512>:	nop
+   0x1000422c <+514>:	asrs	r7, r0, #31
+   0x1000422e <+516>:	asrs	r3, r0, #32
+   0x10004230 <+518>:	asrs	r2, r3, #31
+   0x10004232 <+520>:	asrs	r3, r0, #32
+   0x10004234 <+522>:	adds	r2, r2, r0
+   0x10004236 <+524>:	asrs	r3, r0, #32
+   0x10004238 <+526>:	adds	r7, r4, r0
+   0x1000423a <+528>:	asrs	r3, r0, #32
+   0x1000423c <+530>:	adds	r6, r1, r1
+   0x1000423e <+532>:	asrs	r3, r0, #32
+   0x10004240 <+534>:	adds	r3, r4, r1
+   0x10004242 <+536>:	asrs	r3, r0, #32
+   0x10004244 <+538>:	adds	r7, r5, r2
+   0x10004246 <+540>:	asrs	r3, r0, #32
+   0x10004248 <+542>:	adds	r4, r0, r3
+   0x1000424a <+544>:	asrs	r3, r0, #32
+   0x1000424c <+546>:	adds	r7, r5, r3
+   0x1000424e <+548>:	asrs	r3, r0, #32
+   0x10004250 <+550>:	adds	r6, r7, r4
+   0x10004252 <+552>:	asrs	r3, r0, #32
+   0x10004254 <+554>:	adds	r5, r3, r6
+   0x10004256 <+556>:	asrs	r3, r0, #32
+   0x10004258 <+558>:	subs	r0, r2, r0
+   0x1000425a <+560>:	asrs	r3, r0, #32
+   0x1000425c <+562>:	subs	r1, r4, r1
+   0x1000425e <+564>:	asrs	r3, r0, #32
+   0x10004260 <+566>:	subs	r7, r2, r3
+   0x10004262 <+568>:	asrs	r3, r0, #32
+   0x10004264 <+570>:	ldr	r1, [r0, #104]	; 0x68
+   0x10004266 <+572>:	asrs	r0, r0, #32
+   0x10004268 <+574>:	asrs	r4, r7, #27
+   0x1000426a <+576>:	asrs	r3, r0, #32
+   0x1000426c <+578>:	asrs	r6, r1, #28
+   0x1000426e <+580>:	asrs	r3, r0, #32
+   0x10004270 <+582>:	cmp	r7, #128	; 0x80
+   0x10004272 <+584>:	strh	r0, [r0, #0]
+   0x10004274 <+586>:	subs	r4, r3, r4
+   0x10004276 <+588>:	asrs	r3, r0, #32
+   0x10004278 <+590>:	asrs	r5, r0, #29
+   0x1000427a <+592>:	asrs	r3, r0, #32
+   0x1000427c <+594>:	asrs	r1, r3, #28
+   0x1000427e <+596>:	asrs	r3, r0, #32
+   0x10004280 <+598>:	asrs	r5, r2, #30
+   0x10004282 <+600>:	asrs	r3, r0, #32
+   0x10004284 <+602>:	asrs	r3, r5, #29
+   0x10004286 <+604>:	asrs	r3, r0, #32
+End of assembler dump.
+Dump of assembler code for function up_usagefault:
+   0x1000103c <+0>:	push	{r4, r5, r6, lr}
+   0x1000103e <+2>:	mov	r5, r1
+   0x10001040 <+4>:	mrs	r3, BASEPRI
+   0x10001044 <+8>:	movs	r3, #32
+   0x10001046 <+10>:	msr	BASEPRI, r3
+   0x1000104a <+14>:	mov.w	r3, #3758153728	; 0xe000e000
+   0x1000104e <+18>:	ldr.w	r4, [r3, #3368]	; 0xd28
+   0x10001052 <+22>:	ldr	r2, [r1, #76]	; 0x4c
+   0x10001054 <+24>:	ldr	r3, [pc, #160]	; (0x100010f8 <up_usagefault+188>)
+   0x10001056 <+26>:	ands.w	r6, r4, #262144	; 0x40000
+   0x1000105a <+30>:	str	r2, [r3, #0]
+   0x1000105c <+32>:	it	ne
+   0x1000105e <+34>:	ldrne	r2, [r1, #72]	; 0x48
+   0x10001060 <+36>:	mov.w	r0, #3
+   0x10001064 <+40>:	ldr	r1, [pc, #148]	; (0x100010fc <up_usagefault+192>)
+   0x10001066 <+42>:	it	ne
+   0x10001068 <+44>:	strne	r2, [r3, #0]
+   0x1000106a <+46>:	bl	0x1000a3a0 <lowsyslog>
+   0x1000106e <+50>:	ldr	r2, [pc, #144]	; (0x10001100 <up_usagefault+196>)
+   0x10001070 <+52>:	ldr	r1, [pc, #144]	; (0x10001104 <up_usagefault+200>)
+   0x10001072 <+54>:	movs	r0, #3
+   0x10001074 <+56>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001078 <+60>:	ldr	r2, [pc, #132]	; (0x10001100 <up_usagefault+196>)
+   0x1000107a <+62>:	movs	r0, #3
+   0x1000107c <+64>:	ldr	r3, [r5, #76]	; 0x4c
+   0x1000107e <+66>:	ldr	r1, [pc, #136]	; (0x10001108 <up_usagefault+204>)
+   0x10001080 <+68>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001084 <+72>:	lsls	r2, r4, #6
+   0x10001086 <+74>:	bpl.n	0x10001094 <up_usagefault+88>
+   0x10001088 <+76>:	ldr	r2, [pc, #116]	; (0x10001100 <up_usagefault+196>)
+   0x1000108a <+78>:	ldr	r1, [pc, #128]	; (0x1000110c <up_usagefault+208>)
+   0x1000108c <+80>:	movs	r0, #3
+   0x1000108e <+82>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001092 <+86>:	b.n	0x100010ca <up_usagefault+142>
+   0x10001094 <+88>:	lsls	r3, r4, #7
+   0x10001096 <+90>:	bpl.n	0x1000109e <up_usagefault+98>
+   0x10001098 <+92>:	ldr	r2, [pc, #100]	; (0x10001100 <up_usagefault+196>)
+   0x1000109a <+94>:	ldr	r1, [pc, #116]	; (0x10001110 <up_usagefault+212>)
+   0x1000109c <+96>:	b.n	0x1000108c <up_usagefault+80>
+   0x1000109e <+98>:	lsls	r0, r4, #11
+   0x100010a0 <+100>:	bpl.n	0x100010a8 <up_usagefault+108>
+   0x100010a2 <+102>:	ldr	r2, [pc, #92]	; (0x10001100 <up_usagefault+196>)
+   0x100010a4 <+104>:	ldr	r1, [pc, #108]	; (0x10001114 <up_usagefault+216>)
+   0x100010a6 <+106>:	b.n	0x1000108c <up_usagefault+80>
+   0x100010a8 <+108>:	lsls	r1, r4, #12
+   0x100010aa <+110>:	bpl.n	0x100010b2 <up_usagefault+118>
+   0x100010ac <+112>:	ldr	r2, [pc, #80]	; (0x10001100 <up_usagefault+196>)
+   0x100010ae <+114>:	ldr	r1, [pc, #104]	; (0x10001118 <up_usagefault+220>)
+   0x100010b0 <+116>:	b.n	0x1000108c <up_usagefault+80>
+   0x100010b2 <+118>:	cbz	r6, 0x100010ba <up_usagefault+126>
+   0x100010b4 <+120>:	ldr	r2, [pc, #72]	; (0x10001100 <up_usagefault+196>)
+   0x100010b6 <+122>:	ldr	r1, [pc, #100]	; (0x1000111c <up_usagefault+224>)
+   0x100010b8 <+124>:	b.n	0x1000108c <up_usagefault+80>
+   0x100010ba <+126>:	lsls	r2, r4, #14
+   0x100010bc <+128>:	bpl.n	0x100010ec <up_usagefault+176>
+   0x100010be <+130>:	movs	r0, #3
+   0x100010c0 <+132>:	ldr	r3, [r5, #80]	; 0x50
+   0x100010c2 <+134>:	ldr	r2, [pc, #60]	; (0x10001100 <up_usagefault+196>)
+   0x100010c4 <+136>:	ldr	r1, [pc, #88]	; (0x10001120 <up_usagefault+228>)
+   0x100010c6 <+138>:	bl	0x1000a3a0 <lowsyslog>
+   0x100010ca <+142>:	mov	r3, r4
+   0x100010cc <+144>:	ldr	r2, [pc, #48]	; (0x10001100 <up_usagefault+196>)
+   0x100010ce <+146>:	ldr	r1, [pc, #84]	; (0x10001124 <up_usagefault+232>)
+   0x100010d0 <+148>:	movs	r0, #3
+   0x100010d2 <+150>:	bl	0x1000a3a0 <lowsyslog>
+   0x100010d6 <+154>:	ldr	r2, [pc, #40]	; (0x10001100 <up_usagefault+196>)
+   0x100010d8 <+156>:	ldr	r1, [pc, #40]	; (0x10001104 <up_usagefault+200>)
+   0x100010da <+158>:	movs	r0, #3
+   0x100010dc <+160>:	bl	0x1000a3a0 <lowsyslog>
+   0x100010e0 <+164>:	movs	r1, #137	; 0x89
+   0x100010e2 <+166>:	ldr	r0, [pc, #68]	; (0x10001128 <up_usagefault+236>)
+   0x100010e4 <+168>:	bl	0x1000089c <up_assert>
+   0x100010e8 <+172>:	movs	r0, #0
+   0x100010ea <+174>:	pop	{r4, r5, r6, pc}
+   0x100010ec <+176>:	lsls	r3, r4, #15
+   0x100010ee <+178>:	bpl.n	0x100010ca <up_usagefault+142>
+   0x100010f0 <+180>:	ldr	r2, [pc, #12]	; (0x10001100 <up_usagefault+196>)
+   0x100010f2 <+182>:	ldr	r1, [pc, #56]	; (0x1000112c <up_usagefault+240>)
+   0x100010f4 <+184>:	b.n	0x1000108c <up_usagefault+80>
+   0x100010f6 <+186>:	nop
+   0x100010f8 <+188>:	asrs	r0, r0, #27
+   0x100010fa <+190>:	strh	r0, [r0, #0]
+   0x100010fc <+192>:	lsrs	r7, r2, #11
+   0x100010fe <+194>:	asrs	r3, r0, #32
+   0x10001100 <+196>:	lsrs	r7, r1, #30
+   0x10001102 <+198>:	asrs	r3, r0, #32
+   0x10001104 <+200>:	lsls	r0, r7, #30
+   0x10001106 <+202>:	asrs	r3, r0, #32
+   0x10001108 <+204>:	lsrs	r2, r4, #21
+   0x1000110a <+206>:	asrs	r3, r0, #32
+   0x1000110c <+208>:	lsrs	r2, r2, #22
+   0x1000110e <+210>:	asrs	r3, r0, #32
+   0x10001110 <+212>:	lsrs	r2, r2, #23
+   0x10001112 <+214>:	asrs	r3, r0, #32
+   0x10001114 <+216>:	lsrs	r4, r2, #24
+   0x10001116 <+218>:	asrs	r3, r0, #32
+   0x10001118 <+220>:	lsrs	r0, r2, #25
+   0x1000111a <+222>:	asrs	r3, r0, #32
+   0x1000111c <+224>:	lsrs	r2, r1, #26
+   0x1000111e <+226>:	asrs	r3, r0, #32
+   0x10001120 <+228>:	lsrs	r4, r1, #27
+   0x10001122 <+230>:	asrs	r3, r0, #32
+   0x10001124 <+232>:	lsrs	r6, r2, #29
+   0x10001126 <+234>:	asrs	r3, r0, #32
+   0x10001128 <+236>:	lsrs	r7, r6, #29
+   0x1000112a <+238>:	asrs	r3, r0, #32
+   0x1000112c <+240>:	lsrs	r0, r3, #28
+   0x1000112e <+242>:	asrs	r3, r0, #32
+End of assembler dump.
+Dump of assembler code for function up_memfault:
+   0x10000e40 <+0>:	push	{r0, r1, r2, r4, r5, r6, r7, lr}
+   0x10000e42 <+2>:	mov	r5, r1
+   0x10000e44 <+4>:	mrs	r3, BASEPRI
+   0x10000e48 <+8>:	movs	r3, #32
+   0x10000e4a <+10>:	msr	BASEPRI, r3
+   0x10000e4e <+14>:	mov.w	r3, #3758153728	; 0xe000e000
+   0x10000e52 <+18>:	ldr.w	r4, [r3, #3368]	; 0xd28
+   0x10000e56 <+22>:	ldr	r2, [r1, #76]	; 0x4c
+   0x10000e58 <+24>:	ldr.w	r6, [r3, #3380]	; 0xd34
+   0x10000e5c <+28>:	ldr	r3, [pc, #164]	; (0x10000f04 <up_memfault+196>)
+   0x10000e5e <+30>:	ands.w	r7, r4, #1
+   0x10000e62 <+34>:	str	r2, [r3, #0]
+   0x10000e64 <+36>:	it	ne
+   0x10000e66 <+38>:	ldrne	r2, [r1, #72]	; 0x48
+   0x10000e68 <+40>:	mov.w	r0, #3
+   0x10000e6c <+44>:	ldr	r1, [pc, #152]	; (0x10000f08 <up_memfault+200>)
+   0x10000e6e <+46>:	it	ne
+   0x10000e70 <+48>:	strne	r2, [r3, #0]
+   0x10000e72 <+50>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000e76 <+54>:	ldr	r2, [pc, #148]	; (0x10000f0c <up_memfault+204>)
+   0x10000e78 <+56>:	ldr	r1, [pc, #148]	; (0x10000f10 <up_memfault+208>)
+   0x10000e7a <+58>:	movs	r0, #3
+   0x10000e7c <+60>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000e80 <+64>:	ldr	r3, [r5, #76]	; 0x4c
+   0x10000e82 <+66>:	movs	r0, #3
+   0x10000e84 <+68>:	ldr	r2, [pc, #132]	; (0x10000f0c <up_memfault+204>)
+   0x10000e86 <+70>:	ldr	r1, [pc, #140]	; (0x10000f14 <up_memfault+212>)
+   0x10000e88 <+72>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000e8c <+76>:	lsls	r5, r4, #30
+   0x10000e8e <+78>:	bpl.n	0x10000ed0 <up_memfault+144>
+   0x10000e90 <+80>:	ldr	r2, [pc, #120]	; (0x10000f0c <up_memfault+204>)
+   0x10000e92 <+82>:	ldr	r1, [pc, #132]	; (0x10000f18 <up_memfault+216>)
+   0x10000e94 <+84>:	movs	r0, #3
+   0x10000e96 <+86>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000e9a <+90>:	lsls	r3, r4, #24
+   0x10000e9c <+92>:	bpl.n	0x10000ef6 <up_memfault+182>
+   0x10000e9e <+94>:	mov	r3, r6
+   0x10000ea0 <+96>:	movs	r0, #3
+   0x10000ea2 <+98>:	ldr	r2, [pc, #104]	; (0x10000f0c <up_memfault+204>)
+   0x10000ea4 <+100>:	ldr	r1, [pc, #116]	; (0x10000f1c <up_memfault+220>)
+   0x10000ea6 <+102>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000eaa <+106>:	mov	r3, r4
+   0x10000eac <+108>:	ldr	r2, [pc, #92]	; (0x10000f0c <up_memfault+204>)
+   0x10000eae <+110>:	ldr	r1, [pc, #112]	; (0x10000f20 <up_memfault+224>)
+   0x10000eb0 <+112>:	str	r6, [sp, #0]
+   0x10000eb2 <+114>:	movs	r0, #3
+   0x10000eb4 <+116>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000eb8 <+120>:	ldr	r2, [pc, #80]	; (0x10000f0c <up_memfault+204>)
+   0x10000eba <+122>:	ldr	r1, [pc, #104]	; (0x10000f24 <up_memfault+228>)
+   0x10000ebc <+124>:	movs	r0, #3
+   0x10000ebe <+126>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000ec2 <+130>:	movs	r1, #176	; 0xb0
+   0x10000ec4 <+132>:	ldr	r0, [pc, #96]	; (0x10000f28 <up_memfault+232>)
+   0x10000ec6 <+134>:	bl	0x1000089c <up_assert>
+   0x10000eca <+138>:	movs	r0, #0
+   0x10000ecc <+140>:	add	sp, #12
+   0x10000ece <+142>:	pop	{r4, r5, r6, r7, pc}
+   0x10000ed0 <+144>:	cbz	r7, 0x10000ed8 <up_memfault+152>
+   0x10000ed2 <+146>:	ldr	r2, [pc, #56]	; (0x10000f0c <up_memfault+204>)
+   0x10000ed4 <+148>:	ldr	r1, [pc, #84]	; (0x10000f2c <up_memfault+236>)
+   0x10000ed6 <+150>:	b.n	0x10000e94 <up_memfault+84>
+   0x10000ed8 <+152>:	lsls	r0, r4, #27
+   0x10000eda <+154>:	bpl.n	0x10000ee2 <up_memfault+162>
+   0x10000edc <+156>:	ldr	r2, [pc, #44]	; (0x10000f0c <up_memfault+204>)
+   0x10000ede <+158>:	ldr	r1, [pc, #80]	; (0x10000f30 <up_memfault+240>)
+   0x10000ee0 <+160>:	b.n	0x10000e94 <up_memfault+84>
+   0x10000ee2 <+162>:	lsls	r1, r4, #28
+   0x10000ee4 <+164>:	bpl.n	0x10000eec <up_memfault+172>
+   0x10000ee6 <+166>:	ldr	r2, [pc, #36]	; (0x10000f0c <up_memfault+204>)
+   0x10000ee8 <+168>:	ldr	r1, [pc, #72]	; (0x10000f34 <up_memfault+244>)
+   0x10000eea <+170>:	b.n	0x10000e94 <up_memfault+84>
+   0x10000eec <+172>:	lsls	r2, r4, #26
+   0x10000eee <+174>:	bpl.n	0x10000e9a <up_memfault+90>
+   0x10000ef0 <+176>:	ldr	r2, [pc, #24]	; (0x10000f0c <up_memfault+204>)
+   0x10000ef2 <+178>:	ldr	r1, [pc, #68]	; (0x10000f38 <up_memfault+248>)
+   0x10000ef4 <+180>:	b.n	0x10000e94 <up_memfault+84>
+   0x10000ef6 <+182>:	ldr	r2, [pc, #20]	; (0x10000f0c <up_memfault+204>)
+   0x10000ef8 <+184>:	ldr	r1, [pc, #64]	; (0x10000f3c <up_memfault+252>)
+   0x10000efa <+186>:	movs	r0, #3
+   0x10000efc <+188>:	bl	0x1000a3a0 <lowsyslog>
+   0x10000f00 <+192>:	b.n	0x10000eaa <up_memfault+106>
+   0x10000f02 <+194>:	nop
+   0x10000f04 <+196>:	asrs	r0, r0, #27
+   0x10000f06 <+198>:	strh	r0, [r0, #0]
+   0x10000f08 <+200>:	lsrs	r7, r2, #11
+   0x10000f0a <+202>:	asrs	r3, r0, #32
+   0x10000f0c <+204>:	lsrs	r7, r5, #11
+   0x10000f0e <+206>:	asrs	r3, r0, #32
+   0x10000f10 <+208>:	lsls	r0, r7, #30
+   0x10000f12 <+210>:	asrs	r3, r0, #32
+   0x10000f14 <+212>:	lsrs	r7, r0, #32
+   0x10000f16 <+214>:	asrs	r3, r0, #32
+   0x10000f18 <+216>:	lsrs	r5, r0, #1
+   0x10000f1a <+218>:	asrs	r3, r0, #32
+   0x10000f1c <+220>:	lsrs	r7, r0, #8
+   0x10000f1e <+222>:	asrs	r3, r0, #32
+   0x10000f20 <+224>:	lsrs	r1, r3, #9
+   0x10000f22 <+226>:	asrs	r3, r0, #32
+   0x10000f24 <+228>:	lsrs	r0, r1, #10
+   0x10000f26 <+230>:	asrs	r3, r0, #32
+   0x10000f28 <+232>:	lsrs	r1, r3, #11
+   0x10000f2a <+234>:	asrs	r3, r0, #32
+   0x10000f2c <+236>:	lsrs	r3, r3, #2
+   0x10000f2e <+238>:	asrs	r3, r0, #32
+   0x10000f30 <+240>:	lsrs	r3, r6, #3
+   0x10000f32 <+242>:	asrs	r3, r0, #32
+   0x10000f34 <+244>:	lsrs	r5, r0, #5
+   0x10000f36 <+246>:	asrs	r3, r0, #32
+   0x10000f38 <+248>:	lsrs	r4, r3, #6
+   0x10000f3a <+250>:	asrs	r3, r0, #32
+   0x10000f3c <+252>:	lsrs	r2, r4, #8
+   0x10000f3e <+254>:	asrs	r3, r0, #32
+End of assembler dump.
+Dump of assembler code for function up_hardfault:
+   0x10001178 <+0>:	push	{r4, r5, r6, r7, lr}
+   0x1000117a <+2>:	mov.w	r6, #3758153728	; 0xe000e000
+   0x1000117e <+6>:	mov	r7, r0
+   0x10001180 <+8>:	mov	r4, r1
+   0x10001182 <+10>:	ldr	r2, [r1, #76]	; 0x4c
+   0x10001184 <+12>:	ldr	r3, [pc, #244]	; (0x1000127c <up_hardfault+260>)
+   0x10001186 <+14>:	ldr	r5, [pc, #248]	; (0x10001280 <up_hardfault+264>)
+   0x10001188 <+16>:	sub	sp, #36	; 0x24
+   0x1000118a <+18>:	ldr	r1, [pc, #248]	; (0x10001284 <up_hardfault+268>)
+   0x1000118c <+20>:	movs	r0, #3
+   0x1000118e <+22>:	str	r2, [r3, #0]
+   0x10001190 <+24>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001194 <+28>:	mov	r2, r5
+   0x10001196 <+30>:	ldr.w	r3, [r6, #3372]	; 0xd2c
+   0x1000119a <+34>:	ldr	r1, [pc, #236]	; (0x10001288 <up_hardfault+272>)
+   0x1000119c <+36>:	movs	r0, #3
+   0x1000119e <+38>:	bl	0x1000a3a0 <lowsyslog>
+   0x100011a2 <+42>:	mov	r3, r7
+   0x100011a4 <+44>:	mov	r2, r5
+   0x100011a6 <+46>:	ldr	r1, [pc, #228]	; (0x1000128c <up_hardfault+276>)
+   0x100011a8 <+48>:	str	r4, [sp, #0]
+   0x100011aa <+50>:	movs	r0, #3
+   0x100011ac <+52>:	bl	0x1000a3a0 <lowsyslog>
+   0x100011b0 <+56>:	mrs	r3, BASEPRI
+   0x100011b4 <+60>:	mrs	r2, PRIMASK
+   0x100011b8 <+64>:	mrs	r1, IPSR
+   0x100011bc <+68>:	mrs	r0, CONTROL
+   0x100011c0 <+72>:	uxtb	r2, r2
+   0x100011c2 <+74>:	strd	r1, r0, [sp, #4]
+   0x100011c6 <+78>:	str	r2, [sp, #0]
+   0x100011c8 <+80>:	ldr	r1, [pc, #196]	; (0x10001290 <up_hardfault+280>)
+   0x100011ca <+82>:	mov	r2, r5
+   0x100011cc <+84>:	uxtb	r3, r3
+   0x100011ce <+86>:	movs	r0, #3
+   0x100011d0 <+88>:	bl	0x1000a3a0 <lowsyslog>
+   0x100011d4 <+92>:	ldr.w	r3, [r6, #3368]	; 0xd28
+   0x100011d8 <+96>:	ldr.w	r2, [r6, #3372]	; 0xd2c
+   0x100011dc <+100>:	ldr.w	r1, [r6, #3376]	; 0xd30
+   0x100011e0 <+104>:	ldr.w	r0, [r6, #3384]	; 0xd38
+   0x100011e4 <+108>:	ldr.w	r6, [r6, #3388]	; 0xd3c
+   0x100011e8 <+112>:	strd	r2, r1, [sp]
+   0x100011ec <+116>:	strd	r0, r6, [sp, #8]
+   0x100011f0 <+120>:	mov	r2, r5
+   0x100011f2 <+122>:	ldr	r1, [pc, #160]	; (0x10001294 <up_hardfault+284>)
+   0x100011f4 <+124>:	movs	r0, #3
+   0x100011f6 <+126>:	bl	0x1000a3a0 <lowsyslog>
+   0x100011fa <+130>:	ldr	r3, [r4, #20]
+   0x100011fc <+132>:	mov	r2, r5
+   0x100011fe <+134>:	str	r3, [sp, #24]
+   0x10001200 <+136>:	ldr	r3, [r4, #16]
+   0x10001202 <+138>:	ldr	r1, [pc, #148]	; (0x10001298 <up_hardfault+288>)
+   0x10001204 <+140>:	str	r3, [sp, #20]
+   0x10001206 <+142>:	ldr	r3, [r4, #12]
+   0x10001208 <+144>:	movs	r0, #3
+   0x1000120a <+146>:	str	r3, [sp, #16]
+   0x1000120c <+148>:	ldr	r3, [r4, #8]
+   0x1000120e <+150>:	str	r3, [sp, #12]
+   0x10001210 <+152>:	ldr	r3, [r4, #64]	; 0x40
+   0x10001212 <+154>:	str	r3, [sp, #8]
+   0x10001214 <+156>:	ldr	r3, [r4, #60]	; 0x3c
+   0x10001216 <+158>:	str	r3, [sp, #4]
+   0x10001218 <+160>:	ldr	r3, [r4, #56]	; 0x38
+   0x1000121a <+162>:	str	r3, [sp, #0]
+   0x1000121c <+164>:	ldr	r3, [r4, #52]	; 0x34
+   0x1000121e <+166>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001222 <+170>:	ldr	r3, [r4, #76]	; 0x4c
+   0x10001224 <+172>:	mov	r2, r5
+   0x10001226 <+174>:	str	r3, [sp, #24]
+   0x10001228 <+176>:	ldr	r3, [r4, #72]	; 0x48
+   0x1000122a <+178>:	ldr	r1, [pc, #112]	; (0x1000129c <up_hardfault+292>)
+   0x1000122c <+180>:	str	r3, [sp, #20]
+   0x1000122e <+182>:	ldr	r3, [r4, #0]
+   0x10001230 <+184>:	movs	r0, #3
+   0x10001232 <+186>:	str	r3, [sp, #16]
+   0x10001234 <+188>:	ldr	r3, [r4, #68]	; 0x44
+   0x10001236 <+190>:	str	r3, [sp, #12]
+   0x10001238 <+192>:	ldr	r3, [r4, #36]	; 0x24
+   0x1000123a <+194>:	str	r3, [sp, #8]
+   0x1000123c <+196>:	ldr	r3, [r4, #32]
+   0x1000123e <+198>:	str	r3, [sp, #4]
+   0x10001240 <+200>:	ldr	r3, [r4, #28]
+   0x10001242 <+202>:	str	r3, [sp, #0]
+   0x10001244 <+204>:	ldr	r3, [r4, #24]
+   0x10001246 <+206>:	bl	0x1000a3a0 <lowsyslog>
+   0x1000124a <+210>:	ldr	r3, [pc, #84]	; (0x100012a0 <up_hardfault+296>)
+   0x1000124c <+212>:	movs	r0, #3
+   0x1000124e <+214>:	ldr	r2, [r3, #0]
+   0x10001250 <+216>:	ldr	r3, [r2, #80]	; 0x50
+   0x10001252 <+218>:	ldr	r1, [r2, #4]
+   0x10001254 <+220>:	ldr	r2, [r2, #40]	; 0x28
+   0x10001256 <+222>:	strd	r1, r2, [sp]
+   0x1000125a <+226>:	mov	r2, r5
+   0x1000125c <+228>:	ldr	r1, [pc, #68]	; (0x100012a4 <up_hardfault+300>)
+   0x1000125e <+230>:	bl	0x1000a3a0 <lowsyslog>
+   0x10001262 <+234>:	mrs	r3, BASEPRI
+   0x10001266 <+238>:	movs	r3, #32
+   0x10001268 <+240>:	msr	BASEPRI, r3
+   0x1000126c <+244>:	movs	r1, #215	; 0xd7
+   0x1000126e <+246>:	ldr	r0, [pc, #56]	; (0x100012a8 <up_hardfault+304>)
+   0x10001270 <+248>:	bl	0x1000089c <up_assert>
+   0x10001274 <+252>:	movs	r0, #0
+   0x10001276 <+254>:	add	sp, #36	; 0x24
+   0x10001278 <+256>:	pop	{r4, r5, r6, r7, pc}
+   0x1000127a <+258>:	nop
+   0x1000127c <+260>:	asrs	r0, r0, #27
+   0x1000127e <+262>:	strh	r0, [r0, #0]
+   0x10001280 <+264>:	asrs	r0, r4, #4
+   0x10001282 <+266>:	asrs	r3, r0, #32
+   0x10001284 <+268>:	lsrs	r7, r2, #11
+   0x10001286 <+270>:	asrs	r3, r0, #32
+   0x10001288 <+272>:	lsrs	r7, r4, #30
+   0x1000128a <+274>:	asrs	r3, r0, #32
+   0x1000128c <+276>:	lsrs	r6, r0, #31
+   0x1000128e <+278>:	asrs	r3, r0, #32
+   0x10001290 <+280>:	lsrs	r6, r3, #31
+   0x10001292 <+282>:	asrs	r3, r0, #32
+   0x10001294 <+284>:	asrs	r2, r3, #32
+   0x10001296 <+286>:	asrs	r3, r0, #32
+   0x10001298 <+288>:	asrs	r2, r5, #1
+   0x1000129a <+290>:	asrs	r3, r0, #32
+   0x1000129c <+292>:	asrs	r5, r3, #2
+   0x1000129e <+294>:	asrs	r3, r0, #32
+   0x100012a0 <+296>:	asrs	r0, r5, #22
+   0x100012a2 <+298>:	strh	r0, [r0, #0]
+   0x100012a4 <+300>:	asrs	r0, r2, #3
+   0x100012a6 <+302>:	asrs	r3, r0, #32
+   0x100012a8 <+304>:	asrs	r1, r1, #4
+   0x100012aa <+306>:	asrs	r3, r0, #32
+End of assembler dump.

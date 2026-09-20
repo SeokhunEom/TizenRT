@@ -1,0 +1,15 @@
+In file included from /work/os/board/rtl8730e/src/component/os_dep/osdep_service.h:54,
+                 from /work/os/arch/arm/src/amebasmart/amebasmart_idle.c:34:
+/work/os/include/threads.h: In function 'thrd_join':
+/work/os/include/threads.h:187:30: warning: passing argument 2 of 'pthread_join' from incompatible pointer type [-Wincompatible-pointer-types]
+  187 |  int ret = pthread_join(thr, &value);
+      |                              ^~~~~~
+      |                              |
+      |                              void ***
+In file included from /work/os/include/tinyara/sched.h:68,
+                 from /work/os/include/sched.h:72,
+                 from /work/os/include/tinyara/arch.h:120,
+                 from /work/os/arch/arm/src/amebasmart/amebasmart_idle.c:26:
+/work/os/include/pthread.h:410:56: note: expected 'void **' but argument is of type 'void ***'
+  410 | int pthread_join(pthread_t thread, FAR pthread_addr_t *value);
+      |                                        ~~~~~~~~~~~~~~~~^~~~~

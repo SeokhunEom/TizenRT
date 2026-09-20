@@ -1,0 +1,6 @@
+{
+  "tools/qemu-armv8m-health-monitor/run.py": "45a5eaab17f1e62cea7a73a99915f5dabef002a3b0d7fa1cc70fb2ddbde858e3",
+  "tools/qemu-build-test/health-monitor-smoke.py": "528d6b086430066b66f21947e17e7550f4ff2433bcab785fe7379b58c11b6489",
+  "tools/qemu-build-test/health-monitor-extended.py": "70da2f12bb9067d70f49b3a638167f4c057211dcb6d4cc5cd5354c7140398a6a",
+  "tools/qemu-build-test/qemu_common.py": "bb81d1d6690e6b7b0c00c85ebde80994057606cf65a1acea572dbeede9721f82"
+}

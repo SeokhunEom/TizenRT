@@ -1,0 +1,31 @@
+{
+  "status": "fail",
+  "exit_code": 2,
+  "command": [
+    "/usr/local/bin/docker",
+    "run",
+    "--rm",
+    "--platform",
+    "linux/arm64",
+    "--mount",
+    "type=bind,src=/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc,dst=/work,readonly",
+    "--mount",
+    "type=bind,src=/private/tmp/hm-armv8m-20260920-n2j8ynnz/host-tests,dst=/out",
+    "--workdir",
+    "/work",
+    "tizenrt/tizenrt:2.0.1-arm64-local",
+    "make",
+    "-C",
+    "os/kernel/health_monitor/tests",
+    "test",
+    "OUT_DIR=/out/bin"
+  ],
+  "elapsed_seconds": 2.481,
+  "sanitizers": "address,undefined",
+  "executables": [
+    "driver-smp",
+    "driver-up",
+    "registry-smp",
+    "registry-up"
+  ]
+}

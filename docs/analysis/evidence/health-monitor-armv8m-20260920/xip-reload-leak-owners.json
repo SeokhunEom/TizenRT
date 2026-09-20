@@ -1,0 +1,12 @@
+[
+  {
+    "owner": "1000206b",
+    "function": "load_binary",
+    "growth_two_reloads": 384
+  },
+  {
+    "owner": "100209f3",
+    "function": "select",
+    "growth_two_reloads": 128
+  }
+]

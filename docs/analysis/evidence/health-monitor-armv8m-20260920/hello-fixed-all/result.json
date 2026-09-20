@@ -1,0 +1,84 @@
+{
+  "status": "fail",
+  "profile": "hello",
+  "case": "all",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+  "effective_config_sha256": "939e360290659ea326a188c1d0c4afd19ed2e3b0819eebc53da666a1bbb1fc40",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "task_count": 5,
+    "used": 49632,
+    "free": 12875456,
+    "largest": 12342304,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800036d4 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12925088      49632   12875456   12342304\r\nTASH>>"
+  },
+  "rounds": [
+    {
+      "number": 1,
+      "cases": [
+        {
+          "case": "api",
+          "status": "pass",
+          "checks": 64,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu api\r\nTASH>>\u0000HM_QEMU BEGIN case=api capacity=32\r\nHM_QEMU PASS case=api checks=64 count=0"
+        },
+        {
+          "case": "shared",
+          "status": "pass",
+          "checks": 32,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu shared\r\nTASH>>\u0000HM_QEMU BEGIN case=shared capacity=32\r\nHM_QEMU PASS case=shared checks=32 count=0"
+        },
+        {
+          "case": "lifecycle",
+          "status": "pass",
+          "checks": 45,
+          "elapsed_seconds": 1.61,
+          "output": "\u0000hm_qemu lifecycle\r\nTASH>>\u0000HM_QEMU BEGIN case=lifecycle capacity=32\r\nHM_QEMU lifecycle cancel=1 pthread_exit=1 task_restart=1 task_delete=1 task_return=1 same_tcb=1\r\nHM_QEMU PASS case=lifecycle checks=45 count=0"
+        },
+        {
+          "case": "reuse",
+          "status": "pass",
+          "checks": 417,
+          "elapsed_seconds": 3.149,
+          "output": "\u0000hm_qemu reuse\r\nTASH>>\u0000HM_QEMU BEGIN case=reuse capacity=32\r\nHM_QEMU reuse pid_reused=31 tcb_reused=31 pid=17 tcb=800373a0 cursor_controlled=1\r\nHM_QEMU PASS case=reuse checks=417 count=0"
+        },
+        {
+          "case": "boundary",
+          "status": "pass",
+          "checks": 29,
+          "elapsed_seconds": 0.293,
+          "output": "\u0000hm_qemu boundary\r\nTASH>>\u0000HM_QEMU BEGIN case=boundary capacity=32\r\nHM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_timer_irq=1\r\nHM_QEMU PASS case=boundary checks=29 count=0"
+        }
+      ]
+    }
+  ],
+  "error": "Health Monitor fixture failed",
+  "elapsed_seconds": 6.196,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc/build/output/bin/tinyara",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

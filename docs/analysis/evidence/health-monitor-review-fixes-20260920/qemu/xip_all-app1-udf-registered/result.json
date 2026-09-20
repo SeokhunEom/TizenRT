@@ -1,0 +1,181 @@
+{
+  "status": "pass",
+  "profile": "xip_all",
+  "app": "app1",
+  "kind": "udf",
+  "registered": true,
+  "firmware_sha256": "be3e39c7d117364b155525b3da9eebfd64088a395eaa7347e06bbb99dfe70bfb",
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-review-fixes-20260920/qemu-optimized/xip_all-app1-udf-registered/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-review-fixes-20260920/qemu-optimized/xip_all-app1-udf-registered/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "none",
+    "-S",
+    "-gdb",
+    "tcp:127.0.0.1:63690"
+  ],
+  "events": [
+    {
+      "stage": "cpu_fault_handler",
+      "pc": "0x10001178",
+      "registers": [
+        "0x3",
+        "0x8068320c",
+        "0x0",
+        "0x10001179",
+        "0x800016b4",
+        "0x800015a8",
+        "0x3",
+        "0x8068320c",
+        "0x0",
+        "0x0",
+        "0x80d61807",
+        "0x3",
+        "0x1000956d",
+        "0x806831f4",
+        "0x10001159",
+        "0x10001178"
+      ],
+      "irq": 3,
+      "task": {
+        "tcb": "0x8004a580",
+        "pid": 8,
+        "binidx": 1,
+        "health_timeout": 60000,
+        "health_deadline": 61334
+      },
+      "fault_pc": "0x80d60078",
+      "instruction": "00de7047",
+      "cfsr": "0x10000",
+      "hfsr": "0x40000000",
+      "mmfar": "0x0",
+      "tick": 1338
+    },
+    {
+      "stage": "fault_sender_before_mq_send",
+      "pc": "0x10006ece",
+      "registers": [
+        "0x80037d84",
+        "0x8004a2d8",
+        "0x18",
+        "0x64",
+        "0x80003124",
+        "0x80003110",
+        "0x800018f0",
+        "0x8000311c",
+        "0x10033abe",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x8004a2d8",
+        "0x10006ec9",
+        "0x10006ece"
+      ],
+      "message": {
+        "address": "0x8004a2d8",
+        "raw": "0a00000001000000efbeaddeefbeaddeefbeaddeefbeadde",
+        "cmd": 10,
+        "binidx": 1
+      },
+      "task": {
+        "tcb": "0x80049180",
+        "pid": 5,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      },
+      "length": 24,
+      "priority": 100,
+      "queue_fd": "0x80037d84"
+    },
+    {
+      "stage": "binary_manager_after_mq_receive",
+      "pc": "0x1000415a",
+      "registers": [
+        "0x18",
+        "0x8000313c",
+        "0x0",
+        "0x0",
+        "0x18",
+        "0x10031b1c",
+        "0x80002f80",
+        "0x10031795",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x100",
+        "0x800490b8",
+        "0x10007ce3",
+        "0x1000415a"
+      ],
+      "message": {
+        "address": "0x800490d8",
+        "raw": "0a00000001000000efbeaddeefbeaddeefbeaddeefbeadde",
+        "cmd": 10,
+        "binidx": 1
+      },
+      "length": 24,
+      "task": {
+        "tcb": "0x80046380",
+        "pid": 4,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      }
+    },
+    {
+      "stage": "stopped_before_binary_manager_recovery_call",
+      "pc": "0x100041a6",
+      "registers": [
+        "0x1",
+        "0x8000313c",
+        "0x0",
+        "0xa",
+        "0x18",
+        "0x10031b1c",
+        "0x80002f80",
+        "0x10031795",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x100",
+        "0x800490b8",
+        "0x10007ce3",
+        "0x100041a6"
+      ],
+      "argument_binidx": 1,
+      "task": {
+        "tcb": "0x80046380",
+        "pid": 4,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      }
+    }
+  ],
+  "recovery_executed": false,
+  "unload_tested": false,
+  "target_memory_or_register_writes": false,
+  "trigger": "hm_armv8 send app1 fault-udf",
+  "stopped_before_recovery_call": true,
+  "fault_notice": "HM_USER CPU_FAULT app=app1 pid=8 kind=udf control=3 registered=1 timeout_ms=60000",
+  "fault_type": "UNDEFINSTR",
+  "same_message_bytes_received": true,
+  "observed_message_size": 24,
+  "elapsed_seconds": 1.581
+}

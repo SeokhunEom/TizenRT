@@ -41,7 +41,7 @@ def run_case(q, case):
 
 
 def fatal(q, case, result):
-    source = Path('/work/os/kernel/health_monitor/health_monitor.c').read_text().splitlines()
+    source = (getattr(q, 'root', Path('/work')) / 'os/kernel/health_monitor/health_monitor.c').read_text().splitlines()
     lines = [i + 1 for i, line in enumerate(source) if line.strip() == 'PANIC();']
     if len(lines) != 1:
         raise RuntimeError('Cannot uniquely identify Health Monitor PANIC line')
@@ -67,8 +67,8 @@ def fatal(q, case, result):
         raise RuntimeError('Wrong controlled inspection time')
     if ((now - deadline) & 0xffffffff) >= 0x80000000:
         raise RuntimeError('PANIC occurred before the registered deadline')
-    if len(re.findall(r'Assertion failed at file:', text)) != 1 or not re.search(r'IRQ num:\s*15\b', text):
-        raise RuntimeError('Expected one SysTick assertion')
+    if len(re.findall(r'Assertion failed at file:', text)) != 1 or not re.search(r'IRQ num:\s*' + str(getattr(q, 'timer_irq', 15)) + r'\b', text):
+        raise RuntimeError('Expected one system-timer assertion')
     result.update(expected_panic=True, expired_pid=pid, now=now, deadline=deadline,
                   panic_line=lines[0], elapsed_seconds_until_collection=round(time.monotonic() - started, 3),
                   output=output, physical_reset_verified=False)

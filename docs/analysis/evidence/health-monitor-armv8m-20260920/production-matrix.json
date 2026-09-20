@@ -1,0 +1,18 @@
+[
+  {
+    "profile": "loadable_all",
+    "exit_code": 0
+  },
+  {
+    "profile": "loadable_apps",
+    "exit_code": 0
+  },
+  {
+    "profile": "xip_all",
+    "exit_code": 0
+  },
+  {
+    "profile": "hello",
+    "exit_code": 0
+  }
+]

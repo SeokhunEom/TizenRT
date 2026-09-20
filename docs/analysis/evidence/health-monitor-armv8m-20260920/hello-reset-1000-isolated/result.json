@@ -1,0 +1,28 @@
+{
+  "status": "fail",
+  "profile": "hello",
+  "case": "reset",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+  "effective_config_sha256": "35f1b09794021d8bd63a18c395addecd07b19cb997b6f2706738e508d953e7f4",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "error": "Deadline wall-time mismatch: 1.5049501250032336",
+  "elapsed_seconds": 2.812,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc/build/output/bin/tinyara",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-no-reboot"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

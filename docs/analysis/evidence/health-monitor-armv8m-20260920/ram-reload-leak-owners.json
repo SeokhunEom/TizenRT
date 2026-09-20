@@ -1,0 +1,22 @@
+[
+  {
+    "owner": "1000205b",
+    "function": "load_binary",
+    "growth_two_reloads": 320
+  },
+  {
+    "owner": "1002086f",
+    "function": "select",
+    "growth_two_reloads": 128
+  },
+  {
+    "owner": "1002975b",
+    "function": "elf_bind",
+    "growth_two_reloads": 64
+  },
+  {
+    "owner": "1002e747",
+    "function": "hashmap_create",
+    "growth_two_reloads": 51712
+  }
+]

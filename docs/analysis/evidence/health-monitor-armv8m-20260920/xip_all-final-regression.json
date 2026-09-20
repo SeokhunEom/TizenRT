@@ -1,0 +1,57 @@
+{
+  "active_slot": 0,
+  "attempt": 0,
+  "config": "xip_all",
+  "fail_count": 0,
+  "forbidden_marker": null,
+  "forbidden_marker_seen": false,
+  "log_path": "/private/tmp/hm-armv8m-20260920-n2j8ynnz/xip_all-final-regression.log",
+  "network": {
+    "commands": [
+      "sleep 1",
+      "help",
+      "ifdown eth0",
+      "ifup eth0",
+      "ifconfig eth0 dhcp",
+      "ifconfig eth0 fec0::15",
+      "sleep 2",
+      "ifconfig eth0",
+      "ping -c 3 10.0.2.2",
+      "ping6 -c 3 fec0::2",
+      "netdb --host example.com",
+      "ping -c 1 1.1.1.1",
+      "net_stats",
+      "network_tc",
+      "sleep 2",
+      "kernel_tc"
+    ],
+    "dns_resolved": true,
+    "failure_reason": null,
+    "ipv4": "10.0.2.15",
+    "network_tc_fail_count": 0,
+    "network_tc_pass_count": 161,
+    "pings": {
+      "gateway-ping": {
+        "received": 3,
+        "transmitted": 3
+      },
+      "gateway-ping6": {
+        "received": 3,
+        "transmitted": 3
+      },
+      "public-ping": {
+        "received": 0,
+        "transmitted": 1
+      }
+    },
+    "retry_count": 0,
+    "status": "pass"
+  },
+  "pass_count": 447,
+  "reason": "pass",
+  "required_marker": null,
+  "required_marker_seen": false,
+  "returncode": null,
+  "send_count": 16,
+  "status": "pass"
+}

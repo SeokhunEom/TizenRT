@@ -1,0 +1,43 @@
+{
+  "status": "observed",
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-production-build-retry/bin/tinyara",
+    "-display",
+    "none",
+    "-serial",
+    "file:/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-clock-observation/serial.log",
+    "-monitor",
+    "stdio",
+    "-nic",
+    "none"
+  ],
+  "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+  "timer_registers": "x\u001b[K\u001b[Dx \u001b[K\u001b[D\u001b[Dx /\u001b[K\u001b[D\u001b[D\u001b[Dx /4\u001b[K\u001b[D\u001b[D\u001b[D\u001b[Dx /4w\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx \u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x400\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x400000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4000000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40000000\u001b[K\r\n40000000: 0x00000009 0x00003cfd 0x00004e20 0x00000000\r\n(qemu) ",
+  "samples": [
+    {
+      "seconds": 173340.366006125,
+      "tick": 35
+    },
+    {
+      "seconds": 173340.8708655,
+      "tick": 369
+    },
+    {
+      "seconds": 173341.372824916,
+      "tick": 704
+    },
+    {
+      "seconds": 173341.87620575,
+      "tick": 1038
+    },
+    {
+      "seconds": 173342.379106666,
+      "tick": 1373
+    }
+  ],
+  "wall_seconds_per_1000_ticks": 1.504559447677905
+}

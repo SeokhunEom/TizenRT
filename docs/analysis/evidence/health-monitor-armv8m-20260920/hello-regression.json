@@ -1,0 +1,54 @@
+{
+  "config": "hello",
+  "fail_count": null,
+  "forbidden_marker": null,
+  "forbidden_marker_seen": false,
+  "log_path": "/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-regression.log",
+  "network": {
+    "commands": [
+      "sleep 1",
+      "help",
+      "ifdown eth0",
+      "ifup eth0",
+      "ifconfig eth0 dhcp",
+      "ifconfig eth0 fec0::15",
+      "sleep 2",
+      "ifconfig eth0",
+      "ping -c 3 10.0.2.2",
+      "ping6 -c 3 fec0::2",
+      "netdb --host example.com",
+      "ifdown eth0",
+      "ifup eth0",
+      "ifconfig eth0 dhcp",
+      "ifconfig eth0 fec0::15",
+      "sleep 2",
+      "ifconfig eth0",
+      "ping -c 3 10.0.2.2",
+      "ping6 -c 3 fec0::2"
+    ],
+    "dns_resolved": false,
+    "failure_reason": "network-ipv6-ping",
+    "ipv4": "10.0.2.15",
+    "network_tc_fail_count": null,
+    "network_tc_pass_count": null,
+    "pings": {
+      "gateway-ping": {
+        "received": 3,
+        "transmitted": 3
+      },
+      "gateway-ping6": {
+        "received": 0,
+        "transmitted": 0
+      }
+    },
+    "retry_count": 1,
+    "status": "failed"
+  },
+  "pass_count": null,
+  "reason": "network-ipv6-ping",
+  "required_marker": null,
+  "required_marker_seen": false,
+  "returncode": null,
+  "send_count": 19,
+  "status": "failed"
+}

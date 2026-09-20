@@ -1,0 +1,711 @@
+[
+  {
+    "name": "hello-basic",
+    "status": "fail",
+    "error": "unsupported operand type(s) for |: 'type' and 'type'",
+    "profile": "hello",
+    "case": "basic",
+    "elapsed_seconds": 0.033,
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-basic-retry",
+    "status": "pass",
+    "profile": "hello",
+    "case": "basic",
+    "elapsed_seconds": 3.878,
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-capacity4",
+    "status": "pass",
+    "profile": "hello",
+    "case": "capacity",
+    "elapsed_seconds": 1.167,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "cb3eaece4885df720923bfd0c48cadfba007be0f50ef6535034d5b98f6b97a96",
+    "matching_builds": [
+      "hello-capacity4-build"
+    ]
+  },
+  {
+    "name": "hello-capacity4-build",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 36.383
+  },
+  {
+    "name": "hello-clock-icount",
+    "status": "observed",
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-clock-observation",
+    "status": "observed",
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-clock-reference",
+    "status": "observed",
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-clock-reference-gdb",
+    "status": "fail",
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-clock-reference-gdb-start",
+    "status": "observed",
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-final-build",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 35.523
+  },
+  {
+    "name": "hello-final-clock-wrap",
+    "status": "pass",
+    "firmware_sha256": "242ab4db5040c43ef9d531a1eddcb6b8b98f64d70951297e1fe553c2c5459ab4",
+    "matching_builds": [
+      "hello-final-build"
+    ]
+  },
+  {
+    "name": "hello-final-normal",
+    "status": "pass",
+    "profile": "hello",
+    "case": "normal",
+    "elapsed_seconds": 179.875,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "242ab4db5040c43ef9d531a1eddcb6b8b98f64d70951297e1fe553c2c5459ab4",
+    "matching_builds": [
+      "hello-final-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-all",
+    "status": "fail",
+    "error": "Health Monitor fixture failed",
+    "profile": "hello",
+    "case": "all",
+    "elapsed_seconds": 6.196,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-close",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-close",
+    "elapsed_seconds": 1.507,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-equal",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-equal",
+    "elapsed_seconds": 1.301,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-equality",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-equality",
+    "elapsed_seconds": 1.304,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-far",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-far",
+    "elapsed_seconds": 1.301,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-late",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-late",
+    "elapsed_seconds": 1.336,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-multi",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-multi",
+    "elapsed_seconds": 1.501,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-overdue",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-overdue",
+    "elapsed_seconds": 1.303,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-stale",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-stale",
+    "elapsed_seconds": 1.303,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-unstable",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-unstable",
+    "elapsed_seconds": 1.337,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-fixed-fatal-wrap",
+    "status": "pass",
+    "profile": "hello",
+    "case": "fatal-wrap",
+    "elapsed_seconds": 1.309,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-hm-off-build",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 50.987
+  },
+  {
+    "name": "hello-hm-off-clock-unrestricted",
+    "status": "observed",
+    "firmware_sha256": "af514d13f9b8a2c3075576fff751c309e075728a83e1bc86244a4ff8fd5e4e8a",
+    "matching_builds": [
+      "hello-hm-off-build"
+    ]
+  },
+  {
+    "name": "hello-normal",
+    "status": "fail",
+    "error": "Missing serial marker: b'ps\\\\r?\\\\n'",
+    "profile": "hello",
+    "case": "normal",
+    "elapsed_seconds": 289.039,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-port-fix-build",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 26.299
+  },
+  {
+    "name": "hello-port-fix-reset-1000",
+    "status": "pass",
+    "profile": "hello",
+    "case": "reset",
+    "elapsed_seconds": 2.307,
+    "observed_seconds": 1.001,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-port-fix-reset-2000",
+    "status": "pass",
+    "profile": "hello",
+    "case": "reset",
+    "elapsed_seconds": 3.313,
+    "observed_seconds": 2.002,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-port-fix-serial-1000",
+    "status": "pass",
+    "profile": "hello",
+    "case": "serial",
+    "elapsed_seconds": 1.133,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "matching_builds": [
+      "hello-port-fix-build"
+    ]
+  },
+  {
+    "name": "hello-probes-red-build",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 42.188
+  },
+  {
+    "name": "hello-production-build",
+    "status": "fail",
+    "profile": "hello",
+    "elapsed_seconds": 8.596
+  },
+  {
+    "name": "hello-production-build-retry",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 39.66
+  },
+  {
+    "name": "hello-reset-1000",
+    "status": "fail",
+    "error": "Deadline wall-time mismatch: 1.5125062919978518",
+    "profile": "hello",
+    "case": "reset",
+    "elapsed_seconds": 2.822,
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-reset-1000-isolated",
+    "status": "fail",
+    "error": "Deadline wall-time mismatch: 1.5049501250032336",
+    "profile": "hello",
+    "case": "reset",
+    "elapsed_seconds": 2.812,
+    "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "matching_builds": [
+      "hello-production-build-retry"
+    ]
+  },
+  {
+    "name": "hello-serial-red",
+    "status": "fail",
+    "error": "Missing serial marker: b'ps\\\\r?\\\\n'",
+    "profile": "hello",
+    "case": "serial",
+    "elapsed_seconds": 31.371,
+    "firmware_sha256": "3ac630cebcc5230b12c6afe7409436bb2d86ec34f7998e76a9ae49cf3581aef8",
+    "matching_builds": [
+      "hello-probes-red-build"
+    ]
+  },
+  {
+    "name": "hello-stress256-all",
+    "status": "pass",
+    "profile": "hello",
+    "case": "all",
+    "elapsed_seconds": 53.781,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "f3e15abdfcc413ffe8f5b88d7b85b16e7036074bbe1bd92345ba8ee825b79a3a",
+    "matching_builds": [
+      "hello-stress256-build-retry"
+    ]
+  },
+  {
+    "name": "hello-stress256-build",
+    "status": "fail",
+    "profile": "hello",
+    "elapsed_seconds": 35.783
+  },
+  {
+    "name": "hello-stress256-build-retry",
+    "status": "pass",
+    "profile": "hello",
+    "elapsed_seconds": 38.04
+  },
+  {
+    "name": "host-tests",
+    "status": "fail",
+    "elapsed_seconds": 2.481
+  },
+  {
+    "name": "host-tests-retry",
+    "status": "pass",
+    "elapsed_seconds": 4.702
+  },
+  {
+    "name": "loadable_all-final-build",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 52.43
+  },
+  {
+    "name": "loadable_all-lifecycle-baseline-build",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 8.704
+  },
+  {
+    "name": "loadable_all-lifecycle-clean-build",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 52.017
+  },
+  {
+    "name": "loadable_all-recovery-build",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 8.629
+  },
+  {
+    "name": "loadable_all-user-api",
+    "status": "fail",
+    "error": "Missing serial marker: b'TASH>>'",
+    "profile": "loadable_all",
+    "case": "user-api",
+    "elapsed_seconds": 60.115,
+    "firmware_sha256": "babefc0c95a391193c282a77bee8884e77be1fc23c87f3be156664891418d4d2",
+    "matching_builds": [
+      "loadable_all-user-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-api-retry",
+    "status": "pass",
+    "profile": "loadable_all",
+    "case": "user-api",
+    "elapsed_seconds": 16.379,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "21ee6d64418e50ba2dc651db198c5e86400908885d190bfb953126f722d5c824",
+    "matching_builds": [
+      "loadable_all-user-build-retry"
+    ]
+  },
+  {
+    "name": "loadable_all-user-build",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 51.271
+  },
+  {
+    "name": "loadable_all-user-build-retry",
+    "status": "pass",
+    "profile": "loadable_all",
+    "elapsed_seconds": 51.433
+  },
+  {
+    "name": "loadable_all-user-expire",
+    "status": "pass",
+    "profile": "loadable_all",
+    "case": "user-expire",
+    "elapsed_seconds": 16.897,
+    "observed_seconds": 0.994,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "c267bd8997530ac70c10d1af7c06c0169e19bafbac979373dbabd409b0e4451a",
+    "matching_builds": [
+      "loadable_all-recovery-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-reload",
+    "status": "fail",
+    "error": "Kernel heap grew over repeated reloads",
+    "profile": "loadable_all",
+    "case": "user-reload",
+    "elapsed_seconds": 43.01,
+    "heap_growth_after_warmup": 0,
+    "reload_heap_growth_after_warmup": 52224,
+    "firmware_sha256": "c267bd8997530ac70c10d1af7c06c0169e19bafbac979373dbabd409b0e4451a",
+    "matching_builds": [
+      "loadable_all-recovery-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-reload-empty",
+    "status": "fail",
+    "error": "Kernel heap grew over repeated reloads",
+    "profile": "loadable_all",
+    "case": "user-reload-empty",
+    "elapsed_seconds": 42.923,
+    "heap_growth_after_warmup": 0,
+    "reload_heap_growth_after_warmup": 52224,
+    "firmware_sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+    "matching_builds": [
+      "loadable_all-lifecycle-baseline-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-return",
+    "status": "fail",
+    "error": "Unexpected target fault: Assertion failed at file:armv8-m/up_memfault.c line: 176 task: hm_armv8\r",
+    "profile": "loadable_all",
+    "case": "user-return",
+    "elapsed_seconds": 16.616,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "c267bd8997530ac70c10d1af7c06c0169e19bafbac979373dbabd409b0e4451a",
+    "matching_builds": [
+      "loadable_all-recovery-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-return-app2",
+    "status": "pass",
+    "profile": "loadable_all",
+    "case": "user-return-app2",
+    "elapsed_seconds": 8.498,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+    "matching_builds": [
+      "loadable_all-lifecycle-baseline-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-return-empty",
+    "status": "fail",
+    "error": "Health Monitor fixture failed",
+    "profile": "loadable_all",
+    "case": "user-return-empty",
+    "elapsed_seconds": 7.331,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+    "matching_builds": [
+      "loadable_all-lifecycle-baseline-build"
+    ]
+  },
+  {
+    "name": "loadable_all-user-return-empty-clean",
+    "status": "fail",
+    "error": "Unexpected target fault: Assertion failed at file:armv8-m/up_memfault.c line: 176 task: hm_armv8\r",
+    "profile": "loadable_all",
+    "case": "user-return-empty",
+    "elapsed_seconds": 8.562,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "67b1cb2eda395435275ea0e6fdf4cda2c4b625d65c9af77fd7a4e0f9d310b1d2",
+    "matching_builds": [
+      "loadable_all-lifecycle-clean-build"
+    ]
+  },
+  {
+    "name": "loadable_apps-final-build",
+    "status": "pass",
+    "profile": "loadable_apps",
+    "elapsed_seconds": 51.608
+  },
+  {
+    "name": "loadable_apps-user-api",
+    "status": "pass",
+    "profile": "loadable_apps",
+    "case": "user-api",
+    "elapsed_seconds": 16.044,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "matching_builds": [
+      "loadable_apps-user-build"
+    ]
+  },
+  {
+    "name": "loadable_apps-user-build",
+    "status": "pass",
+    "profile": "loadable_apps",
+    "elapsed_seconds": 51.41
+  },
+  {
+    "name": "loadable_apps-user-expire",
+    "status": "pass",
+    "profile": "loadable_apps",
+    "case": "user-expire",
+    "elapsed_seconds": 8.724,
+    "observed_seconds": 0.994,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "matching_builds": [
+      "loadable_apps-user-build"
+    ]
+  },
+  {
+    "name": "loadable_apps-user-reload",
+    "status": "fail",
+    "error": "Kernel heap grew over repeated reloads",
+    "profile": "loadable_apps",
+    "case": "user-reload",
+    "elapsed_seconds": 43.16,
+    "heap_growth_after_warmup": 0,
+    "reload_heap_growth_after_warmup": 52224,
+    "firmware_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "matching_builds": [
+      "loadable_apps-user-build"
+    ]
+  },
+  {
+    "name": "loadable_apps-user-return",
+    "status": "fail",
+    "error": "Unexpected target fault: Assertion failed at file:armv8-m/up_memfault.c line: 176 task: hm_armv8\r",
+    "profile": "loadable_apps",
+    "case": "user-return",
+    "elapsed_seconds": 8.501,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "matching_builds": [
+      "loadable_apps-user-build"
+    ]
+  },
+  {
+    "name": "loadable_apps-user-return-app2",
+    "status": "pass",
+    "profile": "loadable_apps",
+    "case": "user-return-app2",
+    "elapsed_seconds": 8.573,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "matching_builds": [
+      "loadable_apps-user-build"
+    ]
+  },
+  {
+    "name": "static-inspection",
+    "status": "pass"
+  },
+  {
+    "name": "xip_all-final-build",
+    "status": "pass",
+    "profile": "xip_all",
+    "elapsed_seconds": 51.901
+  },
+  {
+    "name": "xip_all-user-api",
+    "status": "pass",
+    "profile": "xip_all",
+    "case": "user-api",
+    "elapsed_seconds": 5.684,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  },
+  {
+    "name": "xip_all-user-build",
+    "status": "pass",
+    "profile": "xip_all",
+    "elapsed_seconds": 51.684
+  },
+  {
+    "name": "xip_all-user-expire",
+    "status": "pass",
+    "profile": "xip_all",
+    "case": "user-expire",
+    "elapsed_seconds": 4.168,
+    "observed_seconds": 0.998,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  },
+  {
+    "name": "xip_all-user-reload",
+    "status": "fail",
+    "error": "Kernel heap grew over repeated reloads",
+    "profile": "xip_all",
+    "case": "user-reload",
+    "elapsed_seconds": 26.323,
+    "heap_growth_after_warmup": 0,
+    "reload_heap_growth_after_warmup": 512,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  },
+  {
+    "name": "xip_all-user-reload-empty",
+    "status": "fail",
+    "error": "Kernel heap grew over repeated reloads",
+    "profile": "xip_all",
+    "case": "user-reload-empty",
+    "elapsed_seconds": 26.411,
+    "heap_growth_after_warmup": 0,
+    "reload_heap_growth_after_warmup": 512,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  },
+  {
+    "name": "xip_all-user-return",
+    "status": "fail",
+    "error": "Unexpected target fault: Assertion failed at file:armv8-m/up_memfault.c line: 176 task: tash\r",
+    "profile": "xip_all",
+    "case": "user-return",
+    "elapsed_seconds": 3.726,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  },
+  {
+    "name": "xip_all-user-return-empty",
+    "status": "fail",
+    "error": "Unexpected target fault: Assertion failed at file:armv8-m/up_memfault.c line: 176 task: tash\r",
+    "profile": "xip_all",
+    "case": "user-return-empty",
+    "elapsed_seconds": 3.7,
+    "heap_growth_after_warmup": 0,
+    "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "matching_builds": [
+      "xip_all-user-build"
+    ]
+  }
+]

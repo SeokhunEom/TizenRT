@@ -1,0 +1,1251 @@
+{
+  "hello-port-fix-build": {
+    "kernel_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "cdab74edaa2a01f6a47c301e844719a79d7c0a1fcb1a7f88996d9a401aa2b847",
+        "size": 238664
+      },
+      "tinyara": {
+        "sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+        "size": 5071600
+      },
+      "tinyara.bin": {
+        "sha256": "e50a64539b65f648e09da30998edb2bfd38b9ed0cd7642fa3657ec64d05841b9",
+        "size": 533016
+      },
+      "tinyara.map": {
+        "sha256": "241a77faebae3788188d7e423c773582cae666c476d14e333ea91de42e634488",
+        "size": 1738798
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "53cf13b66c7a5bffaaef4264efeb8de00dfc5436114b1ce9462793cc789dee66",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "227a61f12db85dc8aa1a9c7a2aefc5ac0afad10b13d72330e323b63389920d03",
+        "size": 30377
+      }
+    }
+  },
+  "loadable_all-recovery-build": {
+    "kernel_sha256": "c267bd8997530ac70c10d1af7c06c0169e19bafbac979373dbabd409b0e4451a",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "06708529476ac6cd2094c42b542f7d82e5909d6ebc70236d22a2917d550c1dbe",
+        "size": 170403
+      },
+      "app1": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_dbg": {
+        "sha256": "2216a4b491b6c6a703bde34b6b019094e3a09bdad21e63be484a3be32958cab6",
+        "size": 39984
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_without_header": {
+        "sha256": "522eb22ca94cc40849ace362b6f545a6211e9f8409cbaa64703630b8674dbff4",
+        "size": 9728
+      },
+      "app2": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_dbg": {
+        "sha256": "3cd36d03390f287a2b703f7690ed8a0af6850b0871606937e8758138d78519ba",
+        "size": 39892
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_without_header": {
+        "sha256": "8908ac70a4027db2bbcfcb14469056de5883b1cc50002fec113814b5441ca8b8",
+        "size": 9684
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "352321730091d68021ae03f1a33550997a37cf5e81124abb4be6f2361b42632c",
+        "size": 563090
+      },
+      "common_dbg": {
+        "sha256": "da8f5345001937a78411abc60cec4b1746f37abb7fdda1a64084c177684dbdd5",
+        "size": 3666652
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "352321730091d68021ae03f1a33550997a37cf5e81124abb4be6f2361b42632c",
+        "size": 563090
+      },
+      "common_without_header": {
+        "sha256": "13bbf8e5db8cf39a7f35729e3320f4ab6845c9d2a7932d2d36d4c2a21c399988",
+        "size": 563076
+      },
+      "lib_symbols.txt": {
+        "sha256": "c8deb26ce2148858ae9b8cc074ea229417cd60ec87f6b9b6c79ceb3c6e5becc9",
+        "size": 1473
+      },
+      "tinyara": {
+        "sha256": "c267bd8997530ac70c10d1af7c06c0169e19bafbac979373dbabd409b0e4451a",
+        "size": 4637124
+      },
+      "tinyara.bin": {
+        "sha256": "5c9403b266c2df79dfda13b7aac2de8d7bf7266382529e97095f2d668b1bf83e",
+        "size": 242384
+      },
+      "tinyara.map": {
+        "sha256": "bac9813275f4637adcc4a341cfa364584cd1f078cec624bebe3f7e2895b5a78c",
+        "size": 1444810
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "61d3391a6abe966a0c6530e6a7bf2ff14bb45ad5869e7cf6fbb7a2dd18ff9c35",
+        "size": 72
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "cb7d0475606fe2614cd584e88d98534fff52f5594f141afb79f13fc47982b5d2",
+        "size": 25595
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "6c8a2c5c412904cf4cd6837b48d9425d91fbfce3ca5d298740beb5943ec051cb",
+        "size": 242368
+      }
+    }
+  },
+  "loadable_all-final-build": {
+    "kernel_sha256": "a251cf7b0284f95242f4405a9ea4de76b669a275b526c29fe35e9dd208df6bef",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "4fb0b3f20cb5e932476f9f0960e7b346a509e49c0a668c4c00f6eedbaabeeeea",
+        "size": 168247
+      },
+      "app1": {
+        "sha256": "5104a033579337577a683ba8e9174fcc5b6123c067eb06e0ef4bb701ce03de2d",
+        "size": 1689
+      },
+      "app1_dbg": {
+        "sha256": "3a488690803a8544d7e89da9475ac87308408924b9be2a5eeea1ab1c0cf98443",
+        "size": 7240
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "5104a033579337577a683ba8e9174fcc5b6123c067eb06e0ef4bb701ce03de2d",
+        "size": 1689
+      },
+      "app1_without_header": {
+        "sha256": "a4f01a7d4fb8b43ee0d339293f3cca95eacf79764f71ad23cf17b5493151891c",
+        "size": 1644
+      },
+      "app2": {
+        "sha256": "e59d93c53fd703fb8b14ca1ac852e5c8a02ed6a20c6ef65f0b57cb0efacff652",
+        "size": 1609
+      },
+      "app2_dbg": {
+        "sha256": "81f46c0d70b49b2b76290d2ab6956fa16345053c98ac96c401588ba4a0f8970f",
+        "size": 7044
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "e59d93c53fd703fb8b14ca1ac852e5c8a02ed6a20c6ef65f0b57cb0efacff652",
+        "size": 1609
+      },
+      "app2_without_header": {
+        "sha256": "57f3228310a205f00617fc1bbf4dc368319c1f3ad7eed4ad49bd8061eafca0e7",
+        "size": 1564
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "17ea066f64506c1b41e81539648f6fc5508c83a843b5864e18f127ea15fc505c",
+        "size": 561942
+      },
+      "common_dbg": {
+        "sha256": "902d4c5ba3a646e2783ba3c7908af2b94a65e960c7d1072c4d93c01cef67d405",
+        "size": 3661428
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "17ea066f64506c1b41e81539648f6fc5508c83a843b5864e18f127ea15fc505c",
+        "size": 561942
+      },
+      "common_without_header": {
+        "sha256": "79c02e810c8f147658a895d4ecf08f1166fa193c2a3d509c98cfea4b11a9646b",
+        "size": 561928
+      },
+      "lib_symbols.txt": {
+        "sha256": "be694a04b4ec2c9f1b6b0854ef75617b30863f726e1414c477fde36643dbb2ca",
+        "size": 491
+      },
+      "tinyara": {
+        "sha256": "a251cf7b0284f95242f4405a9ea4de76b669a275b526c29fe35e9dd208df6bef",
+        "size": 4585052
+      },
+      "tinyara.bin": {
+        "sha256": "fcbd413fbb140d987525cc866a51a6657128f6b21b5f2fc231c85a1cafbdfd3d",
+        "size": 239568
+      },
+      "tinyara.map": {
+        "sha256": "c4488cd8f3ad15ebbb52ae8c7dcea048e24bb46f2d701d1b23352901328d56a0",
+        "size": 1433988
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "68362f099fda98ab771779ab12ee70ae25b2598dc18e322ef7c7576985d9d3d6",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "aa11389f02e445848fe32ce67403b01092661d2d398235c4223cffca8ff7df13",
+        "size": 25388
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "cefb873298ebd8c6b499fe63e4b1f4e692a41c737e1d23d49b61a72918509858",
+        "size": 239552
+      }
+    }
+  },
+  "loadable_all-user-build-retry": {
+    "kernel_sha256": "21ee6d64418e50ba2dc651db198c5e86400908885d190bfb953126f722d5c824",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "bc72dfdfa49502a79c78ed25e03459efbf18dadd0bf373acd9fd7af99673df08",
+        "size": 170307
+      },
+      "app1": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_dbg": {
+        "sha256": "2216a4b491b6c6a703bde34b6b019094e3a09bdad21e63be484a3be32958cab6",
+        "size": 39984
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_without_header": {
+        "sha256": "522eb22ca94cc40849ace362b6f545a6211e9f8409cbaa64703630b8674dbff4",
+        "size": 9728
+      },
+      "app2": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_dbg": {
+        "sha256": "3cd36d03390f287a2b703f7690ed8a0af6850b0871606937e8758138d78519ba",
+        "size": 39892
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_without_header": {
+        "sha256": "8908ac70a4027db2bbcfcb14469056de5883b1cc50002fec113814b5441ca8b8",
+        "size": 9684
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "4bc3224c70315ddfc3849d92f4bb135ee9b32d9bdae4895dbc4f5031223a5876",
+        "size": 563090
+      },
+      "common_dbg": {
+        "sha256": "d889bfe7ac12e97b1acafc4b592729be98191c80c78c58af20ed4edb8a01f12c",
+        "size": 3666652
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "4bc3224c70315ddfc3849d92f4bb135ee9b32d9bdae4895dbc4f5031223a5876",
+        "size": 563090
+      },
+      "common_without_header": {
+        "sha256": "0c185833af2724a5fe3d26a7c54bb490b99478ab640d096d0aebfc69b328572a",
+        "size": 563076
+      },
+      "lib_symbols.txt": {
+        "sha256": "c8deb26ce2148858ae9b8cc074ea229417cd60ec87f6b9b6c79ceb3c6e5becc9",
+        "size": 1473
+      },
+      "tinyara": {
+        "sha256": "21ee6d64418e50ba2dc651db198c5e86400908885d190bfb953126f722d5c824",
+        "size": 4637112
+      },
+      "tinyara.bin": {
+        "sha256": "dcb94f440bc5bbe4f4783019b4ce850d86e9761b8661050365a3ca1d02bfde5c",
+        "size": 242420
+      },
+      "tinyara.map": {
+        "sha256": "a069947a917e0328d3577a1908918848c78855eaed38c1d1fac95066c7893eba",
+        "size": 1444806
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "61d3391a6abe966a0c6530e6a7bf2ff14bb45ad5869e7cf6fbb7a2dd18ff9c35",
+        "size": 72
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "4949b821d5599799d31da5bfbf951b99b59e9b880902c4b0280131abbeb32b81",
+        "size": 25594
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "52822a28ef1bc53b1cae75dedd1a423d00458a985033a7a91bbb97c0134aa631",
+        "size": 242404
+      }
+    }
+  },
+  "hello-probes-red-build": {
+    "kernel_sha256": "3ac630cebcc5230b12c6afe7409436bb2d86ec34f7998e76a9ae49cf3581aef8",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "7adf580f519aba4d4b1ca9316d02de10d7228bc0d0bb634752a5ddc64bb8b157",
+        "size": 238579
+      },
+      "tinyara": {
+        "sha256": "3ac630cebcc5230b12c6afe7409436bb2d86ec34f7998e76a9ae49cf3581aef8",
+        "size": 5070828
+      },
+      "tinyara.bin": {
+        "sha256": "360c5185c9b188d8e88ae5c228854f43920a88f873aa9fef1ab2ffa0e7666152",
+        "size": 532928
+      },
+      "tinyara.map": {
+        "sha256": "5d1e513902e49cc878e0ca0681bfa56398c69026abdbb7cd3f0808b4b3e75eee",
+        "size": 1738798
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "6de73559c175d09c881898a4f84cfa1544036d619e00135d0bc7c65be28ba6b3",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "ba7dfdc8253b720a2fc272f29ce1c33b43cbf657b6742bd2fdc8ff352c4a2832",
+        "size": 30375
+      }
+    }
+  },
+  "loadable_all-user-build": {
+    "kernel_sha256": "babefc0c95a391193c282a77bee8884e77be1fc23c87f3be156664891418d4d2",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "4995695fe225697359acc354807cd9f60ae005c2f7cba6817ade3cc52bf3f6d0",
+        "size": 170211
+      },
+      "app1": {
+        "sha256": "10ee68e93a5001730a161183793dab39678e73dfea14afd27843bbed64857fc6",
+        "size": 9729
+      },
+      "app1_dbg": {
+        "sha256": "0e465488b3b2b280c73c62bc781f4ea0e606b6418d9d8ab2c3328771d53797e2",
+        "size": 39880
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "10ee68e93a5001730a161183793dab39678e73dfea14afd27843bbed64857fc6",
+        "size": 9729
+      },
+      "app1_without_header": {
+        "sha256": "13dd585df7ad37d1c113503d58fc04cf1515fff62e498ff789368a225d49301e",
+        "size": 9684
+      },
+      "app2": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_dbg": {
+        "sha256": "3cd36d03390f287a2b703f7690ed8a0af6850b0871606937e8758138d78519ba",
+        "size": 39892
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_without_header": {
+        "sha256": "8908ac70a4027db2bbcfcb14469056de5883b1cc50002fec113814b5441ca8b8",
+        "size": 9684
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "258a1c7167d5141416990f141eb29c22cd1ef907611afd03e56dcd03a2e24cd9",
+        "size": 16978
+      },
+      "common_dbg": {
+        "sha256": "dcd6da526abe43b074925b0bbdb954ff315b6e839dfc472ff977d9ade3d6b313",
+        "size": 277240
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "258a1c7167d5141416990f141eb29c22cd1ef907611afd03e56dcd03a2e24cd9",
+        "size": 16978
+      },
+      "common_without_header": {
+        "sha256": "206588dcdb0e7292cad28f3254ae5065d7f61c6756674152fef3953d72136863",
+        "size": 16964
+      },
+      "lib_symbols.txt": {
+        "sha256": "755fb23007ff0b8d8151da73d27d103b40bc67612fcba5e5f8ee0e0b879ae83e",
+        "size": 1442
+      },
+      "tinyara": {
+        "sha256": "babefc0c95a391193c282a77bee8884e77be1fc23c87f3be156664891418d4d2",
+        "size": 4630164
+      },
+      "tinyara.bin": {
+        "sha256": "f2fe51f261db9d0be6d27c28e0a480f3276b4f3da24c861e02d117c7bf1cb6f2",
+        "size": 241976
+      },
+      "tinyara.map": {
+        "sha256": "20acedc51b3cead716865d26e473ea2383446b1721aba83e1236ac557676b387",
+        "size": 1444759
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "752dfb235f6fd719ffd26ee2bf1306d55bc23bfb774605ec7df1a8ece6fde361",
+        "size": 71
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "e8501f2c6f7d466b76744692150283157f51627484d616f7f45cc7f7566bbc0a",
+        "size": 25594
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "a87dd605630f2d1016c5078a97fbb5ba2898dffe6459e52c581a9955f33589c9",
+        "size": 241960
+      }
+    }
+  },
+  "xip_all-user-build": {
+    "kernel_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "a761b1e9f724f513c891193760a11558decfd63d5006e1cc41f8b59b33daffd3",
+        "size": 168661
+      },
+      "app1": {
+        "sha256": "c766ee3a0bec83eafbf65e7a053659aeb9151044376a4b06c8fb056f8d0947ab",
+        "size": 6382
+      },
+      "app1.bin": {
+        "sha256": "b1eabf18fbf749bfffc34447560434e9c19a6121a5ba7039af21ff6b6a63161a",
+        "size": 6334
+      },
+      "app1.relelf": {
+        "sha256": "99bd23f833b2b0493b593d5f69697a7a0acec26c4ab5302383cbe42abd2dcb74",
+        "size": 41788
+      },
+      "app1_0.ld": {
+        "sha256": "d105bfff99332fd62b1d80f177f8093b9a11f144a563eeaff956e58c2484f241",
+        "size": 165
+      },
+      "app1_1": {
+        "sha256": "25b61bf7755bf7fbea075880305546d6203e24473ce35140ef9f033fb30a64c2",
+        "size": 6382
+      },
+      "app1_1.ld": {
+        "sha256": "478906e729129f838447203e9a34ca28e275a1b89204cdd8ad33a3cfbba12444",
+        "size": 165
+      },
+      "app1_1_dbg": {
+        "sha256": "18d1b304ac667fc98c5097a5c885129eabce75f22d27385daf03993d62b6da1d",
+        "size": 180724
+      },
+      "app1_1_without_header": {
+        "sha256": "ad00b0c5eff43d25852238599896e30b6b28e6911727fcab681f1b3fb5953390",
+        "size": 6334
+      },
+      "app1_dbg": {
+        "sha256": "840cc1dedb4d7c611ef433a05cc4d700e5b312440079f2199a98ea35b3a89d09",
+        "size": 180724
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "c766ee3a0bec83eafbf65e7a053659aeb9151044376a4b06c8fb056f8d0947ab",
+        "size": 6382
+      },
+      "app1_without_header": {
+        "sha256": "b1eabf18fbf749bfffc34447560434e9c19a6121a5ba7039af21ff6b6a63161a",
+        "size": 6334
+      },
+      "bootparam.bin": {
+        "sha256": "34093a503a808a970aeebe7f30588d27aebefb62def18f4e4296fe77742be22b",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "8d90f447479a4f5d9c9b8abab251d2b9a2eacb4b023d0f9c0f5572b93d0f6056",
+        "size": 321849
+      },
+      "common.bin": {
+        "sha256": "19ba9b2ef39e6b7891208efd4402c44c4d3ccb97bad7b251b3563ff209df2c94",
+        "size": 321833
+      },
+      "common.map": {
+        "sha256": "67fcd2b003c9612a97bffc6cc8adaec73fe5a82474f24e8b9599cbd6f7b70eea",
+        "size": 1026195
+      },
+      "common_0.ld": {
+        "sha256": "421d9c8ab6ac0ba0c20673dd31b5ef3366f0a345707012e24cd341ca82975869",
+        "size": 164
+      },
+      "common_1": {
+        "sha256": "9f7b764e9ece9b7c482ff4b1fbae8f884ee79f0785fbd7e7fc88cee1c8c08adb",
+        "size": 321849
+      },
+      "common_1.ld": {
+        "sha256": "931e0b62563020e54e22e9d988b1c25a35e8028d37951ba0d8315896e57691c4",
+        "size": 164
+      },
+      "common_1.map": {
+        "sha256": "a7ab5f8a5f8e1b6bbb0644086c74eeb46a0c9a21fd12dd4a4a7b9bf6faabcf0d",
+        "size": 1026197
+      },
+      "common_1_dbg": {
+        "sha256": "fff2f67abf8bbab36da19f60ca2b1fbdb362c5cf725496f3c42826488ed18136",
+        "size": 2414832
+      },
+      "common_1_without_header": {
+        "sha256": "9774a77dd7422ac0d83ce1d2e6bd8539513a436e279b0483557ae5f6ccaab9c4",
+        "size": 321833
+      },
+      "common_dbg": {
+        "sha256": "2ba4bcd8709200625e177c4741f56e664b4ba059cf529251d494fe31132da108",
+        "size": 2414832
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "8d90f447479a4f5d9c9b8abab251d2b9a2eacb4b023d0f9c0f5572b93d0f6056",
+        "size": 321849
+      },
+      "common_without_header": {
+        "sha256": "19ba9b2ef39e6b7891208efd4402c44c4d3ccb97bad7b251b3563ff209df2c94",
+        "size": 321833
+      },
+      "lib_symbols.txt": {
+        "sha256": "89d9bff3aecbdba241c6014161ffd750ce42df3b2ac99d7bffce2cc46d24beda",
+        "size": 752
+      },
+      "tinyara": {
+        "sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+        "size": 4564564
+      },
+      "tinyara.bin": {
+        "sha256": "ec390dc130d0af38cca5be8e016ba2975ebbd0c95f45a236640de11b7a3a6eae",
+        "size": 240740
+      },
+      "tinyara.map": {
+        "sha256": "4bdb75936f064c33c8977b47c3d7e39a2e208114f3484dfa1dfe8786a7ddf4d6",
+        "size": 1420681
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "c1ec83f52260acf6b7bc98cd312eff58fc99745e27cdc72c9228bdb5169fe0ee",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "453bfa717736ea35badd1b0ed5b14a2a3c7f668acfcd37da199defe42edbd534",
+        "size": 25211
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "493b27f1c0c5bbcca5dba381b2878badcffe9d142def68d2286089f10668dc49",
+        "size": 240724
+      }
+    }
+  },
+  "hello-final-build": {
+    "kernel_sha256": "242ab4db5040c43ef9d531a1eddcb6b8b98f64d70951297e1fe553c2c5459ab4",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "036eb3fb5cd9e4e12bb08402ea75c2b9271787baabe0f371ee7a05b981ae196f",
+        "size": 235511
+      },
+      "tinyara": {
+        "sha256": "242ab4db5040c43ef9d531a1eddcb6b8b98f64d70951297e1fe553c2c5459ab4",
+        "size": 4963892
+      },
+      "tinyara.bin": {
+        "sha256": "3195c391608acd5e1ea36bb26990ec6e41521dd9cc27633571c18807fe464b0a",
+        "size": 516624
+      },
+      "tinyara.map": {
+        "sha256": "9970c10af73149cff3ac9c4d91bc71dbad1e1c1ebaead61e3853ec8ef4cc64df",
+        "size": 1732604
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "017a053a98551778724d77879340a90314e5cd63814cd119c6b7b73c0dd60417",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "56a5a78a0264b8fe64108ae8ef3121b0d84917bca7c196ee3191a0dd8fafb3d2",
+        "size": 30265
+      }
+    }
+  },
+  "hello-capacity4-build": {
+    "kernel_sha256": "cb3eaece4885df720923bfd0c48cadfba007be0f50ef6535034d5b98f6b97a96",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "788f2305ea9995c8e357924297d913d6eeb3eca8b0dc1b917ad45d14f0ce0b39",
+        "size": 241296
+      },
+      "tinyara": {
+        "sha256": "cb3eaece4885df720923bfd0c48cadfba007be0f50ef6535034d5b98f6b97a96",
+        "size": 5119772
+      },
+      "tinyara.bin": {
+        "sha256": "ec3952b052446c3cb15e66b8ac6bf67febd1437b8da9d549bcaa909cbb733d7b",
+        "size": 538128
+      },
+      "tinyara.map": {
+        "sha256": "ff8a5fbd4bee640583958d76d3e3576b894b845344475e1413dbd0bb2478d458",
+        "size": 1741221
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "9e6dcb7f884fafa0459823a59dfb5360fcf379b5d219036adc603499379ff817",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "b4ca0b1717b3022892dffc39f77274aa51e43d19d2643aab1554f93e1a93ecd8",
+        "size": 30406
+      }
+    }
+  },
+  "hello-hm-off-build": {
+    "kernel_sha256": "af514d13f9b8a2c3075576fff751c309e075728a83e1bc86244a4ff8fd5e4e8a",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "82af283bc78995128dc397785442d292107d86f0b2d08292b3c9356b7bed9e86",
+        "size": 233097
+      },
+      "tinyara": {
+        "sha256": "af514d13f9b8a2c3075576fff751c309e075728a83e1bc86244a4ff8fd5e4e8a",
+        "size": 4922916
+      },
+      "tinyara.bin": {
+        "sha256": "24083078cef411efd3e48db8b1be14b1523e4c113ed44175335da92772344271",
+        "size": 513492
+      },
+      "tinyara.map": {
+        "sha256": "054fe208336130381d8c667b90b9295def52fdc66be01b5c7e7b8e8b96e2211e",
+        "size": 1725708
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "e3e43312656d905126c2f2bb7d0944a28a6b5b817360832dc49a7e995bbabc51",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "3ac8f4d9c7e5b4906ddbfdb4d92ab08405ee654be80a5ba8994adab7d671bad6",
+        "size": 30150
+      }
+    }
+  },
+  "hello-production-build-retry": {
+    "kernel_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "42b69083746fb40a2d5702258c9418bfb76674dad2505a6e09acabd7253faffa",
+        "size": 235426
+      },
+      "tinyara": {
+        "sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004",
+        "size": 4963108
+      },
+      "tinyara.bin": {
+        "sha256": "88906bc7e13e78d5e555f1dd402054de4fe3be637209fe1ea823ce2b9892fc33",
+        "size": 516544
+      },
+      "tinyara.map": {
+        "sha256": "1417aa0beb32fc562827e8867dd23efc0feb64a86e685dace2046eeff92b8811",
+        "size": 1732604
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "12347b538a26068bf05ea838b64005428bd5d00271a9c4a9e70d71707b92c93c",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "5941d8d103b8a8b998d816d168f6eea5872a68d051ee86e12963fcfb9c17e8a8",
+        "size": 30263
+      }
+    }
+  },
+  "loadable_apps-final-build": {
+    "kernel_sha256": "0febe0463be423856110d2686b08c56927116616e460054234976f8d69aff4db",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "4fb0b3f20cb5e932476f9f0960e7b346a509e49c0a668c4c00f6eedbaabeeeea",
+        "size": 168247
+      },
+      "app1": {
+        "sha256": "0565d0f33d59a3c461df4c7b131aa2f1189174ce3ee6a25a0f141ba567e9236c",
+        "size": 1689
+      },
+      "app1_dbg": {
+        "sha256": "3a488690803a8544d7e89da9475ac87308408924b9be2a5eeea1ab1c0cf98443",
+        "size": 7240
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "0565d0f33d59a3c461df4c7b131aa2f1189174ce3ee6a25a0f141ba567e9236c",
+        "size": 1689
+      },
+      "app1_without_header": {
+        "sha256": "a4f01a7d4fb8b43ee0d339293f3cca95eacf79764f71ad23cf17b5493151891c",
+        "size": 1644
+      },
+      "app2": {
+        "sha256": "e59d93c53fd703fb8b14ca1ac852e5c8a02ed6a20c6ef65f0b57cb0efacff652",
+        "size": 1609
+      },
+      "app2_dbg": {
+        "sha256": "81f46c0d70b49b2b76290d2ab6956fa16345053c98ac96c401588ba4a0f8970f",
+        "size": 7044
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "e59d93c53fd703fb8b14ca1ac852e5c8a02ed6a20c6ef65f0b57cb0efacff652",
+        "size": 1609
+      },
+      "app2_without_header": {
+        "sha256": "57f3228310a205f00617fc1bbf4dc368319c1f3ad7eed4ad49bd8061eafca0e7",
+        "size": 1564
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "653d4cc779f30ff9f7546c2259024ef6595ca8560a10f513b5f9e549d8511195",
+        "size": 561942
+      },
+      "common_dbg": {
+        "sha256": "a87c0b51fe90e5695e5da33cb5f1e27acdedf45e53a4505d822462539e064484",
+        "size": 3661428
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "653d4cc779f30ff9f7546c2259024ef6595ca8560a10f513b5f9e549d8511195",
+        "size": 561942
+      },
+      "common_without_header": {
+        "sha256": "215f9078564a54e3b9ddf08d472ce6f824c67f847b4bac528a9b68fa6365daf9",
+        "size": 561928
+      },
+      "lib_symbols.txt": {
+        "sha256": "be694a04b4ec2c9f1b6b0854ef75617b30863f726e1414c477fde36643dbb2ca",
+        "size": 491
+      },
+      "tinyara": {
+        "sha256": "0febe0463be423856110d2686b08c56927116616e460054234976f8d69aff4db",
+        "size": 4585052
+      },
+      "tinyara.bin": {
+        "sha256": "c827dec9e5b56134525f38210dc9ae582bc66ccbc437034001104b48a541ba28",
+        "size": 239568
+      },
+      "tinyara.map": {
+        "sha256": "c4488cd8f3ad15ebbb52ae8c7dcea048e24bb46f2d701d1b23352901328d56a0",
+        "size": 1433988
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "68362f099fda98ab771779ab12ee70ae25b2598dc18e322ef7c7576985d9d3d6",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "aa11389f02e445848fe32ce67403b01092661d2d398235c4223cffca8ff7df13",
+        "size": 25388
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "9e76159912a31443e2b6a995561aaa2e62bbc78182b88e23a9b3be6e6c51dab0",
+        "size": 239552
+      }
+    }
+  },
+  "loadable_apps-user-build": {
+    "kernel_sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "06708529476ac6cd2094c42b542f7d82e5909d6ebc70236d22a2917d550c1dbe",
+        "size": 170403
+      },
+      "app1": {
+        "sha256": "76a10dbbc800e8d083a852e87042574b995e242cb348fe1aad90f7e4d54f2e49",
+        "size": 9873
+      },
+      "app1_dbg": {
+        "sha256": "f52efa8bf59c6b33d17cdb238e648f55ccc6cc4ed5a0937462605c21754b7bc6",
+        "size": 40236
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "76a10dbbc800e8d083a852e87042574b995e242cb348fe1aad90f7e4d54f2e49",
+        "size": 9873
+      },
+      "app1_without_header": {
+        "sha256": "7ee31771ea9c5bd8e93dcc9f7c41409918e7cfadbf0eb12fd823e2c208bb07b8",
+        "size": 9828
+      },
+      "app2": {
+        "sha256": "c5646096e32181245aaf2c82eec19c3b11c0ffc09c5c905b03d11446dc821f2b",
+        "size": 9829
+      },
+      "app2_dbg": {
+        "sha256": "9513bd2dbc650eb45d32a0b20a67332c913113b89a7e40691e5287d247bdec7f",
+        "size": 40144
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "c5646096e32181245aaf2c82eec19c3b11c0ffc09c5c905b03d11446dc821f2b",
+        "size": 9829
+      },
+      "app2_without_header": {
+        "sha256": "7f0c14c44e8d383c91ba56d773fe09615a304ffe44dc6031eafe2f19a5142132",
+        "size": 9784
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "1bd17d8d5c07741bf510867b4e8e3d8ca8c9e06991da0883f502eb6c272cdc78",
+        "size": 563138
+      },
+      "common_dbg": {
+        "sha256": "b3b2b035e8690ffbac66b1c9be625b2b3b24aff994ad7e5f13f46eb8bae7deb6",
+        "size": 3666748
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "1bd17d8d5c07741bf510867b4e8e3d8ca8c9e06991da0883f502eb6c272cdc78",
+        "size": 563138
+      },
+      "common_without_header": {
+        "sha256": "a4f6d0b1b92b91c498811fa6c33a6238f22a70f8280e023237ea8c5640e702d2",
+        "size": 563124
+      },
+      "lib_symbols.txt": {
+        "sha256": "c8deb26ce2148858ae9b8cc074ea229417cd60ec87f6b9b6c79ceb3c6e5becc9",
+        "size": 1473
+      },
+      "tinyara": {
+        "sha256": "3ca6d12fe07303645f5d3fcd0a8c67fddd81d2f43b0f1a9f837f1cf040e01016",
+        "size": 4637124
+      },
+      "tinyara.bin": {
+        "sha256": "ec798ec48e4801ea21a9b3886f33b3b946eb831887a71c3871e0520e2824a411",
+        "size": 242384
+      },
+      "tinyara.map": {
+        "sha256": "bac9813275f4637adcc4a341cfa364584cd1f078cec624bebe3f7e2895b5a78c",
+        "size": 1444810
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "3265dd627669bacaa4b0a3ba02fc349649a7151c2b30ccd6f185d9f217ecbdd1",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "cb7d0475606fe2614cd584e88d98534fff52f5594f141afb79f13fc47982b5d2",
+        "size": 25595
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "67463bcf588d0105ed98b8415579b4d66b1bb7780bb7873e33dd2a54711b604c",
+        "size": 242368
+      }
+    }
+  },
+  "loadable_all-lifecycle-clean-build": {
+    "kernel_sha256": "67b1cb2eda395435275ea0e6fdf4cda2c4b625d65c9af77fd7a4e0f9d310b1d2",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "06708529476ac6cd2094c42b542f7d82e5909d6ebc70236d22a2917d550c1dbe",
+        "size": 170403
+      },
+      "app1": {
+        "sha256": "d045e5122bc31ccc2090d4c0667a67d2248cd85a3d82004412db5b6ca964e6dd",
+        "size": 9873
+      },
+      "app1_dbg": {
+        "sha256": "f52efa8bf59c6b33d17cdb238e648f55ccc6cc4ed5a0937462605c21754b7bc6",
+        "size": 40236
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "d045e5122bc31ccc2090d4c0667a67d2248cd85a3d82004412db5b6ca964e6dd",
+        "size": 9873
+      },
+      "app1_without_header": {
+        "sha256": "7ee31771ea9c5bd8e93dcc9f7c41409918e7cfadbf0eb12fd823e2c208bb07b8",
+        "size": 9828
+      },
+      "app2": {
+        "sha256": "c5646096e32181245aaf2c82eec19c3b11c0ffc09c5c905b03d11446dc821f2b",
+        "size": 9829
+      },
+      "app2_dbg": {
+        "sha256": "9513bd2dbc650eb45d32a0b20a67332c913113b89a7e40691e5287d247bdec7f",
+        "size": 40144
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "c5646096e32181245aaf2c82eec19c3b11c0ffc09c5c905b03d11446dc821f2b",
+        "size": 9829
+      },
+      "app2_without_header": {
+        "sha256": "7f0c14c44e8d383c91ba56d773fe09615a304ffe44dc6031eafe2f19a5142132",
+        "size": 9784
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "a4f4292cde957dc12d5eaa2375aae31fbd309f27da1f3a8d08dd96ed46849503",
+        "size": 563138
+      },
+      "common_dbg": {
+        "sha256": "9021265781e5cea528e56a384d66b492691b6f8d9bb8cb7dd97c4ac2a3be54aa",
+        "size": 3666748
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "a4f4292cde957dc12d5eaa2375aae31fbd309f27da1f3a8d08dd96ed46849503",
+        "size": 563138
+      },
+      "common_without_header": {
+        "sha256": "cdee918c9d13c26320c9822706a44c43db88823a57b869624977e3bfbfe26c04",
+        "size": 563124
+      },
+      "lib_symbols.txt": {
+        "sha256": "c8deb26ce2148858ae9b8cc074ea229417cd60ec87f6b9b6c79ceb3c6e5becc9",
+        "size": 1473
+      },
+      "tinyara": {
+        "sha256": "67b1cb2eda395435275ea0e6fdf4cda2c4b625d65c9af77fd7a4e0f9d310b1d2",
+        "size": 4637124
+      },
+      "tinyara.bin": {
+        "sha256": "e6250093ab3ba663cbbaf34668c18c20dcbe4e1c66ab095244cc800197632b27",
+        "size": 242384
+      },
+      "tinyara.map": {
+        "sha256": "bac9813275f4637adcc4a341cfa364584cd1f078cec624bebe3f7e2895b5a78c",
+        "size": 1444810
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "3265dd627669bacaa4b0a3ba02fc349649a7151c2b30ccd6f185d9f217ecbdd1",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "cb7d0475606fe2614cd584e88d98534fff52f5594f141afb79f13fc47982b5d2",
+        "size": 25595
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "216df6a7098e19a9232550326408a6812d2dd201895c55dc0e888e5e44bc0b78",
+        "size": 242368
+      }
+    }
+  },
+  "xip_all-final-build": {
+    "kernel_sha256": "392b92d89a7a2e59e19f106b24f94e05590bdc4a233cc2545f80f7f4aa1fdf78",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "417350247bbd726d68e16d45da69c9761bea16e373eb6751edb639ae3d0bbcdf",
+        "size": 166505
+      },
+      "app1": {
+        "sha256": "a1138b21d59aae4c44529732362022e8a29289f2c11b3f93e6ee654ab1437297",
+        "size": 271
+      },
+      "app1.bin": {
+        "sha256": "f9c02aa2cefda5bdc1fe4978dfabafa83ba2514fffcb2280b8ad61e7afd9a67d",
+        "size": 223
+      },
+      "app1.relelf": {
+        "sha256": "5d21c18ac34bbd112fb5a35edae00548f4ad516f2288cc71c7d55b7e95275b71",
+        "size": 8656
+      },
+      "app1_0.ld": {
+        "sha256": "d105bfff99332fd62b1d80f177f8093b9a11f144a563eeaff956e58c2484f241",
+        "size": 165
+      },
+      "app1_1": {
+        "sha256": "de54b8138ca54506087a2f3e36f838cacec083774d9301360c50fa631849c9ed",
+        "size": 271
+      },
+      "app1_1.ld": {
+        "sha256": "478906e729129f838447203e9a34ca28e275a1b89204cdd8ad33a3cfbba12444",
+        "size": 165
+      },
+      "app1_1_dbg": {
+        "sha256": "eec6a9f9d262aba8fca4137ad777b19b919027f0b76c4a0e4110e6021ee09ec6",
+        "size": 162164
+      },
+      "app1_1_without_header": {
+        "sha256": "385ed4670f74cf494fbc717440f15141c5d985dfa4a41cc2270f7e411bb7441b",
+        "size": 223
+      },
+      "app1_dbg": {
+        "sha256": "76deef7dc555ef2b4338b012ddde95c53d1bfde80f055070d63892902c7b4847",
+        "size": 162164
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "a1138b21d59aae4c44529732362022e8a29289f2c11b3f93e6ee654ab1437297",
+        "size": 271
+      },
+      "app1_without_header": {
+        "sha256": "f9c02aa2cefda5bdc1fe4978dfabafa83ba2514fffcb2280b8ad61e7afd9a67d",
+        "size": 223
+      },
+      "bootparam.bin": {
+        "sha256": "34093a503a808a970aeebe7f30588d27aebefb62def18f4e4296fe77742be22b",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "eeb5606f5ae21285d6bd2fbbc784052bfc18489583ac3eac8558a9db0dd5b082",
+        "size": 321178
+      },
+      "common.bin": {
+        "sha256": "c164e5da9366416b8a4707e12aa198c6d13f257cd7484806cff2234f12b95fa7",
+        "size": 321162
+      },
+      "common.map": {
+        "sha256": "4484dfc90e35e11aadead4760ac79ead8d934ed9901622dd9e0836dee6ce01f6",
+        "size": 1025025
+      },
+      "common_0.ld": {
+        "sha256": "421d9c8ab6ac0ba0c20673dd31b5ef3366f0a345707012e24cd341ca82975869",
+        "size": 164
+      },
+      "common_1": {
+        "sha256": "29e8fefc5487363dc6362335e6dbf6ec3a9e41c0da63f07e860986157ddddd63",
+        "size": 321178
+      },
+      "common_1.ld": {
+        "sha256": "931e0b62563020e54e22e9d988b1c25a35e8028d37951ba0d8315896e57691c4",
+        "size": 164
+      },
+      "common_1.map": {
+        "sha256": "9463d2628793f98fe62333835b54e118ca52da4499806935e2a58fcaad0d6988",
+        "size": 1025027
+      },
+      "common_1_dbg": {
+        "sha256": "2793a24a377496f3404737cefa45aa0b1a0dfdfd5ae0206eb45162fec93638e6",
+        "size": 2411980
+      },
+      "common_1_without_header": {
+        "sha256": "c84695153e27bef41d5d25dabdf7d42d3ecd8f737584ba0ca83142294ce218c2",
+        "size": 321162
+      },
+      "common_dbg": {
+        "sha256": "c60b44267b01cd8e21ffbf4e2d3b5bcfc5af48189a84468a937b40602faa048a",
+        "size": 2411980
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "eeb5606f5ae21285d6bd2fbbc784052bfc18489583ac3eac8558a9db0dd5b082",
+        "size": 321178
+      },
+      "common_without_header": {
+        "sha256": "c164e5da9366416b8a4707e12aa198c6d13f257cd7484806cff2234f12b95fa7",
+        "size": 321162
+      },
+      "lib_symbols.txt": {
+        "sha256": "5ba882808334b8c2959500f83916c21b2e17b68e6e1ddae72b71eb65ffe50fa7",
+        "size": 261
+      },
+      "tinyara": {
+        "sha256": "392b92d89a7a2e59e19f106b24f94e05590bdc4a233cc2545f80f7f4aa1fdf78",
+        "size": 4512300
+      },
+      "tinyara.bin": {
+        "sha256": "1d1c8d44118840c44047ed48fe5294e2ef9f1fb5bca10758564b34547e90ffe2",
+        "size": 237932
+      },
+      "tinyara.map": {
+        "sha256": "31a550a725d6dd3f9f0d348e7016618dcd5cfb5d48d428b0e917386bc146b5da",
+        "size": 1409774
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "51fbf2752908b1eff4636827c21c25dfbcae297945ba1405db3aa19d6b8490d8",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "d297ce0ea6d46851fc10ee525d1c23d32f5655f12070a1ffeb271459c9c9d488",
+        "size": 25004
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "bae27703aa210297862e158c46b95e8e6ab0da2e0e968c3c4b9409dddd176677",
+        "size": 237916
+      }
+    }
+  },
+  "hello-stress256-build-retry": {
+    "kernel_sha256": "f3e15abdfcc413ffe8f5b88d7b85b16e7036074bbe1bd92345ba8ee825b79a3a",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "407d19d9ed2a62568e3a8d15a15dd13d59c144e5ee89dbf7097f5ac977c1e989",
+        "size": 241197
+      },
+      "tinyara": {
+        "sha256": "f3e15abdfcc413ffe8f5b88d7b85b16e7036074bbe1bd92345ba8ee825b79a3a",
+        "size": 5118556
+      },
+      "tinyara.bin": {
+        "sha256": "a32fa356e798a012ea385026a39ad62603970db3267816f94183c465c4635396",
+        "size": 537344
+      },
+      "tinyara.map": {
+        "sha256": "e603161ce6b1b02d85466d4a62ec13904898e56b532ceb848e6457ce223d1678",
+        "size": 1741174
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "5cac231e91240e0baa99502d1f9bd2670934232b9c38a73999caf214e1f135ba",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "b8a2b2abf4bd907a485e170cff116d6bf3e9bec004b7f500fa87ff485d9794ba",
+        "size": 30413
+      }
+    }
+  },
+  "loadable_all-lifecycle-baseline-build": {
+    "kernel_sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+    "files": {
+      ".gitignore": {
+        "sha256": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+        "size": 3
+      },
+      "System.map": {
+        "sha256": "06708529476ac6cd2094c42b542f7d82e5909d6ebc70236d22a2917d550c1dbe",
+        "size": 170403
+      },
+      "app1": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_dbg": {
+        "sha256": "2216a4b491b6c6a703bde34b6b019094e3a09bdad21e63be484a3be32958cab6",
+        "size": 39984
+      },
+      "app1_qemu-armv8m_260611.trpk": {
+        "sha256": "88291199504373ba90c0e6bee3b1915a11c1b3968db3c869df49e140b5832ab5",
+        "size": 9773
+      },
+      "app1_without_header": {
+        "sha256": "522eb22ca94cc40849ace362b6f545a6211e9f8409cbaa64703630b8674dbff4",
+        "size": 9728
+      },
+      "app2": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_dbg": {
+        "sha256": "3cd36d03390f287a2b703f7690ed8a0af6850b0871606937e8758138d78519ba",
+        "size": 39892
+      },
+      "app2_qemu-armv8m_260611.trpk": {
+        "sha256": "9367a689a054d78295dedc9fe6c6cd513fce317d88134a119376815a2c8ede34",
+        "size": 9729
+      },
+      "app2_without_header": {
+        "sha256": "8908ac70a4027db2bbcfcb14469056de5883b1cc50002fec113814b5441ca8b8",
+        "size": 9684
+      },
+      "bootparam.bin": {
+        "sha256": "c1064c57883014fbd53e66ae0166b5db648270945118a3ddf2c207e9e44cdccb",
+        "size": 8192
+      },
+      "common": {
+        "sha256": "fb219de3897c784af9508e7801b4a844da255e6b738fd01a136a5eb90678d7ae",
+        "size": 563138
+      },
+      "common_dbg": {
+        "sha256": "79a3b3ba5b4e60864ed1519f9a54a71b770cd8b377876a634ceefc11fa147d46",
+        "size": 3666748
+      },
+      "common_qemu-armv8m_260611.trpk": {
+        "sha256": "fb219de3897c784af9508e7801b4a844da255e6b738fd01a136a5eb90678d7ae",
+        "size": 563138
+      },
+      "common_without_header": {
+        "sha256": "8c5772bbfc72d9acdb754ca3ea5e2a58b8df30b2bb5dbae161c7609cbe0697bc",
+        "size": 563124
+      },
+      "lib_symbols.txt": {
+        "sha256": "c8deb26ce2148858ae9b8cc074ea229417cd60ec87f6b9b6c79ceb3c6e5becc9",
+        "size": 1473
+      },
+      "tinyara": {
+        "sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+        "size": 4637124
+      },
+      "tinyara.bin": {
+        "sha256": "eb1bc95ef45369e5864774d650625fcedfb09573bc5e68ff43561f03c5790902",
+        "size": 242384
+      },
+      "tinyara.map": {
+        "sha256": "bac9813275f4637adcc4a341cfa364584cd1f078cec624bebe3f7e2895b5a78c",
+        "size": 1444810
+      },
+      "tinyara_binarysize.txt": {
+        "sha256": "3265dd627669bacaa4b0a3ba02fc349649a7151c2b30ccd6f185d9f217ecbdd1",
+        "size": 73
+      },
+      "tinyara_memstats.txt": {
+        "sha256": "cb7d0475606fe2614cd584e88d98534fff52f5594f141afb79f13fc47982b5d2",
+        "size": 25595
+      },
+      "tinyara_without_header.bin": {
+        "sha256": "27d7926fa3ee2460274beb3a0da86049092c6d053d96dc5271bc10e6ef113d6a",
+        "size": 242368
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "status": "fail",
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-production-build-retry/bin/tinyara",
+    "-display",
+    "none",
+    "-serial",
+    "file:/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-clock-reference-gdb/serial.log",
+    "-monitor",
+    "stdio",
+    "-nic",
+    "none",
+    "-gdb",
+    "tcp:127.0.0.1:63924"
+  ],
+  "firmware_sha256": "ebf80047a5ab95d0717a88378c225b36f1b73927bcd69f3cba0aabde1d1c6004"
+}

@@ -1,0 +1,231 @@
+{
+  "status": "pass",
+  "total": 20,
+  "cases": [
+    {
+      "name": "matrix-loadable_all-app1-udf-registered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app1",
+      "kind": "udf",
+      "registered": true,
+      "result": "matrix-loadable_all-app1-udf-registered/result.json",
+      "serial_log": "matrix-loadable_all-app1-udf-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app1-udf-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app1-udf-unregistered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app1",
+      "kind": "udf",
+      "registered": false,
+      "result": "matrix-loadable_all-app1-udf-unregistered/result.json",
+      "serial_log": "matrix-loadable_all-app1-udf-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app1-udf-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app1-mpu-registered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": true,
+      "result": "matrix-loadable_all-app1-mpu-registered/result.json",
+      "serial_log": "matrix-loadable_all-app1-mpu-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app1-mpu-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app1-mpu-unregistered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": false,
+      "result": "matrix-loadable_all-app1-mpu-unregistered/result.json",
+      "serial_log": "matrix-loadable_all-app1-mpu-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app1-mpu-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app2-udf-registered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app2",
+      "kind": "udf",
+      "registered": true,
+      "result": "matrix-loadable_all-app2-udf-registered/result.json",
+      "serial_log": "matrix-loadable_all-app2-udf-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app2-udf-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app2-udf-unregistered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app2",
+      "kind": "udf",
+      "registered": false,
+      "result": "matrix-loadable_all-app2-udf-unregistered/result.json",
+      "serial_log": "matrix-loadable_all-app2-udf-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app2-udf-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app2-mpu-registered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app2",
+      "kind": "mpu",
+      "registered": true,
+      "result": "matrix-loadable_all-app2-mpu-registered/result.json",
+      "serial_log": "matrix-loadable_all-app2-mpu-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app2-mpu-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_all-app2-mpu-unregistered",
+      "status": "pass",
+      "profile": "loadable_all",
+      "app": "app2",
+      "kind": "mpu",
+      "registered": false,
+      "result": "matrix-loadable_all-app2-mpu-unregistered/result.json",
+      "serial_log": "matrix-loadable_all-app2-mpu-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_all-app2-mpu-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app1-udf-registered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app1",
+      "kind": "udf",
+      "registered": true,
+      "result": "matrix-loadable_apps-app1-udf-registered/result.json",
+      "serial_log": "matrix-loadable_apps-app1-udf-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app1-udf-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app1-udf-unregistered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app1",
+      "kind": "udf",
+      "registered": false,
+      "result": "matrix-loadable_apps-app1-udf-unregistered/result.json",
+      "serial_log": "matrix-loadable_apps-app1-udf-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app1-udf-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app1-mpu-registered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": true,
+      "result": "matrix-loadable_apps-app1-mpu-registered/result.json",
+      "serial_log": "matrix-loadable_apps-app1-mpu-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app1-mpu-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app1-mpu-unregistered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": false,
+      "result": "matrix-loadable_apps-app1-mpu-unregistered/result.json",
+      "serial_log": "matrix-loadable_apps-app1-mpu-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app1-mpu-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app2-udf-registered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app2",
+      "kind": "udf",
+      "registered": true,
+      "result": "matrix-loadable_apps-app2-udf-registered/result.json",
+      "serial_log": "matrix-loadable_apps-app2-udf-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app2-udf-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app2-udf-unregistered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app2",
+      "kind": "udf",
+      "registered": false,
+      "result": "matrix-loadable_apps-app2-udf-unregistered/result.json",
+      "serial_log": "matrix-loadable_apps-app2-udf-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app2-udf-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app2-mpu-registered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app2",
+      "kind": "mpu",
+      "registered": true,
+      "result": "matrix-loadable_apps-app2-mpu-registered/result.json",
+      "serial_log": "matrix-loadable_apps-app2-mpu-registered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app2-mpu-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-loadable_apps-app2-mpu-unregistered",
+      "status": "pass",
+      "profile": "loadable_apps",
+      "app": "app2",
+      "kind": "mpu",
+      "registered": false,
+      "result": "matrix-loadable_apps-app2-mpu-unregistered/result.json",
+      "serial_log": "matrix-loadable_apps-app2-mpu-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-loadable_apps-app2-mpu-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-xip_all-app1-udf-registered",
+      "status": "pass",
+      "profile": "xip_all",
+      "app": "app1",
+      "kind": "udf",
+      "registered": true,
+      "result": "matrix-xip_all-app1-udf-registered/result.json",
+      "serial_log": "matrix-xip_all-app1-udf-registered/serial.log.gz",
+      "debugger_trace": "matrix-xip_all-app1-udf-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-xip_all-app1-udf-unregistered",
+      "status": "pass",
+      "profile": "xip_all",
+      "app": "app1",
+      "kind": "udf",
+      "registered": false,
+      "result": "matrix-xip_all-app1-udf-unregistered/result.json",
+      "serial_log": "matrix-xip_all-app1-udf-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-xip_all-app1-udf-unregistered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-xip_all-app1-mpu-registered",
+      "status": "pass",
+      "profile": "xip_all",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": true,
+      "result": "matrix-xip_all-app1-mpu-registered/result.json",
+      "serial_log": "matrix-xip_all-app1-mpu-registered/serial.log.gz",
+      "debugger_trace": "matrix-xip_all-app1-mpu-registered/gdb-rsp.log.gz"
+    },
+    {
+      "name": "matrix-xip_all-app1-mpu-unregistered",
+      "status": "pass",
+      "profile": "xip_all",
+      "app": "app1",
+      "kind": "mpu",
+      "registered": false,
+      "result": "matrix-xip_all-app1-mpu-unregistered/result.json",
+      "serial_log": "matrix-xip_all-app1-mpu-unregistered/serial.log.gz",
+      "debugger_trace": "matrix-xip_all-app1-mpu-unregistered/gdb-rsp.log.gz"
+    }
+  ],
+  "excluded": [
+    "binary_manager_recovery body",
+    "unload/reload",
+    "unload delayed beyond Health Monitor deadline"
+  ]
+}

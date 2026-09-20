@@ -1,0 +1,79 @@
+{
+  "status": "pass",
+  "profile": "xip_all",
+  "case": "user-expire",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+  "effective_config_sha256": "046ae89fc6847ec3a81faf42b7b9afb96a902ab9bc7e19fce72682ff8c457fb1",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      8,
+      9
+    ],
+    "task_count": 8,
+    "used": 105856,
+    "free": 12798848,
+    "largest": 8388576,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+  },
+  "initial_empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+  "rounds": [
+    {
+      "number": 1,
+      "apps": [
+        "\u0000hm_armv8 send app1 api\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=api\r\nHM_USER PASS app=app1 checks=3055 pid=8 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1"
+      ],
+      "empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "task_count": 8,
+        "used": 105856,
+        "free": 12798848,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+      }
+    }
+  ],
+  "heap_growth_after_warmup": 0,
+  "user_expiry_notice": "\u0000hm_armv8 send app1 expire\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=expire\r\nHM_USER EXPIRE app=app1 pid=8 timeout_ms=1000",
+  "observed_seconds": 0.998,
+  "kernel_panic": true,
+  "elapsed_seconds": 4.168,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-armv8m-20260920-n2j8ynnz/xip_all-user-expire/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-armv8m-20260920-n2j8ynnz/xip_all-user-expire/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

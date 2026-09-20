@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "xip_all",
+    "1"
+  ],
+  "profile": "xip_all",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "status": "pass",
+  "exit_code": 0,
+  "elf_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+  "elapsed_seconds": 51.684
+}

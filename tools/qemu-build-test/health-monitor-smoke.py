@@ -136,7 +136,7 @@ def normal(qemu, result):
     totals = re.search(r'Kernel TC End \[PASS\s*:\s*(\d+), FAIL\s*:\s*(\d+)\]', output)
     passed, failed = map(int, totals.groups())
     result['tc_regression'] = {'pass': passed, 'fail': failed, 'output': output}
-    if (passed, failed) != (433, 0) or re.search(r'\] FAIL\b|TC Assertion FAIL', output):
+    if (passed, failed) != (getattr(qemu, 'kernel_passes', 433), 0) or re.search(r'\] FAIL\b|TC Assertion FAIL', output):
         raise RuntimeError('Kernel testcase regression')
     qemu.wait_for_exit('kernel_tc')
     result['tc_regression']['status'] = 'pass'

@@ -49,9 +49,10 @@ EXAMPLE_DEPS = $(DRIVER_DEPS) $(TEST_DIR)/example_test.c \
 	$(OS_DIR)/../apps/examples/health_monitor/health_monitor_main.c
 
 .PHONY: test
-test: $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
+test: $(OUT_DIR)/rtl-timer $(OUT_DIR)/registry-smp $(OUT_DIR)/registry-up $(OUT_DIR)/driver-smp $(OUT_DIR)/driver-up \
 	$(OUT_DIR)/timer-smp $(OUT_DIR)/timer-up $(OUT_DIR)/timer-no-reason $(PM_TESTS) \
 	$(TIMER_WDOG_TESTS) $(WDOG_TESTS) $(EXAMPLE_TESTS) $(OUT_DIR)/watchdog-config.ok
+	$(OUT_DIR)/rtl-timer
 	$(OUT_DIR)/registry-smp
 	$(OUT_DIR)/registry-up
 	$(OUT_DIR)/driver-smp
@@ -150,3 +151,7 @@ $(OUT_DIR)/watchdog-config.ok: $(WDOG_DEPS)
 	fi
 	@grep -q 'RTL8730E IRQ watchdog PM requires CONFIG_ARCH_HAVE_WDOG_WAKEUP' $(OUT_DIR)/watchdog-missing-pm-hook.log
 	touch $@
+
+$(OUT_DIR)/rtl-timer: $(TEST_DIR)/rtl_timer_test.c $(OS_DIR)/arch/arm/src/amebasmart/amebasmart_timerisr.c $(WDOG_DEPS)
+	mkdir -p $(OUT_DIR)
+	$(HOSTCC) $(TEST_FLAGS) -I$(TEST_DIR)/rtl_timer_include $(WDOG_INCLUDES) $(TEST_DIR)/rtl_timer_test.c -o $@

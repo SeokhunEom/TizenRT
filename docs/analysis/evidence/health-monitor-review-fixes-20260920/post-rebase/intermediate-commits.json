@@ -1,0 +1,26 @@
+[
+  {
+    "stage": "timer",
+    "exit_code": 0,
+    "commit": "cfc4cc700fc1a396c51e272aef1c3943a2847e43",
+    "command": [
+      "make",
+      "-C",
+      "/out/history/timer/os/kernel/health_monitor/tests",
+      "test",
+      "OUT_DIR=/out/history/timer-bin"
+    ]
+  },
+  {
+    "stage": "pm",
+    "exit_code": 0,
+    "commit": "22f254cfa1d8e4d3b664fa7cc91b68b231192982",
+    "command": [
+      "make",
+      "-C",
+      "/out/history/pm/os/kernel/health_monitor/tests",
+      "test",
+      "OUT_DIR=/out/history/pm-bin"
+    ]
+  }
+]

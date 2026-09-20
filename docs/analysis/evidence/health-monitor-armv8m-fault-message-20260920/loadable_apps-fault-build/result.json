@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "loadable_apps",
+    "1"
+  ],
+  "profile": "loadable_apps",
+  "source_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "status": "pass",
+  "exit_code": 0,
+  "elf_sha256": "e4190c2196dc12104387ef1f91986a235b8a639bdd0c49fcedfcae87d15e38e0",
+  "elapsed_seconds": 51.86
+}

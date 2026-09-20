@@ -1,0 +1,56 @@
+{
+  "status": "observed",
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-hm-off-build/bin/tinyara",
+    "-display",
+    "none",
+    "-serial",
+    "file:/private/tmp/hm-armv8m-20260920-n2j8ynnz/hello-hm-off-clock-unrestricted/serial.log",
+    "-monitor",
+    "stdio",
+    "-nic",
+    "none",
+    "-S",
+    "-gdb",
+    "tcp:127.0.0.1:50996"
+  ],
+  "firmware_sha256": "af514d13f9b8a2c3075576fff751c309e075728a83e1bc86244a4ff8fd5e4e8a",
+  "gdb_reference_setup": [
+    "OK",
+    "OK",
+    "01000000ffffffffffffffff00000000"
+  ],
+  "timer_registers": "x\u001b[K\u001b[Dx \u001b[K\u001b[D\u001b[Dx /\u001b[K\u001b[D\u001b[D\u001b[Dx /4\u001b[K\u001b[D\u001b[D\u001b[D\u001b[Dx /4w\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx \u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x400\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x400000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x4000000\u001b[K\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dx /4wx 0x40000000\u001b[K\r\n40000000: 0x00000009 0x000032e1 0x00004e20 0x00000000\r\n(qemu) ",
+  "samples": [
+    {
+      "seconds": 201553.685855291,
+      "tick": 36,
+      "reference_count": 4293927196
+    },
+    {
+      "seconds": 201554.191191583,
+      "tick": 431,
+      "reference_count": 4283818716
+    },
+    {
+      "seconds": 201554.691826958,
+      "tick": 825,
+      "reference_count": 4273809356
+    },
+    {
+      "seconds": 201555.196062375,
+      "tick": 1221,
+      "reference_count": 4263721816
+    },
+    {
+      "seconds": 201555.699604625,
+      "tick": 1620,
+      "reference_count": 4253651976
+    }
+  ],
+  "wall_seconds_per_1000_ticks": 1.271306397727746
+}

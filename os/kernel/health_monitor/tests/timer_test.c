@@ -221,7 +221,12 @@ static void test_panic(void)
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
 	assert(g_reason == REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT && g_reason_writes == 1);
 	/* Exercise the real common assert policy: it must preserve reason 62. */
+#ifdef HEALTH_MONITOR_TEST_LEGACY_ASSERT_REASON
+	/* Older QEMU baselines have the no-address assert helper. */
+	reboot_reason_try_write_assert();
+#else
 	reboot_reason_try_write_assert(0);
+#endif
 	assert(g_reason == REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT && g_reason_writes == 1);
 #endif
 	longjmp(g_panic_return, 1);

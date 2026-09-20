@@ -1,0 +1,226 @@
+{
+  "status": "fail",
+  "profile": "xip_all",
+  "case": "user-reload",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "0e92c70549ee5b4eaa2e6404fdf5b6b0763fca163fc45fcbfd7027b2ac7873dd",
+  "effective_config_sha256": "046ae89fc6847ec3a81faf42b7b9afb96a902ab9bc7e19fce72682ff8c457fb1",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      8,
+      9
+    ],
+    "task_count": 8,
+    "used": 105856,
+    "free": 12798848,
+    "largest": 8388576,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+  },
+  "initial_empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+  "rounds": [
+    {
+      "number": 1,
+      "apps": [
+        "\u0000hm_armv8 send app1 api\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=api\r\nHM_USER PASS app=app1 checks=3055 pid=8 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1"
+      ],
+      "empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "task_count": 8,
+        "used": 105856,
+        "free": 12798848,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+      }
+    },
+    {
+      "number": 2,
+      "apps": [
+        "\u0000hm_armv8 send app1 api\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=api\r\nHM_USER PASS app=app1 checks=3055 pid=8 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1"
+      ],
+      "empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "task_count": 8,
+        "used": 105856,
+        "free": 12798848,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+      }
+    },
+    {
+      "number": 3,
+      "apps": [
+        "\u0000hm_armv8 send app1 api\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=api\r\nHM_USER PASS app=app1 checks=3055 pid=8 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1"
+      ],
+      "empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "task_count": 8,
+        "used": 105856,
+        "free": 12798848,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    8 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n    9 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     105856   12798848    8388576\r\nTASH>>"
+      }
+    }
+  ],
+  "heap_growth_after_warmup": 0,
+  "reloads": [
+    {
+      "number": 1,
+      "armed": "\u0000hm_armv8 send app1 arm\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=arm\r\nHM_USER ARMED_CHILD app=app1 pid=30\r\nHM_USER ARMED_CHILD app=app1 pid=31\r\nHM_USER ARMED_CHILD app=app1 pid=32\r\nHM_USER ARMED_CHILD app=app1 pid=33\r\nHM_USER ARMED app=app1 pid=8 children=4 timeout_ms=5000",
+      "before": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL TASK pid=8 timeout=5000 deadline=10585\r\nHM_CONTROL TASK pid=30 timeout=5000 deadline=10577\r\nHM_CONTROL TASK pid=31 timeout=5000 deadline=10580\r\nHM_CONTROL TASK pid=32 timeout=5000 deadline=10581\r\nHM_CONTROL TASK pid=33 timeout=5000 deadline=10584\r\nHM_CONTROL STATUS count=5 hint=1 next=10577\r\n",
+      "empty": "\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:05 [s] UTC \r\nHM_USER BOOT app=app1 pid=39 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=39 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=39\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          39,
+          40
+        ],
+        "task_count": 8,
+        "used": 106112,
+        "free": 12798592,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   39 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   40 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     106112   12798592    8388576\r\nTASH>>"
+      },
+      "old_pids": [
+        8,
+        30,
+        31,
+        32,
+        33
+      ],
+      "reload_log": "hm_armv8 recover\r\nTASH>>\u0000HM_CONTROL RECOVER request=1 real_binary_manager=1\r\nHM_CONTROL RECOVER dispatched=1\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:05 [s] UTC \r\nHM_USER BOOT app=app1 pid=39 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=39 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=39\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\nps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | READY    |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   39 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   40 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   39 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   40 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   39 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   40 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000free\r\n              total       used       free    largest\r\n Mem:\t   12904704     106112   12798592    8388576\r\nTASH>>\u0000"
+    },
+    {
+      "number": 2,
+      "armed": "\u0000hm_armv8 send app1 arm\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=arm\r\nHM_USER ARMED_CHILD app=app1 pid=46\r\nHM_USER ARMED_CHILD app=app1 pid=47\r\nHM_USER ARMED_CHILD app=app1 pid=48\r\nHM_USER ARMED_CHILD app=app1 pid=49\r\nHM_USER ARMED app=app1 pid=39 children=4 timeout_ms=5000",
+      "before": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL TASK pid=39 timeout=5000 deadline=17469\r\nHM_CONTROL TASK pid=46 timeout=5000 deadline=17461\r\nHM_CONTROL TASK pid=47 timeout=5000 deadline=17462\r\nHM_CONTROL TASK pid=48 timeout=5000 deadline=17465\r\nHM_CONTROL TASK pid=49 timeout=5000 deadline=17467\r\nHM_CONTROL STATUS count=5 hint=1 next=17461\r\n",
+      "empty": "\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:12 [s] UTC \r\nHM_USER BOOT app=app1 pid=55 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=55 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=55\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          55,
+          56
+        ],
+        "task_count": 8,
+        "used": 106368,
+        "free": 12798336,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   55 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   56 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     106368   12798336    8388576\r\nTASH>>"
+      },
+      "old_pids": [
+        39,
+        46,
+        47,
+        48,
+        49
+      ],
+      "reload_log": "hm_armv8 recover\r\nTASH>>\u0000HM_CONTROL RECOVER request=1 real_binary_manager=1\r\nHM_CONTROL RECOVER dispatched=1\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:12 [s] UTC \r\nHM_USER BOOT app=app1 pid=55 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=55 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=55\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\nps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   55 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   56 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   55 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   56 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   55 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   56 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000free\r\n              total       used       free    largest\r\n Mem:\t   12904704     106368   12798336    8388576\r\nTASH>>\u0000"
+    },
+    {
+      "number": 3,
+      "armed": "\u0000hm_armv8 send app1 arm\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=arm\r\nHM_USER ARMED_CHILD app=app1 pid=62\r\nHM_USER ARMED_CHILD app=app1 pid=63\r\nHM_USER ARMED_CHILD app=app1 pid=64\r\nHM_USER ARMED_CHILD app=app1 pid=65\r\nHM_USER ARMED app=app1 pid=55 children=4 timeout_ms=5000",
+      "before": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL TASK pid=55 timeout=5000 deadline=24359\r\nHM_CONTROL TASK pid=62 timeout=5000 deadline=24351\r\nHM_CONTROL TASK pid=63 timeout=5000 deadline=24353\r\nHM_CONTROL TASK pid=64 timeout=5000 deadline=24355\r\nHM_CONTROL TASK pid=65 timeout=5000 deadline=24356\r\nHM_CONTROL STATUS count=5 hint=1 next=24351\r\n",
+      "empty": "\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:19 [s] UTC \r\nHM_USER BOOT app=app1 pid=71 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=71 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=71\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          71,
+          72
+        ],
+        "task_count": 8,
+        "used": 106624,
+        "free": 12798080,
+        "largest": 8388576,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   71 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   72 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12904704     106624   12798080    8388576\r\nTASH>>"
+      },
+      "old_pids": [
+        55,
+        62,
+        63,
+        64,
+        65
+      ],
+      "reload_log": "hm_armv8 recover\r\nTASH>>\u0000HM_CONTROL RECOVER request=1 real_binary_manager=1\r\nHM_CONTROL RECOVER dispatched=1\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock2\r\nbinary_manager_scan_ubin_all: Found binary app1 in partition 2, version 260611\r\nbinary_manager_scan_ubin_all: Checking user in partition [0], path /dev/mtdblock1\r\nbinary_manager_scan_ubin_all: Found binary common in partition 1, version 260611\r\nbinary_manager_load: common Header Checking Success\r\nbinary_manager_load_binary: Load success! [Name: common] [Version: 260611] [Partition: A] [Text start : 0x80ca0010] [Un-compressed Binary]\r\nbinary_manager_load: app1 Header Checking Success\r\nSystem Information:\r\n\tVersion:\r\n\t\tPlatform: 5.0\tBinary: 260611\r\n\tCommit Hash: NA\r\n\tBuild User: root@SeokhunEom\r\n\tBuild Time: 2026-09-20 19:16:26 KST\r\n\tSystem Time: 11 Jun 2026, 00:00:19 [s] UTC \r\nHM_USER BOOT app=app1 pid=71 control=3 unprivileged=1\r\nTASH>>\u0000binary_manager_load_binary: Load success! [Name: app1] [Version: 260611] [Partition: A] [Text start : 0x80d60030] [Un-compressed Binary]\r\nHM_USER PASS app=app1 checks=3055 pid=71 cycles=1000 shared_fd=1 cancel=1 exit=1 return=1\r\nHM_USER READY app=app1 pid=71\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\nps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   71 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   72 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   71 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   72 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000ps\r\n\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80008780 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x8004a440 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   71 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   72 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>\u0000free\r\n              total       used       free    largest\r\n Mem:\t   12904704     106624   12798080    8388576\r\nTASH>>\u0000"
+    }
+  ],
+  "reload_heap_growth_after_warmup": 512,
+  "error": "Kernel heap grew over repeated reloads",
+  "elapsed_seconds": 26.323,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-armv8m-20260920-n2j8ynnz/xip_all-user-reload/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-armv8m-20260920-n2j8ynnz/xip_all-user-reload/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

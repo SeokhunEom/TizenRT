@@ -1,0 +1,46 @@
+[
+  {
+    "profile": "loadable_all",
+    "status": "pass",
+    "fixture_strings_found": {
+      "common_dbg": [],
+      "tinyara": [],
+      "app1_dbg": [],
+      "app2_dbg": []
+    },
+    "network_pass": 161,
+    "kernel_pass": 447
+  },
+  {
+    "profile": "loadable_apps",
+    "status": "pass",
+    "fixture_strings_found": {
+      "common_dbg": [],
+      "tinyara": [],
+      "app1_dbg": [],
+      "app2_dbg": []
+    },
+    "network_pass": 161,
+    "kernel_pass": 447
+  },
+  {
+    "profile": "xip_all",
+    "status": "pass",
+    "fixture_strings_found": {
+      "common_dbg": [],
+      "tinyara": [],
+      "app1_dbg": []
+    },
+    "network_pass": 161,
+    "kernel_pass": 447
+  },
+  {
+    "profile": "hello",
+    "status": "pass",
+    "fixture_strings_found": {
+      "tinyara": []
+    },
+    "network_pass": 161,
+    "kernel_pass": 459
+  }
+]

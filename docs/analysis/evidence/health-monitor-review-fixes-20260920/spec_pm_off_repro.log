@@ -1,0 +1,1 @@
+health_off irq_wdog_off prepare=25 sw_delay=100 sleep_ms=75 now=200

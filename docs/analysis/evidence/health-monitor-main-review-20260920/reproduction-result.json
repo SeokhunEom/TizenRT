@@ -1,0 +1,20 @@
+{
+  "status": "findings_reproduced",
+  "source_head": "cc00205afc56e938132403dc3d3aae65db8e8cb6",
+  "python_assert_operations": {
+    "0": {
+      "requests": [
+        "Z1,1234,2"
+      ]
+    },
+    "1": {
+      "requests": []
+    }
+  },
+  "pm_observations": [
+    "start=100 deadline=200 prep=125ms sleep_calls=1 sleep_ms=100 wall_now=325 os_now=200 compensated=100\n",
+    "deadline=200 prep=125ms sleep_calls=1 sleep_ms=100 elapsed_hw_ms=224 os_now=200 reset=0 wdt_started=1\n"
+  ],
+  "physical_board_tested": false,
+  "qemu_launched": false
+}

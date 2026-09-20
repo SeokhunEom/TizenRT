@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "report_local_links_checked": 42,
+  "patch_reverse_check": "pass",
+  "commits_created": 0,
+  "pushes": 0,
+  "index_empty": true,
+  "full_suite_outcome": "known_port_failures_retained",
+  "production_matrix": "pass",
+  "host_executables_passed": 21
+}

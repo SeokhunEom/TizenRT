@@ -1,0 +1,3 @@
+ifeq ($(CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M),y)
+CONFIGURED_APPS += examples/health_monitor_armv8m
+endif

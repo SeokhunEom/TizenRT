@@ -1,0 +1,35 @@
+{
+  "status": "incomplete_external_volume_access_blocked",
+  "commits_created": 0,
+  "qemu_start_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "health_start_head": "eddceb9665e302a32e78742359669ed4ee1c8e79",
+  "completed": {
+    "hello_clean_build": "pass",
+    "hello_basic": "pass",
+    "standard_regression": {
+      "network": [
+        161,
+        0
+      ],
+      "kernel": [
+        459,
+        0
+      ],
+      "status": "pass"
+    }
+  },
+  "unresolved": [
+    "1ms OS tick advances at approximately 2/3 reference rate in default QEMU run",
+    "TASH ps did not respond after kernel_tc in expanded normal harness",
+    "T7 access EPERM"
+  ],
+  "pending": [
+    "flat expanded cases",
+    "protected/loadable/XIP app cases",
+    "Binary Manager reload cases",
+    "capacity/many workers",
+    "host suite",
+    "final report update in health branch"
+  ],
+  "latest_report": "QEMU_ARMv8M_Health_Monitor_Validation.partial.md"
+}

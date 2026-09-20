@@ -1,0 +1,35 @@
+[
+  {
+    "profile": "loadable_all",
+    "exit_code": 0,
+    "matches_saved_metadata": true,
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "-O",
+      "tools/qemu-armv8m-health-monitor/fault-debug-metadata.py",
+      "/private/tmp/hm-review-fixes-20260920/metadata/loadable_all"
+    ]
+  },
+  {
+    "profile": "loadable_apps",
+    "exit_code": 0,
+    "matches_saved_metadata": true,
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "-O",
+      "tools/qemu-armv8m-health-monitor/fault-debug-metadata.py",
+      "/private/tmp/hm-review-fixes-20260920/metadata/loadable_apps"
+    ]
+  },
+  {
+    "profile": "xip_all",
+    "exit_code": 0,
+    "matches_saved_metadata": true,
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "-O",
+      "tools/qemu-armv8m-health-monitor/fault-debug-metadata.py",
+      "/private/tmp/hm-review-fixes-20260920/metadata/xip_all"
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "status": "pass",
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "executables": [
+    "driver-smp",
+    "driver-up",
+    "example-smp",
+    "example-up",
+    "pm-no-tick-suppress",
+    "pm-no-timed-wakeup",
+    "pm-off",
+    "pm-smp",
+    "pm-up",
+    "registry-smp",
+    "registry-up",
+    "rtl-timer",
+    "timer-no-reason",
+    "timer-smp",
+    "timer-up",
+    "timer-watchdog-no-reason",
+    "timer-watchdog-smp",
+    "timer-watchdog-up",
+    "watchdog-no-tick-suppress",
+    "watchdog-no-timed-wakeup",
+    "watchdog-smp",
+    "watchdog-up"
+  ],
+  "count": 22,
+  "command": "make -C os/kernel/health_monitor/tests test OUT_DIR=/out/bin",
+  "platform": "Linux AArch64 Docker tizenrt/tizenrt:2.0.1-arm64-local"
+}

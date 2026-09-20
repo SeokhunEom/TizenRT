@@ -1,0 +1,181 @@
+{
+  "status": "pass",
+  "profile": "loadable_apps",
+  "app": "app1",
+  "kind": "mpu",
+  "registered": true,
+  "firmware_sha256": "e4190c2196dc12104387ef1f91986a235b8a639bdd0c49fcedfcae87d15e38e0",
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-review-fixes-20260920/qemu-optimized/loadable_apps-app1-mpu-registered/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-review-fixes-20260920/qemu-optimized/loadable_apps-app1-mpu-registered/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "none",
+    "-S",
+    "-gdb",
+    "tcp:127.0.0.1:63604"
+  ],
+  "events": [
+    {
+      "stage": "cpu_fault_handler",
+      "pc": "0x10000e40",
+      "registers": [
+        "0x4",
+        "0x804d886c",
+        "0x0",
+        "0x10000e41",
+        "0x800015f4",
+        "0x800015a8",
+        "0x4",
+        "0x804d886c",
+        "0x0",
+        "0x0",
+        "0x804d6147",
+        "0x3",
+        "0x10008ffd",
+        "0x804d8854",
+        "0x10001159",
+        "0x10000e40"
+      ],
+      "irq": 4,
+      "task": {
+        "tcb": "0x800446c0",
+        "pid": 11,
+        "binidx": 1,
+        "health_timeout": 60000,
+        "health_deadline": 62856
+      },
+      "fault_pc": "0x804d49b8",
+      "instruction": "1b6882b0",
+      "cfsr": "0x82",
+      "hfsr": "0x0",
+      "mmfar": "0x80000000",
+      "tick": 2867
+    },
+    {
+      "stage": "fault_sender_before_mq_send",
+      "pc": "0x10006b5c",
+      "registers": [
+        "0x800316c4",
+        "0x80044438",
+        "0x18",
+        "0x64",
+        "0x80002264",
+        "0x80002250",
+        "0x80001838",
+        "0x8000225c",
+        "0x100341e0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x80044438",
+        "0x10006b57",
+        "0x10006b5c"
+      ],
+      "message": {
+        "address": "0x80044438",
+        "raw": "0a00000001000000efbeaddeefbeaddeefbeaddeefbeadde",
+        "cmd": 10,
+        "binidx": 1
+      },
+      "task": {
+        "tcb": "0x80043780",
+        "pid": 5,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      },
+      "length": 24,
+      "priority": 100,
+      "queue_fd": "0x800316c4"
+    },
+    {
+      "stage": "binary_manager_after_mq_receive",
+      "pc": "0x10003de2",
+      "registers": [
+        "0x18",
+        "0x80002284",
+        "0x0",
+        "0x0",
+        "0x18",
+        "0x1003223e",
+        "0x80002034",
+        "0x10031ec1",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x7ffe",
+        "0x800436b8",
+        "0x10007967",
+        "0x10003de2"
+      ],
+      "message": {
+        "address": "0x800436d8",
+        "raw": "0a00000001000000efbeaddeefbeaddeefbeaddeefbeadde",
+        "cmd": 10,
+        "binidx": 1
+      },
+      "length": 24,
+      "task": {
+        "tcb": "0x80040e20",
+        "pid": 4,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      }
+    },
+    {
+      "stage": "stopped_before_binary_manager_recovery_call",
+      "pc": "0x10003e2e",
+      "registers": [
+        "0x1",
+        "0x80002284",
+        "0x0",
+        "0xa",
+        "0x18",
+        "0x1003223e",
+        "0x80002034",
+        "0x10031ec1",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x7ffe",
+        "0x800436b8",
+        "0x10007967",
+        "0x10003e2e"
+      ],
+      "argument_binidx": 1,
+      "task": {
+        "tcb": "0x80040e20",
+        "pid": 4,
+        "binidx": 0,
+        "health_timeout": 0,
+        "health_deadline": 0
+      }
+    }
+  ],
+  "recovery_executed": false,
+  "unload_tested": false,
+  "target_memory_or_register_writes": false,
+  "trigger": "hm_armv8 send app1 fault-mpu",
+  "stopped_before_recovery_call": true,
+  "fault_notice": "HM_USER CPU_FAULT app=app1 pid=11 kind=mpu control=3 registered=1 timeout_ms=60000",
+  "fault_type": "DACCVIOL",
+  "same_message_bytes_received": true,
+  "observed_message_size": 24,
+  "elapsed_seconds": 3.137
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "1"
+  ],
+  "profile": "hello",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "status": "pass",
+  "exit_code": 0,
+  "elf_sha256": "6ac66a45ecf87516feb17d391afa8c8d0031fea143e35b89a685138bdab42cb4",
+  "elapsed_seconds": 26.299
+}

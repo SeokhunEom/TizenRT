@@ -1,0 +1,99 @@
+{
+  "status": "pass",
+  "profile": "loadable_all",
+  "case": "user-return-app2",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "3268abcdf241a4a479338a2586cf1004141f9fa6158ff564e9c2c36550e1124f",
+  "effective_config_sha256": "48099e4dc13fcfced61e179c33e42d490277f8ce5cd4f158aa1417ca600f71b1",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      11,
+      12
+    ],
+    "task_count": 9,
+    "used": 1525088,
+    "free": 11400448,
+    "largest": 6993600,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x800445a0 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    7 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app2\r\n   11 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   12 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12925536    1525088   11400448    6993600\r\nTASH>>"
+  },
+  "initial_empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+  "rounds": [
+    {
+      "number": 1,
+      "apps": [
+        "\u0000hm_armv8 send app1 api\r\nTASH>>\u0000HM_CONTROL SENT app=app1 command=api\r\nHM_USER PASS app=app1 checks=3055 pid=11 cycles=1000 shared_fd=1",
+        "\u0000hm_armv8 send app2 api\r\nTASH>>\u0000HM_CONTROL SENT app=app2 command=api\r\nHM_USER PASS app=app2 checks=3055 pid=7 cycles=1000 shared_fd=1 "
+      ],
+      "empty": "\u0000hm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          11,
+          12
+        ],
+        "task_count": 9,
+        "used": 1525088,
+        "free": 11400448,
+        "largest": 6993600,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80003628 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x800445a0 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n    7 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app2\r\n   11 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   12 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12925536    1525088   11400448    6993600\r\nTASH>>"
+      }
+    }
+  ],
+  "heap_growth_after_warmup": 0,
+  "return_notice": "\u0000hm_armv8 send app2 return\r\nTASH>>\u0000HM_CONTROL SENT app=app2 command=return\r\nHM_USER RETURN app=app2 pid=7 registered=1",
+  "after_return": "\r\nhm_armv8 status\r\nTASH>>\u0000HM_CONTROL STATUS count=0 hint=0 next=0\r\n",
+  "snapshot_after_return": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      11,
+      12
+    ],
+    "task_count": 8,
+    "used": 998880,
+    "free": 11926656,
+    "largest": 6993600,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x80003628 |   0 |       NA | tcpip_thread\r\n    4 |  203 | RR   | KTHREAD |    | MQNEMPTY | 0x800445a0 |   0 |       NA | binary_manager\r\n    5 |  205 | RR   | KTHREAD |    | WAITUNBLOCK |          - |   0 |       NA | bm_faultmsgsender\r\n   11 |  180 | RR   | TASK    |    | WAITSIG  |   00000000 |   0 |       NA | app1\r\n   12 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12925536     998880   11926656    6993600\r\nTASH>>"
+  },
+  "elapsed_seconds": 8.498,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-armv8m-20260920-n2j8ynnz/loadable_all-user-return-app2/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-armv8m-20260920-n2j8ynnz/loadable_all-user-return-app2/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

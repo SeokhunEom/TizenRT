@@ -1,0 +1,125 @@
+{
+  "status": "pass",
+  "profile": "hello",
+  "case": "capacity",
+  "source_head": "b5eacbdc0426df9ca0784dc5198ac8ff30443631",
+  "firmware_sha256": "cb3eaece4885df720923bfd0c48cadfba007be0f50ef6535034d5b98f6b97a96",
+  "effective_config_sha256": "d60760a2a3d0a8e519a120cd99c8ea4ee86749684ed8c0b0df703eef650e2953",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "task_count": 5,
+    "used": 49856,
+    "free": 12875456,
+    "largest": 12342304,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800035f4 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12925312      49856   12875456   12342304\r\nTASH>>"
+  },
+  "rounds": [
+    {
+      "number": 1,
+      "cases": [
+        {
+          "case": "capacity",
+          "status": "pass",
+          "checks": 53,
+          "elapsed_seconds": 0.007,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 49856,
+        "free": 12875456,
+        "largest": 12342304,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800035f4 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12925312      49856   12875456   12342304\r\nTASH>>"
+      }
+    },
+    {
+      "number": 2,
+      "cases": [
+        {
+          "case": "capacity",
+          "status": "pass",
+          "checks": 53,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 49856,
+        "free": 12875456,
+        "largest": 12342304,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800035f4 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12925312      49856   12875456   12342304\r\nTASH>>"
+      }
+    },
+    {
+      "number": 3,
+      "cases": [
+        {
+          "case": "capacity",
+          "status": "pass",
+          "checks": 53,
+          "elapsed_seconds": 0.007,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 49856,
+        "free": 12875456,
+        "largest": 12342304,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800035f4 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12925312      49856   12875456   12342304\r\nTASH>>"
+      }
+    }
+  ],
+  "heap_growth_after_warmup": 0,
+  "elapsed_seconds": 1.167,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc/build/output/bin/tinyara",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

@@ -1,0 +1,24 @@
+{
+  "status": "pass",
+  "fault_message_cases": 20,
+  "recovery_executed": false,
+  "unload_tested": false,
+  "debugger_target_writes": false,
+  "stopped_before_recovery_call_in_every_case": true,
+  "all_preexisting_unrelated_files_preserved": true,
+  "defconfigs_restored": 4,
+  "effective_config_restored_byte_for_byte": true,
+  "restored_hello_build": "pass",
+  "fault_fixtures_absent_from_restored_elf": true,
+  "qemu_patch_reverse_check": "pass",
+  "both_indexes_empty": true,
+  "commits_created_this_followup": 0,
+  "pushes": 0,
+  "raw_evidence": "/private/tmp/hm-armv8m-fault-message-whudzy7n",
+  "prior_qemu_port_commits": [
+    "82ed01c10739ef5291c036d96d9a29c73fdb6b5c",
+    "5c0120f685ff47ab17f7ec26c0554965e312bc27"
+  ],
+  "report_local_links_checked": 51,
+  "python_syntax": "pass"
+}
