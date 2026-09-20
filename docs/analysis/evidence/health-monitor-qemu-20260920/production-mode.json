@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "qemu_probe_symbols_absent": true,
+  "health_monitor_symbols_present": [
+    "health_monitor_start",
+    "health_monitor_kick",
+    "health_monitor_stop",
+    "health_monitor_cleanup",
+    "health_monitor_timer",
+    "health_monitor_register",
+    "health_monitor_main"
+  ]
+}

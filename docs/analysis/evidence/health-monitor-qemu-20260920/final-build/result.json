@@ -1,0 +1,26 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--network",
+    "none",
+    "--name",
+    "hm-qemu-final-build",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-build-test:/work",
+    "-v",
+    "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/final-build:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "bash",
+    "/evidence/build.sh"
+  ],
+  "clean": true,
+  "exit_code": 0,
+  "status": "pass",
+  "elf_sha256": "2acf494af7f0e72c0bb92e693df0fa3e3f743f97cf04e7ea445daf60d05dc222",
+  "elapsed_seconds": 103.675
+}

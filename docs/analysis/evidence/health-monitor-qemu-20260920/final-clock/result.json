@@ -1,0 +1,27 @@
+{
+  "actual_tick_us": 10000.0,
+  "status": "pass",
+  "command": [
+    "qemu-system-arm",
+    "-M",
+    "lm3s6965evb",
+    "-kernel",
+    "/work/build/output/bin/tinyara",
+    "-display",
+    "none",
+    "-serial",
+    "file:/evidence/final-clock/serial.log",
+    "-monitor",
+    "stdio",
+    "-net",
+    "none"
+  ],
+  "registers": {
+    "400fe060": "0x1ce1380",
+    "400fe070": "0x1800000",
+    "e000e014": "0x7a11f",
+    "e000e010": "0x10007"
+  },
+  "clock_hz": 50000000.0,
+  "expected_tick_us": 10000
+}

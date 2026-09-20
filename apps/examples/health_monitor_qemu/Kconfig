@@ -1,0 +1,13 @@
+config EXAMPLES_HEALTH_MONITOR_QEMU
+	bool "Temporary QEMU Health Monitor verification"
+	default n
+	depends on HEALTH_MONITOR && BUILD_FLAT && ARCH_CHIP_LM3S6965 && !SMP && !DISABLE_PTHREAD
+	---help---
+		Test-only real-kernel API and lifecycle scenarios plus controlled-time
+		SysTick probes. Do not enable in a product firmware.
+
+config QEMU_HEALTH_MONITOR_CAPACITY
+	int "Temporary Health Monitor heap capacity"
+	default MAX_TASKS
+	range 1 MAX_TASKS
+	depends on EXAMPLES_HEALTH_MONITOR_QEMU

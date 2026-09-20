@@ -1,0 +1,191 @@
+make: Entering directory '/work/os/kernel/health_monitor/tests'
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//registry_test.c -o /evidence/host-bin/registry-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//registry_test.c -o /evidence/host-bin/registry-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -I/work/os/kernel/health_monitor/tests//driver_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//driver_test.c -o /evidence/host-bin/driver-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//driver_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//driver_test.c -o /evidence/host-bin/driver-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_NO_REASON -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-no-reason
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all  -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//pm_test.c -o /evidence/host-bin/pm-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//pm_test.c -o /evidence/host-bin/pm-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_NO_TIMEDWAKEUP -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//pm_test.c -o /evidence/host-bin/pm-no-timed-wakeup
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_NO_TICKSUPPRESS -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//pm_test.c -o /evidence/host-bin/pm-no-tick-suppress
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_OFF -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//pm_test.c -o /evidence/host-bin/pm-off
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_WDOG  -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-watchdog-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_WDOG -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-watchdog-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_WDOG -DHEALTH_MONITOR_TEST_NO_REASON -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//timer_test.c -o /evidence/host-bin/timer-watchdog-no-reason
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all  -I/work/os/kernel/health_monitor/tests//wdog_include -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include -I/work/os/board/rtl8730e/src/component/soc/amebad2/fwlib/include /work/os/kernel/health_monitor/tests//watchdog_test.c -o /evidence/host-bin/watchdog-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//wdog_include -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include -I/work/os/board/rtl8730e/src/component/soc/amebad2/fwlib/include /work/os/kernel/health_monitor/tests//watchdog_test.c -o /evidence/host-bin/watchdog-up
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_NO_TIMEDWAKEUP -I/work/os/kernel/health_monitor/tests//wdog_include -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include -I/work/os/board/rtl8730e/src/component/soc/amebad2/fwlib/include /work/os/kernel/health_monitor/tests//watchdog_test.c -o /evidence/host-bin/watchdog-no-timed-wakeup
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_NO_TICKSUPPRESS -I/work/os/kernel/health_monitor/tests//wdog_include -I/work/os/kernel/health_monitor/tests//pm_include -I/work/os/kernel/health_monitor/tests//timer_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include -I/work/os/board/rtl8730e/src/component/soc/amebad2/fwlib/include /work/os/kernel/health_monitor/tests//watchdog_test.c -o /evidence/host-bin/watchdog-no-tick-suppress
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all  -I/work/os/kernel/health_monitor/tests//driver_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//example_test.c -o /evidence/host-bin/example-smp
+mkdir -p /evidence/host-bin
+cc -std=gnu11 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-sanitize-recover=all -DHEALTH_MONITOR_TEST_UP -I/work/os/kernel/health_monitor/tests//driver_include -I/work/os/kernel/health_monitor/tests//include -I/work/os/kernel -idirafter /work/os/include /work/os/kernel/health_monitor/tests//example_test.c -o /evidence/host-bin/example-up
+mkdir -p /evidence/host-bin
+touch /evidence/host-bin/watchdog-config.ok
+/evidence/host-bin/registry-smp
+PASS: SMP model, 50000 randomized operations, concurrent registry and snapshot stress
+/evidence/host-bin/registry-up
+PASS: UP model, 50000 randomized operations
+/evidence/host-bin/driver-smp
+PASS: SMP driver/VFS, errno, close/reopen, concurrent shared-fd callers
+/evidence/host-bin/driver-up
+PASS: UP driver/VFS, errno, close/reopen, shared-fd caller identity
+/evidence/host-bin/timer-smp
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/timer-up
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/timer-no-reason
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/pm-smp
+PASS: PM wakeup selection, sleep accounting, final snapshot and monitor policy
+/evidence/host-bin/pm-up
+PASS: PM wakeup selection, sleep accounting, final snapshot and monitor policy
+/evidence/host-bin/pm-no-timed-wakeup
+PASS: PM wakeup selection, sleep accounting, final snapshot and monitor policy
+/evidence/host-bin/pm-no-tick-suppress
+PASS: PM wakeup selection, sleep accounting, final snapshot and monitor policy
+/evidence/host-bin/pm-off
+PASS: PM wakeup selection, sleep accounting, final snapshot and monitor policy
+/evidence/host-bin/timer-watchdog-smp
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/timer-watchdog-up
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/timer-watchdog-no-reason
+PASS: timer deadlines, all candidates, wrap, fatal ordering and real system tick entry
+/evidence/host-bin/watchdog-smp
+PASS: real WDT start/registers, exclusive owner, PM budget and reboot cause policy
+/evidence/host-bin/watchdog-up
+PASS: real WDT start/registers, exclusive owner, PM budget and reboot cause policy
+/evidence/host-bin/watchdog-no-timed-wakeup
+PASS: real WDT start/registers, exclusive owner, PM budget and reboot cause policy
+/evidence/host-bin/watchdog-no-tick-suppress
+PASS: real WDT start/registers, exclusive owner, PM budget and reboot cause policy
+/evidence/host-bin/example-smp
+PASS: SMP driver/VFS, errno, close/reopen, concurrent shared-fd callers
+health_monitor: previous reboot reason=62
+health_monitor: previous reboot reason=-1
+health_monitor: run completed
+health_monitor: stop completed
+health_monitor: round=1 worker=0 pid=187 result=0
+health_monitor: round=2 worker=0 pid=187 result=0
+health_monitor: round=3 worker=0 pid=187 result=0
+health_monitor: exit completed
+health_monitor: round=1 worker=0 pid=187 result=0
+health_monitor: round=1 worker=1 pid=187 result=0
+health_monitor: round=2 worker=0 pid=187 result=0
+health_monitor: round=2 worker=1 pid=187 result=0
+health_monitor: round=3 worker=0 pid=187 result=0
+health_monitor: round=3 worker=1 pid=187 result=0
+health_monitor: smp completed
+health_monitor: pthread setup failed: 11
+health_monitor: round=1 worker=0 pid=187 result=0
+health_monitor: smp FAILED
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor: run FAILED
+health_monitor: stop FAILED
+PASS: example commands through real ioctl/VFS/registry; host lifecycle/time models
+/evidence/host-bin/example-up
+PASS: UP driver/VFS, errno, close/reopen, shared-fd caller identity
+health_monitor: previous reboot reason=62
+health_monitor: previous reboot reason=-1
+health_monitor: run completed
+health_monitor: stop completed
+health_monitor: round=1 worker=0 pid=200 result=0
+health_monitor: round=2 worker=0 pid=200 result=0
+health_monitor: round=3 worker=0 pid=200 result=0
+health_monitor: exit completed
+health_monitor: smp requires at least two CPUs
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor run <timeout_ms> <period_ms> <count>
+health_monitor stop <timeout_ms>
+health_monitor exit <timeout_ms> <rounds>
+health_monitor smp <timeout_ms> <rounds>
+health_monitor reason  (requires SYSTEM_REBOOT_REASON)
+health_monitor expire <timeout_ms>  (deliberate PANIC/reset)
+Example limits: 1..60000 ms, period < timeout, count 1..100000, rounds 1..1000
+health_monitor: run FAILED
+health_monitor: stop FAILED
+PASS: example commands through real ioctl/VFS/registry; host lifecycle/time models
+make: Leaving directory '/work/os/kernel/health_monitor/tests'

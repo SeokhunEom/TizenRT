@@ -1,5 +1,8 @@
 # Health monitor host tests
 
+For real ARM UP execution, controlled deadline boundaries and the preserved
+QEMU validation results, see [QEMU tests](qemu/README.md).
+
 Run from the repository root:
 
 ```sh

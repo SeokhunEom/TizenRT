@@ -1,0 +1,26 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--network",
+    "none",
+    "--name",
+    "hm-qemu-capacity-build",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-build-test:/work",
+    "-v",
+    "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/capacity-build:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "bash",
+    "/evidence/build.sh"
+  ],
+  "clean": true,
+  "exit_code": 0,
+  "status": "pass",
+  "elf_sha256": "ccf7da5aad19ef5ab7d35305bb5a475a1df0c16425d38c6885f79aea3aec1ae0",
+  "elapsed_seconds": 99.648
+}

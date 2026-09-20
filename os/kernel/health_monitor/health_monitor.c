@@ -28,6 +28,12 @@
 
 #include "sched/sched.h"
 #include "health_monitor/health_monitor.h"
+#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU
+#include "tests/qemu/probe.h"
+#define health_monitor_now() hm_qemu_now()
+#else
+#define health_monitor_now() ((uint32_t)clock_systimer())
+#endif
 
 /* There are two views of the registration state:
  *
@@ -294,7 +300,7 @@ static int health_monitor_unregister(FAR struct tcb_s *tcb)
 
 	for (index = 0; index < g_health_count; index++) {
 		if (g_health_heap[index].tcb == tcb) {
-			health_monitor_remove(index, (uint32_t)clock_systimer());
+			health_monitor_remove(index, health_monitor_now());
 			break;
 		}
 	}
@@ -360,7 +366,7 @@ int health_monitor_start(uint32_t timeout_ms)
 	} else if (g_health_count >= HEALTH_MONITOR_HEAP_CAPACITY) {
 		ret = -ENOSPC;
 	} else {
-		now = (uint32_t)clock_systimer();
+		now = health_monitor_now();
 		state->timeout = timeout;
 		state->deadline = now + timeout;
 		index = g_health_count++;
@@ -395,7 +401,7 @@ void health_monitor_kick(void)
 	FAR struct health_monitor_s *state = health_monitor_state(tcb);
 
 	if (state->timeout != 0) {
-		state->deadline = (uint32_t)clock_systimer() + state->timeout;
+		state->deadline = health_monitor_now() + state->timeout;
 	}
 
 	health_monitor_unlock(flags);
@@ -534,9 +540,14 @@ bool health_monitor_timer(void)
 	bool expired = false;
 	bool changed = false;
 	int status;
-#ifdef CONFIG_DEBUG_ERROR
+#if defined(CONFIG_DEBUG_ERROR) || defined(CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU)
 	pid_t expired_pid = -1;
 	uint32_t expired_deadline = 0;
+#endif
+#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU
+	if (hm_qemu_paused()) {
+		return false;
+	}
 #endif
 
 #ifdef CONFIG_SMP
@@ -550,7 +561,7 @@ bool health_monitor_timer(void)
 		return false;
 	}
 	if (status == 0 ||
-		health_monitor_tick_before((uint32_t)clock_systimer(), check_at)) {
+		health_monitor_tick_before(health_monitor_now(), check_at)) {
 		return true;
 	}
 
@@ -558,14 +569,14 @@ bool health_monitor_timer(void)
 		return false;
 	}
 
-	now = (uint32_t)clock_systimer();
+	now = health_monitor_now();
 	while (g_health_count > 0 &&
 		   !health_monitor_tick_before(now, g_health_heap[0].check_at)) {
 		uint32_t deadline = health_monitor_state(g_health_heap[0].tcb)->deadline;
 
 		if (!health_monitor_tick_before(now, deadline)) {
 			expired = true;
-#ifdef CONFIG_DEBUG_ERROR
+#if defined(CONFIG_DEBUG_ERROR) || defined(CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU)
 			expired_pid = g_health_heap[0].tcb->pid;
 			expired_deadline = deadline;
 #endif
@@ -583,6 +594,9 @@ bool health_monitor_timer(void)
 	health_monitor_unlock(flags);
 
 	if (expired) {
+#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU
+		hm_qemu_fault(expired_pid, now, expired_deadline);
+#endif
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
 		up_reboot_reason_write(REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT);
 #endif
@@ -597,3 +611,7 @@ bool health_monitor_timer(void)
 	}
 	return !expired;
 }
+
+#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU
+#include "tests/qemu/probe.inc"
+#endif

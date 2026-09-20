@@ -1,0 +1,28 @@
+{
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 6.772,
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--network",
+    "none",
+    "--name",
+    "hm-transfer-host-20260920",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/260901-health-monitor:/work:ro",
+    "-v",
+    "/private/tmp/hm-transfer-host-20260920:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "make",
+    "-C",
+    "/work/os/kernel/health_monitor/tests",
+    "test",
+    "OUT_DIR=/evidence/host-bin"
+  ],
+  "scope": "Transferred Health Monitor source; Linux AArch64 ASan/UBSan host fixtures; not QEMU or physical board execution"
+}

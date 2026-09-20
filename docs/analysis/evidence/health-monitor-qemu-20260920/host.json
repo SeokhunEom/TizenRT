@@ -1,0 +1,28 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--network",
+    "none",
+    "--name",
+    "hm-host-complete-20260920",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-build-test:/work:ro",
+    "-v",
+    "/private/tmp/hm-qemu-complete-20260920-_fgsxasl:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "make",
+    "-C",
+    "/work/os/kernel/health_monitor/tests",
+    "test",
+    "OUT_DIR=/evidence/host-bin"
+  ],
+  "scope": "Linux AArch64 host fixtures, not QEMU SMP or hardware proof",
+  "exit_code": 0,
+  "status": "pass",
+  "elapsed_seconds": 5.152
+}

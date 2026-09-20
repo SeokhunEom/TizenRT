@@ -1,0 +1,1421 @@
+{
+  "initial": {
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+    "used": 76096,
+    "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76096   14326688   14321632\r\nTASH>>",
+    "largest": 14321632,
+    "total": 14402784,
+    "task_count": 8,
+    "free": 14326688,
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8
+    ],
+    "tasks": [
+      "Idle Task",
+      "hpwork",
+      "lpwork",
+      "LWIP_TCP/IP",
+      "netmgr_event_handler",
+      "appinit",
+      "tash",
+      "task_manager"
+    ]
+  },
+  "rounds": [
+    {
+      "status": "pass_with_known_driver_failures",
+      "steps": [
+        {
+          "status": "pass",
+          "address_cycle_0": "lo\tLink encap: 00:00:00:00:00:00\t<UP,RUNNING>\r\n\tinet addr: 127.0.0.1\tMask: 255.0.0.0\tMTU: 8092\r\n\tinet6: ::1\r\n\r\neth0\tLink encap: 52:54:00:12:34:56\t<UP,RUNNING>\r\n\tinet addr: 10.0.2.15\tMask: 255.255.255.0\tMTU: 1512\r\n\r\nTASH>>",
+          "checks": [
+            {
+              "status": "pass",
+              "name": "loopback-tcp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "loopback-udp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "dhcp-ping-0",
+              "output": "\u0000ping 10.0.2.2\r\nTASH>>\u0000PING 10.0.2.2 (10.0.2.2) 0 bytes of data. count(3)\r\n 8 bytes from 10.0.2.2: icmp_seq=1 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=2 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=3 ttl=255 time=0ms\r\n--- 10.0.2.2 ping statistics ---\r\n3 packets transmitted, 3 received, 0.000000% packet loss"
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            }
+          ],
+          "name": "network-peer",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76096,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76096   14326688   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326688,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 0.046,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "network_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76096,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76096   14326688   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326688,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "network_tc",
+          "pass": 163
+        },
+        {
+          "commands": [
+            "helloxx",
+            "cxxtest"
+          ],
+          "status": "pass",
+          "name": "cpp",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76096,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76096   14326688   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326688,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 7.181,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "libcxx_utc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76096,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76096   14326688   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326688,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "libcxx_utc",
+          "pass": 795
+        },
+        {
+          "elapsed_seconds": 18.203,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "filesystem_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76240,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76240   14326544   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326544,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "filesystem_tc",
+          "pass": 203
+        },
+        {
+          "status": "pass",
+          "name": "smartfs",
+          "loops": 100,
+          "minimum_file_count": 213,
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76240,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76240   14326544   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326544,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 2.208,
+          "fail": 8,
+          "failure_lines": [
+            "[tc_driver_pwm_open_close] FAIL [Line : 44] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_read_write] FAIL [Line : 73] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_ioctl] FAIL [Line : 102] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_open_close] FAIL [Line : 53] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_read_write] FAIL [Line : 89] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_ioctl] FAIL [Line : 117] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_open_close] FAIL [Line : 55] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_read] FAIL [Line : 93] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)"
+          ],
+          "name": "drivers_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 76240,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      76240   14326544   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14326544,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "Idle Task",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "known_failures",
+          "suite": "drivers_tc",
+          "pass": 14
+        },
+        {
+          "elapsed_seconds": 129.393,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "kernel_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "kernel_tc",
+          "pass": 433
+        }
+      ],
+      "number": 1,
+      "storage_after": {
+        "ls_output": {
+          "/mnt": "/mnt:\r\n      20 full-set-guard\r\n    1024 loopfile\r\nTASH>>",
+          "/tmp": "/tmp:\r\nTASH>>"
+        },
+        "volumes": {
+          "/mnt": {
+            "blocks": 1024,
+            "used": 13,
+            "block_size": 1024,
+            "available": 1011
+          },
+          "/proc": {
+            "blocks": 0,
+            "used": 0,
+            "block_size": 0,
+            "available": 0
+          },
+          "/tmp": {
+            "blocks": 1,
+            "used": 1,
+            "block_size": 512,
+            "available": 0
+          }
+        },
+        "df_output": "  Block  Number\r\n  Size   Blocks     Used Available Mounted on\r\n  1024     1024       13      1011 /mnt\r\n     0        0        0         0 /proc\r\n   512        1        1         0 /tmp\r\nTASH>>",
+        "files": {
+          "/mnt": [
+            "/mnt/1024 loopfile",
+            "/mnt/20 full-set-guard"
+          ],
+          "/tmp": []
+        },
+        "mounts": "  /mnt type smartfs\r\n  /proc type procfs\r\n  /tmp type tmpfs\r\nTASH>>"
+      },
+      "after": {
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "used": 77968,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+        "largest": 14321632,
+        "total": 14402784,
+        "task_count": 8,
+        "free": 14324816,
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "tasks": [
+          "thread_waiter",
+          "hpwork",
+          "lpwork",
+          "LWIP_TCP/IP",
+          "netmgr_event_handler",
+          "appinit",
+          "tash",
+          "task_manager"
+        ]
+      }
+    },
+    {
+      "status": "pass_with_known_driver_failures",
+      "steps": [
+        {
+          "status": "pass",
+          "address_cycle_0": "lo\tLink encap: 00:00:00:00:00:00\t<UP,RUNNING>\r\n\tinet addr: 127.0.0.1\tMask: 255.0.0.0\tMTU: 8092\r\n\tinet6: ::1\r\n\r\neth0\tLink encap: 52:54:00:12:34:56\t<UP,RUNNING>\r\n\tinet addr: 10.0.2.15\tMask: 255.255.255.0\tMTU: 1512\r\n\r\nTASH>>",
+          "checks": [
+            {
+              "status": "pass",
+              "name": "loopback-tcp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "loopback-udp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "dhcp-ping-0",
+              "output": "\u0000ping 10.0.2.2\r\nTASH>>\u0000PING 10.0.2.2 (10.0.2.2) 0 bytes of data. count(3)\r\n 8 bytes from 10.0.2.2: icmp_seq=1 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=2 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=3 ttl=255 time=0ms\r\n--- 10.0.2.2 ping statistics ---\r\n3 packets transmitted, 3 received, 0.000000% packet loss"
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            }
+          ],
+          "name": "network-peer",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 0.292,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "network_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "network_tc",
+          "pass": 163
+        },
+        {
+          "commands": [
+            "helloxx",
+            "cxxtest"
+          ],
+          "status": "pass",
+          "name": "cpp",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 6.183,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "libcxx_utc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "libcxx_utc",
+          "pass": 795
+        },
+        {
+          "elapsed_seconds": 18.279,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "filesystem_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "filesystem_tc",
+          "pass": 203
+        },
+        {
+          "status": "pass",
+          "name": "smartfs",
+          "loops": 100,
+          "minimum_file_count": 207,
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 2.348,
+          "fail": 8,
+          "failure_lines": [
+            "[tc_driver_pwm_open_close] FAIL [Line : 44] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_read_write] FAIL [Line : 73] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_ioctl] FAIL [Line : 102] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_open_close] FAIL [Line : 53] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_read_write] FAIL [Line : 89] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_ioctl] FAIL [Line : 117] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_open_close] FAIL [Line : 55] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_read] FAIL [Line : 93] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)"
+          ],
+          "name": "drivers_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "known_failures",
+          "suite": "drivers_tc",
+          "pass": 14
+        },
+        {
+          "elapsed_seconds": 130.423,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "kernel_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "kernel_tc",
+          "pass": 433
+        }
+      ],
+      "number": 2,
+      "storage_after": {
+        "ls_output": {
+          "/mnt": "/mnt:\r\n      20 full-set-guard\r\n    1024 loopfile\r\nTASH>>",
+          "/tmp": "/tmp:\r\nTASH>>"
+        },
+        "volumes": {
+          "/mnt": {
+            "blocks": 1024,
+            "used": 14,
+            "block_size": 1024,
+            "available": 1010
+          },
+          "/proc": {
+            "blocks": 0,
+            "used": 0,
+            "block_size": 0,
+            "available": 0
+          },
+          "/tmp": {
+            "blocks": 1,
+            "used": 1,
+            "block_size": 512,
+            "available": 0
+          }
+        },
+        "df_output": "  Block  Number\r\n  Size   Blocks     Used Available Mounted on\r\n  1024     1024       14      1010 /mnt\r\n     0        0        0         0 /proc\r\n   512        1        1         0 /tmp\r\nTASH>>",
+        "files": {
+          "/mnt": [
+            "/mnt/1024 loopfile",
+            "/mnt/20 full-set-guard"
+          ],
+          "/tmp": []
+        },
+        "mounts": "  /mnt type smartfs\r\n  /proc type procfs\r\n  /tmp type tmpfs\r\nTASH>>"
+      },
+      "after": {
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "used": 77968,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+        "largest": 14321632,
+        "total": 14402784,
+        "task_count": 8,
+        "free": 14324816,
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "tasks": [
+          "thread_waiter",
+          "hpwork",
+          "lpwork",
+          "LWIP_TCP/IP",
+          "netmgr_event_handler",
+          "appinit",
+          "tash",
+          "task_manager"
+        ]
+      }
+    },
+    {
+      "status": "pass_with_known_driver_failures",
+      "steps": [
+        {
+          "status": "pass",
+          "address_cycle_0": "lo\tLink encap: 00:00:00:00:00:00\t<UP,RUNNING>\r\n\tinet addr: 127.0.0.1\tMask: 255.0.0.0\tMTU: 8092\r\n\tinet6: ::1\r\n\r\neth0\tLink encap: 52:54:00:12:34:56\t<UP,RUNNING>\r\n\tinet addr: 10.0.2.15\tMask: 255.255.255.0\tMTU: 1512\r\n\r\nTASH>>",
+          "checks": [
+            {
+              "status": "pass",
+              "name": "loopback-tcp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "loopback-udp",
+              "bytes_each_way": 3089
+            },
+            {
+              "status": "pass",
+              "name": "dhcp-ping-0",
+              "output": "\u0000ping 10.0.2.2\r\nTASH>>\u0000PING 10.0.2.2 (10.0.2.2) 0 bytes of data. count(3)\r\n 8 bytes from 10.0.2.2: icmp_seq=1 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=2 ttl=255 time=0ms\r\n 8 bytes from 10.0.2.2: icmp_seq=3 ttl=255 time=0ms\r\n--- 10.0.2.2 ping statistics ---\r\n3 packets transmitted, 3 received, 0.000000% packet loss"
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-tcp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "guest-to-host-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            },
+            {
+              "status": "pass",
+              "name": "host-to-guest-udp-0",
+              "rounds": 6,
+              "bytes": 3089
+            }
+          ],
+          "name": "network-peer",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 0.649,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "network_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "network_tc",
+          "pass": 163
+        },
+        {
+          "commands": [
+            "helloxx",
+            "cxxtest"
+          ],
+          "status": "pass",
+          "name": "cpp",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 6.79,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "libcxx_utc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77968,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77968   14324816   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324816,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "libcxx_utc",
+          "pass": 795
+        },
+        {
+          "elapsed_seconds": 18.925,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "filesystem_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77952,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324832,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "filesystem_tc",
+          "pass": 203
+        },
+        {
+          "status": "pass",
+          "name": "smartfs",
+          "loops": 100,
+          "minimum_file_count": 207,
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77952,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324832,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          }
+        },
+        {
+          "elapsed_seconds": 3.27,
+          "fail": 8,
+          "failure_lines": [
+            "[tc_driver_pwm_open_close] FAIL [Line : 44] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_read_write] FAIL [Line : 73] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_pwm_ioctl] FAIL [Line : 102] pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_open_close] FAIL [Line : 53] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_read_write] FAIL [Line : 89] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_watchdog_ioctl] FAIL [Line : 117] watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_open_close] FAIL [Line : 55] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+            "[tc_driver_adc_read] FAIL [Line : 93] adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)"
+          ],
+          "name": "drivers_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77952,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324832,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "known_failures",
+          "suite": "drivers_tc",
+          "pass": 14
+        },
+        {
+          "elapsed_seconds": 130.861,
+          "fail": 0,
+          "failure_lines": [],
+          "name": "kernel_tc",
+          "after": {
+            "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+            "used": 77952,
+            "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+            "largest": 14321632,
+            "total": 14402784,
+            "task_count": 8,
+            "free": 14324832,
+            "task_ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8
+            ],
+            "tasks": [
+              "thread_waiter",
+              "hpwork",
+              "lpwork",
+              "LWIP_TCP/IP",
+              "netmgr_event_handler",
+              "appinit",
+              "tash",
+              "task_manager"
+            ]
+          },
+          "status": "pass",
+          "suite": "kernel_tc",
+          "pass": 433
+        }
+      ],
+      "number": 3,
+      "storage_after": {
+        "ls_output": {
+          "/mnt": "/mnt:\r\n      20 full-set-guard\r\n    1024 loopfile\r\nTASH>>",
+          "/tmp": "/tmp:\r\nTASH>>"
+        },
+        "volumes": {
+          "/mnt": {
+            "blocks": 1024,
+            "used": 14,
+            "block_size": 1024,
+            "available": 1010
+          },
+          "/proc": {
+            "blocks": 0,
+            "used": 0,
+            "block_size": 0,
+            "available": 0
+          },
+          "/tmp": {
+            "blocks": 1,
+            "used": 1,
+            "block_size": 512,
+            "available": 0
+          }
+        },
+        "df_output": "  Block  Number\r\n  Size   Blocks     Used Available Mounted on\r\n  1024     1024       14      1010 /mnt\r\n     0        0        0         0 /proc\r\n   512        1        1         0 /tmp\r\nTASH>>",
+        "files": {
+          "/mnt": [
+            "/mnt/1024 loopfile",
+            "/mnt/20 full-set-guard"
+          ],
+          "/tmp": []
+        },
+        "mounts": "  /mnt type smartfs\r\n  /proc type procfs\r\n  /tmp type tmpfs\r\nTASH>>"
+      },
+      "after": {
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006bb4 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "used": 77952,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+        "largest": 14321632,
+        "total": 14402784,
+        "task_count": 8,
+        "free": 14324832,
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "tasks": [
+          "thread_waiter",
+          "hpwork",
+          "lpwork",
+          "LWIP_TCP/IP",
+          "netmgr_event_handler",
+          "appinit",
+          "tash",
+          "task_manager"
+        ]
+      }
+    }
+  ],
+  "storage_guard_survived": true,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "lm3s6965evb",
+    "-kernel",
+    "/work/build/output/bin/tinyara",
+    "-nographic",
+    "-monitor",
+    "none",
+    "-net",
+    "nic,macaddr=52:54:00:12:34:56",
+    "-net",
+    "user,hostfwd=tcp:127.0.0.1:40001-10.0.2.15:15001,hostfwd=udp:127.0.0.1:40002-10.0.2.15:15002"
+  ],
+  "status": "pass_with_known_driver_failures",
+  "rounds_requested": 3,
+  "boot_count": 1,
+  "storage_initial": {
+    "ls_output": {
+      "/mnt": "/mnt:\r\n      20 full-set-guard\r\nTASH>>",
+      "/tmp": "/tmp:\r\nTASH>>"
+    },
+    "volumes": {
+      "/mnt": {
+        "blocks": 1024,
+        "used": 11,
+        "block_size": 1024,
+        "available": 1013
+      },
+      "/proc": {
+        "blocks": 0,
+        "used": 0,
+        "block_size": 0,
+        "available": 0
+      },
+      "/tmp": {
+        "blocks": 1,
+        "used": 1,
+        "block_size": 512,
+        "available": 0
+      }
+    },
+    "df_output": "  Block  Number\r\n  Size   Blocks     Used Available Mounted on\r\n  1024     1024       11      1013 /mnt\r\n     0        0        0         0 /proc\r\n   512        1        1         0 /tmp\r\nTASH>>",
+    "files": {
+      "/mnt": [
+        "/mnt/20 full-set-guard"
+      ],
+      "/tmp": []
+    },
+    "mounts": "  /mnt type smartfs\r\n  /proc type procfs\r\n  /tmp type tmpfs\r\nTASH>>"
+  },
+  "qemu_exit_after_cleanup": 0,
+  "elapsed_seconds": 836.759,
+  "driver_policy": {
+    "absent_devices": [
+      "pwm0",
+      "watchdog0",
+      "adc0"
+    ],
+    "failure_signatures": [
+      "[tc_driver_pwm_open_close] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_pwm_read_write] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_pwm_ioctl] FAIL pwm_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_watchdog_open_close] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_watchdog_read_write] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_watchdog_ioctl] FAIL watchdog_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_adc_open_close] FAIL adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)",
+      "[tc_driver_adc_read] FAIL adc_open : Values (fd == 0xffffffff) is not greater than (0 == 0x0)"
+    ],
+    "reason": "No PWM, watchdog or ADC device nodes in the QEMU build_test fixture. Retain raw 14 PASS / 8 FAIL; reject any other failure or newly present device.",
+    "baseline_commit": "3533019f4792376ca0f47e4a876f2d0706e219c0"
+  },
+  "kernel_omitted": false,
+  "memory_growth_after_warmup": -16,
+  "mounts": "  /mnt type smartfs\r\n  /proc type procfs\r\n  /tmp type tmpfs\r\nTASH>>",
+  "final": {
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  thread_waiter\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071ec |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x20251920 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577c0 |   0 |       NA |  task_manager\r\nTASH>>",
+    "used": 77952,
+    "free_output": "              total       used       free    largest\r\n Mem:\t   14402784      77952   14324832   14321632\r\nTASH>>",
+    "largest": 14321632,
+    "total": 14402784,
+    "task_count": 8,
+    "free": 14324832,
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8
+    ],
+    "tasks": [
+      "thread_waiter",
+      "hpwork",
+      "lpwork",
+      "LWIP_TCP/IP",
+      "netmgr_event_handler",
+      "appinit",
+      "tash",
+      "task_manager"
+    ]
+  },
+  "docker_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--name",
+    "codex-qemu-test-19042",
+    "--user",
+    "501:20",
+    "--network",
+    "none",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-build-test:/work:ro",
+    "-v",
+    "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/full-set:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "python3",
+    "/work/tools/qemu-build-test/full-set.py",
+    "--inside",
+    "--output",
+    "/evidence",
+    "--rounds",
+    "3",
+    "--kernel-timeout",
+    "900.0"
+  ],
+  "firmware_sha256": "2acf494af7f0e72c0bb92e693df0fa3e3f743f97cf04e7ea445daf60d05dc222",
+  "effective_config_sha256": "b7cd731ded0265ceb51e7cc027ea12144fece27e13c2856f9f5c6c070d554ada",
+  "defconfig_sha256": "b7cd731ded0265ceb51e7cc027ea12144fece27e13c2856f9f5c6c070d554ada",
+  "source_commit": "ceef1353723842ed051379d6f370319d4f00dfaf",
+  "script": "full-set.py",
+  "container_exit": 0,
+  "elapsed_wall_seconds": 838.14
+}

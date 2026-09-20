@@ -30,7 +30,11 @@
 #include <tinyara/health_monitor.h>
 #include <tinyara/sched.h>
 
+#if defined(CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU) && defined(CONFIG_QEMU_HEALTH_MONITOR_CAPACITY)
+#define HEALTH_MONITOR_HEAP_CAPACITY     CONFIG_QEMU_HEALTH_MONITOR_CAPACITY
+#else
 #define HEALTH_MONITOR_HEAP_CAPACITY     CONFIG_MAX_TASKS
+#endif
 #define HEALTH_MONITOR_MAX_TIMEOUT_TICKS INT32_MAX
 
 /* KICK changes only the monitored deadline. The heap retains the earlier check_at

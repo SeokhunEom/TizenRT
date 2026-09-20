@@ -1,0 +1,165 @@
+{
+  "case": "capacity",
+  "heap_growth_after_warmup": 0,
+  "test_only_controls": true,
+  "status": "pass",
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "lm3s6965evb",
+    "-kernel",
+    "/work/build/output/bin/tinyara",
+    "-nographic",
+    "-monitor",
+    "none",
+    "-net",
+    "none"
+  ],
+  "baseline": {
+    "largest": 14321664,
+    "free_output": "              total       used       free    largest\r\n Mem:\t   14402832      76112   14326720   14321664\r\nTASH>>",
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8
+    ],
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006b88 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071c0 |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x202518f0 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577a0 |   0 |       NA |  task_manager\r\nTASH>>",
+    "task_count": 8,
+    "free": 14326720,
+    "used": 76112
+  },
+  "elapsed_seconds": 0.148,
+  "qemu_exit_after_cleanup": 0,
+  "rounds": [
+    {
+      "snapshot": {
+        "largest": 14321664,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402832      76112   14326720   14321664\r\nTASH>>",
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006b88 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071c0 |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x202518f0 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577a0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "task_count": 8,
+        "free": 14326720,
+        "used": 76112
+      },
+      "round": 1,
+      "checks": [
+        {
+          "case": "capacity",
+          "elapsed_seconds": 0.007,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0",
+          "checks": 53,
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "snapshot": {
+        "largest": 14321664,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402832      76112   14326720   14321664\r\nTASH>>",
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x20006b88 |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071c0 |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x202518f0 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577a0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "task_count": 8,
+        "free": 14326720,
+        "used": 76112
+      },
+      "round": 2,
+      "checks": [
+        {
+          "case": "capacity",
+          "elapsed_seconds": 0.007,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0",
+          "checks": 53,
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "snapshot": {
+        "largest": 14321664,
+        "free_output": "              total       used       free    largest\r\n Mem:\t   14402832      76112   14326720   14321664\r\nTASH>>",
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA |  Idle Task\r\n    1 |  201 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA |  lpwork\r\n    3 |  110 | RR   | KTHREAD |    | RUNNING  |          - |   0 |       NA |  LWIP_TCP/IP\r\n    4 |  100 | RR   | KTHREAD |    | WAITSEM  | 0x200071c0 |   0 |       NA |  netmgr_event_handler\r\n    5 |  101 | RR   | TASK    |    | WAITSEM  | 0x202518f0 |   0 |       NA |  appinit\r\n    7 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA |  tash\r\n    8 |  180 | RR   | TASK    |    | MQNEMPTY | 0x202577a0 |   0 |       NA |  task_manager\r\nTASH>>",
+        "task_count": 8,
+        "free": 14326720,
+        "used": 76112
+      },
+      "round": 3,
+      "checks": [
+        {
+          "case": "capacity",
+          "elapsed_seconds": 0.008,
+          "output": "\u0000hm_qemu capacity\r\nTASH>>\u0000HM_QEMU BEGIN case=capacity capacity=4\r\nHM_QEMU capacity limit=4 rejected=ENOSPC recovered=1 real_threads=4\r\nHM_QEMU PASS case=capacity checks=53 count=0",
+          "checks": 53,
+          "status": "pass"
+        }
+      ]
+    }
+  ],
+  "docker_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform",
+    "linux/arm64",
+    "--name",
+    "codex-qemu-test-18328",
+    "--user",
+    "501:20",
+    "--network",
+    "none",
+    "-v",
+    "/Volumes/T7/Dev/TizenRT/codex/qemu-build-test:/work:ro",
+    "-v",
+    "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/capacity-test:/evidence",
+    "sha256:8f2d15b7d82cf8c58a9092ec0dcc1ed1bbda9721a6cf19cc832c4eb9a48f8496",
+    "python3",
+    "/work/tools/qemu-build-test/health-monitor-extended.py",
+    "--inside",
+    "--output",
+    "/evidence",
+    "--case",
+    "capacity",
+    "--rounds",
+    "3"
+  ],
+  "firmware_sha256": "ccf7da5aad19ef5ab7d35305bb5a475a1df0c16425d38c6885f79aea3aec1ae0",
+  "effective_config_sha256": "92e9d35a8a960700785bca50caeff00275e796d6e5054be31cd1728ac29e323b",
+  "defconfig_sha256": "92e9d35a8a960700785bca50caeff00275e796d6e5054be31cd1728ac29e323b",
+  "source_commit": "ceef1353723842ed051379d6f370319d4f00dfaf",
+  "script": "health-monitor-extended.py",
+  "container_exit": 0,
+  "elapsed_wall_seconds": 0.676
+}

@@ -1,0 +1,28 @@
+{
+  "error": "SysTick period does not match CONFIG_USEC_PER_TICK",
+  "command": [
+    "qemu-system-arm",
+    "-M",
+    "lm3s6965evb",
+    "-kernel",
+    "/work/build/output/bin/tinyara",
+    "-display",
+    "none",
+    "-serial",
+    "file:/evidence/clock-before/serial.log",
+    "-monitor",
+    "stdio",
+    "-net",
+    "none"
+  ],
+  "registers": {
+    "400fe060": "0x78e3ac0",
+    "e000e010": "0x10007",
+    "400fe070": "0x7802810",
+    "e000e014": "0x7a11f"
+  },
+  "status": "fail",
+  "actual_tick_us": 40000.0,
+  "expected_tick_us": 10000,
+  "clock_hz": 12500000.0
+}

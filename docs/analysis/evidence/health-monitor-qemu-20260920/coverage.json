@@ -1,0 +1,224 @@
+[
+  {
+    "item": "Device registration and boot without automatic thread registration",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "Invalid/duplicate START and unchanged state on failure",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "1/9/10/11 ms ceiling conversion and UINT32_MAX argument",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "Registered and unregistered KICK/STOP",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "Unknown ioctl ENOTTY and invalid/closed fd EBADF",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "read/write with zero and nonzero lengths return ENOSYS",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "open does not START; close does not STOP; reopen retains caller registration",
+    "status": "pass",
+    "proof_class": "QEMU real VFS/ioctl; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:api"
+  },
+  {
+    "item": "Shared fd targets caller only; independent KICK/STOP and exit",
+    "status": "pass",
+    "proof_class": "QEMU real threads/VFS; controlled Health Monitor time",
+    "evidence": "matrix-all/result.json:shared"
+  },
+  {
+    "item": "pthread cancellation",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:lifecycle"
+  },
+  {
+    "item": "pthread_exit",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:lifecycle"
+  },
+  {
+    "item": "task_delete",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:lifecycle"
+  },
+  {
+    "item": "normal task return",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:lifecycle"
+  },
+  {
+    "item": "task_restart with same PID/TCB and cleared state",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:lifecycle"
+  },
+  {
+    "item": "PID and TCB reuse after monitored thread exit",
+    "status": "pass",
+    "proof_class": "QEMU real allocator/lifecycle; PID cursor controlled",
+    "evidence": "matrix-all/result.json:reuse"
+  },
+  {
+    "item": "Seven simultaneously monitored workers with file I/O and periodic kicks",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:active"
+  },
+  {
+    "item": "210000 START/KICK/STOP cycles and exit cleanup",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "matrix-all/result.json:stress"
+  },
+  {
+    "item": "Late KICK before inspection",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; injected Health Monitor time/publication state",
+    "evidence": "matrix-all/result.json:boundary"
+  },
+  {
+    "item": "Lazy root repair",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; injected Health Monitor time/publication state",
+    "evidence": "matrix-all/result.json:boundary"
+  },
+  {
+    "item": "STOP after deadline before inspection",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; injected Health Monitor time/publication state",
+    "evidence": "matrix-all/result.json:boundary"
+  },
+  {
+    "item": "Wraparound survival",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; injected Health Monitor time/publication state",
+    "evidence": "matrix-all/result.json:boundary"
+  },
+  {
+    "item": "Incomplete publication defers inspection",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; injected Health Monitor time/publication state",
+    "evidence": "matrix-all/result.json:boundary"
+  },
+  {
+    "item": "Expiration close",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; natural time",
+    "evidence": "matrix-fatal-close/result.json"
+  },
+  {
+    "item": "Expiration equality",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-equality/result.json"
+  },
+  {
+    "item": "Expiration overdue",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-overdue/result.json"
+  },
+  {
+    "item": "Expiration late",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-late/result.json"
+  },
+  {
+    "item": "Expiration wrap",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-wrap/result.json"
+  },
+  {
+    "item": "Expiration stale",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-stale/result.json"
+  },
+  {
+    "item": "Expiration multi",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; natural time",
+    "evidence": "matrix-fatal-multi/result.json"
+  },
+  {
+    "item": "Expiration equal",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-equal/result.json"
+  },
+  {
+    "item": "Expiration far",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-far/result.json"
+  },
+  {
+    "item": "Expiration unstable",
+    "status": "pass",
+    "proof_class": "QEMU real SysTick; controlled Health Monitor time",
+    "evidence": "matrix-fatal-unstable/result.json"
+  },
+  {
+    "item": "Full registration storage ENOSPC and recovery after STOP",
+    "status": "pass",
+    "proof_class": "QEMU real threads/VFS with 4-slot test build",
+    "evidence": "capacity-test/result.json"
+  },
+  {
+    "item": "Clock period matches 50MHz / configured 10ms tick",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "final-clock/result.json"
+  },
+  {
+    "item": "Uninstrumented normal/STOP/300 thread exits/kernel regression",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "final-normal/result.json"
+  },
+  {
+    "item": "Uninstrumented 1000ms and 2000ms expiry wall time",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "final-expire-1000/result.json;final-expire-2000/result.json"
+  },
+  {
+    "item": "Complete existing QEMU workload, three rounds, stable task/storage/heap",
+    "status": "pass",
+    "proof_class": "QEMU real kernel",
+    "evidence": "full-set/result.json"
+  },
+  {
+    "item": "21 sanitizer-enabled host variants",
+    "status": "pass",
+    "proof_class": "Linux AArch64 fixtures, not board/SMP/PM runtime proof",
+    "evidence": "host.json"
+  }
+]

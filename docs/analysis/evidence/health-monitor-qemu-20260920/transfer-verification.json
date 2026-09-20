@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "date": "2026-09-20",
+  "destination_branch": "codex/260901-health-monitor",
+  "destination_parent": "8d10c93bd79c69fb2b64ab420111a415e3d17eeb",
+  "qemu_base": "ceef1353723842ed051379d6f370319d4f00dfaf",
+  "qemu_remote_sha_verified": "ceef1353723842ed051379d6f370319d4f00dfaf",
+  "new_checkout": "/private/tmp/hm-transfer-verify-20260920",
+  "final_overlay_hashes_matched": 67,
+  "historical_validation_hashes_matched": 68,
+  "transferred_source_identical_to_tested_worktree": [
+    "apps/examples/health_monitor_qemu/Kconfig",
+    "apps/examples/health_monitor_qemu/Make.defs",
+    "apps/examples/health_monitor_qemu/Makefile",
+    "apps/examples/health_monitor_qemu/health_monitor_qemu_main.c",
+    "os/kernel/health_monitor/health_monitor.c",
+    "os/kernel/health_monitor/health_monitor.h",
+    "os/kernel/health_monitor/tests/qemu/probe.h",
+    "os/kernel/health_monitor/tests/qemu/probe.inc",
+    "tools/qemu-build-test/health-monitor-extended.py",
+    "tools/qemu-build-test/health-monitor-smoke.py",
+    "tools/qemu-build-test/qemu_common.py"
+  ],
+  "qemu_common_identical_to_base": true,
+  "runner_python_syntax_and_help": "pass",
+  "host_result": "transfer-host/result.json",
+  "host_variants": 21,
+  "compressed_log_integrity": "pass",
+  "qemu_runtime_rerun_during_transfer": false,
+  "note": "Previous QEMU runtime evidence is preserved unchanged. Transfer checks prove source identity and successful host regression, not destination whole-tree QEMU execution."
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "case": "all",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-all/result.json"
+  },
+  {
+    "case": "fatal-close",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-close/result.json"
+  },
+  {
+    "case": "fatal-equality",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-equality/result.json"
+  },
+  {
+    "case": "fatal-overdue",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-overdue/result.json"
+  },
+  {
+    "case": "fatal-late",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-late/result.json"
+  },
+  {
+    "case": "fatal-wrap",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-wrap/result.json"
+  },
+  {
+    "case": "fatal-stale",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-stale/result.json"
+  },
+  {
+    "case": "fatal-multi",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-multi/result.json"
+  },
+  {
+    "case": "fatal-equal",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-equal/result.json"
+  },
+  {
+    "case": "fatal-far",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-far/result.json"
+  },
+  {
+    "case": "fatal-unstable",
+    "exit": 0,
+    "status": "pass",
+    "result": "/private/tmp/hm-qemu-complete-20260920-_fgsxasl/matrix-fatal-unstable/result.json"
+  }
+]

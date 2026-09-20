@@ -1,0 +1,18 @@
+{
+  "full-set/serial.log.gz": {
+    "uncompressed_sha256": "1ba0449bad1e4236fbe1d31ab346f4512c05e2070e9000bc9c762855151f5ff7",
+    "uncompressed_bytes": 4530128
+  },
+  "validation-build/build.log.gz": {
+    "uncompressed_sha256": "754e025ee62df01e02b6f4d59c73c6b04e98cf2573d56e35bb901a0273e7f565",
+    "uncompressed_bytes": 152455
+  },
+  "capacity-build/build.log.gz": {
+    "uncompressed_sha256": "5c5907538bf752bf0457e04429d10a1d14f801f90203cc23a372c95ee724af3a",
+    "uncompressed_bytes": 359363
+  },
+  "final-build/build.log.gz": {
+    "uncompressed_sha256": "5e4b6ac211925e00fe8d487c4ccf209a5d0000adc3d48b7f24a869631304482f",
+    "uncompressed_bytes": 358543
+  }
+}
