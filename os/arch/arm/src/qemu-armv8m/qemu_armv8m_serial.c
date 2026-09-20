@@ -135,7 +135,7 @@ static uint32_t qemu_uart_ctrl(FAR struct qemu_armv8m_uart_s *priv)
 	return qemu_uart_getreg(priv, MPS2_UART_CTRL_OFFSET);
 }
 
-static void qemu_uart_enable(FAR struct qemu_armv8m_uart_s *priv)
+static void qemu_uart_setbaud(FAR struct qemu_armv8m_uart_s *priv)
 {
 	uint32_t bauddiv = MPS2_AN505_SYSCLK_FREQUENCY / priv->baud;
 
@@ -144,6 +144,11 @@ static void qemu_uart_enable(FAR struct qemu_armv8m_uart_s *priv)
 	}
 
 	qemu_uart_putreg(priv, MPS2_UART_BAUDDIV_OFFSET, bauddiv);
+}
+
+static void qemu_uart_enable(FAR struct qemu_armv8m_uart_s *priv)
+{
+	qemu_uart_setbaud(priv);
 	qemu_uart_putreg(priv, MPS2_UART_INTSTATUS_OFFSET, MPS2_UART_INT_ALL);
 	qemu_uart_putreg(priv, MPS2_UART_CTRL_OFFSET,
 			 MPS2_UART_CTRL_TXEN | MPS2_UART_CTRL_RXEN);
@@ -267,7 +272,11 @@ static int qemu_uart_ioctl(FAR struct uart_dev_s *dev, int cmd, unsigned long ar
 			priv->baud = CONFIG_UART0_BAUD;
 		}
 
-		qemu_uart_enable(priv);
+		/* TCSETS must preserve receive/transmit interrupt enables and any
+		 * pending input; resetting CTRL here disconnects the live console.
+		 */
+
+		qemu_uart_setbaud(priv);
 		break;
 
 	default:
