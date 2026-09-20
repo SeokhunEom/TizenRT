@@ -39,18 +39,36 @@
 
 #define TIMER_RELOAD (MPS2_AN505_SYSCLK_FREQUENCY / CLK_TCK)
 
-#if TIMER_RELOAD == 0
-#error TIMER_RELOAD must be greater than zero
+#if TIMER_RELOAD == 0 || (MPS2_AN505_SYSCLK_FREQUENCY % CLK_TCK) != 0
+#error System clock must provide an integral, nonzero number of counts per tick
 #endif
 
 /****************************************************************************
  * Private Functions
  ****************************************************************************/
 
+/* Last accounted counter value; retaining the remainder prevents drift. */
+static uint32_t g_timer_last;
+
 static int qemu_armv8m_timerisr(int irq, FAR void *context, FAR void *arg)
 {
+	uint32_t elapsed;
+	uint32_t ticks;
+
 	putreg32(MPS2_TIMER_INTSTATUS_IRQ, MPS2_TIMER0_INTSTATUS);
-	sched_process_timer();
+
+	/* TIMER0 has a single pending bit, so delayed interrupts can coalesce.
+	 * Account elapsed TIMER1 counts instead of assuming one tick per IRQ.
+	 * Unsigned subtraction handles the 32-bit counter wrap. TIMER1 must be
+	 * sampled at least once per full counter period (about 214 seconds).
+	 */
+
+	elapsed = g_timer_last - getreg32(MPS2_TIMER1_VALUE);
+	ticks = elapsed / TIMER_RELOAD;
+	g_timer_last -= ticks * TIMER_RELOAD;
+	while (ticks-- > 0) {
+		sched_process_timer();
+	}
 	return OK;
 }
 
@@ -76,6 +94,12 @@ void up_timer_initialize(void)
 	putreg32(TIMER_RELOAD, MPS2_TIMER0_RELOAD);
 
 	(void)irq_attach(MPS2_IRQ_TIMER0, qemu_armv8m_timerisr, NULL);
+
+	putreg32(0, MPS2_TIMER1_CTRL);
+	putreg32(MPS2_TIMER_INTSTATUS_IRQ, MPS2_TIMER1_INTSTATUS);
+	putreg32(UINT32_MAX, MPS2_TIMER1_RELOAD);
+	putreg32(MPS2_TIMER_CTRL_EN, MPS2_TIMER1_CTRL);
+	g_timer_last = getreg32(MPS2_TIMER1_VALUE);
 
 	up_enable_irq(MPS2_IRQ_TIMER0);
 
