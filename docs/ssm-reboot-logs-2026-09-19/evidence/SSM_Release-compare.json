@@ -1,0 +1,839 @@
+{
+  "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/compare/main...naman1-jain:pr_67",
+  "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/compare/main...naman1-jain:pr_67",
+  "permalink_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/compare/TizenRT:22796c7...naman1-jain:da03e7f",
+  "diff_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/compare/main...naman1-jain:pr_67.diff",
+  "patch_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/compare/main...naman1-jain:pr_67.patch",
+  "base_commit": {
+    "sha": "22796c7a2a413c7eda2d57e635f5130081c0ff4d",
+    "node_id": "MDY6Q29tbWl0NTk2NTU6MjI3OTZjN2EyYTQxM2M3ZWRhMmQ1N2U2MzVmNTEzMDA4MWMwZmY0ZA==",
+    "commit": {
+      "author": {
+        "name": "taehwan.hwang",
+        "email": "taehwan.hwang@samsung.com",
+        "date": "2026-09-10T11:02:02Z"
+      },
+      "committer": {
+        "name": "taehwan.hwang",
+        "email": "taehwan.hwang@samsung.com",
+        "date": "2026-09-10T11:02:02Z"
+      },
+      "message": "workflow:svace_loginid",
+      "tree": {
+        "sha": "50e944242fe3d0a562aa5e092d63e8616b7d78a4",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/50e944242fe3d0a562aa5e092d63e8616b7d78a4"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/22796c7a2a413c7eda2d57e635f5130081c0ff4d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/22796c7a2a413c7eda2d57e635f5130081c0ff4d",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/22796c7a2a413c7eda2d57e635f5130081c0ff4d",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/22796c7a2a413c7eda2d57e635f5130081c0ff4d/comments",
+    "author": {
+      "login": "taehwan-hwang",
+      "id": 445,
+      "node_id": "MDQ6VXNlcjQ0NQ==",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/445?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang",
+      "html_url": "https://github.ecodesamsung.com/taehwan-hwang",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "taehwan-hwang",
+      "id": 445,
+      "node_id": "MDQ6VXNlcjQ0NQ==",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/445?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang",
+      "html_url": "https://github.ecodesamsung.com/taehwan-hwang",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6c3ca93035ec97442c446ed3fb2cad3c1f26d889",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6c3ca93035ec97442c446ed3fb2cad3c1f26d889",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/6c3ca93035ec97442c446ed3fb2cad3c1f26d889"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "11babad06146f51bc4375e18600f2986e13fa1f0",
+    "node_id": "MDY6Q29tbWl0MTIyNzMxOjExYmFiYWQwNjE0NmY1MWJjNDM3NWUxODYwMGYyOTg2ZTEzZmExZjA=",
+    "commit": {
+      "author": {
+        "name": "settip-reddy",
+        "email": "settip.reddy@samsung.com",
+        "date": "2026-03-16T06:18:02Z"
+      },
+      "committer": {
+        "name": "GitHub Enterprise",
+        "email": "noreply-ecodehelp@github.ecodesamsung.com",
+        "date": "2026-03-16T06:18:02Z"
+      },
+      "message": "Improved TEM score  (#63)\n\n* Added UTC for SSM_system_module for 5.0.\r\n\r\n* sync with SSM_4.0\r\n\r\n* Added utc for wifi bigdata buffer.\r\n\r\n* Added new bigdata clear function changes\r\n\r\n* Improved to hit all functions in SSM_external_module\r\n\r\n* Improved tem score and formated code\r\n\r\n* Fixed error\r\n\r\n* Added UTC excluded code files\r\n\r\n* fixed utc error\r\n\r\n---------\r\n\r\nCo-authored-by: v.bagate <v.bagate@samsung.com>",
+      "tree": {
+        "sha": "e8af6f394be4634324b157528bb042d8585b33a3",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/e8af6f394be4634324b157528bb042d8585b33a3"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/11babad06146f51bc4375e18600f2986e13fa1f0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/11babad06146f51bc4375e18600f2986e13fa1f0",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/11babad06146f51bc4375e18600f2986e13fa1f0",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/11babad06146f51bc4375e18600f2986e13fa1f0/comments",
+    "author": {
+      "login": "settip-reddy",
+      "id": 39373,
+      "node_id": "MDQ6VXNlcjM5Mzcz",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/39373?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy",
+      "html_url": "https://github.ecodesamsung.com/settip-reddy",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/settip-reddy/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": null,
+    "parents": [
+      {
+        "sha": "033ba2af626e6313b1f0bbc8e238e8d5ba6edc3a",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/033ba2af626e6313b1f0bbc8e238e8d5ba6edc3a",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/033ba2af626e6313b1f0bbc8e238e8d5ba6edc3a"
+      }
+    ]
+  },
+  "status": "diverged",
+  "ahead_by": 8,
+  "behind_by": 9,
+  "total_commits": 8,
+  "commits": [
+    {
+      "sha": "6502869cf4f15c036bc3c83170fe9e8944088b74",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6NjUwMjg2OWNmNGYxNWMwMzZiYzNjODMxNzBmZTllODk0NDA4OGI3NA==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-29T10:15:01Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-29T10:15:01Z"
+        },
+        "message": "Implemented SSM api: to store logs into file",
+        "tree": {
+          "sha": "417aa239dc63b518ffbcd0fe96d57f1fa75515e9",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/417aa239dc63b518ffbcd0fe96d57f1fa75515e9"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/6502869cf4f15c036bc3c83170fe9e8944088b74",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6502869cf4f15c036bc3c83170fe9e8944088b74",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/6502869cf4f15c036bc3c83170fe9e8944088b74",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6502869cf4f15c036bc3c83170fe9e8944088b74/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "11babad06146f51bc4375e18600f2986e13fa1f0",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/11babad06146f51bc4375e18600f2986e13fa1f0",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/11babad06146f51bc4375e18600f2986e13fa1f0"
+        }
+      ]
+    },
+    {
+      "sha": "01cc75db82d48dec99683f0544c43001e4c5908b",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6MDFjYzc1ZGI4MmQ0OGRlYzk5NjgzZjA1NDRjNDMwMDFlNGM1OTA4Yg==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-29T11:31:24Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-29T11:31:24Z"
+        },
+        "message": "Removed unused commands",
+        "tree": {
+          "sha": "7bcb3908dc499ab24a4dbb2935926090bba36ff3",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/7bcb3908dc499ab24a4dbb2935926090bba36ff3"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/01cc75db82d48dec99683f0544c43001e4c5908b",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/01cc75db82d48dec99683f0544c43001e4c5908b",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/01cc75db82d48dec99683f0544c43001e4c5908b",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/01cc75db82d48dec99683f0544c43001e4c5908b/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "6502869cf4f15c036bc3c83170fe9e8944088b74",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6502869cf4f15c036bc3c83170fe9e8944088b74",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/6502869cf4f15c036bc3c83170fe9e8944088b74"
+        }
+      ]
+    },
+    {
+      "sha": "9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6OWIxYmExYTVhZjdlNzFlMTVlZjUzNjRkODdlNDNlMDcyZTcwZGE1OQ==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-30T10:17:03Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-04-30T10:17:03Z"
+        },
+        "message": "Modified utc makefile",
+        "tree": {
+          "sha": "98b96fa23029f83169ee6eba8ad20e0a6847ce3c",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/98b96fa23029f83169ee6eba8ad20e0a6847ce3c"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/9b1ba1a5af7e71e15ef5364d87e43e072e70da59/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "01cc75db82d48dec99683f0544c43001e4c5908b",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/01cc75db82d48dec99683f0544c43001e4c5908b",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/01cc75db82d48dec99683f0544c43001e4c5908b"
+        }
+      ]
+    },
+    {
+      "sha": "146bbf3a9cfcabcb270b37503af968eedf399028",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6MTQ2YmJmM2E5Y2ZjYWJjYjI3MGIzNzUwM2FmOTY4ZWVkZjM5OTAyOA==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-01T10:23:40Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-01T10:23:40Z"
+        },
+        "message": "Added utc for new file changes",
+        "tree": {
+          "sha": "6956207a4672ba16e016559bcd024db962aca75f",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/6956207a4672ba16e016559bcd024db962aca75f"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/146bbf3a9cfcabcb270b37503af968eedf399028",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/146bbf3a9cfcabcb270b37503af968eedf399028",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/146bbf3a9cfcabcb270b37503af968eedf399028",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/146bbf3a9cfcabcb270b37503af968eedf399028/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/9b1ba1a5af7e71e15ef5364d87e43e072e70da59"
+        }
+      ]
+    },
+    {
+      "sha": "1fec4d9396c7031095ccfe2e440569092b74cc43",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6MWZlYzRkOTM5NmM3MDMxMDk1Y2NmZTJlNDQwNTY5MDkyYjc0Y2M0Mw==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-01T10:37:13Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-01T10:37:13Z"
+        },
+        "message": "Formatted utc code",
+        "tree": {
+          "sha": "88ff692e0848cfa1b4fdcc41caf8473c72c60f85",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/88ff692e0848cfa1b4fdcc41caf8473c72c60f85"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/1fec4d9396c7031095ccfe2e440569092b74cc43",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/1fec4d9396c7031095ccfe2e440569092b74cc43",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/1fec4d9396c7031095ccfe2e440569092b74cc43",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/1fec4d9396c7031095ccfe2e440569092b74cc43/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "146bbf3a9cfcabcb270b37503af968eedf399028",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/146bbf3a9cfcabcb270b37503af968eedf399028",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/146bbf3a9cfcabcb270b37503af968eedf399028"
+        }
+      ]
+    },
+    {
+      "sha": "6688bf7045d8c454f4b8032124f96d528dbebe86",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6NjY4OGJmNzA0NWQ4YzQ1NGY0YjgwMzIxMjRmOTZkNTI4ZGJlYmU4Ng==",
+      "commit": {
+        "author": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-06T10:53:50Z"
+        },
+        "committer": {
+          "name": "settip.reddy",
+          "email": "settip.reddy@gmail.com",
+          "date": "2026-05-06T10:53:50Z"
+        },
+        "message": "Added logic to remove old ssm log file",
+        "tree": {
+          "sha": "8328b350a9b6259fb2df3339d5b60a8435a30f7f",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/8328b350a9b6259fb2df3339d5b60a8435a30f7f"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/6688bf7045d8c454f4b8032124f96d528dbebe86",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6688bf7045d8c454f4b8032124f96d528dbebe86",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/6688bf7045d8c454f4b8032124f96d528dbebe86",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6688bf7045d8c454f4b8032124f96d528dbebe86/comments",
+      "author": null,
+      "committer": null,
+      "parents": [
+        {
+          "sha": "1fec4d9396c7031095ccfe2e440569092b74cc43",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/1fec4d9396c7031095ccfe2e440569092b74cc43",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/1fec4d9396c7031095ccfe2e440569092b74cc43"
+        }
+      ]
+    },
+    {
+      "sha": "924ec012893129f8c2143143a5d454b0344d5898",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6OTI0ZWMwMTI4OTMxMjlmOGMyMTQzMTQzYTVkNDU0YjAzNDRkNTg5OA==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T10:39:26Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T10:39:26Z"
+        },
+        "message": "v01: changes required to run ssm_release",
+        "tree": {
+          "sha": "0cb6ecf9f27b4339603202a6d64af56607de1687",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/0cb6ecf9f27b4339603202a6d64af56607de1687"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/924ec012893129f8c2143143a5d454b0344d5898",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/924ec012893129f8c2143143a5d454b0344d5898",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/924ec012893129f8c2143143a5d454b0344d5898",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/924ec012893129f8c2143143a5d454b0344d5898/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "6688bf7045d8c454f4b8032124f96d528dbebe86",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/6688bf7045d8c454f4b8032124f96d528dbebe86",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/6688bf7045d8c454f4b8032124f96d528dbebe86"
+        }
+      ]
+    },
+    {
+      "sha": "da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "node_id": "MDY6Q29tbWl0NTk2NTU6ZGEwM2U3ZmJiOGQ2ZDQzZTJiNmM5Nzk5NTI0YjIxZWU5NWMxNGI4NA==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T11:25:12Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T11:25:12Z"
+        },
+        "message": "DA-Service/SSM/: Integrate crash reporter to capture logs on system crash\n\nAdd crash reporting mechanism to SSM_Release that captures logs when\nthe system crashes/asserts.",
+        "tree": {
+          "sha": "44567168a96cc60278f3ee37ff571d86b16f9d75",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/trees/44567168a96cc60278f3ee37ff571d86b16f9d75"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/git/commits/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "924ec012893129f8c2143143a5d454b0344d5898",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/commits/924ec012893129f8c2143143a5d454b0344d5898",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/commit/924ec012893129f8c2143143a5d454b0344d5898"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "d28582d5696c0077c6a02c9c3bf077a6fb517fa2",
+      "filename": "DA-Service/SSM/include/SSM_client.h",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "changes": 10,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Finclude%2FSSM_client.h?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -53,6 +53,16 @@ dawit_bool SSM_init_status(void);\n \n const char* SSM_get_library_version(void);\n \n+dawit_result SSM_Store_logs_to_file(unsigned int time_limit_ms);\n+dawit_result SSM_Send_ES_logs_from_file(void *node);\n+dawit_result SSM_Send_SYS_logs_from_file(void *table , unsigned int table_size);\n+int SSM_get_es_interval_time(void);\n+int SSM_get_sys_interval_time(void);\n+\n+/* Crash report integration */\n+dawit_result SSM_crash_reporter_init(void);\n+void SSM_crash_reporter_store_logs(int reason);\n+\n #ifdef __cplusplus\n }\n #endif"
+    },
+    {
+      "sha": "2cac2f984ea47c0e0c8c32275954203cae0d5b1e",
+      "filename": "DA-Service/SSM/include/SSM_client_ES.h",
+      "status": "modified",
+      "additions": 21,
+      "deletions": 0,
+      "changes": 21,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client_ES.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client_ES.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Finclude%2FSSM_client_ES.h?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -8,12 +8,33 @@\n extern \"C\" {\n #endif\n \n+typedef enum\n+{\n+\tSSM_CS,\n+\tSSM_ES,\n+\tSSM_NS,\n+\tSSM_AS,\n+\tSSM_SS,\n+\tSSM_PS,\n+\tSSM_RR,\n+} SSM_Log_Type;\n+\n+typedef struct _SSMCodeInfo\n+{\n+\tchar code;\n+\tdawit_bool SSM_status;\n+\tint SSM_level;\n+} SSMCodeInfo;\n+\n void SSM_ES_init_table(void);\n int SSM_ES_set_event(cJSON *event);\n void SSM_ES_send_done(void);\n dawit_result SSM_ES_update_policy_parse(cJSON * service_json, int master_level, bool master_status);\n int SSM_ES_get_next_time(void);\n int SSM_ES_get_retry_time(void);\n+SSMCodeInfo* SSM_ES_get_code_info(void);\n+dawit_result SSM_ES_update_seq_no(int value);\n+int SSM_ES_get_seq_no(void);\n \n #ifdef __cplusplus\n }"
+    },
+    {
+      "sha": "8245100d0728f874fe1df5755ddb145b705218ba",
+      "filename": "DA-Service/SSM/include/SSM_client_SYS.h",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "changes": 10,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client_SYS.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_client_SYS.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Finclude%2FSSM_client_SYS.h?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -8,6 +8,14 @@\n extern \"C\" {\n #endif\n \n+typedef struct _SSMSystemCodeInfo\n+{\n+\tKPI_TAG_TYPE code;\n+\tchar *code_str;\n+\tdawit_bool status;\n+\tint level;\n+} SSM_SYS_code_info;\n+\n typedef void (*SSM_Send_Systemlog_Callback_Type) (void);\n void SSM_SYS_init_table(void);\n void SSM_SYS_set_event(cJSON *event);\n@@ -17,6 +25,8 @@ dawit_result SSM_SYS_update_policy_parse(cJSON * type_json, int master_level, bo\n dawit_result SSM_SYS_register_callback(char *CB_name, SSM_Send_Systemlog_Callback_Type func);\n int SSM_SYS_get_next_time(void);\n int SSM_SYS_get_retry_time(void);\n+SSM_SYS_code_info* SSM_SYS_get_code_info(void);\n+void SSM_SYS_update_seq_no_by_value(int value);\n \n #ifdef __cplusplus\n }"
+    },
+    {
+      "sha": "56ba3e2c1c2ecd292517fcbda3dbee724bedb1fe",
+      "filename": "DA-Service/SSM/include/SSM_file_helper.h",
+      "status": "added",
+      "additions": 30,
+      "deletions": 0,
+      "changes": 30,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_file_helper.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_file_helper.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Finclude%2FSSM_file_helper.h?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,30 @@\n+#ifndef _SSM_FILE_HELPER_H_\n+#define _SSM_FILE_HELPER_H_\n+\n+#include <stdio.h>\n+#include <stdlib.h>\n+#include <dawit_common.h>\n+\n+#ifdef __cplusplus\n+extern \"C\" {\n+#endif\n+\n+// SSM file type definition\n+typedef FILE ssm_file;\n+\n+// File operation functions\n+dawit_result SSM_file_open(ssm_file **file, char *file_name, char *open_mode);\n+dawit_result SSM_file_close(ssm_file *file);\n+dawit_result SSM_file_read(ssm_file *file, unsigned char *buffer, unsigned int read_size);\n+dawit_result SSM_file_write(ssm_file *file, unsigned char *data, unsigned int write_size);\n+dawit_result SSM_file_seek(ssm_file *file, long offset, int whence);\n+dawit_result SSM_file_get_size(ssm_file *file, unsigned int *file_size);\n+dawit_result SSM_file_is_exist(char *file_name);\n+dawit_result SSM_file_delete(char *file_name);\n+dawit_result SSM_rename_file(const char *old_path, const char *new_path);\n+\n+#ifdef __cplusplus\n+}\n+#endif\n+\n+#endif /* _SSM_FILE_HELPER_H_ */"
+    },
+    {
+      "sha": "f0282ba63c641c3d96a1a153c90054a91acb06c2",
+      "filename": "DA-Service/SSM/include/SSM_file_logger.h",
+      "status": "added",
+      "additions": 29,
+      "deletions": 0,
+      "changes": 29,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_file_logger.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Finclude%2FSSM_file_logger.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Finclude%2FSSM_file_logger.h?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,29 @@\n+#ifndef _SSM_LOG_FILE_H_\r\n+#define _SSM_LOG_FILE_H_\r\n+\r\n+#include <dawit_common.h>\r\n+#include <dawit_mutex.h>\r\n+\r\n+#ifdef __cplusplus\r\n+extern \"C\" {\r\n+#endif\r\n+\r\n+#define KPI_BUFFER_SIZE 50\r\n+\r\n+typedef struct kpi_file_data {\r\n+    char data_type[8];\r\n+    char *kpi_name;\r\n+    char *kpi_message;\r\n+} kpi_file_data;\r\n+\r\n+dawit_result SSM_store_logs_to_file_impl(unsigned int time_limit_ms);\r\n+dawit_result SSM_read_logs_from_file_and_send_impl(void);\r\n+dawit_result SSM_check_stored_logs_file_exist(void);\r\n+dawit_result SSM_delete_stored_logs_file(void);\r\n+dawit_result SSM_get_file_creation_time(time_t *creation_time);\r\n+\r\n+#ifdef __cplusplus\r\n+}\r\n+#endif\r\n+\r\n+#endif /* _SSM_LOG_FILE_H_ */\r"
+    },
+    {
+      "sha": "02eab46d51c3156d6a16d52004de729e93824f66",
+      "filename": "DA-Service/SSM/src/SSM_client.c",
+      "status": "modified",
+      "additions": 506,
+      "deletions": 2,
+      "changes": 508,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_client.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -3,6 +3,12 @@\n #include <dawit_time.h>\n #include <dawit_mutex.h>\n #include <sys/socket.h>\n+#include <pthread.h>\n+#include <sched.h>\n+#include <fcntl.h>\n+#include <unistd.h>\n+#include <errno.h>\n+#include <sys/ioctl.h>\n #include \"SSM_client.h\"\n #include \"SSM_client_ES.h\"\n #include \"SSM_client_SYS.h\"\n@@ -12,6 +18,11 @@\n #include \"SSM_client_ai_inv.h\"\n #include \"SSM_system_module.h\"\n #include \"wifi_manager.h\"\n+#include \"SSM_file_logger.h\"\n+\n+#ifdef CONFIG_CRASH_REPORT\n+#include <tinyara/crashrpt.h>\n+#endif\n \n #define SSM_TICK 5\n #define SSM_START_TIME 150\n@@ -101,6 +112,9 @@ static dawit_bool g_ssm_policy_done = DAWIT_FALSE;\n static int g_ssm_interval_es_sec = 0;\n static int g_ssm_interval_sys_sec = 0;\n static int g_ssm_interval_policy_sec = 0;\n+static int g_ssm_interval_send_file_logs = 0;\n+static int g_ssm_wait_for_file_send = 0;\n+static int g_file_last_send_seqno = 0;\n \n static int g_ssm_interval_success_sec = 0;\n static int g_ssm_interval_fail_sec = 0;\n@@ -330,6 +344,13 @@ dawit_result SSM_init(ssm_init_args init_args)\n \t\treturn DAWIT_FAIL;\n \t}\n \n+#ifdef CONFIG_CRASH_REPORT\n+\t/* Initialize crash reporter to capture logs on system crash */\n+\tif (SSM_crash_reporter_init() != DAWIT_SUCCESS) {\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM_init: crash reporter init failed (continuing)\");\n+\t}\n+#endif\n+\n \tg_ssm_init_done = DAWIT_TRUE;\n \tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM init done\");\n \treturn DAWIT_SUCCESS;\n@@ -442,15 +463,29 @@ static dawit_result try_send_sys_log(void)\n static void SSM_client_task_func(int argc, char *argv[])\n {\n \tdawit_result result = DAWIT_FAIL;\n+\tdawit_bool ssm_is_file_exist = DAWIT_FALSE;\n \tint rand_num = 0;\n \n \tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Create SSM_client_task_func \");\n \twait_for_ssm_start_condition();\n \n \tdawit_random(&rand_num);\n \tg_ssm_interval_policy_sec = SSM_START_TIME + rand_num % SSM_START_RETRY_TIME;\n-\tg_ssm_interval_es_sec = g_ssm_interval_policy_sec + 10;\n-\tg_ssm_interval_sys_sec = g_ssm_interval_policy_sec + 20;\n+\n+\tif(SSM_check_stored_logs_file_exist() == DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM stored logs file exist\");\n+\t\tssm_is_file_exist = DAWIT_TRUE;\n+\t}\n+\n+\tif(ssm_is_file_exist == DAWIT_TRUE)\n+\t{\n+\t\tg_ssm_interval_send_file_logs = g_ssm_interval_policy_sec + 10;\n+\t\tg_ssm_wait_for_file_send = 10;\n+\t}\n+\n+\tg_ssm_interval_es_sec = g_ssm_interval_policy_sec + g_ssm_wait_for_file_send + 10;\n+\tg_ssm_interval_sys_sec = g_ssm_interval_policy_sec + g_ssm_wait_for_file_send + 20;\n \n \tlog_buffer_time_update();\n \n@@ -465,12 +500,23 @@ static void SSM_client_task_func(int argc, char *argv[])\n \t\tg_ssm_interval_es_sec -= SSM_TICK;\n \t\tg_ssm_interval_sys_sec -= SSM_TICK;\n \n+\t\tif (ssm_is_file_exist == DAWIT_TRUE)\n+\t\t{\n+\t\t\tg_ssm_interval_send_file_logs -= SSM_TICK;\n+\t\t}\n+\n \t\tif (g_ssm_interval_policy_sec < 0)\n \t\t{\n \t\t\tresult = try_check_and_update_policy();\n \t\t\tif (result != DAWIT_SUCCESS)\n \t\t\t{\n \t\t\t\tg_ssm_interval_policy_sec = SSM_policy_get_retry_time();\n+\n+\t\t\t\tif (ssm_is_file_exist == DAWIT_TRUE)\n+\t\t\t\t{\n+\t\t\t\t\tg_ssm_interval_send_file_logs += g_ssm_interval_policy_sec + SSM_TICK;\n+\t\t\t\t}\n+\n \t\t\t\tg_ssm_interval_es_sec += g_ssm_interval_policy_sec + SSM_TICK;\n \t\t\t\tg_ssm_interval_sys_sec += g_ssm_interval_policy_sec + SSM_TICK;\n \t\t\t\tcontinue;\n@@ -479,6 +525,24 @@ static void SSM_client_task_func(int argc, char *argv[])\n \t\t\tcontinue;\n \t\t}\n \n+\t\tif (g_ssm_interval_send_file_logs < 0 && (ssm_is_file_exist == DAWIT_TRUE))\n+\t\t{\n+\t\t\tresult = SSM_read_logs_from_file_and_send_impl();\n+\t\t\tif (result != DAWIT_SUCCESS)\n+\t\t\t{\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to send SSM log file to server\");\n+\t\t\t}\n+\n+\t\t\tresult = SSM_delete_stored_logs_file();\n+\t\t\tif (result != DAWIT_SUCCESS)\n+\t\t\t{\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to delete SSM log file\");\n+\t\t\t}\n+\t\t\tssm_is_file_exist = DAWIT_FALSE;\n+\t\t\tg_ssm_interval_send_file_logs = 0;\n+\t\t\tcontinue;\n+\t\t}\n+\n \t\tif (g_ssm_interval_es_sec < 0)\n \t\t{\n \t\t\tresult = try_send_es_log();\n@@ -1668,3 +1732,443 @@ const char* SSM_get_library_version(void)\n {\n \treturn SSM_LIBRARY_VERSION;\n }\n+\n+dawit_result SSM_Store_logs_to_file(unsigned int time_limit_ms)\n+{\n+\treturn SSM_store_logs_to_file_impl(time_limit_ms);\n+}\n+\n+\n+/* Set ES event data from a log_data linked list (read from file) into cJSON event array.\n+ * Iterates through up to 20 log_data nodes and adds each as an event entry. */\n+static void SSM_ES_set_event_from_list(log_data *head, cJSON *event)\n+{\n+\tlog_data *current = head;\n+\tint seqno = SSM_ES_get_seq_no();\n+\tint count = 0;\n+\n+\twhile (current != NULL && count < 20)\n+\t{\n+\t\ttime_t utc_time = (time_t)current->time;\n+\t\tchar str_time[20] = { 0, };\n+\t\tchar str_seqno[12] = { 0, };\n+\t\tcJSON *obj = NULL;\n+\t\tcJSON *kpi = NULL;\n+\n+\t\tstrftime(str_time, 20, \"%Y-%m-%d %H:%M:%S\", gmtime(&utc_time));\n+\t\tsnprintf(str_seqno, 12, \"%d\", seqno);\n+\n+\t\tcJSON_AddItemToArray(event, obj = cJSON_CreateObject());\n+\t\tcJSON_AddStringToObject(obj, \"name\", current->code);\n+\t\tcJSON_AddStringToObject(obj, \"dt\", str_time);\n+\t\tif (current->message != NULL)\n+\t\t{\n+\t\t\tcJSON_AddItemToObject(obj, \"kpi\", kpi = cJSON_CreateObject());\n+\t\t\tcJSON_AddStringToObject(kpi, \"DebugInfo\", current->message);\n+\t\t}\n+\t\tcJSON_AddStringToObject(obj, \"seqno\", str_seqno);\n+\n+\t\tseqno++;\n+\t\tcount++;\n+\t\tcurrent = current->next;\n+\t}\n+\n+\tg_file_last_send_seqno = seqno ;\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Set %d ES events from file list\", count);\n+}\n+\n+/* Send a pre-built cJSON root payload to server via mTLS.\n+ * Handles TLS connection, write, and read with HOST_PC reconnection support. */\n+static dawit_result SSM_Send_log_v2(cJSON *root_payload)\n+{\n+\tdawit_tls tls = { NULL, };\n+\tdawit_tls_config tls_config = { NULL, };\n+\tdawit_result result = DAWIT_SUCCESS;\n+\tchar* outh = NULL;\n+\tchar *json_out = NULL;\n+\tint json_len = 0;\n+\tbool tls_locked = false;\n+\tbool tls_created = false;\n+\n+\tif (root_payload == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM_Send_log_v2: root_payload is NULL\");\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM_Send_log_v2: Start sending log\");\n+\n+\tresult = dawit_tls_lock();\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_lock error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\ttls_locked = true;\n+\n+\tresult = dawit_tls_create(&tls);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_create error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\ttls_created = true;\n+\n+\tSSM_external_tls_config_get_ocf(&tls_config, g_ssm_host, g_cli_cert);\n+\tresult = dawit_tls_connect(&tls, &tls_config);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_connect error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\n+\touth = (char *)calloc(1, sizeof(char) * AUTHORIZATION_KEY_LEN + 1);\n+\tif (outh == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"outh alloc fail !!! \");\n+\t\tresult = DAWIT_FAIL;\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\tmake_Outh(outh);\n+\n+#ifdef HOST_PC\n+\t/* HOST_PC: Reconnect TLS to handle connection issues on host PC */\n+\tif (outh != NULL)\n+\t{\n+\t\tfree(outh);\n+\t\touth = NULL;\n+\t}\n+\tif (tls_created)\n+\t{\n+\t\tdawit_tls_destroy(&tls);\n+\t\ttls_created = false;\n+\t}\n+\tif (tls_locked)\n+\t{\n+\t\tdawit_tls_unlock();\n+\t\ttls_locked = false;\n+\t}\n+\n+\tresult = dawit_tls_lock();\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_lock error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\ttls_locked = true;\n+\n+\tresult = dawit_tls_create(&tls);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_create error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\ttls_created = true;\n+\n+\tSSM_external_tls_config_get_ocf(&tls_config, g_ssm_host, g_cli_cert);\n+\tresult = dawit_tls_connect(&tls, &tls_config);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"dawit_tls_connect error code: %d!\\n\", result);\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\n+\touth = (char *)calloc(1, sizeof(char) * AUTHORIZATION_KEY_LEN + 1);\n+\tif (outh == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"outh alloc fail !!! \");\n+\t\tresult = DAWIT_FAIL;\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\tmake_Outh(outh);\n+#endif\n+\n+\t/* Print JSON payload to string */\n+\tjson_out = cJSON_Print(root_payload);\n+\tif (json_out == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"cJSON_Print failed\");\n+\t\tresult = DAWIT_FAIL;\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\tjson_len = strlen(json_out);\n+\n+\t\n+\t/* Write to server */\n+\tresult = SSM_Send_log_write(tls, outh, json_out, json_len);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM_Send_log_write failed\");\n+\t\tgoto SSM_SEND_V2_FREE;\n+\t}\n+\n+\t/* Read response from server */\n+\tresult = SSM_Send_log_read(tls, outh);\n+\tif (result != DAWIT_SUCCESS)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM_Send_log_read failed\");\n+\t}\n+\telse\n+\t{\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM_Send_log_v2: SUCCESS\");\n+\t}\n+\n+SSM_SEND_V2_FREE:\n+\tif (json_out != NULL)\n+\t{\n+\t\tfree(json_out);\n+\t\tjson_out = NULL;\n+\t}\n+\tif (outh != NULL)\n+\t{\n+\t\tfree(outh);\n+\t\touth = NULL;\n+\t}\n+\tif (tls_created)\n+\t{\n+\t\tdawit_tls_destroy(&tls);\n+\t}\n+\tif (tls_locked)\n+\t{\n+\t\tdawit_tls_unlock();\n+\t}\n+\n+\treturn result;\n+}\n+\n+/* Send ES logs read from file (log_data linked list) directly to server via mTLS.\n+ * Creates JSON from the log_data nodes and sends via TLS. */\n+dawit_result SSM_Send_ES_logs_from_file(void *node)\n+{\n+\tdawit_result result = DAWIT_SUCCESS;\n+\tcJSON *root = NULL;\n+\tcJSON *event = NULL;\n+\tlog_data *head = (log_data *)node;\n+\n+\tif (head == NULL)\n+\t{\n+\t\tDAWIT_LOG_WARNING(DAWIT_TAG_SSM, \"node is NULL\");\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Start sending ES logs from list\");\n+\n+\t/* Build JSON: base request + eventlist from log_data nodes */\n+\tmake_base_request(&root, SSM_EASYSETUP);\n+\tcJSON_AddItemToObject(root, \"eventlist\", event = cJSON_CreateArray());\n+\tSSM_ES_set_event_from_list(head, event);\n+\n+\t/* Send via TLS */\n+\tresult = SSM_Send_log_v2(root);\n+\tif(result == DAWIT_SUCCESS)\n+\t{\n+\t\tSSM_ES_update_seq_no(g_file_last_send_seqno);\n+\t}\n+\n+\t/* Clean up the JSON root */\n+\tif (root != NULL)\n+\t{\n+\t\tcJSON_Delete(root);\n+\t}\n+\n+\treturn result;\n+}\n+\n+\n+static void SSM_SYS_set_event_from_table(kpi_file_data *kpi_data_array, unsigned int kpi_data_array_size ,cJSON *event)\n+{\n+\n+\tint seqno = 0;\n+\tint count = 0;\n+\tcJSON *kpi = NULL;\n+\tcJSON *obj = NULL;\n+\tchar str_seqno[12] = { 0, };\n+\tchar str_time[20] = { 0, };\n+\ttime_t utc_time = 0; // file creation time\n+\n+    dawit_result time_result = SSM_get_file_creation_time(&utc_time);\n+    if (time_result != DAWIT_SUCCESS) {\n+        utc_time = time(NULL); // Use current time as fallback\n+    }\n+\n+    strftime(str_time, sizeof(str_time), \"%Y-%m-%d %H:%M:%S\", gmtime(&utc_time));\n+\t\n+\tkpi = cJSON_CreateObject();\n+\n+\tfor (count = 0; count < kpi_data_array_size && count < KPI_BUFFER_SIZE; count++)\n+\t{\n+\n+\t\tif (strncmp(kpi_data_array[count].data_type, \"NUM\", 3) == 0)\n+\t\t{\n+\t\t\tcJSON_AddNumberToObject(kpi, kpi_data_array[count].kpi_name, atoi(kpi_data_array[count].kpi_message));\n+\t\t}\n+\t\telse if (strncmp(kpi_data_array[count].data_type, \"STR\", 3) == 0)\n+\t\t{\n+\t\t\tcJSON_AddStringToObject(kpi, kpi_data_array[count].kpi_name, kpi_data_array[count].kpi_message);\n+\t\t}\n+\t}\n+\n+\tsnprintf(str_seqno, 12, \"%d\", seqno);\n+\tcJSON_AddItemToArray(event, obj = cJSON_CreateObject());\n+\tcJSON_AddStringToObject(obj, \"name\", \"TizenRT_REPORT\");\n+\tcJSON_AddStringToObject(obj, \"dt\", str_time);\n+\tcJSON_AddItemToObject(obj, \"kpi\", kpi);\n+\tcJSON_AddStringToObject(obj, \"seqno\", str_seqno);\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Set %d SYS from file list\", count);\n+}\n+\n+dawit_result SSM_Send_SYS_logs_from_file(void *table, unsigned int table_size)\n+{\n+\tdawit_result result = DAWIT_SUCCESS;\n+\tcJSON *root = NULL;\n+\tcJSON *event = NULL;\n+\tkpi_file_data *kpi_data_array = (kpi_file_data *)table;\n+\tunsigned int kpi_data_array_size = table_size ;\n+\n+\tif (kpi_data_array == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"kpi file data table is NULL\");\n+        return DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Start sending SYS logs from file data\");\n+\n+\t/* Build JSON: base request + eventlist from table data entry*/\n+\tmake_base_request(&root, SSM_SYSTEM);\n+\tcJSON_AddItemToObject(root, \"eventlist\", event = cJSON_CreateArray());\n+\tSSM_SYS_set_event_from_table(kpi_data_array, kpi_data_array_size, event);\n+\n+\t/* Send via TLS */\n+\tresult = SSM_Send_log_v2(root);\n+\tif(result == DAWIT_SUCCESS)\n+\t{\n+\t\tSSM_SYS_update_seq_no_by_value(1);\n+\t}\n+\n+\t/* Clean up the JSON root */\n+\tif (root != NULL)\n+\t{\n+\t\tcJSON_Delete(root);\n+\t}\n+\n+\treturn result;\n+}\n+\n+int SSM_get_es_interval_time(void)\n+{\n+\treturn g_ssm_interval_es_sec;\n+}\n+\n+int SSM_get_sys_interval_time(void)\n+{\n+\treturn g_ssm_interval_sys_sec;\n+}\n+\n+#ifdef CONFIG_CRASH_REPORT\n+/****************************************************************************\n+ * Private Data for Crash Reporter\n+ ****************************************************************************/\n+\n+static int g_ssm_crashrpt_fd = -1;\n+static pthread_t g_ssm_crash_reporter;\n+static bool g_ssm_crash_reporter_running = false;\n+\n+/****************************************************************************\n+ * Name: ssm_crash_reporter_thread\n+ ****************************************************************************/\n+\n+static void *ssm_crash_reporter_thread(void *arg)\n+{\n+\tint reason;\n+\n+\tif (ioctl(g_ssm_crashrpt_fd, CRASHRPTIOC_REGISTER, 0) < 0) {\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"crashrpt register failed, errno %d\\n\", errno);\n+\t\tg_ssm_crash_reporter_running = false;\n+\t\tclose(g_ssm_crashrpt_fd);\n+\t\tg_ssm_crashrpt_fd = -1;\n+\t\treturn NULL;\n+\t}\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter registered and waiting\\n\");\n+\n+\tfor (;;) {\n+\t\t/* Parks here until the kernel wakes us from up_assert().\n+\t\t * There is no timeout - the thread waits indefinitely for a crash.\n+\t\t */\n+\t\treason = fin_wait();\n+\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter woken, reason %d\\n\", reason);\n+\n+\t\t/* Store logs to file when crash occurs (1000ms = minimum valid time limit) */\n+\t\tSSM_Store_logs_to_file(1000);\n+\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter stored logs, notifying driver\\n\");\n+\n+\t\t/* Release the asserting thread whether or not the write succeeded */\n+\t\tif (ioctl(g_ssm_crashrpt_fd, CRASHRPTIOC_DONE, 0) < 0) {\n+\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"crashrpt done notification failed, errno %d\\n\", errno);\n+\t\t}\n+\t}\n+\n+\treturn NULL;\n+}\n+\n+/****************************************************************************\n+ * Name: SSM_crash_reporter_init\n+ ****************************************************************************/\n+\n+dawit_result SSM_crash_reporter_init(void)\n+{\n+\tpthread_attr_t attr;\n+\tstruct sched_param param;\n+\tint ret;\n+\n+\tif (g_ssm_crash_reporter_running) {\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter already running\\n\");\n+\t\treturn DAWIT_SUCCESS;\n+\t}\n+\n+\tg_ssm_crashrpt_fd = open(CRASHRPT_DEVPATH, O_RDWR);\n+\tif (g_ssm_crashrpt_fd < 0) {\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"cannot open %s, errno %d\\n\", CRASHRPT_DEVPATH, errno);\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"is CONFIG_CRASH_REPORT enabled?\\n\");\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tpthread_attr_init(&attr);\n+\tpthread_attr_setstacksize(&attr, 8192);\n+\n+\t/* High priority is required - the reporter must outrank all other threads */\n+\tparam.sched_priority = SCHED_PRIORITY_MAX - 1;\n+\tpthread_attr_setschedparam(&attr, &param);\n+\n+\tret = pthread_create(&g_ssm_crash_reporter, &attr, ssm_crash_reporter_thread, NULL);\n+\tif (ret != 0) {\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"pthread_create failed, %d\\n\", ret);\n+\t\tclose(g_ssm_crashrpt_fd);\n+\t\tg_ssm_crashrpt_fd = -1;\n+\t\tpthread_attr_destroy(&attr);\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tpthread_setname_np(g_ssm_crash_reporter, \"ssm_crash_rpt\");\n+\tpthread_detach(g_ssm_crash_reporter);\n+\tpthread_attr_destroy(&attr);\n+\n+\tg_ssm_crash_reporter_running = true;\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter initialized\\n\");\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+/****************************************************************************\n+ * Name: SSM_crash_reporter_store_logs\n+ ****************************************************************************/\n+\n+void SSM_crash_reporter_store_logs(int reason)\n+{\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SSM crash reporter store logs called, reason %d\\n\", reason);\n+\tSSM_Store_logs_to_file(0);\n+}\n+\n+#endif /* CONFIG_CRASH_REPORT */"
+    },
+    {
+      "sha": "f06e771ceac4dd0701839fcb3eabd9314ced3ce1",
+      "filename": "DA-Service/SSM/src/SSM_client_ES.c",
+      "status": "modified",
+      "additions": 25,
+      "deletions": 17,
+      "changes": 42,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client_ES.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client_ES.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_client_ES.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -10,23 +10,7 @@\n #define SSM_ES_TYPE_MAX 7\n #define SSM_SEQ_MAX 1000000\n \n-typedef enum\n-{\n-\tSSM_CS,\n-\tSSM_ES,\n-\tSSM_NS,\n-\tSSM_AS,\n-\tSSM_SS,\n-\tSSM_PS,\n-\tSSM_RR,\n-} SSM_Log_Type;\n-\n-typedef struct _SSMCodeInfo\n-{\n-\tchar code;\n-\tdawit_bool SSM_status;\n-\tint SSM_level;\n-} SSMCodeInfo;\n+\n \n static char *SSM_ES_Log_Type_Str[SSM_ES_TYPE_MAX] = { \"CS\", \"ES\", \"NS\", \"AS\", \"SS\", \"PS\", \"RR\"};\n \n@@ -518,3 +502,27 @@ int SSM_ES_get_next_time(void)\n \tSSM_ES_last_interval_fail = SSM_ES_interval_fail;\n \treturn SSM_COMPUTE_NEXT_TIME(rand_num, SSM_ES_interval_success);\n }\n+\n+SSMCodeInfo* SSM_ES_get_code_info(void)\n+{\n+\treturn &SSM_ES_code[0];\n+}\n+\n+dawit_result SSM_ES_update_seq_no(int value)\n+{\n+\tif (value < 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid argument [%d] \", value);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tSSM_ES_seqno_done = value;\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"SSM updated ES seq_no to [%d] \", SSM_ES_seqno_done);\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+int SSM_ES_get_seq_no(void)\n+{\n+\treturn SSM_ES_seqno_done ;\n+}\n+"
+    },
+    {
+      "sha": "6bacbac411a1a3fb57ce467030eb7240665f409d",
+      "filename": "DA-Service/SSM/src/SSM_client_SYS.c",
+      "status": "modified",
+      "additions": 17,
+      "deletions": 8,
+      "changes": 25,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client_SYS.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_client_SYS.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_client_SYS.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -7,14 +7,6 @@\n #define SSM_SYS_INTERVAL_MAXIMUM 21600\n #define SSM_SEQ_MAX 1000000\n \n-typedef struct _SSMSystemCodeInfo\n-{\n-\tKPI_TAG_TYPE code;\n-\tchar *code_str;\n-\tdawit_bool status;\n-\tint level;\n-} SSM_SYS_code_info;\n-\n typedef struct _SSM_systemlog_callback\n {\n \tchar *name;\n@@ -355,6 +347,18 @@ void SSM_SYS_send_done(void)\n \tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Set last system_log seqno %d\", SSM_SYS_seqno_done);\n }\n \n+void SSM_SYS_update_seq_no_by_value(int value)\n+{\n+\tif (value > 0)\n+\t{\n+\t\tSSM_SYS_seqno_done += value;\n+\t\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Updated system_log seqno [%d]\", SSM_SYS_seqno_done);\n+\t\treturn;\n+\t}\n+\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid input\");\n+\treturn;\n+}\n+\n int SSM_SYS_get_retry_time(void)\n {\n \tint rand_num = 0;\n@@ -380,3 +384,8 @@ int SSM_SYS_get_next_time(void)\n \tSSM_SYS_last_interval_fail = SSM_SYS_interval_fail;\n \treturn SSM_COMPUTE_NEXT_TIME(rand_num, SSM_SYS_interval_success);\n }\n+\n+SSM_SYS_code_info* SSM_SYS_get_code_info(void)\n+{\n+\treturn &SSM_SYS_table[0];\n+}"
+    },
+    {
+      "sha": "694eac770378316e48679f3a1d27ad229aba7919",
+      "filename": "DA-Service/SSM/src/SSM_command.c",
+      "status": "modified",
+      "additions": 47,
+      "deletions": 0,
+      "changes": 47,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_command.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_command.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_command.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -3,6 +3,7 @@\n #include <strings.h>\n #include \"SSM_command.h\"\n #include \"SSM_client.h\"\n+#include \"SSM_file_logger.h\"\n #include \"log_buffer.h\"\n #include \"dawit_log.h\"\n #include <stdio.h>\n@@ -42,6 +43,7 @@ static ssm_cmd_result ssm_command_debug(int argc, char *argv[]);\n static ssm_cmd_result ssm_command_test(int argc, char *argv[]);\n static ssm_cmd_result ssm_command_prod(int argc, char *argv[]);\n static ssm_cmd_result ssm_command_modelID(int argc, char *argv[]);\n+static ssm_cmd_result ssm_command_store(int argc, char *argv[]);\n \n static void print_help(ssm_command_t* commands, int commands_cnt, char *argv[]);\n static void print_help_print(void);\n@@ -54,6 +56,7 @@ static void print_help_debug(void);\n static void print_help_test(void);\n static void print_help_prod(void);\n static void print_help_modelID(void);\n+static void print_help_store(void);\n \n int ssm_command(int argc, char *argv[])\n {\n@@ -67,6 +70,7 @@ int ssm_command(int argc, char *argv[])\n         { .name = \"test\", .cmd_func = ssm_command_test, .help_func = print_help_test },\n         { .name = \"prod\", .cmd_func = ssm_command_prod, .help_func = print_help_prod },\n         { .name = \"modelID\", .cmd_func = ssm_command_modelID, .help_func = print_help_modelID },\n+\t{ .name = \"store\", .cmd_func = ssm_command_store, .help_func = print_help_store },\n     };\n \n     int commands_cnt = sizeof(commands) / sizeof(ssm_command_t);\n@@ -348,3 +352,46 @@ static void print_help_modelID(void)\n \t\t\t\" you can enter the modelID within 50 characters .\\n\"\n \t\t\t\" (Usage) ssm modelID [ TP2X_TEST_20K ] \\n\");\n }\n+static ssm_cmd_result ssm_command_store(int argc, char *argv[])\n+{\n+    dawit_result result = DAWIT_SUCCESS;\n+    unsigned int time_limit_ms = 0;\n+    \n+    if (argc != 3)\n+    {\n+        return SSM_COMMAND_INVALID_CMDS;\n+    }\n+\n+\ttime_limit_ms = (unsigned int)atoi(argv[2]);\n+\tif (time_limit_ms == 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid time limit value: %s\", argv[2]);\n+\t\treturn SSM_COMMAND_INVALID_ARGS;\n+\t}\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Storing logs with time limit: %u ms\", time_limit_ms);\n+\n+\tresult = SSM_Store_logs_to_file(time_limit_ms);\n+\n+\n+    if (result == DAWIT_SUCCESS) {\n+        DAWIT_LOG_INFO(DAWIT_TAG_SSM, \"✓ Logs saved to file\");\n+    } else if (result == DAWIT_TIMEOUT) {\n+        DAWIT_LOG_INFO(DAWIT_TAG_SSM, \"⚠ Log save timed out (proceeding with reboot)\");\n+    } else {\n+        DAWIT_LOG_INFO(DAWIT_TAG_SSM, \"✗ Log save failed (proceeding with reboot)\");\n+    }\n+    DAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Rebooting now...\");\n+    exit(0);\n+\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Successfully stored logs and KPI data to ssm_stored_logs file\");\n+\n+    return SSM_COMMAND_SUCCESS;\n+}\n+static void print_help_store(void)\n+{\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"\\n\" SSM_COMMAND_FONT_BOLD \"ssm store\" SSM_COMMAND_FONT_RESET\n+\t\t\t\" stores both logs and KPI data to ssm_stored_logs file in CSV format.\\n\"\n+\t\t\t\" (Usage) ssm store [time_limit_ms]\\n\"\n+\t\t\t\"   time_limit_ms - optional time limit in milliseconds (default: no limit)\\n\");\n+}"
+    },
+    {
+      "sha": "b269b5b26d436d9e3c774f833e54ac68d3ea214f",
+      "filename": "DA-Service/SSM/src/SSM_file_helper.c",
+      "status": "added",
+      "additions": 229,
+      "deletions": 0,
+      "changes": 229,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_file_helper.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_file_helper.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_file_helper.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,229 @@\n+#include \"SSM_file_helper.h\"\n+#include <stdio.h>\n+#include <stdlib.h>\n+#include <string.h>\n+#include <unistd.h>\n+#include <sys/stat.h>\n+#include <errno.h>\n+#include <dawit_common.h>\n+#include <dawit_log.h>\n+\n+#define MAX_FILE_NAME_SIZE 64\n+\n+// SSM file open function\n+dawit_result SSM_file_open(ssm_file **file, char *file_name, char *open_mode)\n+{\n+\tif (file_name == NULL || open_mode == NULL || file == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: file=[%p], file_name=[%p], open_mode=[%p]\", file, file_name, open_mode);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\t*file = fopen(file_name, open_mode);\n+\tif (*file == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to open file [%s] with mode [%s], errno=%d (%s)\", file_name, open_mode, errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Successfully opened file [%s] with mode [%s]\", file_name, open_mode);\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file close function\n+dawit_result SSM_file_close(ssm_file *file)\n+{\n+\tif (file == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid argument: file=[%p]\", file);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tif (fclose(file) != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to close file, errno=%d (%s)\", errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Successfully closed file\");\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file read function\n+dawit_result SSM_file_read(ssm_file *file, unsigned char *buffer, unsigned int read_size)\n+{\n+\tint read_count = 0;\n+\n+\tif (file == NULL || buffer == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: file=[%p], buffer=[%p]\", file, buffer);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tread_count = fread(buffer, 1, read_size, file);\n+\n+\tif (read_count != read_size)\n+\t{\n+\t\tif (feof(file))\n+\t\t{\n+\t\t\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Reached end of file\");\n+\t\t}\n+\t\telse\n+\t\t{\n+\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to read file: expected [%u] bytes, read [%d] bytes, errno=%d (%s)\", read_size, read_count, errno, strerror(errno));\n+\t\t}\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+\n+// SSM file write function\n+dawit_result SSM_file_write(ssm_file *file, unsigned char *data, unsigned int write_size)\n+{\n+\tint writed_count = 0;\n+\n+\tif (file == NULL || data == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: file=[%p], data=[%p]\", file, data);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\twrited_count = fwrite(data, 1, write_size, file);\n+\tif (writed_count != write_size)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to write file: expected [%u] bytes, wrote [%d] bytes, errno=%d (%s)\", write_size, writed_count, errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file seek function\n+dawit_result SSM_file_seek(ssm_file *file, long offset, int whence)\n+{\n+\tif (file == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid argument: file=[%p]\", file);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tif (fseek(file, offset, whence) != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to seek file: offset=[%ld], whence=[%d], errno=%d (%s)\", offset, whence, errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file get size function\n+dawit_result SSM_file_get_size(ssm_file *file, unsigned int *file_size)\n+{\n+\tint offset;\n+\tint retval;\n+\tint org_offset;\n+\n+\tif (file == NULL || file_size == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: file=[%p], file_size=[%p]\", file, file_size);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\torg_offset = ftell(file);\n+\tif (org_offset == -1)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to get current file position, errno=%d (%s)\", errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tretval = fseek(file, 0, SEEK_END);\n+\tif (retval != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to seek to end of file, errno=%d (%s)\", errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\toffset = ftell(file);\n+\tif (offset == -1)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to get file size, errno=%d (%s)\", errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tif (fseek(file, org_offset, SEEK_SET) != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to restore file position, errno=%d (%s)\", errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\t*file_size = offset;\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file is exist function\n+dawit_result SSM_file_is_exist(char *file_name)\n+{\n+\tstruct stat st;\n+\n+\tif (file_name == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid argument: file_name=[%p]\", file_name);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tint ret = stat(file_name, &st);\n+\tif ((ret != 0) && (errno == ENOENT))\n+\t{\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"File [%s] does not exist\", file_name);\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"File [%s] exists\", file_name);\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM file delete function\n+dawit_result SSM_file_delete(char *file_name)\n+{\n+\tif (file_name == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid argument: file_name=[%p]\", file_name);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tif (unlink(file_name) != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to delete file [%s], errno=%d (%s)\", file_name, errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Successfully deleted file [%s]\", file_name);\n+\treturn DAWIT_SUCCESS;\n+}\n+\n+// SSM rename file function\n+dawit_result SSM_rename_file(const char *old_path, const char *new_path)\n+{\n+\tchar src_path[MAX_FILE_NAME_SIZE] = {0,};\n+\tchar dst_path[MAX_FILE_NAME_SIZE] = {0,};\n+\n+\tif (old_path == NULL || new_path == NULL)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: old_path=[%p], new_path=[%p]\", old_path, new_path);\n+\t\treturn DAWIT_INVALID_ARGS;\n+\t}\n+\n+\tsnprintf(src_path, MAX_FILE_NAME_SIZE, \"%s\", old_path);\n+\tsnprintf(dst_path, MAX_FILE_NAME_SIZE, \"%s\", new_path);\n+\n+\tif (rename(src_path, dst_path) != 0)\n+\t{\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to rename file from [%s] to [%s], errno=%d (%s)\",\n+\t\t\t\t\t\tsrc_path, dst_path, errno, strerror(errno));\n+\t\treturn DAWIT_FAIL;\n+\t}\n+\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"Successfully renamed file from [%s] to [%s]\", src_path, dst_path);\n+\treturn DAWIT_SUCCESS;\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "78354be47d396f6738c3c78aac018926040553d1",
+      "filename": "DA-Service/SSM/src/SSM_file_logger.c",
+      "status": "added",
+      "additions": 977,
+      "deletions": 0,
+      "changes": 977,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_file_logger.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/DA-Service%2FSSM%2Fsrc%2FSSM_file_logger.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/DA-Service%2FSSM%2Fsrc%2FSSM_file_logger.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,977 @@\n+#include <stdio.h>\r\n+#include <stdlib.h>\r\n+#include <string.h>\r\n+#include <sys/stat.h>\r\n+#include <dawit_log.h>\r\n+#include <dawit_mutex.h>\r\n+#include <dawit_task.h>\r\n+#include <dawit_semaphore.h>\r\n+#include <dawit_time.h>\r\n+#include \"SSM_file_logger.h\"\r\n+#include \"SSM_common.h\"\r\n+#include \"SSM_data_type.h\"\r\n+#include \"SSM_client.h\"\r\n+#include \"SSM_client_ES.h\"\r\n+#include \"SSM_client_SYS.h\"\r\n+#include \"SSM_file_helper.h\"\r\n+#include \"kpi_buffer.h\"\r\n+#include \"log_buffer.h\"\r\n+\r\n+#define SSM_STORED_LOGS_TEMP_FILE \"/mnt/ssm_stored_logs_temp\"\r\n+#define SSM_STORED_LOGS_FILE \"/mnt/ssm_stored_logs\"\r\n+#define SSM_MIN_LOG_BUFFER_SIZE (64)\r\n+#define SSM_MIN_KPI_BUFFER_SIZE (128)\r\n+#define SSM_MAX_ES_LOG_READ_LINES 20\r\n+#define SSM_MAX_SYS_LOG_READ_LINES 50\r\n+#define KPI_BUFFER_SIZE 50\r\n+\r\n+typedef struct {\r\n+    dawit_result result;\r\n+    dawit_semaphore completion_sem;\r\n+    bool completed;\r\n+} ssm_file_write_timeout_context;\r\n+\r\n+static ssm_file_write_timeout_context g_ssm_file_write_context;\r\n+static const char* KPI_DATA_TYPE_STR[] = { [KPI_DATA_NUM] = \"NUM\", [KPI_DATA_STR] = \"STR\" };\r\n+static kpi_file_data kpi_file_table[KPI_BUFFER_SIZE];\r\n+static unsigned int kpi_file_count = 0;\r\n+static bool g_ssm_is_file_write_api_done = false;\r\n+static bool g_ssm_file_write_timeout = false;\r\n+static dawit_mutex g_ssm_file_write_timeout_mutex = DAWIT_MUTEX_INITIALIZER;\r\n+\r\n+static void SSM_set_file_write_timeout(bool value);\r\n+static bool SSM_get_file_write_timeout(void);\r\n+\r\n+static const char* kpi_data_type_to_string(KPI_DATA_TYPE type);\r\n+static dawit_result SSM_write_ES_logs_to_file(ssm_file *file);\r\n+static dawit_result SSM_write_SYS_logs_to_file(ssm_file *file);\r\n+static dawit_result SSM_write_logs_to_file(void);\r\n+static void SSM_skip_to_next_line(ssm_file *file);\r\n+static log_data* SSM_read_ES_log_from_file(ssm_file *file, bool *is_eof);\r\n+static void SSM_append_log_to_list(log_data **head, log_data **tail, log_data *new_node);\r\n+static log_data* SSM_read_ES_logs_batch(ssm_file *file, bool *is_eof);\r\n+static int SSM_read_and_restore_SYS_log(ssm_file *file, bool *is_eof);\r\n+static int SSM_restore_SYS_logs_batch(ssm_file *file, bool *is_eof);\r\n+static dawit_result SSM_restore_and_send_ES_logs(log_data *head);\r\n+static void SSM_free_log_data_list(log_data *head);\r\n+static SSM_Log_Type SSM_map_code_to_log_type(char code);\r\n+static dawit_result SSM_get_file_creation_time_imp(const char *file_path, time_t *creation_time);\r\n+static void SSM_free_sys_kpi_table(void);\r\n+\r\n+static const char* kpi_data_type_to_string(KPI_DATA_TYPE type)\r\n+{\r\n+\tif (type < 0 || type > KPI_DATA_STR)\r\n+\t{\r\n+\t\treturn \"UNKNOWN\";\r\n+\t}\r\n+\t\r\n+\treturn KPI_DATA_TYPE_STR[type] ;\r\n+}\r\n+\r\n+static void SSM_set_file_write_timeout(bool value)\r\n+{\r\n+\tdawit_mutex_acquire(&g_ssm_file_write_timeout_mutex, DAWIT_FOREVER);\r\n+\tg_ssm_file_write_timeout = value;\r\n+\tdawit_mutex_release(&g_ssm_file_write_timeout_mutex);\r\n+}\r\n+\r\n+static bool SSM_get_file_write_timeout(void)\r\n+{\r\n+\tbool value;\r\n+\tdawit_mutex_acquire(&g_ssm_file_write_timeout_mutex, DAWIT_FOREVER);\r\n+\tvalue = g_ssm_file_write_timeout;\r\n+\tdawit_mutex_release(&g_ssm_file_write_timeout_mutex);\r\n+\treturn value;\r\n+}\r\n+\r\n+\r\n+static dawit_result SSM_write_ES_logs_to_file(ssm_file *file)\r\n+{\r\n+\tdawit_result result = DAWIT_FAIL;\r\n+\tlog_data *current_log = NULL;\r\n+\tchar *line_buffer = NULL;\r\n+\tint line_size = 0;\r\n+\r\n+\tif (file == NULL)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"passed NUll file path\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tlog_buffer_lock();\r\n+\tcurrent_log = log_buffer_get_first();\r\n+\tSSMCodeInfo* codeInfo = SSM_ES_get_code_info();\r\n+\r\n+\twhile (current_log != NULL)\r\n+\t{\r\n+\r\n+\t\tif (SSM_get_file_write_timeout())\r\n+\t\t{\r\n+\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM file write timeout\");\r\n+\t\t\tlog_buffer_unlock();\r\n+\t\t\treturn DAWIT_FAIL;\r\n+\t\t}\r\n+\r\n+\t\tSSM_Log_Type logType = SSM_map_code_to_log_type(current_log->code[0]);\r\n+\r\n+\t\tif (codeInfo[logType].SSM_status == DAWIT_TRUE && \r\n+\t\t\tcurrent_log->level >= codeInfo[logType].SSM_level)\r\n+\t\t{\r\n+\t\t\tline_size = SSM_MIN_LOG_BUFFER_SIZE + LOG_BUFFER_CODE_SIZE + (current_log->message ? strlen(current_log->message) : 0);\r\n+\t\t\tline_buffer = (char *)calloc(1, line_size);\r\n+\r\n+\t\t\tif (line_buffer == NULL)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for line buffer\");\r\n+\t\t\t\tlog_buffer_unlock();\r\n+\t\t\t\treturn DAWIT_FAIL;\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Format the line: (0,time,code,message) */\r\n+\t\t\tif (current_log->message != NULL)\r\n+\t\t\t{\r\n+\t\t\t\tsnprintf(line_buffer, line_size, \"<0#%d#%s#%s>\\n\", current_log->time, current_log->code, current_log->message);\r\n+\t\t\t}\r\n+\t\t\telse\r\n+\t\t\t{\r\n+\t\t\t\tsnprintf(line_buffer, line_size, \"<0#%d#%s#>\\n\", current_log->time, current_log->code);\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Write to file */\r\n+\t\t\tdawit_result write_result = SSM_file_write(file, (unsigned char *)line_buffer, strlen(line_buffer));\r\n+\t\t\tif (write_result != DAWIT_SUCCESS)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to write to file\");\r\n+\t\t\t\tfree(line_buffer);\r\n+\t\t\t\tline_buffer = NULL;\r\n+\t\t\t\tlog_buffer_unlock();\r\n+\t\t\t\treturn DAWIT_FAIL;\r\n+\t\t\t}\r\n+\t\t\tfree(line_buffer);\r\n+\t\t\tline_buffer = NULL;\r\n+\t\t}\r\n+\t\tcurrent_log = current_log->next;\r\n+\t}\r\n+\tlog_buffer_unlock();\r\n+\treturn DAWIT_SUCCESS;\r\n+}\r\n+\r\n+\r\n+static dawit_result SSM_write_SYS_logs_to_file(ssm_file *file)\r\n+{\r\n+\tdawit_result result = DAWIT_FAIL;\r\n+\tKPI_data *KPI_table = NULL;\r\n+\tint size = 0;\r\n+\tSSM_SYS_code_info* sysCodeInfo = SSM_SYS_get_code_info();\r\n+\r\n+\tif (file == NULL)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"passed NUll file path\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tKPI_buffer_lock();\r\n+\tKPI_table = KPI_get_table(&size);\r\n+\r\n+\tif (KPI_table != NULL && size > 0)\r\n+\t{\r\n+\t\t/* Iterate through all KPI data */\r\n+\t\tfor (int i = 0; i < size+1; i++)\r\n+\t\t{\r\n+\r\n+\t\t\tif (SSM_get_file_write_timeout())\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM file write timeout\");\r\n+\t\t\t\tKPI_buffer_unlock();\r\n+\t\t\t\treturn DAWIT_FAIL;\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Skip KPI data with NONE send type */\r\n+\t\t\tif (KPI_table[i].KPI_send_type == KPI_SEND_NONE || KPI_table[i].KPI_send_type == KPI_SEND_NOW || sysCodeInfo[KPI_table[i].KPI_tag].status != DAWIT_TRUE)\r\n+\t\t\t{\r\n+\t\t\t\tcontinue;\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Allocate buffer for the line (sufficiently large) */\r\n+\t\t\tint kpi_line_size = SSM_MIN_KPI_BUFFER_SIZE + (KPI_table[i].KPI_name ? strlen(KPI_table[i].KPI_name) : 0) +\r\n+\t\t\t\t\t\t\t(KPI_table[i].KPI_message_str ? strlen(KPI_table[i].KPI_message_str) : 0);\r\n+\t\t\tchar *kpi_line_buffer = (char *)calloc(1, kpi_line_size);\r\n+\t\t\tif (kpi_line_buffer == NULL)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for line buffer\");\r\n+\t\t\t\tKPI_buffer_unlock();\r\n+\t\t\t\treturn DAWIT_FAIL;\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Format the line: (1,kpi_name,data_type,message) */\r\n+\t\t\tif (KPI_table[i].KPI_data_type == KPI_DATA_NUM)\r\n+\t\t\t{\r\n+\t\t\t\tsnprintf(kpi_line_buffer, kpi_line_size, \"<1#%s#%s#%d>\\n\",\r\n+\t\t\t\t\t\t KPI_table[i].KPI_name ? KPI_table[i].KPI_name : \"\",\r\n+\t\t\t\t\t\t kpi_data_type_to_string(KPI_table[i].KPI_data_type),\r\n+\t\t\t\t\t\t KPI_table[i].KPI_message_num);\r\n+\t\t\t}\r\n+\t\t\telse if (KPI_table[i].KPI_data_type == KPI_DATA_STR)\r\n+\t\t\t{\r\n+\t\t\t\tsnprintf(kpi_line_buffer, kpi_line_size, \"<1#%s#%s#%s>\\n\",\r\n+\t\t\t\t\t\t KPI_table[i].KPI_name ? KPI_table[i].KPI_name : \"\",\r\n+\t\t\t\t\t\t kpi_data_type_to_string(KPI_table[i].KPI_data_type),\r\n+\t\t\t\t\t\t KPI_table[i].KPI_message_str ? KPI_table[i].KPI_message_str : \"\");\r\n+\t\t\t}\r\n+\t\t\telse\r\n+\t\t\t{\r\n+\t\t\t\t/* Unknown data type, skip this entry */\r\n+\t\t\t\tfree(kpi_line_buffer);\r\n+\t\t\t\tkpi_line_buffer = NULL;\r\n+\t\t\t\tcontinue;\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Write to file */\r\n+\t\t\tdawit_result write_result = SSM_file_write(file, (unsigned char *)kpi_line_buffer, strlen(kpi_line_buffer));\r\n+\t\t\tif (write_result != DAWIT_SUCCESS)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to write to file\");\r\n+\t\t\t\tfree(kpi_line_buffer);\r\n+\t\t\t\tkpi_line_buffer = NULL;\r\n+\t\t\t\tKPI_buffer_unlock();\r\n+\t\t\t\treturn DAWIT_FAIL;\r\n+\t\t\t}\r\n+\r\n+\t\t\tfree(kpi_line_buffer);\r\n+\t\t\tkpi_line_buffer = NULL;\r\n+\t\t}\r\n+\t}\r\n+\r\n+\t/* Unlock the KPI buffer */\r\n+\tKPI_buffer_unlock();\r\n+\treturn DAWIT_SUCCESS;\r\n+}\r\n+\r\n+static dawit_result SSM_get_file_creation_time_imp(const char *file_path, time_t *creation_time)\r\n+{\r\n+\tstruct stat file_stat;\r\n+\r\n+\tif (file_path == NULL || creation_time == NULL)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid arguments: file_path=%p, creation_time=%p\", file_path, creation_time);\r\n+\t\treturn DAWIT_INVALID_ARGS;\r\n+\t}\r\n+\r\n+\tif (stat(file_path, &file_stat) != 0)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to get file stats for %s\", file_path);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\t/* On Linux/Tizen, st_ctime is the closest to creation time available vi a stat().\r\n+\t * It represents the time of last inode change (set at file creation). */\r\n+\t*creation_time = file_stat.st_ctime;\r\n+\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"File %s creation time: %ld (epoch seconds)\", file_path, (long)*creation_time);\r\n+\treturn DAWIT_SUCCESS;\r\n+}\r\n+\r\n+dawit_result SSM_get_file_creation_time(time_t *creation_time)\r\n+{\r\n+\treturn SSM_get_file_creation_time_imp(SSM_STORED_LOGS_FILE, creation_time);\r\n+}\r\n+static dawit_result SSM_write_logs_to_file(void)\r\n+{\r\n+\tssm_file *file = NULL;\r\n+\tdawit_result result = DAWIT_SUCCESS;\r\n+\r\n+\r\n+\tresult = SSM_file_open(&file, SSM_STORED_LOGS_TEMP_FILE, \"w\");\r\n+\tif (result != DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to open %s file for writing\", SSM_STORED_LOGS_FILE);\r\n+\t\tg_ssm_file_write_context.completed = true;\r\n+\t\tg_ssm_file_write_context.result = DAWIT_FAIL;\r\n+\t\tdawit_semaphore_release(&g_ssm_file_write_context.completion_sem);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\t/* Write ES logs */\r\n+\tresult =  SSM_write_ES_logs_to_file(file);\r\n+\tif( result != DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to Write ES logs to file \");\r\n+\t\tSSM_file_close(file);\r\n+\t\tg_ssm_file_write_context.completed = true;\r\n+\t\tg_ssm_file_write_context.result = DAWIT_FAIL;\r\n+\t\tdawit_semaphore_release(&g_ssm_file_write_context.completion_sem);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tresult =  SSM_write_SYS_logs_to_file(file);\r\n+\tif( result != DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to Write SYS logs to file \");\r\n+\t\tSSM_file_close(file);\r\n+\t\tg_ssm_file_write_context.completed = true;\r\n+\t\tg_ssm_file_write_context.result = DAWIT_FAIL;\r\n+\t\tdawit_semaphore_release(&g_ssm_file_write_context.completion_sem);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\t/* Close the file */\r\n+\tSSM_file_close(file);\r\n+\r\n+\tif (SSM_check_stored_logs_file_exist() == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tif (SSM_delete_stored_logs_file() != DAWIT_SUCCESS)\r\n+\t\t{\r\n+\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Unable to delete old ssm logs file\");\r\n+\t\t\tg_ssm_file_write_context.completed = true;\r\n+\t\t\tg_ssm_file_write_context.result = DAWIT_FAIL;\r\n+\t\t\tdawit_semaphore_release(&g_ssm_file_write_context.completion_sem);\r\n+\t\t\treturn DAWIT_FAIL;\r\n+\t\t}\r\n+\t}\r\n+\r\n+\tSSM_rename_file(SSM_STORED_LOGS_TEMP_FILE, SSM_STORED_LOGS_FILE);\r\n+\tg_ssm_file_write_context.completed = true;\r\n+\tg_ssm_file_write_context.result = DAWIT_SUCCESS;\r\n+\tdawit_semaphore_release(&g_ssm_file_write_context.completion_sem);\r\n+\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Successfully stored logs and KPI data to %s file\", SSM_STORED_LOGS_FILE);\r\n+\treturn DAWIT_SUCCESS;\r\n+}\r\n+\r\n+dawit_result SSM_store_logs_to_file_impl(unsigned int time_limit_ms)\r\n+{\r\n+\tdawit_result final_result = DAWIT_FAIL;\r\n+\r\n+\tg_ssm_file_write_context.result = DAWIT_FAIL;\r\n+\tg_ssm_file_write_context.completed = false;\r\n+\r\n+\tif (g_ssm_is_file_write_api_done)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM store to file is already called\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tif (time_limit_ms < 1000)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Invalid time_limit [%u] >= 1000\", time_limit_ms);\r\n+\t\treturn DAWIT_INVALID_ARGS;\r\n+\t}\r\n+\r\n+\tint ssm_es_time = SSM_get_es_interval_time();\r\n+\tint ssm_sys_time = SSM_get_sys_interval_time();\r\n+\t\r\n+\t//delay sending of ES,SYS logs\r\n+\tssm_es_time += 30; \r\n+\tssm_sys_time += 30;\r\n+\r\n+\tSSM_set_interval(SSM_EASYSETUP, ssm_es_time);\r\n+\tSSM_set_interval(SSM_SYSTEM, ssm_sys_time);\r\n+\t\r\n+\tdawit_result sem_result = dawit_semaphore_create(&g_ssm_file_write_context.completion_sem, 0);\r\n+\tif (sem_result != DAWIT_SUCCESS) {\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to create completion semaphore\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tdawit_task worker_task = 1;\r\n+\tdawit_result task_result = dawit_task_create((dawit_task*)&worker_task, \"SSM_file_write_worker\", \r\n+\t                                (void*)SSM_write_logs_to_file, NULL,\r\n+\t                                DAWIT_NORMAL_PRIORITY, 1024*6);\r\n+\tif (task_result != DAWIT_SUCCESS) {\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to create SSM file write thread\");\r\n+\t\tdawit_semaphore_destroy(&g_ssm_file_write_context.completion_sem);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tsem_result = dawit_semaphore_acquire(&g_ssm_file_write_context.completion_sem, time_limit_ms);\r\n+\t\r\n+\tif (sem_result == DAWIT_TIMEOUT)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"File write operation timed out after [%d] ms, ending SSM file write\", time_limit_ms);\r\n+\t\t\r\n+\t\tSSM_set_file_write_timeout(true);\r\n+\t\tfinal_result = DAWIT_TIMEOUT;\r\n+\t}\r\n+\telse if (sem_result == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\t/* Operation completed within timeout - get the result */\r\n+\t\tfinal_result = g_ssm_file_write_context.result;\r\n+\r\n+\t\tif (g_ssm_file_write_context.completed)\r\n+\t\t{\r\n+\t\t\tif (g_ssm_file_write_context.result == DAWIT_SUCCESS)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Success to write SSM logs into file\");\r\n+\t\t\t}\r\n+\t\t\telse\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Failed to write SSM logs into file internal failure\");\r\n+\t\t\t}\r\n+\t\t}\r\n+\t}\r\n+\telse\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Semaphore acquire failed\");\r\n+\t\tfinal_result = DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"SSM write function end\");\r\n+\tg_ssm_is_file_write_api_done = true;\r\n+\treturn final_result;\r\n+}\r\n+\r\n+/* Skip characters until newline is found */\r\n+static void SSM_skip_to_next_line(ssm_file *file)\r\n+{\r\n+\tunsigned char ch;\r\n+\twhile (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tif (ch == '\\n')\r\n+\t\t{\r\n+\t\t\tbreak;\r\n+\t\t}\r\n+\t}\r\n+}\r\n+\r\n+/* Read one ES log record from file directly into a log_data node.\r\n+ * Reads character by character, no intermediate line buffer needed.\r\n+ * Returns log_data node on success, NULL if non-ES/invalid/EOF.\r\n+ * *is_eof is set to true when end of file is reached. */\r\n+static log_data* SSM_read_ES_log_from_file(ssm_file *file, bool *is_eof)\r\n+{\r\n+\tunsigned char ch;\r\n+\tint field = 0;  /* 0=type, 1=time, 2=code, 3=message */\r\n+\tint type_value = 0;\r\n+\tint time_value = 0;\r\n+\tchar code_value[LOG_BUFFER_CODE_SIZE] = {0};\r\n+\tint code_pos = 0;\r\n+\tchar *message_buf = NULL;\r\n+\tint message_pos = 0;\r\n+\tint message_size = 0;\r\n+\tdawit_result read_result = DAWIT_SUCCESS;\r\n+\r\n+\tif (is_eof != NULL)\r\n+\t{\r\n+\t\t*is_eof = false;\r\n+\t}\r\n+\r\n+\t/* Look for start of record '<' */\r\n+\tch = '\\0';\r\n+\twhile ((read_result = SSM_file_read(file, &ch, 1)) == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tif (ch == '<')\r\n+\t\t{\r\n+\t\t\tbreak;\r\n+\t\t}\r\n+\t\t/* Skip anything before '<' (including newlines) */\r\n+\t}\r\n+\r\n+\t/* If we couldn't read, it's EOF */\r\n+\tif (ch != '<')\r\n+\t{\r\n+\t\tif (is_eof != NULL) *is_eof = true;\r\n+\t\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"SSM ES file read EOF\");\r\n+\t\treturn NULL;\r\n+\t}\r\n+\r\n+\t/* Parse fields character by character */\r\n+\twhile ((read_result = SSM_file_read(file, &ch, 1)) == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tif (ch == '>')\r\n+\t\t{\r\n+\t\t\t/* End of record - consume trailing newline if present */\r\n+\t\t\tunsigned char next_ch;\r\n+\t\t\tif (SSM_file_read(file, &next_ch, 1) == DAWIT_SUCCESS && next_ch != '\\n')\r\n+\t\t\t{\r\n+\t\t\t\t/* Not a newline, continue reading */\r\n+\t\t\t\tSSM_file_seek(file, -1, SEEK_CUR); /* Put the character back */\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Null terminate message */\r\n+\t\t\tif (message_buf != NULL)\r\n+\t\t\t{\r\n+\t\t\t\tmessage_buf[message_pos] = '\\0';\r\n+\t\t\t}\r\n+\r\n+\t\t\t/* Only create node for ES records (type 0) with valid code */\r\n+\t\t\tif (type_value != 0 || code_pos == 0)\r\n+\t\t\t{\r\n+\t\t\t\tfree(message_buf);\r\n+\t\t\t\tif (is_eof != NULL) *is_eof = true;\r\n+\t\t\t\tDAWIT_LOG_DEBUG(DAWIT_TAG_SSM, \"SSM ES file read EOF\");\r\n+\t\t\t\treturn NULL;\r\n+\t\t\t}\r\n+\r\n+\t\t\tlog_data *new_node = (log_data *)calloc(1, sizeof(log_data));\r\n+\t\t\tif (new_node == NULL)\r\n+\t\t\t{\r\n+\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for log_data node\");\r\n+\t\t\t\tfree(message_buf);\r\n+\t\t\t\treturn NULL;\r\n+\t\t\t}\r\n+\r\n+\t\t\tnew_node->time = time_value;\r\n+\t\t\tsnprintf(new_node->code, LOG_BUFFER_CODE_SIZE, \"%s\", code_value);\r\n+\t\t\tnew_node->message = message_buf;\r\n+\t\t\tnew_node->level = 5;\r\n+\t\t\tnew_node->pre = NULL;\r\n+\t\t\tnew_node->next = NULL;\r\n+\t\t\treturn new_node;\r\n+\t\t}\r\n+\r\n+\t\tif (ch == '#')\r\n+\t\t{\r\n+\t\t\tfield++;\r\n+\t\t\tcontinue;\r\n+\t\t}\r\n+\r\n+\t\tswitch (field)\r\n+\t\t{\r\n+\t\t\tcase 0: /* Type */\r\n+\t\t\t\tif (ch >= '0' && ch <= '9')\r\n+\t\t\t\t{\r\n+\t\t\t\t\ttype_value = type_value * 10 + (ch - '0');\r\n+\t\t\t\t}\r\n+\t\t\t\tbreak;\r\n+\t\t\tcase 1: /* Time */\r\n+\t\t\t\tif (ch >= '0' && ch <= '9')\r\n+\t\t\t\t{\r\n+\t\t\t\t\ttime_value = time_value * 10 + (ch - '0');\r\n+\t\t\t\t}\r\n+\t\t\t\tbreak;\r\n+\t\t\tcase 2: /* Code */\r\n+\t\t\t\tif (code_pos < LOG_BUFFER_CODE_SIZE - 1)\r\n+\t\t\t\t{\r\n+\t\t\t\t\tcode_value[code_pos++] = ch;\r\n+\t\t\t\t}\r\n+\t\t\t\tbreak;\r\n+\t\t\tcase 3: /* Message - dynamically grow buffer */\r\n+\t\t\t\tif (message_pos >= message_size - 1)\r\n+\t\t\t\t{\r\n+\t\t\t\t\tmessage_size += 64;\r\n+\t\t\t\t\tchar *new_buf = (char *)realloc(message_buf, message_size);\r\n+\t\t\t\t\tif (new_buf == NULL)\r\n+\t\t\t\t\t{\r\n+\t\t\t\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for message\");\r\n+\t\t\t\t\t\tfree(message_buf);\r\n+\t\t\t\t\t\tSSM_skip_to_next_line(file);\r\n+\t\t\t\t\t\treturn NULL;\r\n+\t\t\t\t\t}\r\n+\t\t\t\t\tmessage_buf = new_buf;\r\n+\t\t\t\t}\r\n+\t\t\t\tmessage_buf[message_pos++] = ch;\r\n+\t\t\t\tbreak;\r\n+\t\t}\r\n+\t}\r\n+\r\n+\t/* EOF reached before completing record */\r\n+\tif (is_eof != NULL) *is_eof = true;\r\n+\tfree(message_buf);\r\n+\treturn NULL;\r\n+}\r\n+\r\n+/* Append a log_data node to the doubly linked list */\r\n+static void SSM_append_log_to_list(log_data **head, log_data **tail, log_data *new_node)\r\n+{\r\n+\tif (new_node == NULL)\r\n+\t{\r\n+\t\treturn;\r\n+\t}\r\n+\r\n+\tif (*head == NULL)\r\n+\t{\r\n+\t\t*head = new_node;\r\n+\t\t*tail = new_node;\r\n+\t}\r\n+\telse\r\n+\t{\r\n+\t\t(*tail)->next = new_node;\r\n+\t\tnew_node->pre = *tail;\r\n+\t\t*tail = new_node;\r\n+\t}\r\n+}\r\n+\r\n+/* Read up to SSM_MAX_ES_LOG_READ_LINES ES log records from an already-open file.\r\n+ * Returns linked list of log_data. Sets *is_eof to true when file ends. */\r\n+static log_data* SSM_read_ES_logs_batch(ssm_file *file, bool *is_eof)\r\n+{\r\n+\tlog_data *head = NULL;\r\n+\tlog_data *tail = NULL;\r\n+\tint es_count = 0;\r\n+\r\n+\t/* Read records directly into linked list, up to SSM_MAX_ES_LOG_READ_LINES ES records */\r\n+\twhile (es_count < SSM_MAX_ES_LOG_READ_LINES && !(*is_eof))\r\n+\t{\r\n+\t\tlog_data *new_node = SSM_read_ES_log_from_file(file, is_eof);\r\n+\t\tif (new_node != NULL)\r\n+\t\t{\r\n+\t\t\tSSM_append_log_to_list(&head, &tail, new_node);\r\n+\t\t\tes_count++;\r\n+\t\t}\r\n+\t\t/* NULL means non-ES record, invalid line, or EOF - continue until es_count reached or EOF */\r\n+\t}\r\n+\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Read batch of %d ES log records\", es_count);\r\n+\treturn head;\r\n+}\r\n+\r\n+/* Read one SYS log record from file and store in file data table.\r\n+ * Returns 1 on success (SYS record saved), 0 if non-SYS/invalid record, -1 on EOF. */\r\n+static int SSM_read_and_restore_SYS_log(ssm_file *file, bool *is_eof)\r\n+{\r\n+    unsigned char ch;\r\n+    int field = 0;  /* 0=type, 1=kpi_name, 2=data_type, 3=message */\r\n+    int type_value = 0;\r\n+    char *kpi_name_buf = NULL;\r\n+    int kpi_name_pos = 0;\r\n+    int kpi_name_size = 0;\r\n+    char data_type_buf[8] = {0};\r\n+    int data_type_pos = 0;\r\n+    char *message_buf = NULL;\r\n+    int message_pos = 0;\r\n+    int message_size = 0;\r\n+\r\n+    if (is_eof != NULL) *is_eof = false;\r\n+\r\n+    /* Look for start of record '<' */\r\n+    ch = '\\0';\r\n+    while (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)\r\n+    {\r\n+        if (ch == '<') break;\r\n+    }\r\n+\r\n+    if (ch != '<')\r\n+    {\r\n+        if (is_eof != NULL) *is_eof = true;\r\n+        return -1;\r\n+    }\r\n+\r\n+    /* Parse fields character by character */\r\n+    while (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)\r\n+    {\r\n+        if (ch == '>')\r\n+        {\r\n+            /* Consume trailing newline if present */\r\n+            unsigned char next_ch;\r\n+            if (SSM_file_read(file, &next_ch, 1) == DAWIT_SUCCESS && next_ch != '\\n')\r\n+            {\r\n+                /* Not a newline, continue reading */\r\n+                SSM_file_seek(file, -1, SEEK_CUR); /* Put the character back */\r\n+            }\r\n+\r\n+            /* Null terminate buffers */\r\n+            if (kpi_name_buf != NULL) kpi_name_buf[kpi_name_pos] = '\\0';\r\n+            if (message_buf != NULL) message_buf[message_pos] = '\\0';\r\n+\r\n+            /* Only process SYS records (type 1) with valid kpi_name */\r\n+            if (type_value != 1 || kpi_name_pos == 0)\r\n+            {\r\n+                free(kpi_name_buf);\r\n+                free(message_buf);\r\n+                return 0;\r\n+            }\r\n+\r\n+            /* Check if we have space in the file data table */\r\n+            if (kpi_file_count >= KPI_BUFFER_SIZE) {\r\n+                DAWIT_LOG_WARNING(DAWIT_TAG_SSM, \"KPI file data table is full, discarding entry\");\r\n+                free(kpi_name_buf);\r\n+                free(message_buf);\r\n+                return 0;\r\n+            }\r\n+\r\n+            /* Store data in file data table */\r\n+            kpi_file_table[kpi_file_count].kpi_name = kpi_name_buf;\r\n+            snprintf(kpi_file_table[kpi_file_count].data_type, \r\n+                sizeof(kpi_file_table[kpi_file_count].data_type), \"%s\", data_type_buf);\r\n+            kpi_file_table[kpi_file_count].kpi_message = message_buf;\r\n+\r\n+            DAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Stored in file data table: name=%s, type=%s, message=%s\",\r\n+                kpi_file_table[kpi_file_count].kpi_name,\r\n+                kpi_file_table[kpi_file_count].data_type,\r\n+                kpi_file_table[kpi_file_count].kpi_message ? \r\n+                kpi_file_table[kpi_file_count].kpi_message : \"\");\r\n+\r\n+            kpi_file_count++;\r\n+            return 1;\r\n+        }\r\n+\r\n+        if (ch == '#')\r\n+        {\r\n+            field++;\r\n+            continue;\r\n+        }\r\n+\r\n+        switch (field)\r\n+        {\r\n+            case 0: /* Type */\r\n+                if (ch >= '0' && ch <= '9') type_value = type_value * 10 + (ch - '0');\r\n+                break;\r\n+            case 1: /* KPI name */\r\n+                if (kpi_name_pos >= kpi_name_size - 1)\r\n+                {\r\n+                    kpi_name_size += 64;\r\n+                    char *new_buf = (char *)realloc(kpi_name_buf, kpi_name_size);\r\n+                    if (new_buf == NULL)\r\n+                    {\r\n+                        DAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for KPI name\");\r\n+                        free(kpi_name_buf);\r\n+                        free(message_buf);\r\n+                        SSM_skip_to_next_line(file);\r\n+                        return 0;\r\n+                    }\r\n+                    kpi_name_buf = new_buf;\r\n+                }\r\n+                kpi_name_buf[kpi_name_pos++] = ch;\r\n+                break;\r\n+            case 2: /* Data type string */\r\n+                if (data_type_pos < (int)sizeof(data_type_buf) - 1) data_type_buf[data_type_pos++] = ch;\r\n+                break;\r\n+            case 3: /* Message */\r\n+                if (message_pos >= message_size - 1)\r\n+                {\r\n+                    message_size += 64;\r\n+                    char *new_buf = (char *)realloc(message_buf, message_size);\r\n+                    if (new_buf == NULL)\r\n+                    {\r\n+                        DAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to allocate memory for message\");\r\n+                        free(kpi_name_buf);\r\n+                        free(message_buf);\r\n+                        SSM_skip_to_next_line(file);\r\n+                        return 0;\r\n+                    }\r\n+                    message_buf = new_buf;\r\n+                }\r\n+                message_buf[message_pos++] = ch;\r\n+                break;\r\n+        }\r\n+    }\r\n+\r\n+    /* EOF reached before completing record */\r\n+    if (is_eof != NULL) *is_eof = true;\r\n+    free(kpi_name_buf);\r\n+    free(message_buf);\r\n+    return -1;\r\n+}\r\n+\r\n+\r\n+/* Read up to SSM_MAX_SYS_LOG_READ_LINES SYS log records from file and\r\n+ * directly save them to KPI_buffer_table_array (no linked list needed).\r\n+ * Returns the number of SYS records restored in this batch. */\r\n+static int SSM_restore_SYS_logs_batch(ssm_file *file, bool *is_eof)\r\n+{\r\n+\tint sys_count = 0;\r\n+\r\n+\twhile (sys_count < SSM_MAX_SYS_LOG_READ_LINES && !(*is_eof))\r\n+\t{\r\n+\t\tint result = SSM_read_and_restore_SYS_log(file, is_eof);\r\n+\t\tif (result == 1)\r\n+\t\t{\r\n+\t\t\tsys_count++;\r\n+\t\t}\r\n+\t\t/* result == 0: non-SYS record or invalid, continue */\r\n+\t\t/* result == -1: EOF, loop will exit */\r\n+\t}\r\n+\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Restored batch of %d SYS log records to KPI buffer\", sys_count);\r\n+\treturn sys_count;\r\n+}\r\n+\r\n+/* Restore ES log records from file-read linked list into log_buffer,\r\n+ * then call SSM_Send_ES_log_protected() which reads from log_buffer to send. */\r\n+static dawit_result SSM_restore_and_send_ES_logs(log_data *head)\r\n+{\r\n+\tif (head == NULL)\r\n+\t{\r\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"No ES logs to restore\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\tdawit_result result = SSM_Send_ES_logs_from_file((void *)head);\r\n+\tif (result == DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"ES logs sent to server successfully\");\r\n+\t}\r\n+\telse\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to send ES logs to server\");\r\n+\t}\r\n+\r\n+\treturn result;\r\n+}\r\n+\r\n+\r\n+/* Free the linked list of log_data */\r\n+static void SSM_free_log_data_list(log_data *head)\r\n+{\r\n+\tlog_data *current = head;\r\n+\tlog_data *next_node = NULL;\r\n+\r\n+\twhile (current != NULL)\r\n+\t{\r\n+\t\tnext_node = current->next;\r\n+\t\tif (current->message != NULL)\r\n+\t\t{\r\n+\t\t\tfree(current->message);\r\n+\t\t}\r\n+\t\tfree(current);\r\n+\t\tcurrent = next_node;\r\n+\t}\r\n+}\r\n+\r\n+dawit_result SSM_check_stored_logs_file_exist(void)\r\n+{\r\n+\treturn SSM_file_is_exist((char *)SSM_STORED_LOGS_FILE);\r\n+}\r\n+\r\n+dawit_result SSM_delete_stored_logs_file(void)\r\n+{\r\n+\treturn SSM_file_delete((char *)SSM_STORED_LOGS_FILE);\r\n+}\r\n+\r\n+dawit_result SSM_read_logs_from_file_and_send_impl(void)\r\n+{\r\n+\tssm_file *file = NULL;\r\n+\tbool is_eof = false;\r\n+\tint es_batch_num = 0;\r\n+\tint sys_batch_num = 0;\r\n+\tint total_es_count = 0;\r\n+\tint total_sys_count = 0;\r\n+\tdawit_result result = DAWIT_SUCCESS;\r\n+\t\r\n+    if (SSM_is_policy_done() != DAWIT_TRUE)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"SSM policy is not yet loaded\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\t/* Open file for reading */\r\n+\tresult = SSM_file_open(&file, SSM_STORED_LOGS_FILE, \"r\");\r\n+\tif (result != DAWIT_SUCCESS)\r\n+\t{\r\n+\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to open %s file for reading\", SSM_STORED_LOGS_FILE);\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\t/* Read ES records in batches of 20, print each batch, until file ends */\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"=== Reading ES Records ===\");\r\n+\twhile (!is_eof)\r\n+\t{\r\n+\t\tlog_data *log_list = SSM_read_ES_logs_batch(file, &is_eof);\r\n+\r\n+\t\tif (log_list == NULL)\r\n+\t\t{\r\n+\t\t\tbreak;\r\n+\t\t}\r\n+\r\n+\t\tes_batch_num++;\r\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"=== ES Batch [%d] ===\", es_batch_num);\r\n+\r\n+\t\tlog_data *current = log_list;\r\n+\t\twhile (current != NULL)\r\n+\t\t{\r\n+\t\t\ttotal_es_count++;\r\n+\t\t\tcurrent = current->next;\r\n+\t\t}\r\n+\r\n+\t\t/* Restore ES logs to buffer and send to server */\r\n+\t\tSSM_restore_and_send_ES_logs(log_list);\r\n+\r\n+\t\tSSM_free_log_data_list(log_list);\r\n+\t}\r\n+\r\n+\t/* SYS records are at end of file, continue reading from current position */\r\n+\tis_eof = false;\r\n+\r\n+\t/* Read SYS records in batches of 50 and save directly to KPI_buffer_table_array */\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"=== Reading SYS Records ===\");\r\n+\twhile (!is_eof)\r\n+\t{\r\n+\t\tint batch_count = SSM_restore_SYS_logs_batch(file, &is_eof);\r\n+\r\n+\t\tif (batch_count == 0)\r\n+\t\t{\r\n+\t\t\tbreak;\r\n+\t\t}\r\n+\r\n+\t\tsys_batch_num++;\r\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"=== SYS Batch [%d] ===\", sys_batch_num);\r\n+\r\n+\t\ttotal_sys_count += batch_count;\r\n+\t}\r\n+\r\n+\tSSM_file_close(file);\r\n+\r\n+\t/* Send all SYS logs from KPI buffer to server (after all batches are restored) */\r\n+\tif (total_sys_count > 0)\r\n+\t{\r\n+\r\n+\t\tdawit_result sys_result = SSM_Send_SYS_logs_from_file(kpi_file_table, kpi_file_count);\r\n+\t\tif (sys_result == DAWIT_SUCCESS)\r\n+\t\t{\r\n+\t\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"SYS logs sent to server successfully\");\r\n+\t\t}\r\n+\t\telse\r\n+\t\t{\r\n+\t\t\tDAWIT_LOG_ERROR(DAWIT_TAG_SSM, \"Failed to send SYS logs to server\");\r\n+\t\t}\r\n+\r\n+\t\tSSM_free_sys_kpi_table();\r\n+\t}\r\n+\r\n+\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"Total [%d] ES logs in [%d] batches, [%d] SYS logs in [%d] batches\",\r\n+\t\ttotal_es_count, es_batch_num, total_sys_count, sys_batch_num);\r\n+\r\n+\tif (total_es_count == 0 && total_sys_count == 0)\r\n+\t{\r\n+\t\tDAWIT_LOG_INFO(DAWIT_TAG_SSM, \"No logs found in file\");\r\n+\t\treturn DAWIT_FAIL;\r\n+\t}\r\n+\r\n+\treturn DAWIT_SUCCESS;\r\n+}\r\n+\r\n+static void SSM_free_sys_kpi_table(void)\r\n+{\r\n+\tfor (unsigned int i = 0; i < kpi_file_count && i < KPI_BUFFER_SIZE; i++)\r\n+    {\r\n+        if (kpi_file_table[i].kpi_name != NULL)\r\n+        {\r\n+            free(kpi_file_table[i].kpi_name);\r\n+            kpi_file_table[i].kpi_name = NULL;\r\n+        }\r\n+        if (kpi_file_table[i].kpi_message != NULL)\r\n+        {\r\n+            free(kpi_file_table[i].kpi_message);\r\n+            kpi_file_table[i].kpi_message = NULL;\r\n+        }\r\n+    }\r\n+    kpi_file_count = 0;\r\n+}\r\n+static SSM_Log_Type SSM_map_code_to_log_type(char code)\r\n+{\r\n+\tswitch (code)\r\n+\t{\r\n+\tcase 'C':\r\n+\tcase 'c':\r\n+\t\treturn SSM_CS;\r\n+\tcase 'E':\r\n+\tcase 'e':\r\n+\t\treturn SSM_ES;\r\n+\tcase 'N':\r\n+\tcase 'n':\r\n+\t\treturn SSM_NS;\r\n+\tcase 'A':\r\n+\tcase 'a':\r\n+\t\treturn SSM_AS;\r\n+\tcase 'S':\r\n+\tcase 's':\r\n+\t\treturn SSM_SS;\r\n+\tcase 'P':\r\n+\tcase 'p':\r\n+\t\treturn SSM_PS;\r\n+\tcase 'R':\r\n+\tcase 'r':\r\n+\t\treturn SSM_RR;\r\n+\tdefault:\r\n+\t\treturn SSM_CS; // Default to CS for unknown codes\r\n+\t}\r\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "43fb0c1bf9b4878d56e5adc532970e89784799e7",
+      "filename": "conanfile.py",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 7,
+      "changes": 14,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/conanfile.py",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/conanfile.py",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/conanfile.py?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -48,10 +48,10 @@ def package_info(self):\n \n     def requirements(self):\n         self.requires(f\"toolchain/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"kernel/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"system/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"ocf/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"trutils/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"wifi/[>=1.1.2-rc.14 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"dawit/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n-        self.requires(f\"miscs/[>=1.0 <2.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"kernel/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"system/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"ocf/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"trutils/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"wifi/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"dawit/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)\n+        self.requires(f\"miscs/[>=2.0 <3.0]@tizenrt/{self.channel}\", libs=True)"
+    },
+    {
+      "sha": "82f1a5e3f9353a56111db50d94a0f61408235eab",
+      "filename": "src/Makefile",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/src%2FMakefile",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/src%2FMakefile",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/src%2FMakefile?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -41,6 +41,8 @@ CSRCS += ${DA_SSM_SRC_PATH}/SSM_command.c\n CSRCS += ${DA_SSM_SRC_PATH}/SSM_client_ai_inv.c\n CSRCS += ${DA_SSM_SRC_PATH}/SSM_client_wifi_bigdata.c\n CSRCS += ${DA_SSM_SRC_PATH}/SSM_log_data.c\n+CSRCS += ${DA_SSM_SRC_PATH}/SSM_file_logger.c\n+CSRCS += ${DA_SSM_SRC_PATH}/SSM_file_helper.c\n CSRCS += ${DA_SSM_SRC_PATH}/SSM_wifi_bigdata_buffer.c\n CSRCS += ${DA_SSM_SRC_PATH}/rtl8721csm_refactoring/SSM_external_module.c\n "
+    },
+    {
+      "sha": "d75762b3839961e121e43879788727604e50b2e0",
+      "filename": "test/utc/Makefile",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 5,
+      "changes": 17,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FMakefile",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FMakefile",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FMakefile?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -15,20 +15,25 @@ OBJS += SSM_client_wifi_bigdata_test.c\n OBJS += SSM_log_data_test.c\n OBJS += SSM_wifi_bigdata_buffer_test.c\n OBJS += SSM_external_module_test.c\n+OBJS += SSM_file_helper_test.c\n+OBJS += SSM_file_logger_test.c\n \n LDFLAGS += -Wl,--wrap=trt_se_read_certificate\n-LDFLAGS += -Wl,--wrap=log_buffer_get_last\n-LDFLAGS += -Wl,--wrap=log_buffer_get_first\n LDFLAGS += -Wl,--wrap=prctl\n LDFLAGS += -Wl,--wrap=wifi_manager_info_get\n-LDFLAGS += -Wl,--wrap=KPI_get_table\n-LDFLAGS += -Wl,--wrap=KPI_buffer_lock\n-LDFLAGS += -Wl,--wrap=KPI_buffer_unlock\n LDFLAGS += -Wl,--wrap=system_time_check_china\n LDFLAGS += -Wl,--wrap=ocf_manager_is_device_registered\n LDFLAGS += -Wl,--wrap=gmtime\n LDFLAGS += -Wl,--wrap=reset_disconnection_info\n LDFLAGS += -Wl,--wrap=cJSON_Parse\n+LDFLAGS += -Wl,--wrap=log_buffer_lock\n+LDFLAGS += -Wl,--wrap=log_buffer_unlock\n+LDFLAGS += -Wl,--wrap=log_buffer_init\n+LDFLAGS += -Wl,--wrap=log_buffer_add_log\n+LDFLAGS += -Wl,--wrap=log_buffer_get_first\n+LDFLAGS += -Wl,--wrap=log_buffer_get_last\n+LDFLAGS += -Wl,--wrap=log_buffer_clear\n+LDFLAGS += -Wl,--wrap=SSM_is_policy_done\n \n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_ES.c\n@@ -38,5 +43,7 @@ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_command.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_ai_inv.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_wifi_bigdata.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_log_data.c\n+TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_file_logger.c\n+TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_file_helper.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_wifi_bigdata_buffer.c\n TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/rtl8721csm_refactoring/SSM_external_module.c"
+    },
+    {
+      "sha": "2d46e5cfdbca3a8ce4942940a1202fe6bccfe844",
+      "filename": "test/utc/SSM_client_ES_test.c",
+      "status": "modified",
+      "additions": 106,
+      "deletions": 124,
+      "changes": 230,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_ES_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_ES_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_client_ES_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -8,16 +8,6 @@\n #include \"json/cJSON.h\"\n #include \"log_buffer.h\"\n \n-static log_data mock_log_data_list[3] = {0};\n-static int mock_code = 0;\n-static int mock_call_count = 0;\n-static int mock_timestamp = 1609459200;\n-static char msg1[32] = \"Debug message 1\";\n-static char msg2[32] = \"Debug message 2\";\n-static char msg3[32] = \"Debug message 3\";\n-static int es_test_code = 0;\n-static log_data es_test_data = {0};\n-\n struct tm* __wrap_gmtime(const time_t *timep)\n {\n     static struct tm tm;\n@@ -32,101 +22,6 @@ struct tm* __wrap_gmtime(const time_t *timep)\n     return &tm;\n }\n \n-log_data* __wrap_log_buffer_get_last(void)\n-{\n-    mock_call_count = 0;\n-    return &es_test_data;\n-}\n-\n-log_data* __wrap_log_buffer_get_first(void)\n-{\n-    mock_call_count++;\n-    \n-    memset(&es_test_data, 0, sizeof(es_test_data));\n-    es_test_data.level = 6;\n-    es_test_data.time = mock_timestamp + 100;\n-    es_test_data.message = msg1;\n-    es_test_data.next = NULL;\n-    \n-    if (es_test_code == 0)\n-    {\n-        es_test_data.code[0] = 'C';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 1)\n-    {\n-        es_test_data.code[0] = 'E';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 2)\n-    {\n-        es_test_data.code[0] = 'N';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 3)\n-    {\n-        es_test_data.code[0] = 'A';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 4)\n-    {\n-        es_test_data.code[0] = 'S';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 5)\n-    {\n-        es_test_data.code[0] = 'P';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 6)\n-    {\n-        es_test_data.code[0] = 'R';\n-        strncpy(&es_test_data.code[1], \"R001\", 4);\n-    }\n-    else if (es_test_code == 7)\n-    {\n-        es_test_data.code[0] = 'X';\n-        strncpy(&es_test_data.code[1], \"X001\", 4);\n-    }\n-    else if (es_test_code == 8)\n-    {\n-        es_test_data.code[0] = 'c';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 9)\n-    {\n-        es_test_data.code[0] = 'e';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 10)\n-    {\n-        es_test_data.code[0] = 'n';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 11)\n-    {\n-        es_test_data.code[0] = 'a';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 12)\n-    {\n-        es_test_data.code[0] = 's';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 13)\n-    {\n-        es_test_data.code[0] = 'p';\n-        strncpy(&es_test_data.code[1], \"S001\", 4);\n-    }\n-    else if (es_test_code == 14)\n-    {\n-        es_test_data.code[0] = 'r';\n-        strncpy(&es_test_data.code[1], \"R001\", 4);\n-    }\n-    \n-    return &es_test_data;\n-}\n-\n START_TEST(SSM_ES_InitTable)\n {\n     SSM_ES_init_table();\n@@ -223,7 +118,8 @@ START_TEST(SSM_ES_SetEvent_C_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 0;\n+    LOG_BUFFER_ADD_INFO(\"CS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -234,7 +130,8 @@ START_TEST(SSM_ES_SetEvent_E_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 1;\n+    LOG_BUFFER_ADD_INFO(\"ES001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -245,7 +142,8 @@ START_TEST(SSM_ES_SetEvent_N_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 2;\n+    LOG_BUFFER_ADD_INFO(\"NS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -256,7 +154,8 @@ START_TEST(SSM_ES_SetEvent_A_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 3;\n+    LOG_BUFFER_ADD_INFO(\"AS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -267,7 +166,8 @@ START_TEST(SSM_ES_SetEvent_S_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 4;\n+    LOG_BUFFER_ADD_INFO(\"SS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -278,7 +178,8 @@ START_TEST(SSM_ES_SetEvent_P_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 5;\n+    LOG_BUFFER_ADD_INFO(\"PS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -289,7 +190,8 @@ START_TEST(SSM_ES_SetEvent_R_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 6;\n+    LOG_BUFFER_ADD_INFO(\"RR001\", NULL);\n+\n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -300,7 +202,9 @@ START_TEST(SSM_ES_SetEvent_unknown_code)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 7;\n+    \n+    LOG_BUFFER_ADD_INFO(\"XS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -310,11 +214,15 @@ END_TEST\n START_TEST(SSM_ES_SetEvent_lowercase_codes)\n {\n     cJSON *event;\n-\n-    for (int i = 8; i <= 14; i++) {\n+    const char *codes[] = {\"cs001\", \"es001\", \"ns001\", \"as001\", \"ss001\", \"ps001\", \"rr001\"};\n+    \n+    for (int i = 0; i < 7; i++) {\n         event = cJSON_CreateArray();\n         SSM_ES_init_table();\n-        es_test_code = i;\n+        \n+        \n+        LOG_BUFFER_ADD_INFO(codes[i], NULL);\n+        \n         int remain = SSM_ES_set_event(event);\n         (void)remain;\n         cJSON_Delete(event);\n@@ -343,7 +251,8 @@ START_TEST(SSM_ES_SetEvent_with_message)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 0;\n+    LOG_BUFFER_ADD_INFO(\"CS001\", \"Test message\");\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -354,8 +263,8 @@ START_TEST(SSM_ES_SetEvent_level_filtered)\n {\n     cJSON *event = cJSON_CreateArray();\n     SSM_ES_init_table();\n-    es_test_code = 0;\n-    es_test_data.level = 3;\n+    LOG_BUFFER_ADD_DEBUG(\"CS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -369,7 +278,10 @@ START_TEST(SSM_ES_SetEvent_disabled_status)\n     cJSON *policy = cJSON_Parse(\"{\\\"services\\\":[{\\\"interval_success\\\":7200,\\\"interval_fail\\\":300,\\\"loglevel\\\":5,\\\"status\\\":false,\\\"events\\\":[]}]}\");\n     SSM_ES_update_policy_parse(policy, 3, false);\n     cJSON_Delete(policy);\n-    es_test_code = 0;\n+    \n+    \n+    LOG_BUFFER_ADD_INFO(\"CS001\", NULL);\n+    \n     int remain = SSM_ES_set_event(event);\n     (void)remain;\n     cJSON_Delete(event);\n@@ -379,12 +291,13 @@ END_TEST\n START_TEST(SSM_ES_SetEvent_level_filtered_ASPR)\n {\n     cJSON *event;\n+    const char *codes[] = {\"AS001\", \"SS001\", \"PS001\", \"RR001\"};\n     \n-    for (int i = 3; i <= 6; i++) {\n+    for (int i = 0; i < 4; i++) {\n         event = cJSON_CreateArray();\n         SSM_ES_init_table();\n-        es_test_code = i;\n-        es_test_data.level = 3; // Lower than default level 5\n+        LOG_BUFFER_ADD_DEBUG(codes[i], NULL);\n+        \n         int remain = SSM_ES_set_event(event);\n         (void)remain;\n         cJSON_Delete(event);\n@@ -402,6 +315,67 @@ START_TEST(SSM_ES_GetNextTime_random)\n }\n END_TEST\n \n+START_TEST(SSM_ES_get_code_info_success)\n+{\n+    SSM_ES_init_table();\n+    SSMCodeInfo *code_info = SSM_ES_get_code_info();\n+    ck_assert_ptr_nonnull(code_info);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_update_seq_no_success)\n+{\n+    dawit_result result = SSM_ES_update_seq_no(100);\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_update_seq_no_zero)\n+{\n+    dawit_result result = SSM_ES_update_seq_no(0);\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_update_seq_no_negative)\n+{\n+    dawit_result result = SSM_ES_update_seq_no(-1);\n+    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_update_seq_no_large_value)\n+{\n+    dawit_result result = SSM_ES_update_seq_no(2147483647);\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_get_seq_no_default)\n+{\n+    SSM_ES_init_table();\n+    int seq_no = SSM_ES_get_seq_no();\n+    (void)seq_no;\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_get_seq_no_after_update)\n+{\n+    int expected_value = 12345;\n+    SSM_ES_update_seq_no(expected_value);\n+    int seq_no = SSM_ES_get_seq_no();\n+    ck_assert_int_eq(seq_no, expected_value);\n+}\n+END_TEST\n+\n+START_TEST(SSM_ES_get_seq_no_after_zero_update)\n+{\n+    SSM_ES_update_seq_no(0);\n+    int seq_no = SSM_ES_get_seq_no();\n+    ck_assert_int_eq(seq_no, 0);\n+}\n+END_TEST\n+\n void utc_SSM_client_ES(TCase *tc)\n {\n     tcase_add_test(tc, SSM_ES_InitTable);\n@@ -430,4 +404,12 @@ void utc_SSM_client_ES(TCase *tc)\n     tcase_add_test(tc, SSM_ES_GetRetryTime_random);\n     tcase_add_test(tc, SSM_ES_GetNextTime_random);\n     tcase_add_test(tc, SSM_ES_SetEvent_level_filtered_ASPR);\n-}\n+    tcase_add_test(tc, SSM_ES_get_code_info_success);\n+    tcase_add_test(tc, SSM_ES_update_seq_no_success);\n+    tcase_add_test(tc, SSM_ES_update_seq_no_zero);\n+    tcase_add_test(tc, SSM_ES_update_seq_no_negative);\n+    tcase_add_test(tc, SSM_ES_update_seq_no_large_value);\n+    tcase_add_test(tc, SSM_ES_get_seq_no_default);\n+    tcase_add_test(tc, SSM_ES_get_seq_no_after_update);\n+    tcase_add_test(tc, SSM_ES_get_seq_no_after_zero_update);\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "ba91f9c934ae30ede29fee59808e3fd0c73830d1",
+      "filename": "test/utc/SSM_client_SYS_test.c",
+      "status": "modified",
+      "additions": 35,
+      "deletions": 86,
+      "changes": 121,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_SYS_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_SYS_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_client_SYS_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -4,35 +4,7 @@\n \n #include \"DA-Service/SSM/include/SSM_client_SYS.h\"\n #include \"json/cJSON.h\"\n-\n-static KPI_data mock_table[10] = {0};\n-static int mock_table_size = 0;\n-\n-KPI_data* __wrap_KPI_get_table(int* size)\n-{\n-    *size = mock_table_size;\n-    return mock_table;\n-}\n-\n-void __wrap_KPI_buffer_lock(void)\n-{\n-}\n-\n-void __wrap_KPI_buffer_unlock(void)\n-{\n-}\n-\n-void __wrap_KPI_set_sendmessage(int index)\n-{\n-}\n-\n-void __wrap_KPI_send_done(void)\n-{\n-}\n-\n-void __wrap_KPI_update_sendmessage(void)\n-{\n-}\n+#include \"log_buffer.h\"\n \n static void _fake_SSM_Send_Systemlog_Callback_Type(void)\n {\n@@ -105,13 +77,7 @@ END_TEST\n START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_TrueStatus)\n {\n     SSM_SYS_init_table();\n-    \n-    mock_table_size = 1;\n-    mock_table[0].KPI_tag = KPI_TAG_SSM;\n-    mock_table[0].KPI_send_type = KPI_SEND_ONCE;\n-    mock_table[0].KPI_data_type = KPI_DATA_NUM;\n-    mock_table[0].KPI_message_num = 123;\n-    mock_table[0].KPI_name = \"test_kpi_num\";\n+    log_buffer_add_KPI_num(KPI_TAG_SSM, \"test_kpi_num\", 123, KPI_SEND_ONCE);\n     \n     cJSON *event = cJSON_CreateArray();\n     ck_assert_ptr_nonnull(event);\n@@ -121,22 +87,13 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_TrueStatus)\n     ck_assert_int_gt(cJSON_GetArraySize(event), 0);\n     \n     cJSON_Delete(event);\n-    \n-    mock_table_size = 0;\n-    memset(mock_table, 0, sizeof(mock_table));\n }\n END_TEST\n \n START_TEST(SSM_SYS_SetEvent_WithKPI_STR_TrueStatus)\n {\n     SSM_SYS_init_table();\n-    \n-    mock_table_size = 1;\n-    mock_table[0].KPI_tag = KPI_TAG_SSM;\n-    mock_table[0].KPI_send_type = KPI_SEND_EVERY;\n-    mock_table[0].KPI_data_type = KPI_DATA_STR;\n-    mock_table[0].KPI_message_str = \"test_string_value\";\n-    mock_table[0].KPI_name = \"test_kpi_str\";\n+    log_buffer_add_KPI_str(KPI_TAG_SSM, \"test_kpi_str\", \"test_string_value\", KPI_SEND_EVERY);\n     \n     cJSON *event = cJSON_CreateArray();\n     ck_assert_ptr_nonnull(event);\n@@ -146,9 +103,6 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_STR_TrueStatus)\n     ck_assert_int_gt(cJSON_GetArraySize(event), 0);\n     \n     cJSON_Delete(event);\n-    \n-    mock_table_size = 0;\n-    memset(mock_table, 0, sizeof(mock_table));\n }\n END_TEST\n \n@@ -162,13 +116,7 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus)\n     \n     SSM_SYS_update_policy_parse(policy_json, 5, true);\n     cJSON_Delete(policy_json);\n-    \n-    mock_table_size = 1;\n-    mock_table[0].KPI_tag = KPI_TAG_SSM;\n-    mock_table[0].KPI_send_type = KPI_SEND_ONCE;\n-    mock_table[0].KPI_data_type = KPI_DATA_NUM;\n-    mock_table[0].KPI_message_num = 456;\n-    mock_table[0].KPI_name = \"test_kpi_num_false\";\n+    log_buffer_add_KPI_num(KPI_TAG_SSM, \"test_kpi_num_false\", 456, KPI_SEND_ONCE);\n     \n     cJSON *event = cJSON_CreateArray();\n     ck_assert_ptr_nonnull(event);\n@@ -179,29 +127,15 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus)\n     \n     cJSON_Delete(event);\n     \n-    mock_table_size = 0;\n-    memset(mock_table, 0, sizeof(mock_table));\n     SSM_SYS_init_table();\n }\n END_TEST\n \n START_TEST(SSM_SYS_SetEvent_WithMultipleKPI)\n {\n     SSM_SYS_init_table();\n-    \n-    mock_table_size = 2;\n-    \n-    mock_table[0].KPI_tag = KPI_TAG_SYSTEM;\n-    mock_table[0].KPI_send_type = KPI_SEND_EVERY;\n-    mock_table[0].KPI_data_type = KPI_DATA_NUM;\n-    mock_table[0].KPI_message_num = 100;\n-    mock_table[0].KPI_name = \"system_kpi_num\";\n-    \n-    mock_table[1].KPI_tag = KPI_TAG_WIFI;\n-    mock_table[1].KPI_send_type = KPI_SEND_ONCE;\n-    mock_table[1].KPI_data_type = KPI_DATA_STR;\n-    mock_table[1].KPI_message_str = \"wifi_status_ok\";\n-    mock_table[1].KPI_name = \"wifi_kpi_str\";\n+    log_buffer_add_KPI_num(KPI_TAG_SYSTEM, \"system_kpi_num\", 100, KPI_SEND_EVERY);\n+    log_buffer_add_KPI_str(KPI_TAG_WIFI, \"wifi_kpi_str\", \"wifi_status_ok\", KPI_SEND_ONCE);\n     \n     cJSON *event = cJSON_CreateArray();\n     ck_assert_ptr_nonnull(event);\n@@ -211,22 +145,13 @@ START_TEST(SSM_SYS_SetEvent_WithMultipleKPI)\n     ck_assert_int_gt(cJSON_GetArraySize(event), 0);\n     \n     cJSON_Delete(event);\n-    \n-    mock_table_size = 0;\n-    memset(mock_table, 0, sizeof(mock_table));\n }\n END_TEST\n \n START_TEST(SSM_SYS_SetEvent_WithKPI_SEND_NONE)\n {\n     SSM_SYS_init_table();\n-    \n-    mock_table_size = 1;\n-    mock_table[0].KPI_tag = KPI_TAG_SSM;\n-    mock_table[0].KPI_send_type = KPI_SEND_NONE;\n-    mock_table[0].KPI_data_type = KPI_DATA_NUM;\n-    mock_table[0].KPI_message_num = 789;\n-    mock_table[0].KPI_name = \"test_kpi_none\";\n+    log_buffer_add_KPI_num(KPI_TAG_SSM, \"test_kpi_none\", 789, KPI_SEND_NONE);\n     \n     cJSON *event = cJSON_CreateArray();\n     ck_assert_ptr_nonnull(event);\n@@ -236,12 +161,33 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_SEND_NONE)\n     ck_assert_int_ge(cJSON_GetArraySize(event), 0);\n     \n     cJSON_Delete(event);\n-    \n-    mock_table_size = 0;\n-    memset(mock_table, 0, sizeof(mock_table));\n }\n END_TEST\n \n+START_TEST(SSM_SYS_get_code_info_success)\n+{\n+    SSM_SYS_init_table();\n+    SSM_SYS_code_info *code_info = SSM_SYS_get_code_info();\n+    ck_assert_ptr_nonnull(code_info);\n+}\n+END_TEST\n+\n+START_TEST(SSM_SYS_update_seq_no_by_value_positive)\n+{\n+    SSM_SYS_init_table();\n+    SSM_SYS_update_seq_no_by_value(10);\n+    SSM_SYS_update_seq_no_by_value(5);\n+}\n+END_TEST\n+\n+START_TEST(SSM_SYS_update_seq_no_by_value_negative)\n+{\n+    SSM_SYS_init_table();\n+    SSM_SYS_update_seq_no_by_value(-5);\n+}\n+END_TEST\n+\n+\n void utc_SSM_client_SYS(TCase *tc)\n {\n     tcase_add_test(tc, SSM_SYS_SetEvent);\n@@ -257,4 +203,7 @@ void utc_SSM_client_SYS(TCase *tc)\n     tcase_add_test(tc, SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus);\n     tcase_add_test(tc, SSM_SYS_SetEvent_WithMultipleKPI);\n     tcase_add_test(tc, SSM_SYS_SetEvent_WithKPI_SEND_NONE);\n-}\n+    tcase_add_test(tc, SSM_SYS_get_code_info_success);\n+    tcase_add_test(tc, SSM_SYS_update_seq_no_by_value_positive);\n+    tcase_add_test(tc, SSM_SYS_update_seq_no_by_value_negative);\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "6df4d086dedd797998ff02c6ebd292996cc1eb56",
+      "filename": "test/utc/SSM_client_test.c",
+      "status": "modified",
+      "additions": 129,
+      "deletions": 7,
+      "changes": 136,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_client_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_client_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -4,7 +4,9 @@\n #include <string.h>\n \n #include \"DA-Service/SSM/include/SSM_client.h\"\n+#include \"DA-Service/SSM/include/SSM_file_logger.h\"\n #include \"json/cJSON.h\"\n+#include \"log_buffer.h\"\n \n static int g_mock_cJSON_Parse_enabled = 0;\n static cJSON *g_mock_json_obj = NULL;\n@@ -42,12 +44,6 @@ START_TEST(SSM_tls_Release)\n }\n END_TEST\n \n-START_TEST(SSM_Is_Policy_Done)\n-{\n-    ck_assert_int_ne(DAWIT_TRUE,SSM_is_policy_done());\n-}\n-END_TEST\n-\n START_TEST(SSM_set_Debug)\n {\n     SSM_set_debug(DAWIT_TRUE);\n@@ -251,12 +247,130 @@ START_TEST(SSM_Send_policy_with_new_version_mock)\n }\n END_TEST\n \n+START_TEST(SSM_Send_ES_logs_from_file_null_node)\n+{\n+    dawit_result result = SSM_Send_ES_logs_from_file(NULL);\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_ES_logs_from_file_single_node)\n+{\n+    log_data test_node;\n+    memset(&test_node, 0, sizeof(log_data));\n+    test_node.time = 1609459200;\n+    strncpy(test_node.code, \"CS001\", 5);\n+    test_node.message = \"Test message\";\n+    test_node.next = NULL;\n+    \n+    dawit_result result = SSM_Send_ES_logs_from_file(&test_node);\n+    (void)result;\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_ES_logs_from_file_multiple_nodes)\n+{\n+    log_data node1, node2, node3;\n+    memset(&node1, 0, sizeof(log_data));\n+    memset(&node2, 0, sizeof(log_data));\n+    memset(&node3, 0, sizeof(log_data));\n+    \n+    node1.time = 1609459200;\n+    strncpy(node1.code, \"CS001\", 5);\n+    node1.message = \"Message 1\";\n+    node1.next = &node2;\n+    \n+    node2.time = 1609459260;\n+    strncpy(node2.code, \"ES001\", 5);\n+    node2.message = \"Message 2\";\n+    node2.next = &node3;\n+    \n+    node3.time = 1609459320;\n+    strncpy(node3.code, \"NS001\", 5);\n+    node3.message = \"Message 3\";\n+    node3.next = NULL;\n+    \n+    dawit_result result = SSM_Send_ES_logs_from_file(&node1);\n+    (void)result;\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_SYS_logs_from_file_null_table)\n+{\n+    dawit_result result = SSM_Send_SYS_logs_from_file(NULL, 0);\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_SYS_logs_from_file_single_entry)\n+{\n+    kpi_file_data test_table[1];\n+    memset(test_table, 0, sizeof(test_table));\n+    \n+    strncpy(test_table[0].data_type, \"NUM\", 3);\n+    test_table[0].kpi_name = \"test_kpi\";\n+    test_table[0].kpi_message = \"12345\";\n+    \n+    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 1);\n+    (void)result;\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_SYS_logs_from_file_multiple_entries)\n+{\n+    kpi_file_data test_table[3];\n+    memset(test_table, 0, sizeof(test_table));\n+    \n+    strncpy(test_table[0].data_type, \"NUM\", 3);\n+    test_table[0].kpi_name = \"kpi_num_1\";\n+    test_table[0].kpi_message = \"100\";\n+    \n+    strncpy(test_table[1].data_type, \"STR\", 3);\n+    test_table[1].kpi_name = \"kpi_str_1\";\n+    test_table[1].kpi_message = \"test_string\";\n+    \n+    strncpy(test_table[2].data_type, \"NUM\", 3);\n+    test_table[2].kpi_name = \"kpi_num_2\";\n+    test_table[2].kpi_message = \"200\";\n+    \n+    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 3);\n+    (void)result;\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_SYS_logs_from_file_zero_size)\n+{\n+    kpi_file_data test_table[1];\n+    memset(test_table, 0, sizeof(test_table));\n+    \n+    strncpy(test_table[0].data_type, \"NUM\", 3);\n+    test_table[0].kpi_name = \"test_kpi\";\n+    test_table[0].kpi_message = \"12345\";\n+    \n+    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 0);\n+    (void)result;\n+}\n+END_TEST\n+\n+START_TEST(SSM_Send_SYS_logs_from_file_str_type)\n+{\n+    kpi_file_data test_table[1];\n+    memset(test_table, 0, sizeof(test_table));\n+    \n+    strncpy(test_table[0].data_type, \"STR\", 3);\n+    test_table[0].kpi_name = \"string_kpi\";\n+    test_table[0].kpi_message = \"test_value\";\n+    \n+    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 1);\n+    (void)result;\n+}\n+END_TEST\n+\n void utc_SSM_client(TCase *tc)\n {\n     tcase_add_test(tc, SSM_set_Stage);\n     tcase_add_test(tc, SSM_deinit_fail_test);\n     tcase_add_test(tc, SSM_tls_Release);\n-    tcase_add_test(tc, SSM_Is_Policy_Done);\n     tcase_add_test(tc, SSM_set_Debug);\n     tcase_add_test(tc, SSM_Send_policy_Protected);\n     tcase_add_test(tc, SSM_tls_Lock);\n@@ -273,4 +387,12 @@ void utc_SSM_client(TCase *tc)\n     tcase_add_test(tc, SSM_update_policy_parse_unknown_type);\n     tcase_add_test(tc, SSM_update_policy_parse_null_endpoint);\n     tcase_add_test(tc, SSM_Send_policy_with_new_version_mock);\n+    tcase_add_test(tc, SSM_Send_ES_logs_from_file_null_node);\n+    tcase_add_test(tc, SSM_Send_ES_logs_from_file_single_node);\n+    tcase_add_test(tc, SSM_Send_ES_logs_from_file_multiple_nodes);\n+    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_null_table);\n+    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_single_entry);\n+    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_multiple_entries);\n+    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_zero_size);\n+    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_str_type);\n }"
+    },
+    {
+      "sha": "039043f8514d8f91e603e6d50e7ed3a5bce7d6d4",
+      "filename": "test/utc/SSM_command_test.c",
+      "status": "modified",
+      "additions": 41,
+      "deletions": 0,
+      "changes": 41,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_command_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_command_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_command_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -198,6 +198,42 @@ START_TEST(test_ssm_command_sequence)\n }\n END_TEST\n \n+/* ssm_command_store tests */\n+START_TEST(test_ssm_command_store_no_args)\n+{\n+  char *argv[] = {\"ssm\", \"store\"};\n+  ck_assert_int_eq(ssm_command(2, argv), 1);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_command_store_zero_time_limit)\n+{\n+  char *argv[] = {\"ssm\", \"store\", \"0\"};\n+  ck_assert_int_eq(ssm_command(3, argv), 1);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_command_store_invalid_time_limit)\n+{\n+  char *argv[] = {\"ssm\", \"store\", \"invalid\"};\n+  ck_assert_int_eq(ssm_command(3, argv), 1);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_command_store_extra_args)\n+{\n+  char *argv[] = {\"ssm\", \"store\", \"1000\", \"extra\"};\n+  ck_assert_int_eq(ssm_command(4, argv), 1);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_command_store_negative_time_limit)\n+{\n+  char *argv[] = {\"ssm\", \"store\", \"-1000\"};\n+  ck_assert_int_eq(ssm_command(3, argv), 1);\n+}\n+END_TEST\n+\n void utc_SSM_command(TCase *tc)\n {\n     tcase_add_test(tc, test_ssm_command_help);\n@@ -227,4 +263,9 @@ void utc_SSM_command(TCase *tc)\n     tcase_add_test(tc, test_ssm_command_invalid_command);\n     tcase_add_test(tc, test_ssm_command_invalid_command_with_args);\n     tcase_add_test(tc, test_ssm_command_sequence);\n+    tcase_add_test(tc, test_ssm_command_store_no_args);\n+    tcase_add_test(tc, test_ssm_command_store_zero_time_limit);\n+    tcase_add_test(tc, test_ssm_command_store_invalid_time_limit);\n+    tcase_add_test(tc, test_ssm_command_store_extra_args);\n+    tcase_add_test(tc, test_ssm_command_store_negative_time_limit);\n }"
+    },
+    {
+      "sha": "5a6889a25f0f9a65a77798f9644eee59e86e15f4",
+      "filename": "test/utc/SSM_file_helper_test.c",
+      "status": "added",
+      "additions": 391,
+      "deletions": 0,
+      "changes": 391,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_file_helper_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_file_helper_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_file_helper_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,391 @@\n+#include <check.h>\n+#include <stdlib.h>\n+#include <stdio.h>\n+#include <string.h>\n+#include <unistd.h>\n+\n+#include \"DA-Service/SSM/include/SSM_file_helper.h\"\n+\n+#define TEST_FILE_NAME \"test_file_helper_tmp.txt\"\n+#define TEST_FILE_NAME2 \"test_file_helper_tmp2.txt\"\n+#define TEST_DATA \"Hello, SSM File Helper Test!\"\n+#define TEST_DATA_SIZE (sizeof(TEST_DATA) - 1)\n+\n+static void setup(void)\n+{\n+\tFILE *fp = fopen(TEST_FILE_NAME, \"w\");\n+\tif (fp != NULL) {\n+\t\tfwrite(TEST_DATA, 1, TEST_DATA_SIZE, fp);\n+\t\tfclose(fp);\n+\t}\n+}\n+\n+static void teardown(void)\n+{\n+\tunlink(TEST_FILE_NAME);\n+\tunlink(TEST_FILE_NAME2);\n+}\n+\n+START_TEST(test_ssm_file_open_success)\n+{\n+\tssm_file *file = NULL;\n+\tdawit_result result = SSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_ptr_nonnull(file);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_open_null_file)\n+{\n+\tdawit_result result = SSM_file_open(NULL, TEST_FILE_NAME, \"r\");\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_open_null_file_name)\n+{\n+\tssm_file *file = NULL;\n+\tdawit_result result = SSM_file_open(&file, NULL, \"r\");\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_open_null_open_mode)\n+{\n+\tssm_file *file = NULL;\n+\tdawit_result result = SSM_file_open(&file, TEST_FILE_NAME, NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_open_nonexistent_file)\n+{\n+\tssm_file *file = NULL;\n+\tdawit_result result = SSM_file_open(&file, \"nonexistent_file_12345.txt\", \"r\");\n+\tck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_open_write_mode)\n+{\n+\tssm_file *file = NULL;\n+\tdawit_result result = SSM_file_open(&file, TEST_FILE_NAME2, \"w\");\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_ptr_nonnull(file);\n+\tSSM_file_close(file);\n+\tunlink(TEST_FILE_NAME2);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_close_success)\n+{\n+\tssm_file *file = NULL;\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_close(file);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_close_null_file)\n+{\n+\tdawit_result result = SSM_file_close(NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_read_success)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[TEST_DATA_SIZE + 1] = {0};\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_read(file, buffer, TEST_DATA_SIZE);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_str_eq((char *)buffer, TEST_DATA);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_read_null_file)\n+{\n+\tunsigned char buffer[10] = {0};\n+\tdawit_result result = SSM_file_read(NULL, buffer, 10);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_read_null_buffer)\n+{\n+\tssm_file *file = NULL;\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_read(file, NULL, 10);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_read_partial)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[10] = {0};\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_read(file, buffer, 10);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_int_eq(strncmp((char *)buffer, \"Hello, SSM\", 10), 0);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_read_beyond_end)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[100] = {0};\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_read(file, buffer, 100);\n+\tck_assert_int_eq(result, DAWIT_FAIL);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+/* SSM_file_write tests */\n+START_TEST(test_ssm_file_write_success)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char data[] = \"Test write data\";\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME2, \"w\");\n+\tdawit_result result = SSM_file_write(file, data, strlen((char *)data));\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tSSM_file_close(file);\n+\tunlink(TEST_FILE_NAME2);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_write_null_file)\n+{\n+\tunsigned char data[] = \"Test data\";\n+\tdawit_result result = SSM_file_write(NULL, data, strlen((char *)data));\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_write_null_data)\n+{\n+\tssm_file *file = NULL;\n+\tSSM_file_open(&file, TEST_FILE_NAME2, \"w\");\n+\tdawit_result result = SSM_file_write(file, NULL, 10);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+\tSSM_file_close(file);\n+\tunlink(TEST_FILE_NAME2);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_seek_success)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[10] = {0};\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_seek(file, 7, SEEK_SET);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tSSM_file_read(file, buffer, 5);\n+\tck_assert_int_eq(strncmp((char *)buffer, \"SSM F\", 5), 0);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_seek_null_file)\n+{\n+\tdawit_result result = SSM_file_seek(NULL, 0, SEEK_SET);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_seek_cur)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[10];\n+\t\n+\tmemset(buffer, 0, sizeof(buffer));\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tSSM_file_seek(file, 5, SEEK_SET);\n+\tdawit_result result = SSM_file_seek(file, 2, SEEK_CUR);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tSSM_file_read(file, buffer, 5);\n+\tck_assert_int_eq(strncmp((char *)buffer, \"SSM F\", 5), 0);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_seek_end)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned char buffer[10];\n+\t\n+\tmemset(buffer, 0, sizeof(buffer));\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_seek(file, -5, SEEK_END);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tSSM_file_read(file, buffer, 5);\n+\tck_assert_int_eq(strncmp((char *)buffer, \"Test!\", 5), 0);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_get_size_success)\n+{\n+\tssm_file *file = NULL;\n+\tunsigned int file_size = 0;\n+\t\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_get_size(file, &file_size);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_int_eq(file_size, TEST_DATA_SIZE);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_get_size_null_file)\n+{\n+\tunsigned int file_size = 0;\n+\tdawit_result result = SSM_file_get_size(NULL, &file_size);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_get_size_null_size)\n+{\n+\tssm_file *file = NULL;\n+\tSSM_file_open(&file, TEST_FILE_NAME, \"r\");\n+\tdawit_result result = SSM_file_get_size(file, NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+\tSSM_file_close(file);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_is_exist_true)\n+{\n+\tdawit_result result = SSM_file_is_exist(TEST_FILE_NAME);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_is_exist_false)\n+{\n+\tdawit_result result = SSM_file_is_exist(\"nonexistent_file_12345.txt\");\n+\tck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_is_exist_null)\n+{\n+\tdawit_result result = SSM_file_is_exist(NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_delete_success)\n+{\n+\n+\tFILE *fp = fopen(TEST_FILE_NAME2, \"w\");\n+\tck_assert_ptr_nonnull(fp);\n+\tfclose(fp);\n+\t\n+\tck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_SUCCESS);\n+\tdawit_result result = SSM_file_delete(TEST_FILE_NAME2);\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_delete_null)\n+{\n+\tdawit_result result = SSM_file_delete(NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_file_delete_nonexistent)\n+{\n+\tdawit_result result = SSM_file_delete(\"nonexistent_file_12345.txt\");\n+\tck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_rename_file_success)\n+{\n+\tFILE *fp = fopen(TEST_FILE_NAME2, \"w\");\n+\tck_assert_ptr_nonnull(fp);\n+\tfprintf(fp, \"test content\");\n+\tfclose(fp);\n+\t\n+\tdawit_result result = SSM_rename_file(TEST_FILE_NAME2, \"renamed_file.txt\");\n+\tck_assert_int_eq(result, DAWIT_SUCCESS);\n+\tck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_FAIL);\n+\tck_assert_int_eq(SSM_file_is_exist(\"renamed_file.txt\"), DAWIT_SUCCESS);\n+\tunlink(\"renamed_file.txt\");\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_rename_file_null_old_path)\n+{\n+\tdawit_result result = SSM_rename_file(NULL, TEST_FILE_NAME2);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_rename_file_null_new_path)\n+{\n+\tdawit_result result = SSM_rename_file(TEST_FILE_NAME, NULL);\n+\tck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_ssm_rename_file_nonexistent_source)\n+{\n+\tdawit_result result = SSM_rename_file(\"nonexistent_file_12345.txt\", TEST_FILE_NAME2);\n+\tck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+void utc_SSM_file_helper(TCase *tc)\n+{\n+\ttcase_add_checked_fixture(tc, setup, teardown);\n+\n+\ttcase_add_test(tc, test_ssm_file_open_success);\n+\ttcase_add_test(tc, test_ssm_file_open_null_file);\n+\ttcase_add_test(tc, test_ssm_file_open_null_file_name);\n+\ttcase_add_test(tc, test_ssm_file_open_null_open_mode);\n+\ttcase_add_test(tc, test_ssm_file_open_nonexistent_file);\n+\ttcase_add_test(tc, test_ssm_file_open_write_mode);\n+\ttcase_add_test(tc, test_ssm_file_close_success);\n+\ttcase_add_test(tc, test_ssm_file_close_null_file);\n+\ttcase_add_test(tc, test_ssm_file_read_success);\n+\ttcase_add_test(tc, test_ssm_file_read_null_file);\n+\ttcase_add_test(tc, test_ssm_file_read_null_buffer);\n+\ttcase_add_test(tc, test_ssm_file_read_partial);\n+\ttcase_add_test(tc, test_ssm_file_read_beyond_end);\n+\ttcase_add_test(tc, test_ssm_file_write_success);\n+\ttcase_add_test(tc, test_ssm_file_write_null_file);\n+\ttcase_add_test(tc, test_ssm_file_write_null_data);\n+\ttcase_add_test(tc, test_ssm_file_seek_success);\n+\ttcase_add_test(tc, test_ssm_file_seek_null_file);\n+\ttcase_add_test(tc, test_ssm_file_seek_cur);\n+\ttcase_add_test(tc, test_ssm_file_seek_end);\n+\ttcase_add_test(tc, test_ssm_file_get_size_success);\n+\ttcase_add_test(tc, test_ssm_file_get_size_null_file);\n+\ttcase_add_test(tc, test_ssm_file_get_size_null_size);\n+\ttcase_add_test(tc, test_ssm_file_is_exist_true);\n+\ttcase_add_test(tc, test_ssm_file_is_exist_false);\n+\ttcase_add_test(tc, test_ssm_file_is_exist_null);\n+\ttcase_add_test(tc, test_ssm_file_delete_success);\n+\ttcase_add_test(tc, test_ssm_file_delete_null);\n+\ttcase_add_test(tc, test_ssm_file_delete_nonexistent);\n+\ttcase_add_test(tc, test_ssm_rename_file_success);\n+\ttcase_add_test(tc, test_ssm_rename_file_null_old_path);\n+\ttcase_add_test(tc, test_ssm_rename_file_null_new_path);\n+\ttcase_add_test(tc, test_ssm_rename_file_nonexistent_source);\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "1d997064e8f9adf16c434771083b1c829aff3212",
+      "filename": "test/utc/SSM_file_logger_test.c",
+      "status": "added",
+      "additions": 366,
+      "deletions": 0,
+      "changes": 366,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_file_logger_test.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2FSSM_file_logger_test.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2FSSM_file_logger_test.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -0,0 +1,366 @@\n+#include <check.h>\n+#include <stdlib.h>\n+#include <stdio.h>\n+#include <string.h>\n+#include <time.h>\n+#include <unistd.h>\n+#include <stdarg.h>\n+#include <pthread.h>\n+\n+#include \"DA-Service/SSM/include/SSM_file_logger.h\"\n+#include \"DA-Service/SSM/include/SSM_client_ES.h\"\n+#include \"DA-Service/SSM/include/SSM_client_SYS.h\"\n+#include \"DA-Service/SSM/include/SSM_client.h\"\n+#include \"log_buffer.h\"\n+#include \"kpi_buffer.h\"\n+#include \"json/cJSON.h\"\n+\n+#define TEST_LOG_FILE \"/mnt/test_ssm_stored_logs\"\n+\n+#define MOCK_LOG_BUFFER_SIZE 100\n+\n+typedef struct mock_log_data {\n+\tint time;\n+\tchar code[LOG_BUFFER_CODE_SIZE];\n+\tchar *message;\n+\tint level;\n+\tstruct mock_log_data *pre;\n+\tstruct mock_log_data *next;\n+} mock_log_data_t;\n+\n+static mock_log_data_t mock_log_buffer_table[MOCK_LOG_BUFFER_SIZE];\n+static mock_log_data_t *mock_first_log = NULL;\n+static int mock_first_log_index = -1;\n+static mock_log_data_t *mock_last_log = NULL;\n+static int mock_last_log_index = -1;\n+static int mock_base_time = 0;\n+static pthread_mutex_t mock_log_lock = PTHREAD_MUTEX_INITIALIZER;\n+\n+void __wrap_log_buffer_lock(void)\n+{\n+\tpthread_mutex_lock(&mock_log_lock);\n+}\n+\n+void __wrap_log_buffer_unlock(void)\n+{\n+\tpthread_mutex_unlock(&mock_log_lock);\n+}\n+\n+void __wrap_log_buffer_init(int time_system_init)\n+{\n+\tmock_base_time = time_system_init;\n+}\n+\n+int __wrap_log_buffer_add_log(char *code, int level, const char *message_format, ...)\n+{\n+\tint index;\n+\tchar *message = NULL;\n+\t\n+\tif (code == NULL)\n+\t{\n+\t\treturn -1;\n+\t}\n+\n+\tif (message_format != NULL)\n+\t{\n+\t\tva_list message_args;\n+\t\tva_start(message_args, message_format);\n+\t\tvasprintf(&message, message_format, message_args);\n+\t\tva_end(message_args);\n+\t}\n+\n+\tpthread_mutex_lock(&mock_log_lock);\n+\n+\tindex = (mock_last_log_index + 1) % MOCK_LOG_BUFFER_SIZE;\n+\tif (index == mock_first_log_index)\n+\t{\n+\t\tif (mock_log_buffer_table[mock_first_log_index].message != NULL)\n+\t\t{\n+\t\t\tfree(mock_log_buffer_table[mock_first_log_index].message);\n+\t\t\tmock_log_buffer_table[mock_first_log_index].message = NULL;\n+\t\t}\n+\t\tmock_first_log_index = (mock_first_log_index + 1) % MOCK_LOG_BUFFER_SIZE;\n+\t\tmock_first_log = &mock_log_buffer_table[mock_first_log_index];\n+\t\tmock_log_buffer_table[mock_first_log_index].pre = NULL;\n+\t}\n+\n+\tif (mock_first_log_index == -1)\n+\t{\n+\t\tmock_first_log_index = 0;\n+\t\tmock_first_log = &mock_log_buffer_table[mock_first_log_index];\n+\t\tmock_log_buffer_table[mock_first_log_index].pre = NULL;\n+\t\tmock_log_buffer_table[mock_first_log_index].next = NULL;\n+\t}\n+\telse\n+\t{\n+\t\tmock_log_buffer_table[index].pre = &mock_log_buffer_table[mock_last_log_index];\n+\t\tmock_log_buffer_table[mock_last_log_index].next = &mock_log_buffer_table[index];\n+\t}\n+\n+\tmock_log_buffer_table[index].time = (int)time(NULL);\n+\tsnprintf(mock_log_buffer_table[index].code, LOG_BUFFER_CODE_SIZE, \"%s\", code);\n+\tmock_log_buffer_table[index].message = message;\n+\tmock_log_buffer_table[index].next = NULL;\n+\tmock_log_buffer_table[index].level = level;\n+\n+\tmock_last_log_index = index;\n+\tmock_last_log = &mock_log_buffer_table[mock_last_log_index];\n+\n+\tpthread_mutex_unlock(&mock_log_lock);\n+\n+\treturn 0;\n+}\n+\n+log_data *__wrap_log_buffer_get_first(void)\n+{\n+\treturn (log_data *)mock_first_log;\n+}\n+\n+log_data *__wrap_log_buffer_get_last(void)\n+{\n+\treturn (log_data *)mock_last_log;\n+}\n+\n+void __wrap_log_buffer_clear(void)\n+{\n+\tmock_first_log = NULL;\n+\tmock_first_log_index = -1;\n+\tmock_last_log = NULL;\n+\tmock_last_log_index = -1;\n+\tmock_base_time = 0;\n+}\n+\n+dawit_result __wrap_SSM_is_policy_done(void)\n+{\n+\treturn DAWIT_TRUE;\n+}\n+\n+struct tm* __wrap_gmtime(const time_t *timep)\n+{\n+    static struct tm tm;\n+    (void)timep;\n+    tm.tm_year = 121;\n+    tm.tm_mon = 0;\n+    tm.tm_mday = 1;\n+    tm.tm_hour = 12;\n+    tm.tm_min = 0;\n+    tm.tm_sec = 0;\n+    tm.tm_isdst = 0;\n+    return &tm;\n+}\n+\n+static void setup_log_data(void)\n+{\n+    SSM_ES_init_table();\n+    SSM_SYS_init_table();\n+    \n+    LOG_BUFFER_ADD_INFO(\"CS001\", \"Test message with message\");  \n+    LOG_BUFFER_ADD_INFO(\"ES001\", NULL);\n+    LOG_BUFFER_ADD_ERROR(\"NS001\", \"Error message\");\n+    LOG_BUFFER_ADD_ERROR(\"AS001\", NULL);\n+    LOG_BUFFER_ADD_DEBUG(\"SS001\", \"Debug message\");\n+    LOG_BUFFER_ADD_DEBUG(\"PS001\", NULL);\n+    LOG_BUFFER_ADD_INFO(\"RR001\", \"RR type message\");\n+    log_buffer_add_KPI_str(KPI_TAG_SYSTEM, \"origin_time_zone\", \"Asia/Seoul\", KPI_SEND_EVERY);\n+    log_buffer_add_KPI_num(KPI_TAG_SYSTEM, \"hello\", 1, KPI_SEND_EVERY);\n+}\n+\n+static void teardown_log_data(void)\n+{\n+    /* Log buffer and KPI buffer cleanup is handled internally */\n+}\n+\n+START_TEST(test_SSM_store_logs_to_file_invalid_time_limit)\n+{\n+    dawit_result result = SSM_store_logs_to_file_impl(500);\n+    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_store_logs_to_file_zero_time_limit)\n+{\n+    dawit_result result = SSM_store_logs_to_file_impl(0);\n+    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_store_logs_to_file_valid_time_limit)\n+{\n+    setup_log_data();\n+    dawit_result result = SSM_store_logs_to_file_impl(5000);\n+    (void)result;\n+    teardown_log_data();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_check_stored_logs_file_exist_no_file)\n+{\n+    SSM_delete_stored_logs_file();\n+    \n+    dawit_result result = SSM_check_stored_logs_file_exist();\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_check_stored_logs_file_exist_with_file)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"test data\\n\");\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_check_stored_logs_file_exist();\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+    \n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_delete_stored_logs_file_no_file)\n+{\n+    SSM_delete_stored_logs_file();\n+    dawit_result result = SSM_delete_stored_logs_file();\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_delete_stored_logs_file_with_file)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"test data\\n\");\n+        fclose(fp);\n+    }\n+    \n+    ck_assert_int_eq(SSM_check_stored_logs_file_exist(), DAWIT_SUCCESS);\n+    \n+    dawit_result result = SSM_delete_stored_logs_file();\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+    ck_assert_int_eq(SSM_check_stored_logs_file_exist(), DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_get_file_creation_time_null_param)\n+{\n+    dawit_result result = SSM_get_file_creation_time(NULL);\n+    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_get_file_creation_time_no_file)\n+{\n+    time_t creation_time;\n+    SSM_delete_stored_logs_file();\n+    \n+    dawit_result result = SSM_get_file_creation_time(&creation_time);\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_get_file_creation_time_with_file)\n+{\n+    time_t creation_time;\n+    \n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"test data\\n\");\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_get_file_creation_time(&creation_time);\n+    ck_assert_int_eq(result, DAWIT_SUCCESS);\n+    ck_assert_int_ne(creation_time, 0);\n+    \n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_read_logs_from_file_no_file)\n+{\n+    SSM_delete_stored_logs_file();\n+    \n+    dawit_result result = SSM_read_logs_from_file_and_send_impl();\n+    ck_assert_int_eq(result, DAWIT_FAIL);\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_read_logs_from_file_with_empty_file)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_read_logs_from_file_and_send_impl();\n+    (void)result;\n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_read_logs_from_file_with_es_logs)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"<0#1609459200#CS001#Test message 1>\\n\");\n+        fprintf(fp, \"<0#1609459260#ES001#Test message 2>\\n\");\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_read_logs_from_file_and_send_impl();\n+    (void)result;\n+    \n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_read_logs_from_file_with_sys_logs)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"<1#kpi_name_1#NUM#100>\\n\");\n+        fprintf(fp, \"<1#kpi_name_2#STR#test_string>\\n\");\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_read_logs_from_file_and_send_impl();\n+    (void)result;\n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+START_TEST(test_SSM_read_logs_from_file_with_mixed_logs)\n+{\n+    FILE *fp = fopen(\"/mnt/ssm_stored_logs\", \"w\");\n+    if (fp != NULL) {\n+        fprintf(fp, \"<0#1609459200#CS001#ES message 1>\\n\");\n+        fprintf(fp, \"<0#1609459260#ES001#ES message 2>\\n\");\n+        fprintf(fp, \"<1#kpi_num#NUM#200>\\n\");\n+        fprintf(fp, \"<1#kpi_str#STR#string_value>\\n\");\n+        fclose(fp);\n+    }\n+    \n+    dawit_result result = SSM_read_logs_from_file_and_send_impl();\n+    (void)result;\n+    SSM_delete_stored_logs_file();\n+}\n+END_TEST\n+\n+void utc_SSM_file_logger(TCase *tc)\n+{\n+    tcase_add_test(tc, test_SSM_store_logs_to_file_invalid_time_limit);\n+    tcase_add_test(tc, test_SSM_store_logs_to_file_zero_time_limit);\n+    tcase_add_test(tc, test_SSM_store_logs_to_file_valid_time_limit);\n+    tcase_add_test(tc, test_SSM_check_stored_logs_file_exist_no_file);\n+    tcase_add_test(tc, test_SSM_check_stored_logs_file_exist_with_file);\n+    tcase_add_test(tc, test_SSM_delete_stored_logs_file_no_file);\n+    tcase_add_test(tc, test_SSM_delete_stored_logs_file_with_file);\n+    tcase_add_test(tc, test_SSM_get_file_creation_time_null_param);\n+    tcase_add_test(tc, test_SSM_get_file_creation_time_no_file);\n+    tcase_add_test(tc, test_SSM_get_file_creation_time_with_file);\n+    tcase_add_test(tc, test_SSM_read_logs_from_file_no_file);\n+    tcase_add_test(tc, test_SSM_read_logs_from_file_with_empty_file);\n+    tcase_add_test(tc, test_SSM_read_logs_from_file_with_es_logs);\n+    tcase_add_test(tc, test_SSM_read_logs_from_file_with_sys_logs);\n+    tcase_add_test(tc, test_SSM_read_logs_from_file_with_mixed_logs);\n+}\n\\ No newline at end of file"
+    },
+    {
+      "sha": "65fa561fd447e72ec8cebba99a2d62885ef4b8d3",
+      "filename": "test/utc/utc.c",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2Futc.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2Futc.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2Futc.c?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -47,6 +47,8 @@ static Suite *my_suite(void)\n \tutc_SSM_log_data(tc);\n \tutc_SSM_wifi_bigdata_buffer(tc);\n \tutc_SSM_external_module(tc);\n+\tutc_SSM_file_helper(tc);\n+\tutc_SSM_file_logger(tc);\n \n \ttcase_add_test(tc, SSM_tc);\n \ttcase_add_checked_fixture(tc, setup, teardown);"
+    },
+    {
+      "sha": "6536d7128f43f9365114b5c198e6a73c9bfecde6",
+      "filename": "test/utc/utcmk.defs",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/blob/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2Futcmk.defs",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/SSM_Release/raw/da03e7fbb8d6d43e2b6c9799524b21ee95c14b84/test%2Futc%2Futcmk.defs",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/SSM_Release/contents/test%2Futc%2Futcmk.defs?ref=da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "patch": "@@ -17,6 +17,8 @@ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_command.c\n SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_client_ai_inv.c\n SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_client_wifi_bigdata.c\n SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_log_data.c\n+SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_file_logger.c\n+SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_file_helper.c\n SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_wifi_bigdata_buffer.c\n SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/rtl8721csm_refactoring/SSM_external_module.c\n "
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+/* Host-only regression harness. Real PR types/functions are inserted by verify.py.
+ * Mocked boundaries: partition metadata, header I/O, loader, reboot recovery,
+ * BP read status, device I/O, allocation and CRC. Never accesses a real device.
+ */
+#include <assert.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <fcntl.h>
+
+#define FAR
+#define BIN_NAME_MAX 16
+#define CONFIG_NUM_APPS 2
+#define BOOTPARAM_COUNT 2
+#define BOOTPARAM_SIZE 4096
+#define BOOTPARAM_PARTSIZE 8192
+#define BOOTPARAM_FORMAT_VERSION_LATEST 2
+#define CHECKSUM_SIZE 4
+#define PARTS_PER_BIN 2
+#define BM_CMNLIB_IDX 0
+#define BM_CMNLIB_NAME "common"
+#define BINARY_PATH_LEN 32
+#define BINMGR_DEVNAME_FMT "/mock/mtd%d"
+#define BP_SEEK_OFFSET(index) ((index) == 0 ? 0 : BOOTPARAM_PARTSIZE / 2)
+#define BINMGR_OK 0
+#define OK 0
+#define ERROR (-1)
+#define BINMGR_INVALID_PARAM (-2)
+#define BINMGR_OPERATION_FAIL (-3)
+#define BINMGR_OUT_OF_MEMORY (-4)
+#define BINARY_INACTIVE 0
+#define BINARY_USERAPP 1
+#define BINARY_COMMON 2
+#define SIGNATURE_VAILD 0
+#define USER_SIGN_PREPEND_SIZE 64
+#define bmdbg(...) ((void)0)
+
+/* INSERT_REAL_TYPES */
+
+typedef struct { uint32_t address; } mock_part_t;
+typedef struct { uint32_t part_count; mock_part_t part_info[2]; } binmgr_kinfo_t;
+typedef struct {
+	char bin_name[BIN_NAME_MAX];
+	uint32_t bin_ver, header_size, bin_size, bin_ramsize, bin_stacksize, bin_priority;
+} user_binary_header_t;
+typedef struct { uint32_t version, header_size, bin_size; } common_binary_header_t;
+typedef struct {
+	char bin_name[BIN_NAME_MAX];
+	uint32_t offset, bin_size, bin_ver, ram_size, stack_size, priority;
+} load_attr_t;
+
+static binmgr_bpinfo_t g_bp_info;
+static binmgr_bp_recovery_info_t g_bp_recovery_info;
+static binmgr_kinfo_t kdata;
+static int counts[3], indices[3], states[3], bp_read_result;
+static uint32_t versions[3][2];
+static int failure_stage, captured_reason, recovery_calls, writer_calls, writer_offset;
+static unsigned char written_bp[BOOTPARAM_SIZE];
+#define BIN_COUNT(i) counts[i]
+#define BIN_STATE(i) states[i]
+#define BIN_USEIDX(i) indices[i]
+#define BIN_NAME(i) ((i) == 0 ? "common" : "app")
+#define BIN_PARTNUM(i, p) ((i) * 2 + (p))
+#define BIN_PARTADDR(i, p) (0x1000u + (unsigned)(i) * 0x2000u + (unsigned)(p) * 0x1000u)
+#define BIN_VER(i, p) versions[i][p]
+
+static binmgr_kinfo_t *binary_manager_get_kdata(void) { return &kdata; }
+static uint32_t binary_manager_get_ucount(void) { return 1; }
+static int binary_manager_update_bpinfo(void) { return bp_read_result; }
+static binmgr_bpdata_t *binary_manager_get_bpdata(void) { return &g_bp_info.bp_data[g_bp_info.inuse_idx]; }
+static int binary_manager_read_header(int type, char *path, uint32_t address, void *out, bool verify)
+{
+	(void)path;
+	(void)address;
+	if (verify && failure_stage == 2) { return ERROR; }
+	if (type == BINARY_COMMON) {
+		common_binary_header_t *h = out;
+		memset(h, 0, sizeof(*h));
+		h->version = 200;
+	} else {
+		user_binary_header_t *h = out;
+		memset(h, 0, sizeof(*h));
+		strcpy(h->bin_name, "app");
+		h->bin_ver = 200;
+	}
+	return OK;
+}
+static int up_verify_usersignature(uint32_t address) { (void)address; return failure_stage == 1 ? ERROR : SIGNATURE_VAILD; }
+static int binary_manager_load_binary(int i, char *path, load_attr_t *attr)
+{
+	(void)i; (void)path; (void)attr;
+	return failure_stage == 3 ? ERROR : OK;
+}
+static int binary_manager_recover_bootparam_set(void)
+{
+	captured_reason = g_bp_recovery_info.recovery_reason;
+	recovery_calls++;
+	return BINMGR_OPERATION_FAIL; /* Stop the real loader error branch without reboot. */
+}
+
+static int mock_open(const char *path, int flags, int mode)
+{ (void)path; (void)flags; (void)mode; return 42; }
+static int mock_close(int fd) { assert(fd == 42); return 0; }
+static int mock_seek(int fd, int offset, int whence)
+{ assert(fd == 42); assert(whence == SEEK_SET); writer_offset = offset; return offset; }
+static int mock_write(int fd, const uint8_t *bytes, int size)
+{
+	assert(fd == 42 && size == BOOTPARAM_SIZE);
+	memcpy(written_bp, bytes, (size_t)size);
+	writer_calls++;
+	return size;
+}
+static uint32_t crc32(const uint8_t *data, size_t length)
+{ (void)data; assert(length == BOOTPARAM_SIZE - CHECKSUM_SIZE); return 0x12345678; }
+#define open mock_open
+#define close mock_close
+#define lseek mock_seek
+#define write mock_write
+#define kmm_malloc malloc
+#define kmm_free free
+
+/* INSERT_REAL_BOOT_FUNCTIONS */
+/* INSERT_REAL_LOAD_FUNCTION */
+
+static void reset_fixture(void)
+{
+	memset(&g_bp_info, 0, sizeof(g_bp_info));
+	memset(&g_bp_recovery_info, 0, sizeof(g_bp_recovery_info));
+	memset(states, 0, sizeof(states));
+	memset(indices, 0, sizeof(indices));
+	memset(versions, 0, sizeof(versions));
+	memset(written_bp, 0, sizeof(written_bp));
+	counts[0] = 0;
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+	counts[0] = 2;
+#endif
+	counts[1] = 2;
+	counts[2] = 0;
+	kdata.part_count = 2;
+	kdata.part_info[0].address = 0x10000;
+	kdata.part_info[1].address = 0x20000;
+	g_bp_info.part_num = 7;
+	g_bp_info.bp_data[0].head.version = 40;
+	g_bp_info.bp_data[0].head.format_ver = 2;
+	g_bp_info.bp_data[0].head.address[0] = kdata.part_info[0].address;
+	g_bp_info.bp_data[0].head.address[1] = kdata.part_info[1].address;
+#ifdef CONFIG_APP_BINARY_SEPARATION
+	g_bp_info.bp_data[0].head.app_count = 1;
+	strcpy(g_bp_info.bp_data[0].head.app_data[0].name, "app");
+#endif
+	bp_read_result = OK;
+	failure_stage = captured_reason = recovery_calls = writer_calls = writer_offset = 0;
+}
+
+static void write_and_check(binmgr_bpdata_t *data, int reason)
+{
+	assert(binary_manager_write_bootparam_to_slot(data, 1) == OK);
+	assert(writer_calls == 1 && writer_offset == BOOTPARAM_SIZE);
+	assert(written_bp[BOOTPARAM_SIZE - 1] == reason);
+	assert(data->head.crc_hash == 0x12345678);
+}
+
+static int legacy_abi(void)
+{
+	/* This is a format-v2 record with the BASE contract's UNKNOWN byte (16),
+	 * not a claim that a deployed device or the bootloader emitted one. */
+	binmgr_bpdata_t historical;
+	memset(&historical, 0, sizeof(historical));
+	historical.head.format_ver = 2;
+	historical.tail.bp_update_reason = 16;
+	if (historical.tail.bp_update_reason != BP_UPDATE_UNKNOWN ||
+		historical.tail.bp_update_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON) {
+		puts("REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON");
+		return 1;
+	}
+	assert(BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON == 17);
+	puts("PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct");
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	if (argc > 1 && strcmp(argv[1], "--legacy-abi") == 0) { return legacy_abi(); }
+	binmgr_bpdata_t rebuilt;
+	reset_fixture();
+	assert(binary_manager_check_bootparam_set() == OK);
+	reset_fixture();
+	bp_read_result = BINMGR_OPERATION_FAIL;
+	assert(binary_manager_check_bootparam_set() == BINMGR_OPERATION_FAIL);
+	assert(g_bp_recovery_info.recovery_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_NO_VALID_BP);
+	assert(binary_manager_make_bootparam_from_partitions(&rebuilt, 1, 1, g_bp_recovery_info.recovery_reason) == OK);
+	assert(rebuilt.head.version == 1 && rebuilt.head.active_idx == 1);
+	write_and_check(&rebuilt, BP_UPDATE_BINARY_MANAGER_RECOVERY_NO_VALID_BP);
+	reset_fixture();
+	g_bp_info.bp_data[0].head.address[0]++;
+	assert(binary_manager_check_bootparam_set() == BINMGR_OPERATION_FAIL);
+	assert(g_bp_recovery_info.recovery_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_KERNEL_ADDR_MISMATCH);
+#if defined(CONFIG_APP_BINARY_SEPARATION) || defined(CONFIG_RESOURCE_FS)
+	reset_fixture();
+#ifdef CONFIG_APP_BINARY_SEPARATION
+	g_bp_info.bp_data[0].head.app_data[0].useidx = 1;
+#else
+	g_bp_info.bp_data[0].head.resource_active_idx = 1;
+#endif
+	assert(binary_manager_check_bootparam_set() == BINMGR_OPERATION_FAIL);
+	assert(g_bp_recovery_info.recovery_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_SET_ALIGNMENT);
+#endif
+	for (int old_reason = 1; old_reason <= 7; old_reason++) {
+		reset_fixture();
+		g_bp_info.bp_data[0].tail.bp_update_reason = (uint8_t)old_reason;
+		assert(binary_manager_check_bootparam_set() == BINMGR_OPERATION_FAIL);
+		assert(g_bp_recovery_info.recovery_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_BOOTLOADER_RECOVERED);
+		assert(binary_manager_make_bootparam_from_partitions(&rebuilt, 1, 41, g_bp_recovery_info.recovery_reason) == OK);
+		assert(rebuilt.tail.bp_update_reason == BP_UPDATE_BINARY_MANAGER_RECOVERY_BOOTLOADER_RECOVERED);
+		write_and_check(&rebuilt, BP_UPDATE_BINARY_MANAGER_RECOVERY_BOOTLOADER_RECOVERED);
+		g_bp_info.bp_data[0] = rebuilt;
+		assert(binary_manager_check_bootparam_set() == OK);
+		/* Naively preserving the old reason would request recovery again. */
+		g_bp_info.bp_data[0].tail.bp_update_reason = (uint8_t)old_reason;
+		assert(binary_manager_check_bootparam_set() == BINMGR_OPERATION_FAIL);
+	}
+	const uint8_t reasons[] = {BP_UPDATE_BINARY_MANAGER_RECOVERY_USER,
+		BP_UPDATE_BINARY_MANAGER_RECOVERY_RESOURCE, BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON};
+	for (unsigned i = 0; i < sizeof(reasons); i++) {
+		reset_fixture();
+		assert(binary_manager_check_bootparam_set() == OK);
+		binary_manager_set_bp_recovery_reason(reasons[i]);
+		assert(binary_manager_make_bootparam_from_partitions(&rebuilt, 0, 41, g_bp_recovery_info.recovery_reason) == OK);
+		write_and_check(&rebuilt, reasons[i]);
+	}
+	for (int bin = 0; bin <= 1; bin++) {
+#ifndef CONFIG_SUPPORT_COMMON_BINARY
+		if (bin == 0) { continue; }
+#endif
+		for (int failure = 0; failure <= 3; failure++) {
+#ifndef CONFIG_BINARY_SIGNING
+			if (failure == 1) { continue; }
+#endif
+			reset_fixture();
+			failure_stage = failure;
+			int status = binary_manager_load(bin);
+			if (!failure) {
+				assert(status == OK && recovery_calls == 0);
+			} else {
+				assert(status == ERROR);
+#ifdef CONFIG_USE_BP
+				assert(recovery_calls == 1);
+				assert(captured_reason == (bin == 0 ? BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON : BP_UPDATE_BINARY_MANAGER_RECOVERY_USER));
+#else
+				assert(recovery_calls == 0);
+#endif
+			}
+		}
+	}
+	puts("PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked");
+	return 0;
+}

@@ -1,0 +1,164 @@
+{
+  "head": "c7a98ec37fb0240a67cd99e8b09ca2fc775db33d",
+  "merge_base": "df09bb8a19eed8e63b66a5b91ba349aefd133b20",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "scope": "Extracted real C functions; mocked I/O, CRC and runtime dependencies; no target build",
+  "cases": [
+    {
+      "source": "original",
+      "config": "bp-off",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "bp-off/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "kernel",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "kernel/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "kernel-resource",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "kernel-resource/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "app",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "app/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "app-sign",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "app-sign/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "common",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "common/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "original",
+      "config": "common-resource-sign",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "original",
+      "config": "common-resource-sign/legacy-abi",
+      "exit_code": 1,
+      "result": "REPRODUCED: format-v2 legacy UNKNOWN byte 16 collides with COMMON"
+    },
+    {
+      "source": "patched",
+      "config": "bp-off",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "bp-off/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "kernel",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "kernel/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "kernel-resource",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "kernel-resource/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "app",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "app/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "app-sign",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "app-sign/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "common",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "common/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    },
+    {
+      "source": "patched",
+      "config": "common-resource-sign",
+      "result": "PASS: real classifier/rebuilder/writer/loader checks; I/O and CRC mocked"
+    },
+    {
+      "source": "patched",
+      "config": "common-resource-sign/legacy-abi",
+      "exit_code": 0,
+      "result": "PASS: legacy UNKNOWN=16 retained; COMMON=17 is distinct"
+    }
+  ],
+  "patch_apply_check": "passed",
+  "result": "passed: original legacy collision reproduced; patched compatibility and behavior checks passed"
+}

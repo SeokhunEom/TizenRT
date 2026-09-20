@@ -1,0 +1,352 @@
+[
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 88,
+    "last": 248,
+    "source_lines": 977
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/Kconfig",
+    "first": 599,
+    "last": 632,
+    "source_lines": 632
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/arch/arm/src/armv7-a/arm_initialize.c",
+    "first": 163,
+    "last": 171,
+    "source_lines": 231
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/arch/arm/src/armv7-a/arm_assert.c",
+    "first": 586,
+    "last": 619,
+    "source_lines": 681
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 164,
+    "last": 211,
+    "source_lines": 422
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 316,
+    "last": 402,
+    "source_lines": 422
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 213,
+    "last": 284,
+    "source_lines": 422
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 1736,
+    "last": 1739,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 341,
+    "last": 420,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_helper.c",
+    "first": 14,
+    "last": 118,
+    "source_lines": 229
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 463,
+    "last": 543,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 831,
+    "last": 929,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 2081,
+    "last": 2161,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_command.c",
+    "first": 355,
+    "last": 396,
+    "source_lines": 397
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "conanfile.py",
+    "first": 49,
+    "last": 57,
+    "source_lines": 57
+  },
+  {
+    "repo": "TR_Utils",
+    "path": "apps/examples/crashrpt_test/crashrpt_test_main.c",
+    "first": 410,
+    "last": 493,
+    "source_lines": 681
+  },
+  {
+    "repo": "TR_Utils",
+    "path": "apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c",
+    "first": 146,
+    "last": 222,
+    "source_lines": 542
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/include/SSM_file_logger.h",
+    "first": 11,
+    "last": 17,
+    "source_lines": 29
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 157,
+    "last": 291,
+    "source_lines": 422
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 2081,
+    "last": 2171,
+    "source_lines": 2174
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/include/tinyara/crashrpt.h",
+    "first": 90,
+    "last": 250,
+    "source_lines": 258
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 1782,
+    "last": 1936,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 101,
+    "last": 118,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 165,
+    "last": 190,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/include/SSM_client.h",
+    "first": 54,
+    "last": 62,
+    "source_lines": 70
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 528,
+    "last": 543,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 875,
+    "last": 878,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 903,
+    "last": 929,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 478,
+    "last": 503,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 881,
+    "last": 888,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 317,
+    "last": 338,
+    "source_lines": 977
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/fs/smartfs/smartfs_smart.c",
+    "first": 1626,
+    "last": 1634,
+    "source_lines": 1790
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 363,
+    "last": 398,
+    "source_lines": 422
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/crashrpt.c",
+    "first": 307,
+    "last": 310,
+    "source_lines": 422
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/kernel/irq/fin_notify.c",
+    "first": 52,
+    "last": 79,
+    "source_lines": 80
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 250,
+    "last": 276,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 1985,
+    "last": 1994,
+    "source_lines": 2174
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/fs/smartfs/smartfs_smart.c",
+    "first": 1709,
+    "last": 1732,
+    "source_lines": 1790
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/dev_null.c",
+    "first": 121,
+    "last": 128,
+    "source_lines": 164
+  },
+  {
+    "repo": "Kernel",
+    "path": "os/drivers/dev_null.c",
+    "first": 161,
+    "last": 164,
+    "source_lines": 164
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 130,
+    "last": 141,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 478,
+    "last": 563,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 649,
+    "last": 745,
+    "source_lines": 977
+  },
+  {
+    "repo": "TR_Utils",
+    "path": "apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c",
+    "first": 281,
+    "last": 347,
+    "source_lines": 542
+  },
+  {
+    "repo": "TR_Utils",
+    "path": "apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c",
+    "first": 372,
+    "last": 391,
+    "source_lines": 542
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 416,
+    "last": 459,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_file_logger.c",
+    "first": 839,
+    "last": 847,
+    "source_lines": 977
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 1939,
+    "last": 1974,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "DA-Service/SSM/src/SSM_client.c",
+    "first": 2021,
+    "last": 2055,
+    "source_lines": 2174
+  },
+  {
+    "repo": "SSM_Release",
+    "path": "test/utc/SSM_file_logger_test.c",
+    "first": 301,
+    "last": 345,
+    "source_lines": 366
+  }
+]

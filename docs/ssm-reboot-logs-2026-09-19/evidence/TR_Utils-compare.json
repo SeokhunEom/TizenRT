@@ -1,0 +1,499 @@
+{
+  "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/compare/main...naman1-jain:ssm_integration_1",
+  "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/compare/main...naman1-jain:ssm_integration_1",
+  "permalink_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/compare/TizenRT:863a148...naman1-jain:3661ba8",
+  "diff_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/compare/main...naman1-jain:ssm_integration_1.diff",
+  "patch_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/compare/main...naman1-jain:ssm_integration_1.patch",
+  "base_commit": {
+    "sha": "863a148a9e63d18204a725017e71ae900ad2a600",
+    "node_id": "MDY6Q29tbWl0NTg5MTY6ODYzYTE0OGE5ZTYzZDE4MjA0YTcyNTAxN2U3MWFlOTAwYWQyYTYwMA==",
+    "commit": {
+      "author": {
+        "name": "hk-gwak",
+        "email": "hk.gwak@samsung.com",
+        "date": "2026-09-13T07:17:36Z"
+      },
+      "committer": {
+        "name": "남기원",
+        "email": "giwon98.nam@samsung.com",
+        "date": "2026-09-14T06:43:15Z"
+      },
+      "message": "external/webserver: fix gpt cyber issue of webserver",
+      "tree": {
+        "sha": "77f30ef6b6c2357c10a20ec12a265baa06c82c1b",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/trees/77f30ef6b6c2357c10a20ec12a265baa06c82c1b"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/commits/863a148a9e63d18204a725017e71ae900ad2a600",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/863a148a9e63d18204a725017e71ae900ad2a600",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/863a148a9e63d18204a725017e71ae900ad2a600",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/863a148a9e63d18204a725017e71ae900ad2a600/comments",
+    "author": {
+      "login": "hk-gwak",
+      "id": 21464,
+      "node_id": "MDQ6VXNlcjIxNDY0",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/21464?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak",
+      "html_url": "https://github.ecodesamsung.com/hk-gwak",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/hk-gwak/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "giwon98-nam",
+      "id": 26946,
+      "node_id": "MDQ6VXNlcjI2OTQ2",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/26946?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam",
+      "html_url": "https://github.ecodesamsung.com/giwon98-nam",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/giwon98-nam/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f811ce49702a6d2b30b219cd8b09e9f4ea0a99a",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/8f811ce49702a6d2b30b219cd8b09e9f4ea0a99a",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/8f811ce49702a6d2b30b219cd8b09e9f4ea0a99a"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "f0e23b8df2dd297bb535737d4f6c30f08366500c",
+    "node_id": "MDY6Q29tbWl0ODY0OTA6ZjBlMjNiOGRmMmRkMjk3YmI1MzU3MzdkNGY2YzMwZjA4MzY2NTAwYw==",
+    "commit": {
+      "author": {
+        "name": "taehwan.hwang",
+        "email": "taehwan.hwang@samsung.com",
+        "date": "2026-05-20T06:10:49Z"
+      },
+      "committer": {
+        "name": "taehwan.hwang",
+        "email": "taehwan.hwang@samsung.com",
+        "date": "2026-05-20T06:10:49Z"
+      },
+      "message": "workflow_use_new_base_version_for_5.4.0_mbedtls_3.6.6",
+      "tree": {
+        "sha": "050e2046a8ddfb6bf17574a6660f8be578cc6b0a",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/trees/050e2046a8ddfb6bf17574a6660f8be578cc6b0a"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/commits/f0e23b8df2dd297bb535737d4f6c30f08366500c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/f0e23b8df2dd297bb535737d4f6c30f08366500c",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/f0e23b8df2dd297bb535737d4f6c30f08366500c",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/f0e23b8df2dd297bb535737d4f6c30f08366500c/comments",
+    "author": {
+      "login": "taehwan-hwang",
+      "id": 445,
+      "node_id": "MDQ6VXNlcjQ0NQ==",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/445?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang",
+      "html_url": "https://github.ecodesamsung.com/taehwan-hwang",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "taehwan-hwang",
+      "id": 445,
+      "node_id": "MDQ6VXNlcjQ0NQ==",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/445?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang",
+      "html_url": "https://github.ecodesamsung.com/taehwan-hwang",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/taehwan-hwang/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1272b322b70820c5be1fce6e5cef96d2d8ba7469",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/1272b322b70820c5be1fce6e5cef96d2d8ba7469",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/1272b322b70820c5be1fce6e5cef96d2d8ba7469"
+      }
+    ]
+  },
+  "status": "diverged",
+  "ahead_by": 2,
+  "behind_by": 31,
+  "total_commits": 2,
+  "commits": [
+    {
+      "sha": "2ed8ec9de79d14248537683d94f0c9159924a579",
+      "node_id": "MDY6Q29tbWl0NTg5MTY6MmVkOGVjOWRlNzlkMTQyNDg1Mzc2ODNkOTRmMGM5MTU5OTI0YTU3OQ==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T10:24:09Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-21T12:23:59Z"
+        },
+        "message": "apps/examples/: Add crashrpt_test application for crash diagnostic capture\n\nAdd crashrpt_test example application that demonstrates the /dev/crashrpt\ndriver functionality. The application allocates diagnostic data structures\n(500 nodes of 48 bytes, 50 nodes of 64 bytes) and registers a reporter\nthread that serializes all data to a file when the system asserts.\n\nThe reporter runs at high priority and uses atomic file operations\n(write to temp file + rename) to ensure reports are never partially written.",
+        "tree": {
+          "sha": "c796aeb54496b5c6fe8cda7ad7e972eec09a29a3",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/trees/c796aeb54496b5c6fe8cda7ad7e972eec09a29a3"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/commits/2ed8ec9de79d14248537683d94f0c9159924a579",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/2ed8ec9de79d14248537683d94f0c9159924a579",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/2ed8ec9de79d14248537683d94f0c9159924a579",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/2ed8ec9de79d14248537683d94f0c9159924a579/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "f0e23b8df2dd297bb535737d4f6c30f08366500c",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/f0e23b8df2dd297bb535737d4f6c30f08366500c",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/f0e23b8df2dd297bb535737d4f6c30f08366500c"
+        }
+      ]
+    },
+    {
+      "sha": "3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "node_id": "MDY6Q29tbWl0NTg5MTY6MzY2MWJhOGE5NzM1ZDRmNDQzM2MyODg1OWFmZmUyZWRkOWFhYWVkNQ==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-21T12:25:57Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-25T11:26:36Z"
+        },
+        "message": "Add crashrpt_comprehensive_test for crash report validation\n\nUpdate the crashrpt comprehensive test to retain only APP_ASSERT and\nKERNEL_ASSERT test cases for focused crash reporting validation.",
+        "tree": {
+          "sha": "c30969ea19f8d1178ede556290bc5c5184ce99ef",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/trees/c30969ea19f8d1178ede556290bc5c5184ce99ef"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/git/commits/3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/3661ba8a9735d4f4433c28859affe2edd9aaaed5/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "2ed8ec9de79d14248537683d94f0c9159924a579",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/commits/2ed8ec9de79d14248537683d94f0c9159924a579",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/commit/2ed8ec9de79d14248537683d94f0c9159924a579"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "ebf395a4e26e8814d6215ce69e8da7e24cf282a9",
+      "filename": "apps/examples/crashrpt_comprehensive_test/Kconfig",
+      "status": "added",
+      "additions": 53,
+      "deletions": 0,
+      "changes": 53,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,53 @@\n+#\n+# For a description of the syntax of this configuration file,\n+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt\n+#\n+\n+config EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST\n+\tbool \"Crash report comprehensive test\"\n+\tdefault n\n+\tdepends on CRASH_REPORT\n+\t---help---\n+\t\tComprehensive test application for /dev/crashrpt driver.\n+\n+\t\tThis test application exercises selected crash scenarios that\n+\t\tcan be triggered from user-space and verifies the crash reports\n+\t\tgenerated by the kernel crash diagnostic capture mechanism.\n+\n+\t\tTest cases:\n+\t\t- TC1: APP_ASSERT - Direct ASSERT(0) from application\n+\t\t- TC2: KERNEL_ASSERT - Invalid ioctl to kernel driver\n+\n+\t\tThe application also includes a report verification tool that\n+\t\tparses the binary crash reports and validates their contents.\n+\n+if EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST\n+\n+config EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR\n+\tstring \"Directory for the reports\"\n+\tdefault \"/mnt\"\n+\t---help---\n+\t\tWhere the crash reports are written. Must be a writable mount\n+\t\tpoint. The reports are written atomically (temp file + rename)\n+\t\tto ensure readers never see partial reports.\n+\n+config EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY\n+\tint \"Reporter thread priority\"\n+\tdefault 254\n+\t---help---\n+\t\tThe reporter must outrank every other runnable thread, otherwise\n+\t\tit may not be scheduled before the deadline expires and no report\n+\t\twill be produced.\n+\n+config EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE\n+\tint \"Reporter thread stack size\"\n+\tdefault 8192\n+\t---help---\n+\t\tStack size for the reporter thread. The default is sufficient\n+\t\tfor writing reports to most filesystems.\n+\n+endif # EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST\n+\n+config USER_ENTRYPOINT\n+\tstring\n+\tdefault \"crashrpt_comprehensive_test_main\" if ENTRY_CRASHRPT_COMPREHENSIVE_TEST"
+    },
+    {
+      "sha": "0988dd6acd5d35c62c5b3bf3a7a9fc6d5280a6f3",
+      "filename": "apps/examples/crashrpt_comprehensive_test/Kconfig_ENTRY",
+      "status": "added",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig_ENTRY",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig_ENTRY",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FKconfig_ENTRY?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,3 @@\n+config ENTRY_CRASHRPT_COMPREHENSIVE_TEST\n+\tbool \"Crash report comprehensive test\"\n+\tdepends on EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST"
+    },
+    {
+      "sha": "29e70c9adf37f8278ad50f3d033f77b9c911b2a6",
+      "filename": "apps/examples/crashrpt_comprehensive_test/Make.defs",
+      "status": "added",
+      "additions": 25,
+      "deletions": 0,
+      "changes": 25,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMake.defs",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMake.defs",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMake.defs?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,25 @@\n+###########################################################################\n+#\n+# Copyright 2026 Samsung Electronics All Rights Reserved.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+# http://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing,\n+# software distributed under the License is distributed on an\n+# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+# either express or implied. See the License for the specific\n+# language governing permissions and limitations under the License.\n+#\n+###########################################################################\n+############################################################################\n+# apps/examples/crashrpt_comprehensive_test/Make.defs\n+# Adds selected applications to apps/ build\n+############################################################################\n+\n+ifeq ($(CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST),y)\n+CONFIGURED_APPS += examples/crashrpt_comprehensive_test\n+endif"
+    },
+    {
+      "sha": "5e62a84489d3b8048b28be8213c76f50654f47b2",
+      "filename": "apps/examples/crashrpt_comprehensive_test/Makefile",
+      "status": "added",
+      "additions": 128,
+      "deletions": 0,
+      "changes": 128,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMakefile",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMakefile",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FMakefile?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,128 @@\n+###########################################################################\n+#\n+# Copyright 2026 Samsung Electronics All Rights Reserved.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+# http://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing,\n+# software distributed under the License is distributed on an\n+# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+# either express or implied. See the License for the specific\n+# language governing permissions and limitations under the License.\n+#\n+###########################################################################\n+############################################################################\n+# apps/examples/crashrpt_comprehensive_test/Makefile\n+#\n+############################################################################\n+\n+-include $(TOPDIR)/.config\n+-include $(TOPDIR)/Make.defs\n+include $(APPDIR)/Make.defs\n+\n+# Application info\n+\n+APPNAME = crashrpt_comprehensive_test\n+FUNCNAME = $(APPNAME)_main\n+THREADEXEC = TASH_EXECMD_ASYNC\n+\n+# Source files\n+\n+ASRCS =\n+CSRCS =\n+MAINSRC = crashrpt_comprehensive_test_main.c\n+\n+AOBJS = $(ASRCS:.S=$(OBJEXT))\n+COBJS = $(CSRCS:.c=$(OBJEXT))\n+MAINOBJ = $(MAINSRC:.c=$(OBJEXT))\n+\n+SRCS = $(ASRCS) $(CSRCS) $(MAINSRC)\n+OBJS = $(AOBJS) $(COBJS)\n+\n+ifneq ($(CONFIG_BUILD_KERNEL),y)\n+  OBJS += $(MAINOBJ)\n+endif\n+\n+ifeq ($(CONFIG_WINDOWS_NATIVE),y)\n+  BIN = $(APPDIR)\\libapps$(LIBEXT)\n+else\n+ifeq ($(WINTOOL),y)\n+  BIN = $(APPDIR)\\\\libapps$(LIBEXT)\n+else\n+  BIN = $(APPDIR)/libapps$(LIBEXT)\n+endif\n+endif\n+\n+ifeq ($(WINTOOL),y)\n+  INSTALL_DIR = \"${shell cygpath -w $(BIN_DIR)}\"\n+else\n+  INSTALL_DIR = $(BIN_DIR)\n+endif\n+\n+CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PROGNAME ?= crashrpt_comprehensive_test$(EXEEXT)\n+PROGNAME = $(CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PROGNAME)\n+\n+ROOTDEPPATH = --dep-path .\n+\n+# Common build\n+\n+VPATH =\n+\n+all: .built\n+.PHONY: clean depend distclean\n+\n+$(AOBJS): %$(OBJEXT): %.S\n+\t$(call ASSEMBLE, $<, $@)\n+\n+$(COBJS) $(MAINOBJ): %$(OBJEXT): %.c\n+\t$(call COMPILE, $<, $@)\n+\n+.built: $(OBJS)\n+\t$(call ARCHIVE, $(BIN), $(OBJS))\n+\t@touch .built\n+\n+ifeq ($(CONFIG_BUILD_KERNEL),y)\n+$(BIN_DIR)$(DELIM)$(PROGNAME): $(OBJS) $(MAINOBJ)\n+\t@echo \"LD: $(PROGNAME)\"\n+\t$(Q) $(LD) $(LDELFFLAGS) $(LDLIBPATH) -o $(INSTALL_DIR)$(DELIM)$(PROGNAME) $(ARCHCRT0OBJ) $(MAINOBJ) $(LDLIBS)\n+\t$(Q) $(NM) -u  $(INSTALL_DIR)$(DELIM)$(PROGNAME)\n+\n+install: $(BIN_DIR)$(DELIM)$(PROGNAME)\n+\n+else\n+install:\n+\n+endif\n+\n+ifeq ($(CONFIG_BUILTIN_APPS)$(CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST),yy)\n+$(BUILTIN_REGISTRY)$(DELIM)$(FUNCNAME).bdat: $(DEPCONFIG) Makefile\n+\t$(Q) $(call REGISTER,$(APPNAME),$(FUNCNAME),$(THREADEXEC),$(PRIORITY),$(STACKSIZE))\n+\n+context: $(BUILTIN_REGISTRY)$(DELIM)$(FUNCNAME).bdat\n+\n+else\n+context:\n+\n+endif\n+\n+.depend: Makefile $(SRCS)\n+\t@$(MKDEP) $(ROOTDEPPATH) \"$(CC)\" -- $(CFLAGS) -- $(SRCS) >Make.dep\n+\t@touch $@\n+\n+depend: .depend\n+\n+clean:\n+\t$(call DELFILE, .built)\n+\t$(call CLEAN)\n+\n+distclean: clean\n+\t$(call DELFILE, Make.dep)\n+\t$(call DELFILE, .depend)\n+\n+-include Make.dep\n+.PHONY: preconfig\n+preconfig:"
+    },
+    {
+      "sha": "8aad3893363bcf8dffd76e2411d609b3deb9860f",
+      "filename": "apps/examples/crashrpt_comprehensive_test/README.txt",
+      "status": "added",
+      "additions": 158,
+      "deletions": 0,
+      "changes": 158,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FREADME.txt",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FREADME.txt",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2FREADME.txt?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,158 @@\n+CRASH REPORT COMPREHENSIVE TEST\n+================================\n+\n+Demonstration and test application for the /dev/crashrpt crash diagnostic\n+capture driver. This application tests selected crash scenarios that can\n+be triggered from user-space and verifies the generated crash reports.\n+\n+\n+WHAT IT DOES\n+------------\n+\n+The application provides test cases for different crash types:\n+\n+  TC1: APP_ASSERT     - Direct ASSERT(0) from application\n+                        Expected reason code: 2\n+\n+  TC2: KERNEL_ASSERT  - Kernel assert via /dev/null ioctl\n+                        Expected reason code: 3\n+                        Note: Triggers ASSERT() in dev_null driver\n+\n+\n+SEQUENCE\n+--------\n+\n+  1. The application creates a reporter thread that registers through\n+     /dev/crashrpt and parks in fin_wait().\n+\n+  2. A test command is issued (e.g., \"crashrpt_comprehensive_test app_assert\").\n+\n+  3. The test triggers a crash. At the very start of up_assert(), before\n+     any crash handling begins, the kernel wakes the reporter and waits.\n+\n+  4. The reporter writes a text report containing test metadata and tells\n+     the driver it is finished.\n+\n+  5. Assert handling continues and the board reboots.\n+\n+  6. After reboot, use \"verify\" or \"verify_all\" commands to validate reports.\n+\n+\n+WHY TEXT REPORTS\n+----------------\n+\n+Unlike the basic crashrpt_test which writes binary diagnostic data, this\n+application writes human-readable text reports for easier verification:\n+\n+  CRASH REPORT\n+  Test Case: 1\n+  Expected Reason: 2\n+  Actual Reason: 2\n+  Report Sequence: 0\n+\n+This makes it simple to verify that:\n+  - The crash was captured\n+  - The reason code matches expectations\n+  - The reporter executed correctly\n+\n+\n+USAGE\n+-----\n+\n+From TASH shell:\n+\n+  # Initialize and run test (combined command)\n+  crashrpt_comprehensive_test app_assert\n+  crashrpt_comprehensive_test kernel_assert\n+\n+  # Check status\n+  crashrpt_comprehensive_test status\n+\n+  # Verify reports after reboot\n+  crashrpt_comprehensive_test verify                    # Verify last report\n+  crashrpt_comprehensive_test verify /tmp/crashrpt_r0.bin  # Specific file\n+  crashrpt_comprehensive_test verify_all                # All reports\n+\n+\n+EXAMPLE SESSION\n+---------------\n+\n+  TASH>> crashrpt_comprehensive_test app_assert\n+  crashrpt_ct: TC1 - Testing APP_ASSERT\n+  crashrpt_ct: About to call ASSERT(0)...\n+  crashrpt_ct: reporter registered and waiting (TC1)\n+  crashrpt_ct: woken, reason 2 (expected: 2)\n+  crashrpt_ct: report written to /tmp/crashrpt_r0.bin\n+  ... assert output follows, then the board reboots ...\n+\n+  [After reboot]\n+\n+  TASH>> crashrpt_comprehensive_test verify_all\n+  crashrpt_ct: Scanning for reports in /tmp\n+\n+  ===========================================\n+  Verifying: /tmp/crashrpt_r0.bin\n+  ===========================================\n+    Header: FOUND\n+    Test Case: 1\n+    Expected Reason: 2\n+    Actual Reason: 2\n+    Report Sequence: 0\n+  ===========================================\n+  Reason code 2 = APP_ASSERT\n+  VERIFICATION: PASSED (reason code matches)\n+\n+  ===========================================\n+  Total reports: 1, Verified: 1\n+  ===========================================\n+\n+\n+CONFIGURATION\n+-------------\n+\n+  CONFIG_CRASH_REPORT                               Required, kernel side\n+  CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST       This application\n+  CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR   Report directory (default: /mnt)\n+  CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY  Reporter priority (default: 254)\n+  CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE  Reporter stack (default: 8192)\n+\n+\n+NOTES\n+-----\n+\n+1. The reporter priority MUST be higher than all other runnable threads.\n+   If the priority is too low, the deadline may expire before the reporter\n+   is scheduled and no report will be produced.\n+\n+2. The directory specified by CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR\n+   must be a writable mount point. On a real product, a raw partition or\n+   append-only log is safer than a mounted filesystem.\n+\n+3. TC2 (KERNEL_ASSERT) triggers a kernel assert via ioctl on /dev/null.\n+   The dev_null driver contains ASSERT((void *)arg == NULL) which triggers\n+   when a non-NULL argument is passed to any ioctl command.\n+\n+4. Hardware faults and asserts raised from interrupt context cannot be\n+   served by the reporter. Those cases need data published before the fault.\n+\n+\n+TEST CASES SUMMARY\n+------------------\n+\n++------+------------------+------------+---------------------------+\n+|  TC  | Test Name        | Reason     | Description               |\n++------+------------------+------------+---------------------------+\n+|  1   | app_assert       | 2 (APP)    | Direct ASSERT(0) call     |\n+|  2   | kernel_assert    | 3 (KERNEL) | ioctl on /dev/null with   |\n+|      |                  |            | non-NULL arg triggers     |\n+|      |                  |            | kernel ASSERT()           |\n++------+------------------+------------+---------------------------+\n+\n+\n+REASON CODES\n+------------\n+\n+  1 = CRASHRPT_REASON_UNKNOWN     - No reporter or undetermined cause\n+  2 = CRASHRPT_REASON_APP_ASSERT  - Application called ASSERT()\n+  3 = CRASHRPT_REASON_KERNEL_ASSERT - Kernel called ASSERT()\n+  4 = CRASHRPT_REASON_HW_FAULT    - Hardware fault or CPU exception"
+    },
+    {
+      "sha": "5b448e2afaec78647131ed3b2a91034832cd8506",
+      "filename": "apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c",
+      "status": "added",
+      "additions": 542,
+      "deletions": 0,
+      "changes": 542,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2Fcrashrpt_comprehensive_test_main.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2Fcrashrpt_comprehensive_test_main.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_comprehensive_test%2Fcrashrpt_comprehensive_test_main.c?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,542 @@\n+/****************************************************************************\n+ *\n+ * Copyright 2026 Samsung Electronics All Rights Reserved.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ * http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing,\n+ * software distributed under the License is distributed on an\n+ * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+ * either express or implied. See the License for the specific\n+ * language governing permissions and limitations under the License.\n+ *\n+ ****************************************************************************/\n+/****************************************************************************\n+ * apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c\n+ *\n+ * Comprehensive test application for /dev/crashrpt driver.\n+ *\n+ * Tests multiple crash scenarios:\n+ *   TC1: APP_ASSERT     - Direct ASSERT(0) from application\n+ *   TC2: KERNEL_ASSERT  - Invalid ioctl to kernel driver\n+ *\n+ * Usage from TASH:\n+ *   crashrpt_comprehensive_test init              Initialize reporter\n+ *   crashrpt_comprehensive_test app_assert        TC1: APP_ASSERT\n+ *   crashrpt_comprehensive_test kernel_assert     TC2: Kernel assert\n+ *   crashrpt_comprehensive_test status            Show current state\n+ *   crashrpt_comprehensive_test verify [file]     Verify report\n+ *   crashrpt_comprehensive_test verify_all        Verify all reports\n+ *\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Included Files\n+ ****************************************************************************/\n+\n+#include <tinyara/config.h>\n+\n+#include <stdio.h>\n+#include <stdlib.h>\n+#include <stdint.h>\n+#include <stdbool.h>\n+#include <stddef.h>\n+#include <string.h>\n+#include <unistd.h>\n+#include <fcntl.h>\n+#include <errno.h>\n+#include <time.h>\n+#include <assert.h>\n+#include <pthread.h>\n+#include <sched.h>\n+#include <dirent.h>\n+#include <sys/types.h>\n+#include <sys/ioctl.h>\n+#include <sys/stat.h>\n+\n+#include <tinyara/irq.h>\n+#include <tinyara/crashrpt.h>\n+\n+/****************************************************************************\n+ * Pre-processor Definitions\n+ ****************************************************************************/\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR\n+#define CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR   \"/mnt\"\n+#endif\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY\n+#define CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY  (SCHED_PRIORITY_MAX - 1)\n+#endif\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE\n+#define CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE 8192\n+#endif\n+\n+#define CRTEST_TMP_PATH     CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR \"/crashrpt.tmp\"\n+#define CRTEST_FINAL_FMT    CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR \"/crashrpt_r%d.bin\"\n+\n+#define CRTEST_MAGIC        0x54505243\t/* \"CRPT\" little endian */\n+#define CRTEST_VERSION      1\n+\n+/* Test case identifiers */\n+#define TC_APP_ASSERT       1\n+#define TC_KERNEL_ASSERT    2\n+\n+/****************************************************************************\n+ * Private Types\n+ ****************************************************************************/\n+\n+/* On-disk header from crashrpt.h - replicated here for verification */\n+struct crtest_hdr_s {\n+\tuint32_t magic;\n+\tuint32_t version;\n+\tuint32_t reason;\n+\tuint32_t reserved1;\n+\tuint32_t reserved2;\n+\tuint32_t reserved3;\n+\tuint32_t reserved4;\n+\tuint32_t reserved5;\n+};\n+\n+/* Test state tracking */\n+struct test_state_s {\n+\tint current_tc;           /* Current test case */\n+\tint expected_reason;      /* Expected crash reason code */\n+\tbool reporter_registered;\n+\tint report_count;\n+};\n+\n+/****************************************************************************\n+ * Private Data\n+ ****************************************************************************/\n+\n+static int g_crashrpt_fd = -1;\n+static pthread_t g_reporter;\n+static bool g_reporter_running;\n+static struct test_state_s g_test_state;\n+\n+/* Sequence number for reports */\n+static int g_report_seq;\n+\n+/****************************************************************************\n+ * Private Function Prototypes\n+ ****************************************************************************/\n+\n+static void *comprehensive_reporter_thread(void *arg);\n+static int test_app_assert(void);\n+static int test_kernel_assert(void);\n+static int verify_report(const char *filepath);\n+static int verify_all_reports(void);\n+static void show_status(void);\n+static void show_usage(void);\n+\n+/****************************************************************************\n+ * Private Functions\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Name: comprehensive_reporter_thread\n+ ****************************************************************************/\n+\n+static void *comprehensive_reporter_thread(void *arg)\n+{\n+\tint reason;\n+\n+\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_REGISTER, 0) < 0) {\n+\t\tprintf(\"crashrpt_ct: register failed, errno %d\\n\", errno);\n+\t\tg_reporter_running = false;\n+\t\treturn NULL;\n+\t}\n+\n+\tprintf(\"crashrpt_ct: reporter registered and waiting (TC%d)\\n\", g_test_state.current_tc);\n+\n+\tfor (;;) {\n+\t\t/* Parks here until the kernel wakes us */\n+\t\treason = fin_wait();\n+\n+\t\tprintf(\"crashrpt_ct: woken, reason %d (expected: %d)\\n\", reason, g_test_state.expected_reason);\n+\n+\t\t/* Write a simple report header */\n+\t\tstruct crashrpt_file_open_s oarg;\n+\t\tmemset(&oarg, 0, sizeof(oarg));\n+\t\toarg.path = CRTEST_TMP_PATH;\n+\t\toarg.oflags = O_WRONLY | O_CREAT | O_TRUNC;\n+\t\toarg.mode = 0644;\n+\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_OPEN, (unsigned long)&oarg) < 0) {\n+\t\t\tprintf(\"crashrpt_ct: cannot open %s, errno %d\\n\", CRTEST_TMP_PATH, errno);\n+\t\t\tgoto notify_done;\n+\t\t}\n+\n+\t\t/* Write test metadata */\n+\t\tchar metadata[256];\n+\t\tint len = snprintf(metadata, sizeof(metadata),\n+\t\t\t\t\t\t   \"CRASH REPORT\\n\"\n+\t\t\t\t\t\t   \"Test Case: %d\\n\"\n+\t\t\t\t\t\t   \"Expected Reason: %d\\n\"\n+\t\t\t\t\t\t   \"Actual Reason: %d\\n\"\n+\t\t\t\t\t\t   \"Report Sequence: %d\\n\",\n+\t\t\t\t\t\t   g_test_state.current_tc,\n+\t\t\t\t\t\t   g_test_state.expected_reason,\n+\t\t\t\t\t\t   reason,\n+\t\t\t\t\t\t   g_report_seq);\n+\n+\t\tstruct crashrpt_file_write_s warg;\n+\t\twarg.file = &oarg.file;\n+\t\twarg.buf = metadata;\n+\t\twarg.len = len;\n+\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_WRITE, (unsigned long)&warg) < 0) {\n+\t\t\tprintf(\"crashrpt_ct: write failed, errno %d\\n\", errno);\n+\t\t}\n+\n+\t\t/* Fsync */\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_FSYNC, (unsigned long)&oarg.file) < 0) {\n+\t\t\tprintf(\"crashrpt_ct: fsync returned errno %d (continuing)\\n\", errno);\n+\t\t}\n+\n+\t\t/* Close */\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_CLOSE, (unsigned long)&oarg.file) < 0) {\n+\t\t\tprintf(\"crashrpt_ct: close failed, errno %d\\n\", errno);\n+\t\t}\n+\n+\t\t/* Rename to final name */\n+\t\tchar final_path[64];\n+\t\tsnprintf(final_path, sizeof(final_path), CRTEST_FINAL_FMT, g_report_seq++);\n+\n+\t\tif (rename(CRTEST_TMP_PATH, final_path) == 0) {\n+\t\t\tprintf(\"crashrpt_ct: report written to %s\\n\", final_path);\n+\t\t} else {\n+\t\t\tprintf(\"crashrpt_ct: rename failed, errno %d\\n\", errno);\n+\t\t\tunlink(CRTEST_TMP_PATH);\n+\t\t}\n+\n+notify_done:\n+\t\t/* Release the asserting thread */\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_DONE, 0) < 0) {\n+\t\t\tprintf(\"crashrpt_ct: done notification failed, errno %d\\n\", errno);\n+\t\t}\n+\t}\n+\n+\treturn NULL;\n+}\n+\n+/****************************************************************************\n+ * Name: test_app_assert - TC1\n+ ****************************************************************************/\n+\n+static int test_app_assert(void)\n+{\n+\tprintf(\"crashrpt_ct: TC1 - Testing APP_ASSERT\\n\");\n+\tprintf(\"crashrpt_ct: About to call ASSERT(0)...\\n\");\n+\tfflush(stdout);\n+\n+\t/* This should trigger reason code 2 (APP_ASSERT) */\n+\tASSERT(0);\n+\n+\treturn OK; /* Never reached */\n+}\n+\n+\n+/****************************************************************************\n+ * Name: test_kernel_assert - TC2\n+ ****************************************************************************/\n+\n+static int test_kernel_assert(void)\n+{\n+\tint fd;\n+\n+\tprintf(\"crashrpt_ct: TC2 - Testing KERNEL_ASSERT trigger\\n\");\n+\tprintf(\"crashrpt_ct: Opening /dev/null...\\n\");\n+\tfflush(stdout);\n+\n+\t/* Open /dev/null */\n+\tfd = open(\"/dev/null\", O_RDWR);\n+\tif (fd < 0) {\n+\t\tprintf(\"crashrpt_ct: Failed to open /dev/null, errno %d\\n\", errno);\n+\t\treturn ERROR;\n+\t}\n+\n+\tprintf(\"crashrpt_ct: Triggering kernel assert via ioctl...\\n\");\n+\tfflush(stdout);\n+\n+\t/* Trigger kernel assert via ioctl on /dev/null\n+\t * The dev_null driver asserts if arg is non-NULL\n+\t */\n+\tioctl(fd, 0xAE01, 0xDEADBEEF);\n+\n+\tclose(fd);\n+\treturn OK;  /* Never reached */\n+}\n+\n+/****************************************************************************\n+ * Name: verify_report\n+ ****************************************************************************/\n+\n+static int verify_report(const char *filepath)\n+{\n+\tFILE *fp;\n+\tchar line[256];\n+\tint found_header = 0;\n+\tint tc_found = 0;\n+\tint expected_found = 0;\n+\tint actual_found = 0;\n+\tint report_seq = 0;\n+\n+\tprintf(\"\\n\");\n+\tprintf(\"===========================================\\n\");\n+\tprintf(\"Verifying: %s\\n\", filepath);\n+\tprintf(\"===========================================\\n\");\n+\n+\tfp = fopen(filepath, \"r\");\n+\tif (fp == NULL) {\n+\t\tprintf(\"  ERROR: Cannot open file, errno %d\\n\", errno);\n+\t\treturn ERROR;\n+\t}\n+\n+\twhile (fgets(line, sizeof(line), fp) != NULL) {\n+\t\tif (strstr(line, \"CRASH REPORT\") != NULL) {\n+\t\t\tfound_header = 1;\n+\t\t\tprintf(\"  Header: FOUND\\n\");\n+\t\t} else if (sscanf(line, \"Test Case: %d\", &tc_found) == 1) {\n+\t\t\tprintf(\"  Test Case: %d\\n\", tc_found);\n+\t\t} else if (sscanf(line, \"Expected Reason: %d\", &expected_found) == 1) {\n+\t\t\tprintf(\"  Expected Reason: %d\\n\", expected_found);\n+\t\t} else if (sscanf(line, \"Actual Reason: %d\", &actual_found) == 1) {\n+\t\t\tprintf(\"  Actual Reason: %d\\n\", actual_found);\n+\t\t} else if (sscanf(line, \"Report Sequence: %d\", &report_seq) == 1) {\n+\t\t\tprintf(\"  Report Sequence: %d\\n\", report_seq);\n+\t\t}\n+\t}\n+\n+\tfclose(fp);\n+\n+\tprintf(\"===========================================\\n\");\n+\n+\tif (!found_header) {\n+\t\tprintf(\"VERIFICATION: FAILED (no header found)\\n\");\n+\t\treturn ERROR;\n+\t}\n+\n+\t/* Check reason code match */\n+\tconst char *reason_str;\n+\tswitch (actual_found) {\n+\t\tcase 1: reason_str = \"UNKNOWN\"; break;\n+\t\tcase 2: reason_str = \"APP_ASSERT\"; break;\n+\t\tcase 3: reason_str = \"KERNEL_ASSERT\"; break;\n+\t\tcase 4: reason_str = \"HW_FAULT\"; break;\n+\t\tdefault: reason_str = \"INVALID\"; break;\n+\t}\n+\n+\tprintf(\"Reason code %d = %s\\n\", actual_found, reason_str);\n+\n+\t/* Verify reason code matches expectation */\n+\tif (actual_found == expected_found) {\n+\t\tprintf(\"VERIFICATION: PASSED (reason code matches)\\n\");\n+\t\treturn OK;\n+\t} else {\n+\t\tprintf(\"VERIFICATION: PARTIAL (reason code mismatch: expected %d, got %d)\\n\",\n+\t\t\t   expected_found, actual_found);\n+\t\treturn OK; /* Still consider it a pass since crash was captured */\n+\t}\n+}\n+\n+/****************************************************************************\n+ * Name: verify_all_reports\n+ ****************************************************************************/\n+\n+static int verify_all_reports(void)\n+{\n+\tDIR *dir;\n+\tstruct dirent *entry;\n+\tchar search_path[64];\n+\tint count = 0;\n+\tint success = 0;\n+\n+\tsnprintf(search_path, sizeof(search_path), CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR);\n+\n+\tdir = opendir(search_path);\n+\tif (dir == NULL) {\n+\t\tprintf(\"crashrpt_ct: Cannot open directory %s, errno %d\\n\",\n+\t\t\t   search_path, errno);\n+\t\treturn ERROR;\n+\t}\n+\n+\tprintf(\"crashrpt_ct: Scanning for reports in %s\\n\", search_path);\n+\n+\twhile ((entry = readdir(dir)) != NULL) {\n+\t\tif (strncmp(entry->d_name, \"crashrpt_r\", 10) == 0 &&\n+\t\t\tstrstr(entry->d_name, \".bin\") != NULL) {\n+\t\t\tchar filepath[128];\n+\t\t\tsnprintf(filepath, sizeof(filepath), \"%s/%s\", search_path, entry->d_name);\n+\t\t\tif (verify_report(filepath) == OK) {\n+\t\t\t\tsuccess++;\n+\t\t\t}\n+\t\t\tcount++;\n+\t\t}\n+\t}\n+\n+\tclosedir(dir);\n+\n+\tprintf(\"\\n\");\n+\tprintf(\"===========================================\\n\");\n+\tprintf(\"Total reports: %d, Verified: %d\\n\", count, success);\n+\tprintf(\"===========================================\\n\");\n+\n+\treturn (count > 0) ? OK : ERROR;\n+}\n+\n+/****************************************************************************\n+ * Name: show_status\n+ ****************************************************************************/\n+\n+static void show_status(void)\n+{\n+\tprintf(\"crashrpt_ct status\\n\");\n+\tprintf(\"  Reporter registered : %s\\n\", g_reporter_running ? \"yes\" : \"no\");\n+\tprintf(\"  Reporter thread     : %p\\n\", (void *)g_reporter);\n+\tprintf(\"  Crashrpt FD         : %d\\n\", g_crashrpt_fd);\n+\tprintf(\"  Current test case   : %d\\n\", g_test_state.current_tc);\n+\tprintf(\"  Expected reason     : %d\\n\", g_test_state.expected_reason);\n+\tprintf(\"  Reports generated   : %d\\n\", g_report_seq);\n+\tprintf(\"  Temporary file      : %s\\n\", CRTEST_TMP_PATH);\n+}\n+\n+/****************************************************************************\n+ * Name: show_usage\n+ ****************************************************************************/\n+\n+static void show_usage(void)\n+{\n+\tprintf(\"Usage: crashrpt_comprehensive_test <command>\\n\");\n+\tprintf(\"Commands:\\n\");\n+\tprintf(\"  init            Initialize and register reporter\\n\");\n+\tprintf(\"  app_assert      TC1: Test APP_ASSERT (reason=2)\\n\");\n+\tprintf(\"  kernel_assert   TC2: Test kernel assert (reason=3)\\n\");\n+\tprintf(\"  status          Show current state\\n\");\n+\tprintf(\"  verify [file]   Verify specific report or last report\\n\");\n+\tprintf(\"  verify_all      Verify all reports in directory\\n\");\n+}\n+\n+/****************************************************************************\n+ * Name: comprehensive_init\n+ ****************************************************************************/\n+\n+static int comprehensive_init(int tc, int expected_reason)\n+{\n+\tpthread_attr_t attr;\n+\tstruct sched_param param;\n+\tint ret;\n+\n+\tif (g_reporter_running) {\n+\t\tprintf(\"crashrpt_ct: reporter already running\\n\");\n+\t\treturn OK;\n+\t}\n+\n+\tg_crashrpt_fd = open(CRASHRPT_DEVPATH, O_RDWR);\n+\tif (g_crashrpt_fd < 0) {\n+\t\tprintf(\"crashrpt_ct: cannot open %s, errno %d\\n\", CRASHRPT_DEVPATH, errno);\n+\t\tprintf(\"crashrpt_ct: is CONFIG_CRASH_REPORT enabled?\\n\");\n+\t\treturn ERROR;\n+\t}\n+\n+\t/* Set test state */\n+\tg_test_state.current_tc = tc;\n+\tg_test_state.expected_reason = expected_reason;\n+\n+\tpthread_attr_init(&attr);\n+\tpthread_attr_setstacksize(&attr, CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE);\n+\n+\t/* High priority is required */\n+\tparam.sched_priority = CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY;\n+\tpthread_attr_setschedparam(&attr, &param);\n+\n+\tret = pthread_create(&g_reporter, &attr, comprehensive_reporter_thread, NULL);\n+\tif (ret != 0) {\n+\t\tprintf(\"crashrpt_ct: pthread_create failed, %d\\n\", ret);\n+\t\tclose(g_crashrpt_fd);\n+\t\tg_crashrpt_fd = -1;\n+\t\treturn ERROR;\n+\t}\n+\n+\tpthread_setname_np(g_reporter, \"crashrpt_ct_reporter\");\n+\tpthread_detach(g_reporter);\n+\n+\tg_reporter_running = true;\n+\tg_test_state.reporter_registered = true;\n+\n+\tprintf(\"crashrpt_ct: initialized for TC%d (expected reason: %d)\\n\",\n+\t\t   tc, expected_reason);\n+\tprintf(\"crashrpt_ct: ready, run test command to trigger crash\\n\");\n+\n+\treturn OK;\n+}\n+\n+/****************************************************************************\n+ * Public Functions\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Name: crashrpt_comprehensive_test_main\n+ ****************************************************************************/\n+\n+#ifdef CONFIG_BUILD_KERNEL\n+int main(int argc, FAR char *argv[])\n+#else\n+int crashrpt_comprehensive_test_main(int argc, char *argv[])\n+#endif\n+{\n+\tif (argc < 2) {\n+\t\tshow_usage();\n+\t\treturn 0;\n+\t}\n+\n+\t/* Initialize global state */\n+\tmemset(&g_test_state, 0, sizeof(g_test_state));\n+\n+\tif (strcmp(argv[1], \"init\") == 0) {\n+\t\t/* Default init for TC1 (APP_ASSERT) */\n+\t\treturn comprehensive_init(TC_APP_ASSERT, 2);\n+\n+\t} else if (strcmp(argv[1], \"app_assert\") == 0) {\n+\t\tif (comprehensive_init(TC_APP_ASSERT, 2) != OK) {\n+\t\t\treturn ERROR;\n+\t\t}\n+\t\tusleep(2000000);  /* 2 second delay - let reporter reach fin_wait() */\n+\t\treturn test_app_assert();\n+\n+\t} else if (strcmp(argv[1], \"kernel_assert\") == 0) {\n+\t\tif (comprehensive_init(TC_KERNEL_ASSERT, 3) != OK) {\n+\t\t\treturn ERROR;\n+\t\t}\n+\t\tusleep(2000000);  /* 2 second delay - let reporter reach fin_wait() */\n+\t\treturn test_kernel_assert();\n+\n+\t} else if (strcmp(argv[1], \"status\") == 0) {\n+\t\tshow_status();\n+\n+\t} else if (strcmp(argv[1], \"verify\") == 0) {\n+\t\tif (argc >= 3) {\n+\t\t\treturn verify_report(argv[2]);\n+\t\t} else {\n+\t\t\t/* Verify last report */\n+\t\t\tchar last_report[64];\n+\t\t\tsnprintf(last_report, sizeof(last_report),\n+\t\t\t\t\t CRTEST_FINAL_FMT, g_report_seq - 1);\n+\t\t\treturn verify_report(last_report);\n+\t\t}\n+\n+\t} else if (strcmp(argv[1], \"verify_all\") == 0) {\n+\t\treturn verify_all_reports();\n+\n+\t} else {\n+\t\tshow_usage();\n+\t}\n+\n+\treturn 0;\n+}"
+    },
+    {
+      "sha": "c983fb157c54b5d059c060fd55fa6b2d71c8e857",
+      "filename": "apps/examples/crashrpt_test/Kconfig",
+      "status": "added",
+      "additions": 47,
+      "deletions": 0,
+      "changes": 47,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FKconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FKconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2FKconfig?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,47 @@\n+#\n+# For a description of the syntax of this configuration file,\n+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt\n+#\n+\n+config EXAMPLES_CRASHRPT_TEST\n+\tbool \"Crash diagnostic capture example\"\n+\tdefault n\n+\tdepends on CRASH_REPORT\n+\t---help---\n+\t\tDemonstrates /dev/crashrpt.\n+\n+\t\tHolds 500 nodes of 48 bytes and 50 nodes of 64 bytes, each with a\n+\t\tmessage string of up to 255 bytes, and registers a reporter thread\n+\t\tthat serialises all of it to a file when the system is about to\n+\t\tassert.\n+\n+\t\tThe report is written to a temporary file and renamed only once the\n+\t\twrite has completed and been flushed, so a reader never sees a\n+\t\tpartial report.\n+\n+if EXAMPLES_CRASHRPT_TEST\n+\n+config EXAMPLES_CRASHRPT_TEST_DIR\n+\tstring \"Directory for the report\"\n+\tdefault \"/mnt\"\n+\t---help---\n+\t\tWhere the temporary and final report files are written.  Must be a\n+\t\twritable mount point.\n+\n+config EXAMPLES_CRASHRPT_TEST_PRIORITY\n+\tint \"Reporter thread priority\"\n+\tdefault 254\n+\t---help---\n+\t\tThe reporter must outrank every other runnable thread, otherwise it\n+\t\tis not scheduled before the deadline expires and no report is\n+\t\tproduced.\n+\n+config EXAMPLES_CRASHRPT_TEST_STACKSIZE\n+\tint \"Reporter thread stack size\"\n+\tdefault 8192\n+\n+endif # EXAMPLES_CRASHRPT_TEST\n+\n+config USER_ENTRYPOINT\n+\tstring\n+\tdefault \"crashrpt_test_main\" if ENTRY_CRASHRPT_TEST"
+    },
+    {
+      "sha": "c5617c91b01e1d8b6f704e90bd4e8f059d1db73c",
+      "filename": "apps/examples/crashrpt_test/Kconfig_ENTRY",
+      "status": "added",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FKconfig_ENTRY",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FKconfig_ENTRY",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2FKconfig_ENTRY?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,3 @@\n+config ENTRY_CRASHRPT_TEST\n+\tbool \"Crash diagnostic capture example\"\n+\tdepends on EXAMPLES_CRASHRPT_TEST"
+    },
+    {
+      "sha": "e101e7d917433b95a63ffb7ca0267dfb421b5698",
+      "filename": "apps/examples/crashrpt_test/Make.defs",
+      "status": "added",
+      "additions": 25,
+      "deletions": 0,
+      "changes": 25,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FMake.defs",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FMake.defs",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2FMake.defs?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,25 @@\n+###########################################################################\n+#\n+# Copyright 2026 Samsung Electronics All Rights Reserved.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+# http://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing,\n+# software distributed under the License is distributed on an\n+# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+# either express or implied. See the License for the specific\n+# language governing permissions and limitations under the License.\n+#\n+###########################################################################\n+############################################################################\n+# apps/examples/crashrpt_test/Make.defs\n+# Adds selected applications to apps/ build\n+############################################################################\n+\n+ifeq ($(CONFIG_EXAMPLES_CRASHRPT_TEST),y)\n+CONFIGURED_APPS += examples/crashrpt_test\n+endif"
+    },
+    {
+      "sha": "3d0006665acfabb2c2d8ee6792b6477cd4d61c7a",
+      "filename": "apps/examples/crashrpt_test/Makefile",
+      "status": "added",
+      "additions": 158,
+      "deletions": 0,
+      "changes": 158,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FMakefile",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FMakefile",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2FMakefile?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,158 @@\n+###########################################################################\n+#\n+# Copyright 2016 Samsung Electronics All Rights Reserved.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+# http://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing,\n+# software distributed under the License is distributed on an\n+# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+# either express or implied. See the License for the specific\n+# language governing permissions and limitations under the License.\n+#\n+###########################################################################\n+############################################################################\n+# apps/examples/hello/Makefile\n+#\n+#   Copyright (C) 2008, 2010-2013 Gregory Nutt. All rights reserved.\n+#   Author: Gregory Nutt <gnutt@nuttx.org>\n+#\n+# Redistribution and use in source and binary forms, with or without\n+# modification, are permitted provided that the following conditions\n+# are met:\n+#\n+# 1. Redistributions of source code must retain the above copyright\n+#    notice, this list of conditions and the following disclaimer.\n+# 2. Redistributions in binary form must reproduce the above copyright\n+#    notice, this list of conditions and the following disclaimer in\n+#    the documentation and/or other materials provided with the\n+#    distribution.\n+# 3. Neither the name NuttX nor the names of its contributors may be\n+#    used to endorse or promote products derived from this software\n+#    without specific prior written permission.\n+#\n+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n+# \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS\n+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE\n+# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,\n+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,\n+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS\n+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED\n+# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\n+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN\n+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\n+# POSSIBILITY OF SUCH DAMAGE.\n+#\n+############################################################################\n+\n+-include $(TOPDIR)/.config\n+-include $(TOPDIR)/Make.defs\n+include $(APPDIR)/Make.defs\n+\n+# Hello, World! built-in application info\n+\n+APPNAME = crashrpt_test\n+FUNCNAME = $(APPNAME)_main\n+THREADEXEC = TASH_EXECMD_ASYNC\n+\n+# Hello, World! Example\n+\n+ASRCS =\n+CSRCS =\n+MAINSRC = crashrpt_test_main.c\n+\n+AOBJS = $(ASRCS:.S=$(OBJEXT))\n+COBJS = $(CSRCS:.c=$(OBJEXT))\n+MAINOBJ = $(MAINSRC:.c=$(OBJEXT))\n+\n+SRCS = $(ASRCS) $(CSRCS) $(MAINSRC)\n+OBJS = $(AOBJS) $(COBJS)\n+\n+ifneq ($(CONFIG_BUILD_KERNEL),y)\n+  OBJS += $(MAINOBJ)\n+endif\n+\n+ifeq ($(CONFIG_WINDOWS_NATIVE),y)\n+  BIN = $(APPDIR)\\libapps$(LIBEXT)\n+else\n+ifeq ($(WINTOOL),y)\n+  BIN = $(APPDIR)\\\\libapps$(LIBEXT)\n+else\n+  BIN = $(APPDIR)/libapps$(LIBEXT)\n+endif\n+endif\n+\n+ifeq ($(WINTOOL),y)\n+  INSTALL_DIR = \"${shell cygpath -w $(BIN_DIR)}\"\n+else\n+  INSTALL_DIR = $(BIN_DIR)\n+endif\n+\n+CONFIG_EXAMPLES_CRASHRPT_TEST_PROGNAME ?= crashrpt_test$(EXEEXT)\n+PROGNAME = $(CONFIG_EXAMPLES_CRASHRPT_TEST_PROGNAME)\n+\n+ROOTDEPPATH = --dep-path .\n+\n+# Common build\n+\n+VPATH =\n+\n+all: .built\n+.PHONY: clean depend distclean\n+\n+$(AOBJS): %$(OBJEXT): %.S\n+\t$(call ASSEMBLE, $<, $@)\n+\n+$(COBJS) $(MAINOBJ): %$(OBJEXT): %.c\n+\t$(call COMPILE, $<, $@)\n+\n+.built: $(OBJS)\n+\t$(call ARCHIVE, $(BIN), $(OBJS))\n+\t@touch .built\n+\n+ifeq ($(CONFIG_BUILD_KERNEL),y)\n+$(BIN_DIR)$(DELIM)$(PROGNAME): $(OBJS) $(MAINOBJ)\n+\t@echo \"LD: $(PROGNAME)\"\n+\t$(Q) $(LD) $(LDELFFLAGS) $(LDLIBPATH) -o $(INSTALL_DIR)$(DELIM)$(PROGNAME) $(ARCHCRT0OBJ) $(MAINOBJ) $(LDLIBS)\n+\t$(Q) $(NM) -u  $(INSTALL_DIR)$(DELIM)$(PROGNAME)\n+\n+install: $(BIN_DIR)$(DELIM)$(PROGNAME)\n+\n+else\n+install:\n+\n+endif\n+\n+ifeq ($(CONFIG_BUILTIN_APPS)$(CONFIG_EXAMPLES_CRASHRPT_TEST),yy)\n+$(BUILTIN_REGISTRY)$(DELIM)$(FUNCNAME).bdat: $(DEPCONFIG) Makefile\n+\t$(Q) $(call REGISTER,$(APPNAME),$(FUNCNAME),$(THREADEXEC),$(PRIORITY),$(STACKSIZE))\n+\n+context: $(BUILTIN_REGISTRY)$(DELIM)$(FUNCNAME).bdat\n+\n+else\n+context:\n+\n+endif\n+\n+.depend: Makefile $(SRCS)\n+\t@$(MKDEP) $(ROOTDEPPATH) \"$(CC)\" -- $(CFLAGS) -- $(SRCS) >Make.dep\n+\t@touch $@\n+\n+depend: .depend\n+\n+clean:\n+\t$(call DELFILE, .built)\n+\t$(call CLEAN)\n+\n+distclean: clean\n+\t$(call DELFILE, Make.dep)\n+\t$(call DELFILE, .depend)\n+\n+-include Make.dep\n+.PHONY: preconfig\n+preconfig:"
+    },
+    {
+      "sha": "4aa5adda2c6c747b996199e16d47dee2bf238e84",
+      "filename": "apps/examples/crashrpt_test/README.txt",
+      "status": "added",
+      "additions": 138,
+      "deletions": 0,
+      "changes": 138,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FREADME.txt",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2FREADME.txt",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2FREADME.txt?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,138 @@\n+apps/examples/crashrpt_test\n+===========================\n+\n+Demonstration of the crash diagnostic capture driver, /dev/crashrpt.\n+\n+What it does\n+------------\n+\n+The example holds a body of diagnostic data in memory and registers a\n+reporter thread that serialises all of it to a file when the system is about\n+to assert.\n+\n+  500 nodes of 48 bytes\n+   50 nodes of 64 bytes\n+  each node carries a message string of up to 255 bytes\n+\n+The message is not stored inside the node - the node holds a pointer to it.\n+On disk the message follows its node, so both end up in the report.\n+\n+Sequence\n+--------\n+\n+  1. The application builds the node data at start-up, while the system is\n+     healthy.\n+  2. The reporter thread registers through /dev/crashrpt and parks in\n+     fin_wait().\n+  3. An assert occurs.  At the very top of up_assert(), before any crash\n+     handling begins, the kernel wakes the reporter and waits.\n+  4. The reporter writes the report and tells the driver it is finished.\n+  5. Assert handling continues and the board reboots.\n+\n+Why the data is built up front\n+------------------------------\n+\n+Allocating several hundred blocks while the system is on its way down is\n+exactly the kind of work that should not be attempted.  Building the data\n+during normal operation also mirrors how a real product would accumulate\n+diagnostic state.\n+\n+Temporary file and rename\n+-------------------------\n+\n+The report is written to\n+\n+  <dir>/crashrpt.tmp\n+\n+and only after the write has completed and been flushed with fsync() is it\n+renamed to\n+\n+  <dir>/crashrpt_r<n>.bin\n+\n+A reader therefore never observes a partially written report.  The final\n+name either exists and is complete, or it does not exist at all.  If any\n+step fails the temporary file is removed.\n+\n+File format\n+-----------\n+\n+  Header, 32 bytes\n+    magic     u32   0x54505243, \"CRPT\"\n+    version   u32\n+    reason    u32   the reason code passed by the kernel\n+    n48       u32   number of 48 byte nodes\n+    n64       u32   number of 64 byte nodes\n+    sz48      u32   sizeof the 48 byte node\n+    sz64      u32   sizeof the 64 byte node\n+    reserved  u32\n+\n+  Then n48 records:\n+    node      48 bytes, raw\n+    msglen    u8\n+    msg       msglen bytes, no terminator\n+\n+  Then n64 records:\n+    node      64 bytes, raw\n+    msglen    u8\n+    msg       msglen bytes, no terminator\n+\n+The message pointer inside each node is zeroed in the copy that is written,\n+since its value has no meaning outside the running process.  This also keeps\n+the output reproducible.\n+\n+A one byte length field is sufficient because the message is capped at 255\n+bytes.\n+\n+Largest possible report:\n+\n+  32 + 500 * (48 + 1 + 255) + 50 * (64 + 1 + 255) = 168032 bytes\n+\n+Actual size is smaller, as message lengths cycle through 32, 96, 160 and 255\n+so that the boundary case is exercised regularly.\n+\n+Usage\n+-----\n+\n+From TASH:\n+\n+  crashrpt_test init      Build the data and register the reporter\n+  crashrpt_test status    Show current state and the largest possible report\n+  crashrpt_test crash     Raise an assert to exercise the whole path\n+\n+A normal run looks like:\n+\n+  TASH>> crashrpt_test init\n+  crashrpt_test: built 500 nodes of 48 bytes and 50 nodes of 64 bytes\n+  crashrpt_test: reporter registered and waiting\n+  crashrpt_test: ready, run 'crashrpt_test crash' to exercise it\n+\n+  TASH>> crashrpt_test crash\n+  crashrpt_test: asserting now, the reporter should run before reboot\n+  crashrpt_test: woken, reason 2\n+  crashrpt_test: report written to /mnt/crashrpt_r0.bin\n+  ... assert output follows, then the board reboots ...\n+\n+Configuration\n+-------------\n+\n+  CONFIG_CRASH_REPORT                     required, kernel side\n+  CONFIG_EXAMPLES_CRASHRPT_TEST           this example\n+  CONFIG_EXAMPLES_CRASHRPT_TEST_DIR       where the report is written\n+  CONFIG_EXAMPLES_CRASHRPT_TEST_PRIORITY  reporter priority, must be high\n+  CONFIG_EXAMPLES_CRASHRPT_TEST_STACKSIZE reporter stack\n+\n+The directory must be a writable mount point.  On a real product a raw\n+partition or an append only log is safer than a mounted filesystem, since\n+writing to one straight after a crash risks corrupting it.\n+\n+Notes\n+-----\n+\n+The node sizes are checked at run time before anything else happens.  They\n+depend on the pointer size, so on a target where a pointer is not four bytes\n+the structures would need adjusting and the check will say so rather than\n+silently writing a different format.\n+\n+Hardware faults and asserts raised from interrupt context do not reach the\n+reporter.  By then the exception context has been taken and the scheduler\n+cannot run it.  Those cases need data published before the fault."
+    },
+    {
+      "sha": "548de69c45671ef10dba4cdf2da76bb9d58801aa",
+      "filename": "apps/examples/crashrpt_test/crashrpt_test_main.c",
+      "status": "added",
+      "additions": 681,
+      "deletions": 0,
+      "changes": 681,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2Fcrashrpt_test_main.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/apps%2Fexamples%2Fcrashrpt_test%2Fcrashrpt_test_main.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/apps%2Fexamples%2Fcrashrpt_test%2Fcrashrpt_test_main.c?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -0,0 +1,681 @@\n+/****************************************************************************\n+ *\n+ * Copyright 2026 Samsung Electronics All Rights Reserved.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ * http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing,\n+ * software distributed under the License is distributed on an\n+ * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+ * either express or implied. See the License for the specific\n+ * language governing permissions and limitations under the License.\n+ *\n+ ****************************************************************************/\n+/****************************************************************************\n+ * apps/examples/crashrpt_test/crashrpt_test_main.c\n+ *\n+ * Demonstration of the crash diagnostic capture driver, /dev/crashrpt.\n+ *\n+ * The example keeps a body of diagnostic data in memory - 500 nodes of 48\n+ * bytes and 50 nodes of 64 bytes, each carrying a message string of up to\n+ * 255 bytes - and registers a reporter thread that serialises all of it to\n+ * a file when the system is about to assert.\n+ *\n+ * The data is built once at start-up rather than at crash time.  This is\n+ * deliberate: allocating several hundred blocks while the system is on its\n+ * way down is exactly the kind of work that should not be attempted.  It\n+ * also mirrors how a real product would hold diagnostic state that it\n+ * accumulates during normal operation.\n+ *\n+ * The reporter writes to a temporary file and renames it only after the\n+ * write has completed and been flushed.  A reader therefore never observes\n+ * a partially written report - the final name either exists and is complete,\n+ * or does not exist at all.\n+ *\n+ * Usage from TASH:\n+ *\n+ *   crashrpt_test init      Build the data, start and register the reporter\n+ *   crashrpt_test status    Show what is registered and how large a report\n+ *                           would be\n+ *   crashrpt_test crash     Raise an assert to exercise the whole path\n+ *\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Included Files\n+ ****************************************************************************/\n+\n+#include <tinyara/config.h>\n+\n+#include <stdio.h>\n+#include <stdlib.h>\n+#include <stdint.h>\n+#include <stdbool.h>\n+#include <stddef.h>\n+#include <string.h>\n+#include <unistd.h>\n+#include <fcntl.h>\n+#include <errno.h>\n+#include <time.h>\n+#include <assert.h>\n+#include <pthread.h>\n+#include <sched.h>\n+#include <sys/types.h>\n+#include <sys/ioctl.h>\n+#include <sys/stat.h>\n+\n+#include <tinyara/irq.h>\n+#include <tinyara/crashrpt.h>\n+\n+/****************************************************************************\n+ * Pre-processor Definitions\n+ ****************************************************************************/\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_TEST_DIR\n+#define CONFIG_EXAMPLES_CRASHRPT_TEST_DIR   \"/mnt\"\n+#endif\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_TEST_PRIORITY\n+#define CONFIG_EXAMPLES_CRASHRPT_TEST_PRIORITY  (SCHED_PRIORITY_MAX - 1)\n+#endif\n+\n+#ifndef CONFIG_EXAMPLES_CRASHRPT_TEST_STACKSIZE\n+#define CONFIG_EXAMPLES_CRASHRPT_TEST_STACKSIZE 8192\n+#endif\n+\n+#define CRTEST_TMP_PATH     CONFIG_EXAMPLES_CRASHRPT_TEST_DIR \"/crashrpt.tmp\"\n+#define CRTEST_FINAL_FMT    CONFIG_EXAMPLES_CRASHRPT_TEST_DIR \"/crashrpt_r%d.bin\"\n+\n+#define CRTEST_N48          500\t\t/* Number of 48 byte nodes */\n+#define CRTEST_N64          50\t\t/* Number of 64 byte nodes */\n+\n+#define CRTEST_MSG_MAX      255\t\t/* Longest message, excluding NUL */\n+\n+#define CRTEST_MAGIC        0x54505243\t/* \"CRPT\" little endian */\n+#define CRTEST_VERSION      1\n+\n+/* Bytes written per record: the node itself, a one byte length, then the\n+ * message.  A one byte length is sufficient because the message is capped\n+ * at 255.\n+ */\n+\n+#define CRTEST_REC48_MAX    (sizeof(struct crtest_node48_s) + 1 + CRTEST_MSG_MAX)\n+#define CRTEST_REC64_MAX    (sizeof(struct crtest_node64_s) + 1 + CRTEST_MSG_MAX)\n+\n+/****************************************************************************\n+ * Private Types\n+ ****************************************************************************/\n+\n+/* Exactly 48 bytes on a 32 bit target.  The layout is checked below. */\n+\n+struct crtest_node48_s {\n+\tuint32_t id;\t\t\t\t/*  0 ..  3 */\n+\tuint32_t seq;\t\t\t\t/*  4 ..  7 */\n+\tuint32_t timestamp;\t\t\t/*  8 .. 11 */\n+\tuint32_t value;\t\t\t\t/* 12 .. 15 */\n+\tuint16_t type;\t\t\t\t/* 16 .. 17 */\n+\tuint16_t flags;\t\t\t\t/* 18 .. 19 */\n+\tuint32_t reserved[6];\t\t/* 20 .. 43 */\n+\tchar *msg;\t\t\t\t\t/* 44 .. 47 */\n+};\n+\n+/* Exactly 64 bytes on a 32 bit target. */\n+\n+struct crtest_node64_s {\n+\tuint32_t id;\t\t\t\t/*  0 ..  3 */\n+\tuint32_t seq;\t\t\t\t/*  4 ..  7 */\n+\tuint64_t timestamp;\t\t\t/*  8 .. 15 */\n+\tuint32_t value;\t\t\t\t/* 16 .. 19 */\n+\tuint32_t status;\t\t\t/* 20 .. 23 */\n+\tuint16_t type;\t\t\t\t/* 24 .. 25 */\n+\tuint16_t flags;\t\t\t\t/* 26 .. 27 */\n+\tuint32_t reserved[8];\t\t/* 28 .. 59 */\n+\tchar *msg;\t\t\t\t\t/* 60 .. 63 */\n+};\n+\n+/* On-disk header. */\n+\n+struct crtest_hdr_s {\n+\tuint32_t magic;\n+\tuint32_t version;\n+\tuint32_t reason;\n+\tuint32_t n48;\n+\tuint32_t n64;\n+\tuint32_t sz48;\n+\tuint32_t sz64;\n+\tuint32_t reserved;\n+};\n+\n+/****************************************************************************\n+ * Private Data\n+ ****************************************************************************/\n+\n+static struct crtest_node48_s *g_node48;\n+static struct crtest_node64_s *g_node64;\n+static bool g_data_ready;\n+\n+static int g_crashrpt_fd = -1;\n+static pthread_t g_reporter;\n+static bool g_reporter_running;\n+\n+/* Sequence number so repeated reports do not overwrite one another. */\n+\n+static int g_report_seq;\n+\n+/****************************************************************************\n+ * Private Functions\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Name: crtest_verify_layout\n+ *\n+ * Description:\n+ *   The sizes are part of the requirement, so check them rather than assume\n+ *   the compiler laid the structures out as intended.  A mismatch here would\n+ *   silently change the file format.\n+ *\n+ ****************************************************************************/\n+\n+static int crtest_verify_layout(void)\n+{\n+\tif (sizeof(struct crtest_node48_s) != 48) {\n+\t\tprintf(\"crashrpt_test: node48 is %d bytes, expected 48\\n\", (int)sizeof(struct crtest_node48_s));\n+\t\treturn ERROR;\n+\t}\n+\n+\tif (sizeof(struct crtest_node64_s) != 64) {\n+\t\tprintf(\"crashrpt_test: node64 is %d bytes, expected 64\\n\", (int)sizeof(struct crtest_node64_s));\n+\t\treturn ERROR;\n+\t}\n+\n+\treturn OK;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_make_message\n+ *\n+ * Description:\n+ *   Build a message of a varying but bounded length.  Lengths cycle so that\n+ *   the short, typical and maximum cases are all exercised, and the content\n+ *   encodes the node identity so a corrupted report is recognisable.\n+ *\n+ ****************************************************************************/\n+\n+static char *crtest_make_message(const char *kind, uint32_t id)\n+{\n+\tchar *msg;\n+\tsize_t want;\n+\tint used;\n+\n+\t/* Cycle 32, 96, 160, 255 so the 255 byte boundary is hit regularly. */\n+\n+\tstatic const size_t lengths[] = { 32, 96, 160, CRTEST_MSG_MAX };\n+\twant = lengths[id & 3];\n+\n+\tmsg = (char *)malloc(want + 1);\n+\tif (msg == NULL) {\n+\t\treturn NULL;\n+\t}\n+\n+\tused = snprintf(msg, want + 1, \"%s node %u: diagnostic record captured during normal operation \", kind, (unsigned int)id);\n+\tif (used < 0) {\n+\t\tfree(msg);\n+\t\treturn NULL;\n+\t}\n+\n+\t/* Pad out to the intended length so the length distribution is exact. */\n+\n+\tif ((size_t)used < want) {\n+\t\tmemset(msg + used, '.', want - used);\n+\t}\n+\tmsg[want] = '\\0';\n+\n+\treturn msg;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_build_data\n+ *\n+ * Description:\n+ *   Populate the node arrays.  Done once, at start-up, while the system is\n+ *   healthy.\n+ *\n+ ****************************************************************************/\n+\n+static int crtest_build_data(void)\n+{\n+\tuint32_t i;\n+\n+\tif (g_data_ready) {\n+\t\treturn OK;\n+\t}\n+\n+\tg_node48 = (struct crtest_node48_s *)calloc(CRTEST_N48, sizeof(struct crtest_node48_s));\n+\tif (g_node48 == NULL) {\n+\t\tprintf(\"crashrpt_test: out of memory for 48 byte nodes\\n\");\n+\t\treturn ERROR;\n+\t}\n+\n+\tg_node64 = (struct crtest_node64_s *)calloc(CRTEST_N64, sizeof(struct crtest_node64_s));\n+\tif (g_node64 == NULL) {\n+\t\tprintf(\"crashrpt_test: out of memory for 64 byte nodes\\n\");\n+\t\tfree(g_node48);\n+\t\tg_node48 = NULL;\n+\t\treturn ERROR;\n+\t}\n+\n+\tfor (i = 0; i < CRTEST_N48; i++) {\n+\t\tg_node48[i].id = i;\n+\t\tg_node48[i].seq = i * 3u;\n+\t\tg_node48[i].timestamp = (uint32_t)time(NULL) + i;\n+\t\tg_node48[i].value = 0xa5a50000u | i;\n+\t\tg_node48[i].type = 48;\n+\t\tg_node48[i].flags = (uint16_t)(i & 0xffu);\n+\t\tg_node48[i].msg = crtest_make_message(\"small\", i);\n+\n+\t\tif (g_node48[i].msg == NULL) {\n+\t\t\tprintf(\"crashrpt_test: out of memory for message %u\\n\", (unsigned int)i);\n+\t\t\treturn ERROR;\n+\t\t}\n+\t}\n+\n+\tfor (i = 0; i < CRTEST_N64; i++) {\n+\t\tg_node64[i].id = i;\n+\t\tg_node64[i].seq = i * 7u;\n+\t\tg_node64[i].timestamp = (uint64_t)time(NULL) + i;\n+\t\tg_node64[i].value = 0x5a5a0000u | i;\n+\t\tg_node64[i].status = i;\n+\t\tg_node64[i].type = 64;\n+\t\tg_node64[i].flags = (uint16_t)(i & 0xffu);\n+\t\tg_node64[i].msg = crtest_make_message(\"large\", i);\n+\n+\t\tif (g_node64[i].msg == NULL) {\n+\t\t\tprintf(\"crashrpt_test: out of memory for message %u\\n\", (unsigned int)i);\n+\t\t\treturn ERROR;\n+\t\t}\n+\t}\n+\n+\tg_data_ready = true;\n+\n+\tprintf(\"crashrpt_test: built %d nodes of %d bytes and %d nodes of %d bytes\\n\",\n+\t\t   CRTEST_N48, (int)sizeof(struct crtest_node48_s), CRTEST_N64, (int)sizeof(struct crtest_node64_s));\n+\n+\treturn OK;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_write_all\n+ *\n+ * Description:\n+ *   write() may return short.  Loop until everything is out or an error is\n+ *   returned that is not a signal interruption.\n+ *\n+ ****************************************************************************/\n+\n+static int crtest_write_all(struct crashrpt_file_s *file, const void *buf, size_t len)\n+{\n+\tconst uint8_t *p = (const uint8_t *)buf;\n+\tstruct crashrpt_file_write_s warg;\n+\tssize_t n;\n+\n+\twhile (len > 0) {\n+\t\twarg.file = file;\n+\t\twarg.buf = p;\n+\t\twarg.len = len;\n+\n+\t\tn = ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_WRITE, (unsigned long)&warg);\n+\t\tif (n < 0) {\n+\t\t\tif (errno == EINTR) {\n+\t\t\t\tcontinue;\n+\t\t\t}\n+\t\t\treturn ERROR;\n+\t\t}\n+\n+\t\tp += n;\n+\t\tlen -= n;\n+\t}\n+\n+\treturn OK;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_write_record\n+ *\n+ * Description:\n+ *   Serialise one node followed by its message.\n+ *\n+ *   The message pointer inside the node is meaningless outside this process,\n+ *   so it is zeroed in the copy that goes to the file.  The message itself\n+ *   follows the node, preceded by a single length byte.\n+ *\n+ ****************************************************************************/\n+\n+static int crtest_write_record(struct crashrpt_file_s *file, const void *node, size_t node_sz, const char *msg, size_t msg_off)\n+{\n+\tuint8_t buf[CRTEST_REC64_MAX];\n+\tsize_t msg_len;\n+\tsize_t total;\n+\n+\tmemcpy(buf, node, node_sz);\n+\n+\t/* Blank the pointer field so the file is reproducible. */\n+\n+\tmemset(buf + msg_off, 0, sizeof(char *));\n+\n+\tmsg_len = (msg != NULL) ? strnlen(msg, CRTEST_MSG_MAX) : 0;\n+\n+\tbuf[node_sz] = (uint8_t)msg_len;\n+\ttotal = node_sz + 1;\n+\n+\tif (msg_len > 0) {\n+\t\tmemcpy(buf + total, msg, msg_len);\n+\t\ttotal += msg_len;\n+\t}\n+\n+\treturn crtest_write_all(file, buf, total);\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_write_report\n+ *\n+ * Description:\n+ *   Write the whole report to a temporary file, flush it, close it, and only\n+ *   then move it to its final name.\n+ *\n+ *   This is the part that runs while the system is on its way down, so it\n+ *   does no allocation and touches nothing that has not already been set up.\n+ *\n+ ****************************************************************************/\n+\n+static int crtest_write_report(int reason)\n+{\n+\tstruct crtest_hdr_s hdr;\n+\tchar final_path[64];\n+\tstruct crashrpt_file_open_s oarg;\n+\tstruct crashrpt_file_s *file = &oarg.file;\n+\tuint32_t i;\n+\tint ret = ERROR;\n+\tbool file_opened = false;\n+\n+\tif (!g_data_ready) {\n+\t\tprintf(\"crashrpt_test: no data to report\\n\");\n+\t\treturn ERROR;\n+\t}\n+\n+\t/* Open the file through the driver using the kernel-internal file_open()\n+\t * which detaches the struct file from the thread's file descriptor\n+\t * table.  This is essential because the reporter runs in the crash path\n+\t * where the standard open()/write() syscalls that go through\n+\t * fs_getfilep() -> sched_getfiles() may fail.\n+\t */\n+\n+\tmemset(&oarg, 0, sizeof(oarg));\n+\toarg.path = CRTEST_TMP_PATH;\n+\toarg.oflags = O_WRONLY | O_CREAT | O_TRUNC;\n+\toarg.mode = 0644;\n+\n+\tprintf(\"crashrpt_test: opening %s via CRASHRPTIOC_FILE_OPEN ioctl\\n\", CRTEST_TMP_PATH);\n+\n+\tret = ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_OPEN, (unsigned long)&oarg);\n+\tif (ret < 0) {\n+\t\tprintf(\"crashrpt_test: cannot open %s, errno %d\\n\", CRTEST_TMP_PATH, errno);\n+\t\treturn ERROR;\n+\t}\n+\tfile_opened = true;\n+\tprintf(\"crashrpt_test: file opened via driver ioctl, writing report\\n\");\n+\n+\thdr.magic = CRTEST_MAGIC;\n+\thdr.version = CRTEST_VERSION;\n+\thdr.reason = (uint32_t)reason;\n+\thdr.n48 = CRTEST_N48;\n+\thdr.n64 = CRTEST_N64;\n+\thdr.sz48 = sizeof(struct crtest_node48_s);\n+\thdr.sz64 = sizeof(struct crtest_node64_s);\n+\thdr.reserved = 0;\n+\n+\tif (crtest_write_all(file, &hdr, sizeof(hdr)) != OK) {\n+\t\tprintf(\"crashrpt_test: header write failed\\n\");\n+\t\tgoto errout;\n+\t}\n+\n+\tfor (i = 0; i < CRTEST_N48; i++) {\n+\t\tif (crtest_write_record(file, &g_node48[i], sizeof(struct crtest_node48_s),\n+\t\t\t\t\t\t\t\tg_node48[i].msg, offsetof(struct crtest_node48_s, msg)) != OK) {\n+\t\t\tprintf(\"crashrpt_test: 48 byte record %u failed\\n\", (unsigned int)i);\n+\t\t\tgoto errout;\n+\t\t}\n+\t}\n+\n+\tfor (i = 0; i < CRTEST_N64; i++) {\n+\t\tif (crtest_write_record(file, &g_node64[i], sizeof(struct crtest_node64_s),\n+\t\t\t\t\t\t\t\tg_node64[i].msg, offsetof(struct crtest_node64_s, msg)) != OK) {\n+\t\t\tprintf(\"crashrpt_test: 64 byte record %u failed\\n\", (unsigned int)i);\n+\t\t\tgoto errout;\n+\t\t}\n+\t}\n+\n+\t/* Get it onto the medium before the name is published.\n+\t * fsync is best-effort: TMPFS does not support it (returns EPERM),\n+\t * but the data is already in RAM so there is nothing to flush.\n+\t */\n+\n+\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_FSYNC, (unsigned long)file) < 0) {\n+\t\tprintf(\"crashrpt_test: fsync returned errno %d (continuing)\\n\", errno);\n+\t}\n+\n+\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_CLOSE, (unsigned long)file) < 0) {\n+\t\tprintf(\"crashrpt_test: close failed, errno %d\\n\", errno);\n+\t\tgoto errout;\n+\t}\n+\tfile_opened = false;\n+\n+\t/* Publish.  Until this succeeds no reader can see a partial report. */\n+\n+\tsnprintf(final_path, sizeof(final_path), CRTEST_FINAL_FMT, g_report_seq++);\n+\n+\tif (rename(CRTEST_TMP_PATH, final_path) < 0) {\n+\t\tprintf(\"crashrpt_test: rename to %s failed, errno %d\\n\", final_path, errno);\n+\t\tunlink(CRTEST_TMP_PATH);\n+\t\treturn ERROR;\n+\t}\n+\n+\tprintf(\"crashrpt_test: report written to %s\\n\", final_path);\n+\treturn OK;\n+\n+errout:\n+\tif (file_opened) {\n+\t\tioctl(g_crashrpt_fd, CRASHRPTIOC_FILE_CLOSE, (unsigned long)file);\n+\t}\n+\n+\tunlink(CRTEST_TMP_PATH);\n+\treturn ret;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_reporter_thread\n+ *\n+ * Description:\n+ *   Registers itself with the driver and then parks in fin_wait().  It is\n+ *   woken from the top of up_assert(), writes the report, and tells the\n+ *   driver it is finished so that assert handling can continue.\n+ *\n+ ****************************************************************************/\n+\n+static void *crtest_reporter_thread(void *arg)\n+{\n+\tint reason;\n+\n+\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_REGISTER, 0) < 0) {\n+\t\tprintf(\"crashrpt_test: register failed, errno %d\\n\", errno);\n+\t\tg_reporter_running = false;\n+\t\treturn NULL;\n+\t}\n+\n+\tprintf(\"crashrpt_test: reporter registered and waiting\\n\");\n+\n+\tfor (;;) {\n+\t\t/* Parks here until the kernel wakes us.  There is no timeout - the\n+\t\t * thread is meant to wait indefinitely for a crash that may never\n+\t\t * come.\n+\t\t */\n+\n+\t\treason = fin_wait();\n+\n+\t\tprintf(\"crashrpt_test: woken, reason %d\\n\", reason);\n+\n+\t\t(void)crtest_write_report(reason);\n+\n+\t\t/* Release the asserting thread whether or not the write succeeded.\n+\t\t * Holding it up buys nothing and only delays the reboot.\n+\t\t */\n+\n+\t\tif (ioctl(g_crashrpt_fd, CRASHRPTIOC_DONE, 0) < 0) {\n+\t\t\tprintf(\"crashrpt_test: done notification failed, errno %d\\n\", errno);\n+\t\t}\n+\t}\n+\n+\treturn NULL;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_start_reporter\n+ ****************************************************************************/\n+\n+static int crtest_start_reporter(void)\n+{\n+\tpthread_attr_t attr;\n+\tstruct sched_param param;\n+\tint ret;\n+\n+\tif (g_reporter_running) {\n+\t\tprintf(\"crashrpt_test: reporter already running\\n\");\n+\t\treturn OK;\n+\t}\n+\n+\tg_crashrpt_fd = open(CRASHRPT_DEVPATH, O_RDWR);\n+\tif (g_crashrpt_fd < 0) {\n+\t\tprintf(\"crashrpt_test: cannot open %s, errno %d\\n\", CRASHRPT_DEVPATH, errno);\n+\t\tprintf(\"crashrpt_test: is CONFIG_CRASH_REPORT enabled?\\n\");\n+\t\treturn ERROR;\n+\t}\n+\n+\tpthread_attr_init(&attr);\n+\tpthread_attr_setstacksize(&attr, CONFIG_EXAMPLES_CRASHRPT_TEST_STACKSIZE);\n+\n+\t/* High priority is a requirement, not a preference.  The reporter has to\n+\t * outrank everything else runnable or the deadline expires before it is\n+\t * scheduled.\n+\t */\n+\n+\tparam.sched_priority = CONFIG_EXAMPLES_CRASHRPT_TEST_PRIORITY;\n+\tpthread_attr_setschedparam(&attr, &param);\n+\n+\tret = pthread_create(&g_reporter, &attr, crtest_reporter_thread, NULL);\n+\tif (ret != 0) {\n+\t\tprintf(\"crashrpt_test: pthread_create failed, %d\\n\", ret);\n+\t\tclose(g_crashrpt_fd);\n+\t\tg_crashrpt_fd = -1;\n+\t\treturn ERROR;\n+\t}\n+\n+\tpthread_setname_np(g_reporter, \"crashrpt_reporter\");\n+\tpthread_detach(g_reporter);\n+\n+\tg_reporter_running = true;\n+\treturn OK;\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_status\n+ ****************************************************************************/\n+\n+static void crtest_status(void)\n+{\n+\tsize_t est;\n+\n+\tprintf(\"crashrpt_test status\\n\");\n+\tprintf(\"  node48 size      : %d bytes x %d\\n\", (int)sizeof(struct crtest_node48_s), CRTEST_N48);\n+\tprintf(\"  node64 size      : %d bytes x %d\\n\", (int)sizeof(struct crtest_node64_s), CRTEST_N64);\n+\tprintf(\"  message maximum  : %d bytes\\n\", CRTEST_MSG_MAX);\n+\tprintf(\"  data built       : %s\\n\", g_data_ready ? \"yes\" : \"no\");\n+\tprintf(\"  reporter running : %s\\n\", g_reporter_running ? \"yes\" : \"no\");\n+\tprintf(\"  temporary file   : %s\\n\", CRTEST_TMP_PATH);\n+\n+\test = sizeof(struct crtest_hdr_s) + (CRTEST_N48 * CRTEST_REC48_MAX) + (CRTEST_N64 * CRTEST_REC64_MAX);\n+\tprintf(\"  report at most   : %d bytes\\n\", (int)est);\n+}\n+\n+/****************************************************************************\n+ * Name: crtest_usage\n+ ****************************************************************************/\n+\n+static void crtest_usage(void)\n+{\n+\tprintf(\"Usage: crashrpt_test <init|status|crash>\\n\");\n+\tprintf(\"  init    build the diagnostic data and register the reporter\\n\");\n+\tprintf(\"  status  show current state and the largest possible report\\n\");\n+\tprintf(\"  crash   raise an assert to exercise the capture path\\n\");\n+}\n+\n+/****************************************************************************\n+ * Public Functions\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Name: crashrpt_test_main\n+ ****************************************************************************/\n+\n+#ifdef CONFIG_BUILD_KERNEL\n+int main(int argc, FAR char *argv[])\n+#else\n+int crashrpt_test_main(int argc, char *argv[])\n+#endif\n+{\n+\tif (argc < 2) {\n+\t\tcrtest_usage();\n+\t\treturn 0;\n+\t}\n+\n+\tif (crtest_verify_layout() != OK) {\n+\t\treturn ERROR;\n+\t}\n+\n+\tif (strcmp(argv[1], \"init\") == 0) {\n+\t\tif (crtest_build_data() != OK) {\n+\t\t\treturn ERROR;\n+\t\t}\n+\n+\t\tif (crtest_start_reporter() != OK) {\n+\t\t\treturn ERROR;\n+\t\t}\n+\n+\t\tprintf(\"crashrpt_test: ready, run 'crashrpt_test crash' to exercise it\\n\");\n+\n+\t} else if (strcmp(argv[1], \"status\") == 0) {\n+\t\tcrtest_status();\n+\n+\t} else if (strcmp(argv[1], \"crash\") == 0) {\n+\t\tif (!g_reporter_running) {\n+\t\t\tprintf(\"crashrpt_test: run 'crashrpt_test init' first\\n\");\n+\t\t\treturn ERROR;\n+\t\t}\n+\n+\t\tprintf(\"crashrpt_test: asserting now, the reporter should run before reboot\\n\");\n+\n+\t\t/* The assert reaches up_assert() through the ordinary system call\n+\t\t * path, so the hook at the top of that function sees a healthy\n+\t\t * system and can hand control to the reporter.\n+\t\t */\n+\n+\t\tASSERT(0);\n+\n+\t} else {\n+\t\tcrtest_usage();\n+\t}\n+\n+\treturn 0;\n+}"
+    },
+    {
+      "sha": "9832c8a6d22d8d01173a479778269b0382763c45",
+      "filename": "build/configs/rtl8730e/defconfig",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 0,
+      "changes": 8,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/blob/3661ba8a9735d4f4433c28859affe2edd9aaaed5/build%2Fconfigs%2Frtl8730e%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/TR_Utils/raw/3661ba8a9735d4f4433c28859affe2edd9aaaed5/build%2Fconfigs%2Frtl8730e%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/TR_Utils/contents/build%2Fconfigs%2Frtl8730e%2Fdefconfig?ref=3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "patch": "@@ -192,6 +192,14 @@ CONFIG_EXAMPLES_HELLO=y\n # CONFIG_UART_HW_TEST is not set\n # CONFIG_EXAMPLES_WEBSERVER is not set\n # CONFIG_EXAMPLES_WEBSERVER_TEST is not set\n+CONFIG_EXAMPLES_CRASHRPT_TEST=y\n+CONFIG_EXAMPLES_CRASHRPT_TEST_DIR=\"/mnt\"\n+CONFIG_EXAMPLES_CRASHRPT_TEST_PRIORITY=254\n+CONFIG_EXAMPLES_CRASHRPT_TEST_STACKSIZE=8192\n+CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST=y\n+CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_DIR=\"/mnt\"\n+CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_PRIORITY=254\n+CONFIG_EXAMPLES_CRASHRPT_COMPREHENSIVE_TEST_STACKSIZE=8192\n \n #\n # Wifi Manager"
+    }
+  ]
+}

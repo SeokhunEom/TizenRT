@@ -1,0 +1,535 @@
+{
+  "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/compare/main...naman1-jain:ssm_integration",
+  "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/compare/main...naman1-jain:ssm_integration",
+  "permalink_url": "https://github.ecodesamsung.com/TizenRT/Kernel/compare/TizenRT:74a9092...naman1-jain:2376ac3",
+  "diff_url": "https://github.ecodesamsung.com/TizenRT/Kernel/compare/main...naman1-jain:ssm_integration.diff",
+  "patch_url": "https://github.ecodesamsung.com/TizenRT/Kernel/compare/main...naman1-jain:ssm_integration.patch",
+  "base_commit": {
+    "sha": "74a9092d460473e2fa2febd177b233f50760d73b",
+    "node_id": "MDY6Q29tbWl0NTg5MDg6NzRhOTA5MmQ0NjA0NzNlMmZhMmZlYmQxNzdiMjMzZjUwNzYwZDczYg==",
+    "commit": {
+      "author": {
+        "name": "gidori.nam",
+        "email": "gidori.nam@samsung.com",
+        "date": "2026-09-17T08:23:36Z"
+      },
+      "committer": {
+        "name": "tj kwon",
+        "email": "tj80.kwon@samsung.com",
+        "date": "2026-09-17T09:54:15Z"
+      },
+      "message": "ndp120: apply the reviews of review bot.\n1. This recipe is for ADAM120; the NDP120 configuration must be disabled.\n2. AUDIO_SD_KEYWORD_DETECT is a child command of AUDIOIOC_STOPPROCESS, so an inner switch statement is required.",
+      "tree": {
+        "sha": "1a3c5c1dd968aa765fc2bf3cf610df5d4e1fcb06",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/trees/1a3c5c1dd968aa765fc2bf3cf610df5d4e1fcb06"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/commits/74a9092d460473e2fa2febd177b233f50760d73b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/74a9092d460473e2fa2febd177b233f50760d73b",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/74a9092d460473e2fa2febd177b233f50760d73b",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/74a9092d460473e2fa2febd177b233f50760d73b/comments",
+    "author": {
+      "login": "gidori-nam",
+      "id": 34596,
+      "node_id": "MDQ6VXNlcjM0NTk2",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/34596?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam",
+      "html_url": "https://github.ecodesamsung.com/gidori-nam",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/gidori-nam/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tj80-kwon",
+      "id": 2560,
+      "node_id": "MDQ6VXNlcjI1NjA=",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/2560?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon",
+      "html_url": "https://github.ecodesamsung.com/tj80-kwon",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/tj80-kwon/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6eb506443b365ef8d8910c392ecf56ff42ea84a3",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/6eb506443b365ef8d8910c392ecf56ff42ea84a3",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/6eb506443b365ef8d8910c392ecf56ff42ea84a3"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "32b18b46b8853b394781037e09dab0c4ad09a127",
+    "node_id": "MDY6Q29tbWl0ODA3ODU6MzJiMThiNDZiODg1M2IzOTQ3ODEwMzdlMDlkYWIwYzRhZDA5YTEyNw==",
+    "commit": {
+      "author": {
+        "name": "Rishabh Singh",
+        "email": "ris.singh@samsung.com",
+        "date": "2026-08-13T10:20:27Z"
+      },
+      "committer": {
+        "name": "남은우",
+        "email": "eunwoo.nam@samsung.com",
+        "date": "2026-08-18T06:39:20Z"
+      },
+      "message": "os/kernel/pthread: Add bounds check to prevent cond waiter count underflow\n\nWhen a thread waits in pthread_cond_timedwait() and signal/broadcast\nand timeout happen at the same time, waiter count could be doubly\ndecremented, which can lead to waiter count underflow when there is\nonly a single waiter. This can lead to inconsistent waiter count and\nsem count as well.\n\nLogs:\npthread_cond_timedwait: TWAIT INC cond=0x0x63f8a388 waiters=1 semcount=0 pid=79 name=BA_EVENT_WORKER\npthread_cond_broadcast: BCAST DEC->0 cond=0x0x63f8a388 semcount=0 pid=65 name=bixbyAgentClientNotiThread\npthread_cond_timedwait: TWAIT SEM_WAIT cond=0x0x63f8a388 status=-1 errno=4 waiters=0 semcount=1 pid=79 name=BA_EVENT_WORKER\npthread_cond_timedwait: TWAIT DEC cond=0x0x63f8a388 waiters=65535 semcount=1 errno=4 pid=79 name=BA_EVENT_WORKER\n\nCrash scenario:\n1. Thread A: wait on timedwait waitercount = 1\n2. Thread B: calls broadcast the same condition variable, decrements waitercount = 0.\n3. But just before it is about to call pthread_sem_give(),\n   The wait of thread A breaks due to timeout, that's why:\n   TWAIT SEM_WAIT cond=0x0x63f8a388 status=-1 errno=4 waiters=0 semcount=1 pid=79 name=BA_EVENT_WORKER\n4. semwaitirq() increments the semcount\n5. Since, thread A wakesup due to signal, sem_wait() returns !OK and pthread_cond_timedwait\n   decrements the waiter count further (because there is no bounds check) and it underflows.\n\nRace scenario:\n1. Thread A waits in pthread_cond_timedwait()\n2. Thread A timesout, but does not gets cpu yet.\n3. Thread B calls pthread_cond_signal()\n4. Thread A resumes.\n\nFix:\n- Add bounds check before waiters-- to prevent underflow\n- Consume leftover semcount in error path\n- Return ETIMEDOUT (caller needs to know timeout fired)\n\nSigned-off-by: Rishabh Singh <ris.singh@samsung.com>",
+      "tree": {
+        "sha": "057340e6202e79bd624b4f2bfe902dcc431261ad",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/trees/057340e6202e79bd624b4f2bfe902dcc431261ad"
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/commits/32b18b46b8853b394781037e09dab0c4ad09a127",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/32b18b46b8853b394781037e09dab0c4ad09a127",
+    "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/32b18b46b8853b394781037e09dab0c4ad09a127",
+    "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/32b18b46b8853b394781037e09dab0c4ad09a127/comments",
+    "author": {
+      "login": "ris-singh",
+      "id": 26333,
+      "node_id": "MDQ6VXNlcjI2MzMz",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/26333?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/ris-singh",
+      "html_url": "https://github.ecodesamsung.com/ris-singh",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/ris-singh/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "eunwoo-nam",
+      "id": 18483,
+      "node_id": "MDQ6VXNlcjE4NDgz",
+      "avatar_url": "https://avatars.github.ecodesamsung.com/u/18483?",
+      "gravatar_id": "",
+      "url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam",
+      "html_url": "https://github.ecodesamsung.com/eunwoo-nam",
+      "followers_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/followers",
+      "following_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/following{/other_user}",
+      "gists_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/gists{/gist_id}",
+      "starred_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/subscriptions",
+      "organizations_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/orgs",
+      "repos_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/repos",
+      "events_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/events{/privacy}",
+      "received_events_url": "https://github.ecodesamsung.com/api/v3/users/eunwoo-nam/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d560a869ec7caf572adc454d68c5a7d88648828",
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/3d560a869ec7caf572adc454d68c5a7d88648828",
+        "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/3d560a869ec7caf572adc454d68c5a7d88648828"
+      }
+    ]
+  },
+  "status": "diverged",
+  "ahead_by": 2,
+  "behind_by": 38,
+  "total_commits": 2,
+  "commits": [
+    {
+      "sha": "83ea0b9ad820f1af90eb3951d31452a2067824f8",
+      "node_id": "MDY6Q29tbWl0NTg5MDg6ODNlYTBiOWFkODIwZjFhZjkwZWIzOTUxZDMxNDUyYTIwNjc4MjRmOA==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T10:21:46Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-19T10:21:46Z"
+        },
+        "message": "os/: Add crash diagnostic capture driver (/dev/crashrpt)\n\nAdd crashrpt driver that enables user-space reporters to capture\ndiagnostic data during system crashes. The driver registers a callback\nat the top of up_assert() that wakes a registered reporter thread\nbefore crash handling begins.\n\nFeatures:\n- Reporter thread registers via ioctl and parks in fin_wait()\n- Kernel wakes reporter with crash reason when assert occurs\n- Reporter writes diagnostic data to file using kernel file APIs\n- Atomic file operations (temp file + rename) prevent partial writes\n- Configurable deadline (default 3000ms) for report completion",
+        "tree": {
+          "sha": "6a2b04de3d3abeab855701234a1208478098bced",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/trees/6a2b04de3d3abeab855701234a1208478098bced"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/commits/83ea0b9ad820f1af90eb3951d31452a2067824f8",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/83ea0b9ad820f1af90eb3951d31452a2067824f8",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/83ea0b9ad820f1af90eb3951d31452a2067824f8",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/83ea0b9ad820f1af90eb3951d31452a2067824f8/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "32b18b46b8853b394781037e09dab0c4ad09a127",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/32b18b46b8853b394781037e09dab0c4ad09a127",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/32b18b46b8853b394781037e09dab0c4ad09a127"
+        }
+      ]
+    },
+    {
+      "sha": "2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "node_id": "MDY6Q29tbWl0NTg5MDg6MjM3NmFjMzllZGQ3M2I4YmJjNjczNDBjMjQwZTk0Zjc2ZTRlN2IzMQ==",
+      "commit": {
+        "author": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-25T11:25:48Z"
+        },
+        "committer": {
+          "name": "Naman Jain",
+          "email": "naman1.jain@samsung.com",
+          "date": "2026-08-25T11:25:48Z"
+        },
+        "message": "os/drivers/dev_null.c: Add ioctl handler to trigger kernel assert for testing\n\nAdd an ioctl handler to the /dev/null driver that triggers a kernel assert when called with a non-NULL argument. This is intended for testing the crash report capture mechanism.",
+        "tree": {
+          "sha": "566ac8a1bd44a1a192111c8125a7b014776098d3",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/trees/566ac8a1bd44a1a192111c8125a7b014776098d3"
+        },
+        "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/git/commits/2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "comments_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/2376ac39edd73b8bbc67340c240e94f76e4e7b31/comments",
+      "author": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "naman1-jain",
+        "id": 27424,
+        "node_id": "MDQ6VXNlcjI3NDI0",
+        "avatar_url": "https://avatars.github.ecodesamsung.com/u/27424?",
+        "gravatar_id": "",
+        "url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain",
+        "html_url": "https://github.ecodesamsung.com/naman1-jain",
+        "followers_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/followers",
+        "following_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/following{/other_user}",
+        "gists_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/gists{/gist_id}",
+        "starred_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/subscriptions",
+        "organizations_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/orgs",
+        "repos_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/repos",
+        "events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/events{/privacy}",
+        "received_events_url": "https://github.ecodesamsung.com/api/v3/users/naman1-jain/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "83ea0b9ad820f1af90eb3951d31452a2067824f8",
+          "url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/commits/83ea0b9ad820f1af90eb3951d31452a2067824f8",
+          "html_url": "https://github.ecodesamsung.com/TizenRT/Kernel/commit/83ea0b9ad820f1af90eb3951d31452a2067824f8"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "ff939fd2c4f29c3051b7399e84bfc867e36ee946",
+      "filename": "build/configs/rtl8730e/ailp/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -606,6 +606,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "738225ec832c12192cd3b92ec9e24f2ddca001df",
+      "filename": "build/configs/rtl8730e/ailp_adam110/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_adam110%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_adam110%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_adam110%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -609,6 +609,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "fb890ee9da6ba1f3c6f5ce1705b073e1161c81ca",
+      "filename": "build/configs/rtl8730e/ailp_csi/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_csi%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_csi%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_csi%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -606,6 +606,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "8f432705eb7483914a41da5c3ab022518ac8cd32",
+      "filename": "build/configs/rtl8730e/ailp_csi_homelynk/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_csi_homelynk%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_csi_homelynk%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_csi_homelynk%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -598,6 +598,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "b759a15d15704a69181477b0cac8350f25df61e3",
+      "filename": "build/configs/rtl8730e/ailp_lcd4.3/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -664,6 +664,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "260bea17690fc50324de0ce0dfbea6ea02246628",
+      "filename": "build/configs/rtl8730e/ailp_lcd4.3_csi/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -665,6 +665,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "d52be1577098679ca6f2f98eb60e797a309fffd6",
+      "filename": "build/configs/rtl8730e/ailp_lcd4.3_csi_homelynk/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi_homelynk%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi_homelynk%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_csi_homelynk%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -665,6 +665,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "1afbe567ce6b48938a05ccdcc780451bc5849d51",
+      "filename": "build/configs/rtl8730e/ailp_lcd4.3_factory/defconfig",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_factory%2Fdefconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_factory%2Fdefconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/build%2Fconfigs%2Frtl8730e%2Failp_lcd4.3_factory%2Fdefconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -658,6 +658,8 @@ CONFIG_WATCHDOG=y\n CONFIG_WATCHDOG_DEVPATH=\"/dev/watchdog0\"\n # CONFIG_WATCHDOG_FOR_IRQ is not set\n # CONFIG_TIMER is not set\n+CONFIG_CRASH_REPORT=y\n+CONFIG_CRASH_REPORT_DEADLINE_MS=3000\n CONFIG_MMINFO=y\n CONFIG_PRODCONFIG=y\n CONFIG_KLOGBUFFER=y"
+    },
+    {
+      "sha": "cf16196bc4e1ed0d3ece35467ece58bd279e26ff",
+      "filename": "os/arch/arm/src/armv7-a/arm_assert.c",
+      "status": "modified",
+      "additions": 29,
+      "deletions": 13,
+      "changes": 42,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_assert.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_assert.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_assert.c?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -82,6 +82,9 @@\n #include <tinyara/binfmt/elf.h>\n #endif\n #include <tinyara/security_level.h>\n+#ifdef CONFIG_CRASH_REPORT\n+#include <tinyara/crashrpt.h>\n+#endif\n #ifdef CONFIG_SYSTEM_REBOOT_REASON\n #include <arch/reboot_reason.h>\n #endif\n@@ -582,25 +585,47 @@ static inline void print_assert_detail(const uint8_t *filename, int lineno, stru\n \n void up_assert(const uint8_t *filename, int lineno)\n {\n+#ifdef CONFIG_CRASH_REPORT\n+\t/* Capture application diagnostics before any assert handling begins.\n+\t *\n+\t * This has to be the very first statement in the function.  Everything\n+\t * below - the critical section, up_cpu_pause_all(), the abort state -\n+\t * makes it impossible to run an application thread.  Here, for an assert\n+\t * raised by the application itself, interrupts are still enabled, the\n+\t * scheduler is running and the application's memory context is loaded.\n+\t *\n+\t * crashrpt_notify() blocks until the reporter is done or the deadline\n+\t * expires, then returns and we continue exactly as before.  It takes its\n+\t * own re-entry guard, so a fault inside the reporter cannot loop back\n+\t * into here.\n+\t */\n+\n+\tint crash_reason = CRASHRPT_REASON_KERNEL_ASSERT;\n+\n+\tif (system_exception_location) {\n+\t\tcrash_reason = CRASHRPT_REASON_HW_FAULT;\n+\t} else if (user_assert_location) {\n+\t\tcrash_reason = CRASHRPT_REASON_APP_ASSERT;\n+\t}\n+\n+\t(void)crashrpt_notify(crash_reason);\n+#endif\n \n \tirqstate_t flags = enter_critical_section();\n \n \tuint32_t asserted_location = 0;\n \n \tabort_mode = true;\n \n-\t/* Check if we are in recursive abort */\n \tif (state == ABORT_STATE) {\n-\t\t/* treat kernel fault */\n \t\tarm_assert();\n \t} else {\n \t\tstate = ABORT_STATE;\n \t}\n-\t/* Extract the PC value of instruction which caused the abort/assert */\n \n \tif (system_exception_location) {\n \t\tasserted_location = (uint32_t)system_exception_location;\n-\t\tsystem_exception_location = 0x0;\t/* reset */\n+\t\tsystem_exception_location = 0x0;\n \t} else if (user_assert_location) {\n \t\tasserted_location = (uint32_t)user_assert_location;\n \t\tuser_assert_location = 0x0;\n@@ -609,13 +634,11 @@ void up_assert(const uint8_t *filename, int lineno)\n \t}\n \n #ifdef CONFIG_SMP\n-\t/* Pause all other CPUs to avoid mix up of logs while printing assert logs */\n \tup_cpu_pause_all();\n \n #endif\n \n \tstruct tcb_s *fault_tcb = this_task();\n-\t/* Add new line to distinguish between normal log and assert log.*/\n \tlldbg_noarg(\"\\n\");\n \n \tboard_autoled_on(LED_ASSERTION);\n@@ -628,17 +651,12 @@ void up_assert(const uint8_t *filename, int lineno)\n #ifdef CONFIG_SECURITY_LEVEL\n \tlldbg_noarg(\"security level: %d\\n\", get_security_level());\n #endif\n-\t/* Print assert detail information and dump state,\n-\t * but if os security level is high, It is not printed.\n-\t */\n \tif (!IS_SECURE_STATE()) {\n \t\tprint_assert_detail(filename, lineno, fault_tcb, asserted_location);\n \t}\n \n-\t/* Heap corruption check */\n \tcheck_heap_corrupt(fault_tcb);\n \n-\t/* Closing log line */\n \tlldbg_noarg(\"##########################################################################################################################################\\n\");\n \n #if defined(CONFIG_BOARD_CRASHDUMP)\n@@ -649,7 +667,6 @@ void up_assert(const uint8_t *filename, int lineno)\n \n #ifdef CONFIG_BINMGR_RECOVERY\n \tif (IS_FAULT_IN_USER_SPACE(asserted_location)) {\n-\t\t/* Recover user fault through binary manager */\n \t\tbinary_manager_recover_userfault();\n \t} else\n #endif\n@@ -658,7 +675,6 @@ void up_assert(const uint8_t *filename, int lineno)\n \t\t\tup_flush_console();\n \t\t}\n \n-\t\t/* treat kernel fault */\n \t\tarm_assert();\n \t}\n \tleave_critical_section(flags);"
+    },
+    {
+      "sha": "e6ade501c89f1964c38cfb52000bd5bf747d152f",
+      "filename": "os/arch/arm/src/armv7-a/arm_initialize.c",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 0,
+      "changes": 8,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_initialize.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_initialize.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Farch%2Farm%2Fsrc%2Farmv7-a%2Farm_initialize.c?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -43,6 +43,10 @@\n #include <tinyara/board.h>\n #include <arch/board/board.h>\n \n+#ifdef CONFIG_CRASH_REPORT\n+#include <tinyara/crashrpt.h>\n+#endif\n+\n #include \"up_internal.h\"\n \n /****************************************************************************\n@@ -159,6 +163,10 @@ void up_initialize(void)\n \n #if defined(CONFIG_DEV_NULL)\n \tdevnull_register();\t\t\t/* Standard /dev/null */\n+\n+#ifdef CONFIG_CRASH_REPORT\n+\tcrashrpt_register();\t\t\t/* Crash diagnostic capture */\n+#endif\n #endif\n \n #ifdef CONFIG_VIDEO_NULL"
+    },
+    {
+      "sha": "54d97598e4329a8702d1cbb9971d99cac9c2c9dc",
+      "filename": "os/drivers/Kconfig",
+      "status": "modified",
+      "additions": 35,
+      "deletions": 0,
+      "changes": 35,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2FKconfig",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2FKconfig",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Fdrivers%2FKconfig?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -595,3 +595,38 @@ config OTP_NULL\n endif\n \n source drivers/seclink/Kconfig\n+\n+config CRASH_REPORT\n+\tbool \"Crash diagnostic capture\"\n+\tdefault n\n+\t---help---\n+\t\tAllow an application to publish diagnostic information when the\n+\t\tsystem is about to assert.\n+\n+\t\tThe application registers a high priority reporter thread through\n+\t\t/dev/crashrpt and parks it in fin_wait().  At the very start of\n+\t\tup_assert(), before any crash handling begins, the kernel wakes that\n+\t\tthread and waits for it to finish.  Assert handling then proceeds\n+\t\tnormally.\n+\n+\t\tAt that point, for an assert raised by the application, the system is\n+\t\tstill healthy - interrupts are enabled and the scheduler is running -\n+\t\tso the reporter can use ordinary file operations.\n+\n+\t\tHardware faults and asserts raised from interrupt context cannot be\n+\t\tserved this way and are skipped.\n+\n+if CRASH_REPORT\n+\n+config CRASH_REPORT_DEADLINE_MS\n+\tint \"Crash report deadline (msec)\"\n+\tdefault 3000\n+\t---help---\n+\t\tHow long the asserting thread waits for the reporter to finish\n+\t\tbefore giving up and continuing with the reboot.\n+\n+\t\tThis bound relies on a working scheduler.  Boards should also\n+\t\toverride crashrpt_arm_watchdog() so that a hardware watchdog\n+\t\tguarantees the reboot if the reporter hangs.\n+\n+endif # CRASH_REPORT"
+    },
+    {
+      "sha": "77eb7a4730c13bfd8f5659c0fd0920bd77faa943",
+      "filename": "os/drivers/Makefile",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 0,
+      "changes": 8,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2FMakefile",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2FMakefile",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Fdrivers%2FMakefile?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -66,6 +66,10 @@ ifeq ($(CONFIG_TASK_MANAGER),y)\n CFLAGS += -I $(TOPDIR)/kernel\n endif\n \n+ifeq ($(CONFIG_CRASH_REPORT),y)\n+CFLAGS += -I $(TOPDIR)/kernel\n+endif\n+\n # Include support for various drivers.  Each Make.defs file will add its\n # files to the source file list, add its DEPPATH info, and will add\n # the appropriate paths to the VPATH variable\n@@ -129,6 +133,10 @@ ifeq ($(CONFIG_PWM),y)\n   CSRCS += pwm.c\n endif\n \n+ifeq ($(CONFIG_CRASH_REPORT),y)\n+  CSRCS += crashrpt.c\n+endif\n+\n ifeq ($(CONFIG_WATCHDOG),y)\n   CSRCS += watchdog.c\n endif"
+    },
+    {
+      "sha": "c864ae758a5d9fd70b2d75f3ceb192e3565ac692",
+      "filename": "os/drivers/crashrpt.c",
+      "status": "added",
+      "additions": 422,
+      "deletions": 0,
+      "changes": 422,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2Fcrashrpt.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2Fcrashrpt.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Fdrivers%2Fcrashrpt.c?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -0,0 +1,422 @@\n+/****************************************************************************\n+ *\n+ * Copyright 2026 Samsung Electronics All Rights Reserved.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ * http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing,\n+ * software distributed under the License is distributed on an\n+ * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+ * either express or implied. See the License for the specific\n+ * language governing permissions and limitations under the License.\n+ *\n+ ****************************************************************************/\n+/****************************************************************************\n+ * os/drivers/crashrpt.c\n+ *\n+ * Crash diagnostic capture - FIN_WAIT + timed wait method.\n+ * See os/include/tinyara/crashrpt.h for the design summary.\n+ *\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Included Files\n+ ****************************************************************************/\n+\n+#include <tinyara/config.h>\n+\n+#include <sys/types.h>\n+#include <stdbool.h>\n+#include <stdint.h>\n+#include <errno.h>\n+#include <assert.h>\n+#include <debug.h>\n+#include <semaphore.h>\n+#include <sched.h>\n+\n+#include <tinyara/arch.h>\n+#include <tinyara/irq.h>\n+#include <tinyara/sched.h>\n+#include <tinyara/clock.h>\n+#include <tinyara/semaphore.h>\n+#include <tinyara/fs/fs.h>\n+#include <tinyara/crashrpt.h>\n+\n+#include \"sched/sched.h\"\n+#include \"semaphore/semaphore.h\"\n+\n+#ifdef CONFIG_CRASH_REPORT\n+\n+/****************************************************************************\n+ * Pre-processor Definitions\n+ ****************************************************************************/\n+\n+/* struct crashrpt_file_s.opaque must be large enough to hold a struct file.\n+ * The application passes a crashrpt_file_s by value through ioctl; the driver\n+ * casts the opaque array to a struct file pointer and uses it directly.\n+ */\n+\n+static_assert(sizeof(struct crashrpt_file_s) >= sizeof(struct file), \"crashrpt_file_s too small for struct file\");\n+\n+#ifndef CONFIG_CRASH_REPORT_DEADLINE_MS\n+#define CONFIG_CRASH_REPORT_DEADLINE_MS   3000\n+#endif\n+\n+/* The reporter is boosted to this priority so that it is guaranteed to be\n+ * the next thread to run.  Without the boost sched_addreadytorun() may not\n+ * select it, the deadline is consumed doing nothing and no report is\n+ * produced.\n+ */\n+\n+#define CRASHRPT_BOOST_PRIORITY           (SCHED_PRIORITY_MAX)\n+\n+/****************************************************************************\n+ * Private Data\n+ ****************************************************************************/\n+\n+/* The registered reporter.  NULL when no reporter is available. */\n+\n+static FAR struct tcb_s *g_reporter_tcb;\n+static pid_t g_reporter_pid;\n+\n+/* Posted by the reporter through CRASHRPTIOC_DONE. */\n+\n+static sem_t g_done_sem;\n+\n+/* Re-entry guard.  Set before anything else happens in crashrpt_notify().\n+ *\n+ * up_assert() has not yet set its own abort state when our hook runs, so a\n+ * fault raised by the reporter would be treated as a fresh assert and would\n+ * re-enter this path.  Without this flag that recurses until the stack or\n+ * the watchdog ends it.\n+ */\n+\n+static volatile bool g_report_in_progress;\n+\n+/****************************************************************************\n+ * Private Function Prototypes\n+ ****************************************************************************/\n+\n+static int crashrpt_open(FAR struct file *filep);\n+static int crashrpt_close(FAR struct file *filep);\n+static ssize_t crashrpt_read(FAR struct file *filep, FAR char *buffer, size_t len);\n+static ssize_t crashrpt_write(FAR struct file *filep, FAR const char *buffer, size_t len);\n+static int crashrpt_ioctl(FAR struct file *filep, int cmd, unsigned long arg);\n+\n+/****************************************************************************\n+ * Private Data\n+ ****************************************************************************/\n+\n+static const struct file_operations crashrpt_fops = {\n+\tcrashrpt_open,\t\t\t\t/* open   */\n+\tcrashrpt_close,\t\t\t\t/* close  */\n+\tcrashrpt_read,\t\t\t\t/* read   */\n+\tcrashrpt_write,\t\t\t\t/* write  */\n+\tNULL,\t\t\t\t\t\t/* seek   */\n+\tcrashrpt_ioctl\t\t\t\t/* ioctl  */\n+#ifndef CONFIG_DISABLE_POLL\n+\t, NULL\t\t\t\t\t\t/* poll   */\n+#endif\n+#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS\n+\t, NULL\t\t\t\t\t\t/* unlink */\n+#endif\n+};\n+\n+/****************************************************************************\n+ * Private Functions\n+ ****************************************************************************/\n+\n+static int crashrpt_open(FAR struct file *filep)\n+{\n+\treturn OK;\n+}\n+\n+static int crashrpt_close(FAR struct file *filep)\n+{\n+\treturn OK;\n+}\n+\n+static ssize_t crashrpt_read(FAR struct file *filep, FAR char *buffer, size_t len)\n+{\n+\treturn 0;\n+}\n+\n+static ssize_t crashrpt_write(FAR struct file *filep, FAR const char *buffer, size_t len)\n+{\n+\treturn len;\n+}\n+\n+/****************************************************************************\n+ * Name: crashrpt_ioctl\n+ ****************************************************************************/\n+\n+static int crashrpt_ioctl(FAR struct file *filep, int cmd, unsigned long arg)\n+{\n+\tFAR struct tcb_s *rtcb;\n+\tirqstate_t flags;\n+\tint ret = OK;\n+\n+\tswitch (cmd) {\n+\tcase CRASHRPTIOC_REGISTER: {\n+\t\tflags = enter_critical_section();\n+\t\tif (g_reporter_tcb != NULL) {\n+\t\t\tleave_critical_section(flags);\n+\t\t\tdbg(\"crash reporter already registered, pid %d\\n\", g_reporter_pid);\n+\t\t\treturn -EBUSY;\n+\t\t}\n+\n+\t\trtcb = this_task();\n+\t\tg_reporter_tcb = rtcb;\n+\t\tg_reporter_pid = rtcb->pid;\n+\t\tleave_critical_section(flags);\n+\n+\t\tlldbg(\"crash reporter registered, pid %d prio %d\\n\", g_reporter_pid, rtcb->sched_priority);\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_UNREGISTER: {\n+\t\tflags = enter_critical_section();\n+\t\tif (g_reporter_tcb != this_task()) {\n+\t\t\tleave_critical_section(flags);\n+\t\t\treturn -EPERM;\n+\t\t}\n+\t\tg_reporter_tcb = NULL;\n+\t\tg_reporter_pid = 0;\n+\t\tleave_critical_section(flags);\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_DONE: {\n+\t\t/* Release the asserting thread.  Only the registered reporter may\n+\t\t * do this, otherwise any task could let the assert proceed early.\n+\t\t */\n+\n+\t\tif (g_reporter_tcb != this_task()) {\n+\t\t\treturn -EPERM;\n+\t\t}\n+\n+\t\tif (!g_report_in_progress) {\n+\t\t\t/* Nothing is waiting.  Not an error - the deadline may already\n+\t\t\t * have expired and the asserting thread moved on.\n+\t\t\t */\n+\t\t\treturn OK;\n+\t\t}\n+\n+\t\tsem_post(&g_done_sem);\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_FILE_OPEN: {\n+\t\tFAR struct crashrpt_file_open_s *oarg =\n+\t\t\t(FAR struct crashrpt_file_open_s *)arg;\n+\t\tFAR struct file *fp;\n+\n+\t\tlldbg(\"CRASHRPTIOC_FILE_OPEN: path=%s flags=0x%x\\n\", oarg ? oarg->path : \"(null)\", oarg ? oarg->oflags : 0);\n+\n+\t\tif (oarg == NULL) {\n+\t\t\treturn -EINVAL;\n+\t\t}\n+\n+\t\tfp = (FAR struct file *)oarg->file.opaque;\n+\n+\t\tret = file_open(fp, oarg->path, oarg->oflags, oarg->mode);\n+\t\tlldbg(\"CRASHRPTIOC_FILE_OPEN: file_open returned %d\\n\", ret);\n+\t\tif (ret < 0) {\n+\t\t\treturn ret;\n+\t\t}\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_FILE_WRITE: {\n+\t\tFAR struct crashrpt_file_write_s *warg =\n+\t\t\t(FAR struct crashrpt_file_write_s *)arg;\n+\t\tFAR struct file *fp;\n+\n+\t\tif (warg == NULL || warg->file == NULL) {\n+\t\t\treturn -EINVAL;\n+\t\t}\n+\n+\t\tfp = (FAR struct file *)warg->file->opaque;\n+\n+\t\tret = file_write(fp, warg->buf, warg->len);\n+\t\tif (ret < 0) {\n+\t\t\treturn ret;\n+\t\t}\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_FILE_FSYNC: {\n+\t\tFAR struct crashrpt_file_s *farg = (FAR struct crashrpt_file_s *)arg;\n+\t\tFAR struct file *fp;\n+\n+\t\tif (farg == NULL) {\n+\t\t\treturn -EINVAL;\n+\t\t}\n+\n+\t\tfp = (FAR struct file *)farg->opaque;\n+\n+\t\tret = file_fsync(fp);\n+\t\tif (ret < 0) {\n+\t\t\treturn ret;\n+\t\t}\n+\t}\n+\tbreak;\n+\n+\tcase CRASHRPTIOC_FILE_CLOSE: {\n+\t\tFAR struct crashrpt_file_s *carg = (FAR struct crashrpt_file_s *)arg;\n+\t\tFAR struct file *fp;\n+\n+\t\tif (carg == NULL) {\n+\t\t\treturn -EINVAL;\n+\t\t}\n+\n+\t\tfp = (FAR struct file *)carg->opaque;\n+\n+\t\tret = file_close(fp);\n+\t\tif (ret < 0) {\n+\t\t\treturn ret;\n+\t\t}\n+\t}\n+\tbreak;\n+\n+\tdefault:\n+\t\tret = -ENOTTY;\n+\t\tbreak;\n+\t}\n+\n+\treturn ret;\n+}\n+\n+/****************************************************************************\n+ * Public Functions\n+ ****************************************************************************/\n+\n+/****************************************************************************\n+ * Name: crashrpt_arm_watchdog\n+ *\n+ * Description:\n+ *   Weak default.  Boards should override this with a real hardware\n+ *   watchdog kick.  See the header for why this matters.\n+ *\n+ ****************************************************************************/\n+\n+void weak_function crashrpt_arm_watchdog(uint32_t timeout_ms)\n+{\n+\tUNUSED(timeout_ms);\n+}\n+\n+/****************************************************************************\n+ * Name: crashrpt_notify\n+ ****************************************************************************/\n+\n+bool crashrpt_notify(int reason)\n+{\n+\tirqstate_t flags;\n+\tint saved_priority;\n+\tint ret;\n+\n+\t/* Take the re-entry guard first, before any other work.  See the comment\n+\t * on g_report_in_progress above - this ordering is the single most\n+\t * important detail in this file.\n+\t */\n+\n+\tif (g_report_in_progress) {\n+\t\treturn false;\n+\t}\n+\tg_report_in_progress = true;\n+\n+\tif (g_reporter_tcb == NULL) {\n+\t\treturn false;\n+\t}\n+\n+\t/* We must be in ordinary thread context.  If CURRENT_REGS is set we are\n+\t * inside an exception handler - a hardware fault, or an assert raised\n+\t * from an interrupt - and the scheduler cannot be used to run the\n+\t * reporter.  Those cases fall back to whatever the caller can persist\n+\t * on its own.\n+\t */\n+\n+\tif (up_interrupt_context()) {\n+\t\treturn false;\n+\t}\n+\n+\tflags = enter_critical_section();\n+\n+\t/* The reporter must actually be parked.  If it is blocked on something\n+\t * else, or is itself the thread that crashed, waking it does nothing.\n+\t */\n+\n+\tif (g_reporter_tcb->task_state != TSTATE_WAIT_FIN) {\n+\t\tleave_critical_section(flags);\n+\t\tlldbg(\"crash reporter not parked (state %d), skipping\\n\", g_reporter_tcb->task_state);\n+\t\treturn false;\n+\t}\n+\n+\t/* Boost so the reporter is certain to be scheduled ahead of us.  This is\n+\t * a correctness requirement, not a latency optimisation.\n+\t */\n+\n+\tsaved_priority = g_reporter_tcb->sched_priority;\n+\tif (saved_priority < CRASHRPT_BOOST_PRIORITY) {\n+\t\t(void)sched_setpriority(g_reporter_tcb, CRASHRPT_BOOST_PRIORITY);\n+\t}\n+\n+\tleave_critical_section(flags);\n+\n+\t/* Arm the hardware backstop before handing over control. */\n+\n+\tcrashrpt_arm_watchdog(CONFIG_CRASH_REPORT_DEADLINE_MS);\n+\n+\tlldbg(\"waking crash reporter pid %d, reason %d\\n\", g_reporter_pid, reason);\n+\n+\t/* Wake it.\n+\t *\n+\t * fin_notify() uses the ordinary up_unblock_task(), which saves our\n+\t * context so that we resume here once the reporter is done.  Do NOT be\n+\t * tempted to use up_unblock_task_without_savereg() - that variant exists\n+\t * to discard a broken context on the real crash path and would destroy\n+\t * the very thread that has to carry on and reboot the board.\n+\t */\n+\n+\tif (fin_notify(g_reporter_pid, reason) != OK) {\n+\t\tlldbg(\"failed to wake crash reporter\\n\");\n+\t\treturn false;\n+\t}\n+\n+\t/* Wait, bounded.  sem_tickwait() is used rather than sem_timedwait()\n+\t * because it takes a tick delay directly and does not depend on the\n+\t * clock_gettime() path.\n+\t */\n+\n+\tret = sem_tickwait(&g_done_sem, clock_systimer(), MSEC2TICK(CONFIG_CRASH_REPORT_DEADLINE_MS));\n+\tif (ret != OK) {\n+\t\tlldbg(\"crash reporter did not complete within %d ms\\n\", CONFIG_CRASH_REPORT_DEADLINE_MS);\n+\t\treturn false;\n+\t}\n+\n+\tlldbg(\"crash report complete\\n\");\n+\treturn true;\n+}\n+\n+/****************************************************************************\n+ * Name: crashrpt_register\n+ ****************************************************************************/\n+\n+void crashrpt_register(void)\n+{\n+\tsem_init(&g_done_sem, 0, 0);\n+\n+\t/* The completion semaphore is a simple signal, so priority inheritance\n+\t * would only add work on a path that must stay short.\n+\t */\n+\n+\tsem_setprotocol(&g_done_sem, SEM_PRIO_NONE);\n+\n+\t(void)register_driver(CRASHRPT_DEVPATH, &crashrpt_fops, 0666, NULL);\n+}\n+\n+#endif\t\t\t\t\t\t\t/* CONFIG_CRASH_REPORT */"
+    },
+    {
+      "sha": "4cbef28673237416d06f38b2c39e794e3b854f98",
+      "filename": "os/drivers/dev_null.c",
+      "status": "modified",
+      "additions": 19,
+      "deletions": 2,
+      "changes": 21,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2Fdev_null.c",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Fdrivers%2Fdev_null.c",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Fdrivers%2Fdev_null.c?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -61,14 +61,17 @@\n #include <string.h>\n #include <poll.h>\n #include <errno.h>\n+#include <assert.h>\n #include <tinyara/fs/fs.h>\n+#include <sys/ioctl.h>\n \n /****************************************************************************\n  * Private Function Prototypes\n  ****************************************************************************/\n \n static ssize_t devnull_read(FAR struct file *, FAR char *, size_t);\n static ssize_t devnull_write(FAR struct file *, FAR const char *, size_t);\n+static int devnull_ioctl(FAR struct file *filep, int cmd, unsigned long arg);\n #ifndef CONFIG_DISABLE_POLL\n static int devnull_poll(FAR struct file *filep, FAR struct pollfd *fds, bool setup);\n #endif\n@@ -83,9 +86,9 @@ static const struct file_operations devnull_fops = {\n \tdevnull_read,\t\t\t\t/* read */\n \tdevnull_write,\t\t\t\t/* write */\n \t0,\t\t\t\t\t\t\t/* seek */\n-\t0\t\t\t\t\t\t\t/* ioctl */\n+\tdevnull_ioctl,\t\t\t\t/* ioctl */\n #ifndef CONFIG_DISABLE_POLL\n-\t, devnull_poll\t\t\t/* poll */\n+\tdevnull_poll\t\t\t/* poll */\n #endif\n };\n \n@@ -111,6 +114,20 @@ static ssize_t devnull_write(FAR struct file *filep, FAR const char *buffer, siz\n \treturn len;\t\t\t\t\t/* Say that everything was written */\n }\n \n+/****************************************************************************\n+ * Name: devnull_ioctl\n+ ****************************************************************************/\n+\n+static int devnull_ioctl(FAR struct file *filep, int cmd, unsigned long arg)\n+{\n+\t/* Trigger kernel assert if arg is non-NULL\n+\t * This is used for testing the crash report mechanism\n+\t */\n+\tASSERT((void *)arg == NULL);\n+\n+\treturn OK;\n+}\n+\n /****************************************************************************\n  * Name: devnull_poll\n  ****************************************************************************/"
+    },
+    {
+      "sha": "f111575a2398517f8d2c76318a316af1eb2e9934",
+      "filename": "os/include/tinyara/crashrpt.h",
+      "status": "added",
+      "additions": 258,
+      "deletions": 0,
+      "changes": 258,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Finclude%2Ftinyara%2Fcrashrpt.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Finclude%2Ftinyara%2Fcrashrpt.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Finclude%2Ftinyara%2Fcrashrpt.h?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -0,0 +1,258 @@\n+/****************************************************************************\n+ *\n+ * Copyright 2026 Samsung Electronics All Rights Reserved.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ * http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing,\n+ * software distributed under the License is distributed on an\n+ * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,\n+ * either express or implied. See the License for the specific\n+ * language governing permissions and limitations under the License.\n+ *\n+ ****************************************************************************/\n+/****************************************************************************\n+ * os/include/tinyara/crashrpt.h\n+ *\n+ * Crash diagnostic capture - FIN_WAIT + timed wait method.\n+ *\n+ * An application registers a high priority \"reporter\" thread which parks in\n+ * fin_wait().  When the kernel is about to begin assert handling it wakes\n+ * that thread and blocks, bounded by a deadline, until the reporter signals\n+ * that it has finished writing its diagnostics.  Assert handling then\n+ * proceeds normally.\n+ *\n+ * The hook runs at the very first statement of up_assert(), before the\n+ * critical section is taken, before the other CPUs are paused and before the\n+ * abort state is recorded.  For an application generated assert the system\n+ * is therefore still completely healthy at that point.\n+ *\n+ * Application side usage:\n+ *\n+ *   static int crash_reporter(int argc, char *argv[])\n+ *   {\n+ *       int fd = open(CRASHRPT_DEVPATH, O_RDWR);\n+ *       if (fd < 0) {\n+ *           return ERROR;\n+ *       }\n+ *\n+ *       if (ioctl(fd, CRASHRPTIOC_REGISTER, 0) < 0) {\n+ *           close(fd);\n+ *           return ERROR;\n+ *       }\n+ *\n+ *       for (;;) {\n+ *           int reason = fin_wait();       // parks here until a crash\n+ *\n+ *           collect_product_diagnostics(reason);\n+ *           write_report_file(reason);\n+ *\n+ *           ioctl(fd, CRASHRPTIOC_DONE, 0);\n+ *       }\n+ *   }\n+ *\n+ *   // create it at a high priority - it must outrank everything runnable\n+ *   task_create(\"crashrpt\", SCHED_PRIORITY_MAX - 1, 4096, crash_reporter, NULL);\n+ *\n+ * Notes for the reporter implementation:\n+ *\n+ *   - Keep the work short.  The reboot is held up for its whole duration.\n+ *   - Prefer a raw partition or an append only log.  Writing to a mounted\n+ *     filesystem straight after a crash risks corrupting it.\n+ *   - Do not call ASSERT() from the reporter.  The re-entry guard will stop\n+ *     the recursion, but the report is then lost.\n+ *\n+ ****************************************************************************/\n+\n+#ifndef __INCLUDE_TINYARA_CRASHRPT_H\n+#define __INCLUDE_TINYARA_CRASHRPT_H\n+\n+/****************************************************************************\n+ * Included Files\n+ ****************************************************************************/\n+\n+#include <tinyara/config.h>\n+\n+#include <stdbool.h>\n+#include <sys/types.h>\n+#include <tinyara/fs/ioctl.h>\n+\n+#ifdef CONFIG_CRASH_REPORT\n+\n+/****************************************************************************\n+ * Pre-processor Definitions\n+ ****************************************************************************/\n+\n+#define CRASHRPT_DEVPATH        \"/dev/crashrpt\"\n+\n+/* IOCTL commands ***********************************************************/\n+\n+/* CRASHRPTIOC_REGISTER\n+ *   Register the calling thread as the crash reporter.  The caller must then\n+ *   park itself with fin_wait().  Only one reporter may be registered.\n+ *   Argument: none.\n+ *\n+ * CRASHRPTIOC_UNREGISTER\n+ *   Remove the calling thread as the crash reporter.\n+ *   Argument: none.\n+ *\n+ * CRASHRPTIOC_DONE\n+ *   Signal that diagnostic capture has completed.  Releases the asserting\n+ *   thread so that assert handling can continue.\n+ *   Argument: none.\n+ */\n+\n+#define CRASHRPTIOC_REGISTER    _CRASHRPTIOC(0x0001)\n+#define CRASHRPTIOC_UNREGISTER  _CRASHRPTIOC(0x0002)\n+#define CRASHRPTIOC_DONE        _CRASHRPTIOC(0x0003)\n+\n+/* CRASHRPTIOC_FILE_OPEN\n+ *   Open a file using the kernel-internal file_open() which detaches the\n+ *   struct file from the thread's file descriptor table.  This is needed\n+ *   because the standard open()/write() syscalls go through fs_getfilep()\n+ *   -> sched_getfiles() which may fail in the crash path.\n+ *\n+ *   Argument: pointer to struct crashrpt_file_open_s.\n+ *   Returns: 0 on success, negated errno on failure.  The caller must pass\n+ *   the crashrpt_file_s back to CRASHRPTIOC_FILE_WRITE / FILE_CLOSE.\n+ *\n+ * CRASHRPTIOC_FILE_WRITE\n+ *   Write to a file opened with CRASHRPTIOC_FILE_OPEN.\n+ *   Argument: pointer to struct crashrpt_file_write_s.\n+ *   Returns: number of bytes written, or negated errno on failure.\n+ *\n+ * CRASHRPTIOC_FILE_FSYNC\n+ *   Flush a file to the medium.\n+ *   Argument: pointer to struct crashrpt_file_s.\n+ *   Returns: 0 on success, negated errno on failure.\n+ *\n+ * CRASHRPTIOC_FILE_CLOSE\n+ *   Close a file opened with CRASHRPTIOC_FILE_OPEN.\n+ *   Argument: pointer to struct crashrpt_file_s.\n+ *   Returns: 0 on success, negated errno on failure.\n+ */\n+\n+#define CRASHRPTIOC_FILE_OPEN   _CRASHRPTIOC(0x0004)\n+#define CRASHRPTIOC_FILE_WRITE  _CRASHRPTIOC(0x0005)\n+#define CRASHRPTIOC_FILE_FSYNC  _CRASHRPTIOC(0x0006)\n+#define CRASHRPTIOC_FILE_CLOSE  _CRASHRPTIOC(0x0007)\n+\n+/****************************************************************************\n+ * Public Types\n+ ****************************************************************************/\n+\n+/* Reason codes.  The value is returned to the reporter thread as the return\n+ * value of its fin_wait() call.  Values must be distinct from NO_FIN_DATA.\n+ */\n+\n+enum crashrpt_reason_e {\n+\tCRASHRPT_REASON_UNKNOWN        = 1,\t/* Reason could not be determined  */\n+\tCRASHRPT_REASON_APP_ASSERT     = 2,\t/* Application called ASSERT()     */\n+\tCRASHRPT_REASON_KERNEL_ASSERT  = 3,\t/* Kernel called ASSERT()          */\n+\tCRASHRPT_REASON_HW_FAULT       = 4,\t/* Hardware fault or CPU abort     */\n+};\n+\n+/* Opaque handle for a file opened through the crash report driver.  The\n+ * internals are only meaningful to the driver; the application treats this\n+ * as an opaque token and passes a pointer to it back to FILE_WRITE /\n+ * FILE_FSYNC / FILE_CLOSE.\n+ */\n+\n+struct crashrpt_file_s {\n+\tvoid *opaque[4];\t\t/* struct file, reserved */\n+};\n+\n+struct crashrpt_file_open_s {\n+\tconst char *path;\t\t/* Path to open */\n+\tint oflags;\t\t\t\t/* Open flags (O_WRONLY | O_CREAT | ...) */\n+\tmode_t mode;\t\t\t/* File mode */\n+\tstruct crashrpt_file_s file;\t/* Filled in by the driver */\n+};\n+\n+struct crashrpt_file_write_s {\n+\tstruct crashrpt_file_s *file;\t/* From CRASHRPTIOC_FILE_OPEN */\n+\tconst void *buf;\t\t/* Data to write */\n+\tsize_t len;\t\t\t\t/* Number of bytes */\n+};\n+\n+\n+/****************************************************************************\n+ * Public Function Prototypes\n+ ****************************************************************************/\n+\n+#undef EXTERN\n+#if defined(__cplusplus)\n+#define EXTERN extern \"C\"\n+extern \"C\" {\n+#else\n+#define EXTERN extern\n+#endif\n+\n+/****************************************************************************\n+ * Name: crashrpt_register\n+ *\n+ * Description:\n+ *   Create the /dev/crashrpt device.  Called from up_initialize().\n+ *\n+ ****************************************************************************/\n+\n+void crashrpt_register(void);\n+\n+/****************************************************************************\n+ * Name: crashrpt_notify\n+ *\n+ * Description:\n+ *   Wake the registered reporter thread and wait, bounded by\n+ *   CONFIG_CRASH_REPORT_DEADLINE_MS, for it to finish.\n+ *\n+ *   MUST be called as the very first statement of up_assert(), before the\n+ *   critical section is entered.  Calling it later is unsafe - by then\n+ *   interrupts are disabled, the other CPUs are paused and the scheduler\n+ *   cannot run the reporter.\n+ *\n+ *   The guard against re-entry is taken inside this function before anything\n+ *   else happens.  This matters because up_assert() has not yet recorded the\n+ *   abort state, so a fault raised by the reporter would otherwise look like\n+ *   a brand new assert and re-enter here indefinitely.\n+ *\n+ * Input Parameters:\n+ *   reason - One of enum crashrpt_reason_e.\n+ *\n+ * Returned Value:\n+ *   true  - The reporter ran and signalled completion.\n+ *   false - No reporter, wrong context, or the deadline expired.  The caller\n+ *           should fall back to whatever it can persist without help.\n+ *\n+ ****************************************************************************/\n+\n+bool crashrpt_notify(int reason);\n+\n+/****************************************************************************\n+ * Name: crashrpt_arm_watchdog\n+ *\n+ * Description:\n+ *   Arm the hardware watchdog before control is handed to the reporter.\n+ *\n+ *   The default implementation is a no-op and is declared weak.  Boards\n+ *   SHOULD override it.  The watchdog is the only bound that genuinely holds\n+ *   once something has already gone wrong - the deadline enforced by this\n+ *   driver relies on a working scheduler, which cannot be assumed.\n+ *\n+ * Input Parameters:\n+ *   timeout_ms - Suggested timeout, derived from the configured deadline.\n+ *\n+ ****************************************************************************/\n+\n+void crashrpt_arm_watchdog(uint32_t timeout_ms);\n+\n+#undef EXTERN\n+#if defined(__cplusplus)\n+}\n+#endif\n+\n+#endif\t\t\t\t\t\t\t/* CONFIG_CRASH_REPORT */\n+#endif\t\t\t\t\t\t\t/* __INCLUDE_TINYARA_CRASHRPT_H */"
+    },
+    {
+      "sha": "54475f26637967c932ce426d12d56f48f56c848a",
+      "filename": "os/include/tinyara/fs/ioctl.h",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "blob_url": "https://github.ecodesamsung.com/TizenRT/Kernel/blob/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Finclude%2Ftinyara%2Ffs%2Fioctl.h",
+      "raw_url": "https://github.ecodesamsung.com/TizenRT/Kernel/raw/2376ac39edd73b8bbc67340c240e94f76e4e7b31/os%2Finclude%2Ftinyara%2Ffs%2Fioctl.h",
+      "contents_url": "https://github.ecodesamsung.com/api/v3/repos/TizenRT/Kernel/contents/os%2Finclude%2Ftinyara%2Ffs%2Fioctl.h?ref=2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "patch": "@@ -108,6 +108,7 @@\n #define _MIPIDSIBASE    (0x3900) \t/* Mipidsi device ioctl commands */\n #define _CSIIOCBASE     (0x3a00) \t/* Wifi CSI ioctl commands */\n #define _SILENTRBCBASE  (0x3b00) \t/* Silent reboot ioctl commands */\n+#define _CRASHRPTIOCBASE (0x3c00)\t/* Crash report ioctl commands */\n \n \n /* boardctl() commands share the same number space */\n@@ -549,6 +550,11 @@\n #define _LWNLIOCVALID(c) (_IOC_TYPE(c) == _LWNLIOCBASE)\n #define _LWNLIOC(nr)     _IOC(_LWNLIOCBASE, nr)\n \n+/* TinyAra crash report driver ioctl definitions ****************************/\n+\n+#define _CRASHRPTIOCVALID(c) (_IOC_TYPE(c) == _CRASHRPTIOCBASE)\n+#define _CRASHRPTIOC(nr)     _IOC(_CRASHRPTIOCBASE, nr)\n+\n /****************************************************************************\n  * Public Type Definitions\n  ****************************************************************************/"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "reviewed_at": "2026-09-19T07:09:05.857755+09:00",
+  "comparison": "git diff <base>...<head> (merge-base semantics)",
+  "source_status": {
+    "Kernel": {
+      "original_head": "7e072094d47d5914e145f5b504a61e70439fd2ed",
+      "original_status": "",
+      "snapshot_head": "2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+      "snapshot_status": ""
+    },
+    "SSM_Release": {
+      "original_head": "391b1cd6eb7f6a9f5087c7f9ca8710c067de81e7",
+      "original_status": "",
+      "snapshot_head": "da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+      "snapshot_status": ""
+    },
+    "TR_Utils": {
+      "original_head": "fb6caa9859fdfa822eca344d89de35c5e6c61239",
+      "original_status": "",
+      "snapshot_head": "3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+      "snapshot_status": ""
+    }
+  }
+}

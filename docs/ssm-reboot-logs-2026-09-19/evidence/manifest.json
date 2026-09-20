@@ -1,0 +1,140 @@
+[
+  {
+    "repo": "Kernel",
+    "branch": "ssm_integration",
+    "base": "74a9092d460473e2fa2febd177b233f50760d73b",
+    "head": "2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+    "merge_base": "32b18b46b8853b394781037e09dab0c4ad09a127",
+    "status": "diverged",
+    "commits": [
+      {
+        "sha": "83ea0b9ad820f1af90eb3951d31452a2067824f8",
+        "message": "os/: Add crash diagnostic capture driver (/dev/crashrpt)\n\nAdd crashrpt driver that enables user-space reporters to capture\ndiagnostic data during system crashes. The driver registers a callback\nat the top of up_assert() that wakes a registered reporter thread\nbefore crash handling begins.\n\nFeatures:\n- Reporter thread registers via ioctl and parks in fin_wait()\n- Kernel wakes reporter with crash reason when assert occurs\n- Reporter writes diagnostic data to file using kernel file APIs\n- Atomic file operations (temp file + rename) prevent partial writes\n- Configurable deadline (default 3000ms) for report completion"
+      },
+      {
+        "sha": "2376ac39edd73b8bbc67340c240e94f76e4e7b31",
+        "message": "os/drivers/dev_null.c: Add ioctl handler to trigger kernel assert for testing\n\nAdd an ioctl handler to the /dev/null driver that triggers a kernel assert when called with a non-NULL argument. This is intended for testing the crash report capture mechanism."
+      }
+    ],
+    "files": [
+      "build/configs/rtl8730e/ailp/defconfig",
+      "build/configs/rtl8730e/ailp_adam110/defconfig",
+      "build/configs/rtl8730e/ailp_csi/defconfig",
+      "build/configs/rtl8730e/ailp_csi_homelynk/defconfig",
+      "build/configs/rtl8730e/ailp_lcd4.3/defconfig",
+      "build/configs/rtl8730e/ailp_lcd4.3_csi/defconfig",
+      "build/configs/rtl8730e/ailp_lcd4.3_csi_homelynk/defconfig",
+      "build/configs/rtl8730e/ailp_lcd4.3_factory/defconfig",
+      "os/arch/arm/src/armv7-a/arm_assert.c",
+      "os/arch/arm/src/armv7-a/arm_initialize.c",
+      "os/drivers/Kconfig",
+      "os/drivers/Makefile",
+      "os/drivers/crashrpt.c",
+      "os/drivers/dev_null.c",
+      "os/include/tinyara/crashrpt.h",
+      "os/include/tinyara/fs/ioctl.h"
+    ],
+    "pulls": []
+  },
+  {
+    "repo": "SSM_Release",
+    "branch": "pr_67",
+    "base": "22796c7a2a413c7eda2d57e635f5130081c0ff4d",
+    "head": "da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+    "merge_base": "11babad06146f51bc4375e18600f2986e13fa1f0",
+    "status": "diverged",
+    "commits": [
+      {
+        "sha": "6502869cf4f15c036bc3c83170fe9e8944088b74",
+        "message": "Implemented SSM api: to store logs into file"
+      },
+      {
+        "sha": "01cc75db82d48dec99683f0544c43001e4c5908b",
+        "message": "Removed unused commands"
+      },
+      {
+        "sha": "9b1ba1a5af7e71e15ef5364d87e43e072e70da59",
+        "message": "Modified utc makefile"
+      },
+      {
+        "sha": "146bbf3a9cfcabcb270b37503af968eedf399028",
+        "message": "Added utc for new file changes"
+      },
+      {
+        "sha": "1fec4d9396c7031095ccfe2e440569092b74cc43",
+        "message": "Formatted utc code"
+      },
+      {
+        "sha": "6688bf7045d8c454f4b8032124f96d528dbebe86",
+        "message": "Added logic to remove old ssm log file"
+      },
+      {
+        "sha": "924ec012893129f8c2143143a5d454b0344d5898",
+        "message": "v01: changes required to run ssm_release"
+      },
+      {
+        "sha": "da03e7fbb8d6d43e2b6c9799524b21ee95c14b84",
+        "message": "DA-Service/SSM/: Integrate crash reporter to capture logs on system crash\n\nAdd crash reporting mechanism to SSM_Release that captures logs when\nthe system crashes/asserts."
+      }
+    ],
+    "files": [
+      "DA-Service/SSM/include/SSM_client.h",
+      "DA-Service/SSM/include/SSM_client_ES.h",
+      "DA-Service/SSM/include/SSM_client_SYS.h",
+      "DA-Service/SSM/include/SSM_file_helper.h",
+      "DA-Service/SSM/include/SSM_file_logger.h",
+      "DA-Service/SSM/src/SSM_client.c",
+      "DA-Service/SSM/src/SSM_client_ES.c",
+      "DA-Service/SSM/src/SSM_client_SYS.c",
+      "DA-Service/SSM/src/SSM_command.c",
+      "DA-Service/SSM/src/SSM_file_helper.c",
+      "DA-Service/SSM/src/SSM_file_logger.c",
+      "conanfile.py",
+      "src/Makefile",
+      "test/utc/Makefile",
+      "test/utc/SSM_client_ES_test.c",
+      "test/utc/SSM_client_SYS_test.c",
+      "test/utc/SSM_client_test.c",
+      "test/utc/SSM_command_test.c",
+      "test/utc/SSM_file_helper_test.c",
+      "test/utc/SSM_file_logger_test.c",
+      "test/utc/utc.c",
+      "test/utc/utcmk.defs"
+    ],
+    "pulls": []
+  },
+  {
+    "repo": "TR_Utils",
+    "branch": "ssm_integration_1",
+    "base": "863a148a9e63d18204a725017e71ae900ad2a600",
+    "head": "3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+    "merge_base": "f0e23b8df2dd297bb535737d4f6c30f08366500c",
+    "status": "diverged",
+    "commits": [
+      {
+        "sha": "2ed8ec9de79d14248537683d94f0c9159924a579",
+        "message": "apps/examples/: Add crashrpt_test application for crash diagnostic capture\n\nAdd crashrpt_test example application that demonstrates the /dev/crashrpt\ndriver functionality. The application allocates diagnostic data structures\n(500 nodes of 48 bytes, 50 nodes of 64 bytes) and registers a reporter\nthread that serializes all data to a file when the system asserts.\n\nThe reporter runs at high priority and uses atomic file operations\n(write to temp file + rename) to ensure reports are never partially written."
+      },
+      {
+        "sha": "3661ba8a9735d4f4433c28859affe2edd9aaaed5",
+        "message": "Add crashrpt_comprehensive_test for crash report validation\n\nUpdate the crashrpt comprehensive test to retain only APP_ASSERT and\nKERNEL_ASSERT test cases for focused crash reporting validation."
+      }
+    ],
+    "files": [
+      "apps/examples/crashrpt_comprehensive_test/Kconfig",
+      "apps/examples/crashrpt_comprehensive_test/Kconfig_ENTRY",
+      "apps/examples/crashrpt_comprehensive_test/Make.defs",
+      "apps/examples/crashrpt_comprehensive_test/Makefile",
+      "apps/examples/crashrpt_comprehensive_test/README.txt",
+      "apps/examples/crashrpt_comprehensive_test/crashrpt_comprehensive_test_main.c",
+      "apps/examples/crashrpt_test/Kconfig",
+      "apps/examples/crashrpt_test/Kconfig_ENTRY",
+      "apps/examples/crashrpt_test/Make.defs",
+      "apps/examples/crashrpt_test/Makefile",
+      "apps/examples/crashrpt_test/README.txt",
+      "apps/examples/crashrpt_test/crashrpt_test_main.c",
+      "build/configs/rtl8730e/defconfig"
+    ],
+    "pulls": []
+  }
+]

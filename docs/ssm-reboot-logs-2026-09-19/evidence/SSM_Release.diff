@@ -1,0 +1,3811 @@
+diff --git a/DA-Service/SSM/include/SSM_client.h b/DA-Service/SSM/include/SSM_client.h
+index e14dcf4..d28582d 100644
+--- a/DA-Service/SSM/include/SSM_client.h
++++ b/DA-Service/SSM/include/SSM_client.h
+@@ -53,6 +53,16 @@ dawit_bool SSM_init_status(void);
+ 
+ const char* SSM_get_library_version(void);
+ 
++dawit_result SSM_Store_logs_to_file(unsigned int time_limit_ms);
++dawit_result SSM_Send_ES_logs_from_file(void *node);
++dawit_result SSM_Send_SYS_logs_from_file(void *table , unsigned int table_size);
++int SSM_get_es_interval_time(void);
++int SSM_get_sys_interval_time(void);
++
++/* Crash report integration */
++dawit_result SSM_crash_reporter_init(void);
++void SSM_crash_reporter_store_logs(int reason);
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/DA-Service/SSM/include/SSM_client_ES.h b/DA-Service/SSM/include/SSM_client_ES.h
+index af4501f..2cac2f9 100644
+--- a/DA-Service/SSM/include/SSM_client_ES.h
++++ b/DA-Service/SSM/include/SSM_client_ES.h
+@@ -8,12 +8,33 @@
+ extern "C" {
+ #endif
+ 
++typedef enum
++{
++	SSM_CS,
++	SSM_ES,
++	SSM_NS,
++	SSM_AS,
++	SSM_SS,
++	SSM_PS,
++	SSM_RR,
++} SSM_Log_Type;
++
++typedef struct _SSMCodeInfo
++{
++	char code;
++	dawit_bool SSM_status;
++	int SSM_level;
++} SSMCodeInfo;
++
+ void SSM_ES_init_table(void);
+ int SSM_ES_set_event(cJSON *event);
+ void SSM_ES_send_done(void);
+ dawit_result SSM_ES_update_policy_parse(cJSON * service_json, int master_level, bool master_status);
+ int SSM_ES_get_next_time(void);
+ int SSM_ES_get_retry_time(void);
++SSMCodeInfo* SSM_ES_get_code_info(void);
++dawit_result SSM_ES_update_seq_no(int value);
++int SSM_ES_get_seq_no(void);
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/DA-Service/SSM/include/SSM_client_SYS.h b/DA-Service/SSM/include/SSM_client_SYS.h
+index 8a22007..8245100 100644
+--- a/DA-Service/SSM/include/SSM_client_SYS.h
++++ b/DA-Service/SSM/include/SSM_client_SYS.h
+@@ -8,6 +8,14 @@
+ extern "C" {
+ #endif
+ 
++typedef struct _SSMSystemCodeInfo
++{
++	KPI_TAG_TYPE code;
++	char *code_str;
++	dawit_bool status;
++	int level;
++} SSM_SYS_code_info;
++
+ typedef void (*SSM_Send_Systemlog_Callback_Type) (void);
+ void SSM_SYS_init_table(void);
+ void SSM_SYS_set_event(cJSON *event);
+@@ -17,6 +25,8 @@ dawit_result SSM_SYS_update_policy_parse(cJSON * type_json, int master_level, bo
+ dawit_result SSM_SYS_register_callback(char *CB_name, SSM_Send_Systemlog_Callback_Type func);
+ int SSM_SYS_get_next_time(void);
+ int SSM_SYS_get_retry_time(void);
++SSM_SYS_code_info* SSM_SYS_get_code_info(void);
++void SSM_SYS_update_seq_no_by_value(int value);
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/DA-Service/SSM/include/SSM_file_helper.h b/DA-Service/SSM/include/SSM_file_helper.h
+new file mode 100644
+index 0000000..56ba3e2
+--- /dev/null
++++ b/DA-Service/SSM/include/SSM_file_helper.h
+@@ -0,0 +1,30 @@
++#ifndef _SSM_FILE_HELPER_H_
++#define _SSM_FILE_HELPER_H_
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <dawit_common.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++// SSM file type definition
++typedef FILE ssm_file;
++
++// File operation functions
++dawit_result SSM_file_open(ssm_file **file, char *file_name, char *open_mode);
++dawit_result SSM_file_close(ssm_file *file);
++dawit_result SSM_file_read(ssm_file *file, unsigned char *buffer, unsigned int read_size);
++dawit_result SSM_file_write(ssm_file *file, unsigned char *data, unsigned int write_size);
++dawit_result SSM_file_seek(ssm_file *file, long offset, int whence);
++dawit_result SSM_file_get_size(ssm_file *file, unsigned int *file_size);
++dawit_result SSM_file_is_exist(char *file_name);
++dawit_result SSM_file_delete(char *file_name);
++dawit_result SSM_rename_file(const char *old_path, const char *new_path);
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* _SSM_FILE_HELPER_H_ */
+diff --git a/DA-Service/SSM/include/SSM_file_logger.h b/DA-Service/SSM/include/SSM_file_logger.h
+new file mode 100644
+index 0000000..f0282ba
+--- /dev/null
++++ b/DA-Service/SSM/include/SSM_file_logger.h
+@@ -0,0 +1,29 @@
++#ifndef _SSM_LOG_FILE_H_
++#define _SSM_LOG_FILE_H_
++
++#include <dawit_common.h>
++#include <dawit_mutex.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++#define KPI_BUFFER_SIZE 50
++
++typedef struct kpi_file_data {
++    char data_type[8];
++    char *kpi_name;
++    char *kpi_message;
++} kpi_file_data;
++
++dawit_result SSM_store_logs_to_file_impl(unsigned int time_limit_ms);
++dawit_result SSM_read_logs_from_file_and_send_impl(void);
++dawit_result SSM_check_stored_logs_file_exist(void);
++dawit_result SSM_delete_stored_logs_file(void);
++dawit_result SSM_get_file_creation_time(time_t *creation_time);
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* _SSM_LOG_FILE_H_ */
+diff --git a/DA-Service/SSM/src/SSM_client.c b/DA-Service/SSM/src/SSM_client.c
+index 2516955..02eab46 100644
+--- a/DA-Service/SSM/src/SSM_client.c
++++ b/DA-Service/SSM/src/SSM_client.c
+@@ -3,6 +3,12 @@
+ #include <dawit_time.h>
+ #include <dawit_mutex.h>
+ #include <sys/socket.h>
++#include <pthread.h>
++#include <sched.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <errno.h>
++#include <sys/ioctl.h>
+ #include "SSM_client.h"
+ #include "SSM_client_ES.h"
+ #include "SSM_client_SYS.h"
+@@ -12,6 +18,11 @@
+ #include "SSM_client_ai_inv.h"
+ #include "SSM_system_module.h"
+ #include "wifi_manager.h"
++#include "SSM_file_logger.h"
++
++#ifdef CONFIG_CRASH_REPORT
++#include <tinyara/crashrpt.h>
++#endif
+ 
+ #define SSM_TICK 5
+ #define SSM_START_TIME 150
+@@ -101,6 +112,9 @@ static dawit_bool g_ssm_policy_done = DAWIT_FALSE;
+ static int g_ssm_interval_es_sec = 0;
+ static int g_ssm_interval_sys_sec = 0;
+ static int g_ssm_interval_policy_sec = 0;
++static int g_ssm_interval_send_file_logs = 0;
++static int g_ssm_wait_for_file_send = 0;
++static int g_file_last_send_seqno = 0;
+ 
+ static int g_ssm_interval_success_sec = 0;
+ static int g_ssm_interval_fail_sec = 0;
+@@ -330,6 +344,13 @@ dawit_result SSM_init(ssm_init_args init_args)
+ 		return DAWIT_FAIL;
+ 	}
+ 
++#ifdef CONFIG_CRASH_REPORT
++	/* Initialize crash reporter to capture logs on system crash */
++	if (SSM_crash_reporter_init() != DAWIT_SUCCESS) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM_init: crash reporter init failed (continuing)");
++	}
++#endif
++
+ 	g_ssm_init_done = DAWIT_TRUE;
+ 	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM init done");
+ 	return DAWIT_SUCCESS;
+@@ -442,6 +463,7 @@ static dawit_result try_send_sys_log(void)
+ static void SSM_client_task_func(int argc, char *argv[])
+ {
+ 	dawit_result result = DAWIT_FAIL;
++	dawit_bool ssm_is_file_exist = DAWIT_FALSE;
+ 	int rand_num = 0;
+ 
+ 	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Create SSM_client_task_func ");
+@@ -449,8 +471,21 @@ static void SSM_client_task_func(int argc, char *argv[])
+ 
+ 	dawit_random(&rand_num);
+ 	g_ssm_interval_policy_sec = SSM_START_TIME + rand_num % SSM_START_RETRY_TIME;
+-	g_ssm_interval_es_sec = g_ssm_interval_policy_sec + 10;
+-	g_ssm_interval_sys_sec = g_ssm_interval_policy_sec + 20;
++
++	if(SSM_check_stored_logs_file_exist() == DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM stored logs file exist");
++		ssm_is_file_exist = DAWIT_TRUE;
++	}
++
++	if(ssm_is_file_exist == DAWIT_TRUE)
++	{
++		g_ssm_interval_send_file_logs = g_ssm_interval_policy_sec + 10;
++		g_ssm_wait_for_file_send = 10;
++	}
++
++	g_ssm_interval_es_sec = g_ssm_interval_policy_sec + g_ssm_wait_for_file_send + 10;
++	g_ssm_interval_sys_sec = g_ssm_interval_policy_sec + g_ssm_wait_for_file_send + 20;
+ 
+ 	log_buffer_time_update();
+ 
+@@ -465,12 +500,23 @@ static void SSM_client_task_func(int argc, char *argv[])
+ 		g_ssm_interval_es_sec -= SSM_TICK;
+ 		g_ssm_interval_sys_sec -= SSM_TICK;
+ 
++		if (ssm_is_file_exist == DAWIT_TRUE)
++		{
++			g_ssm_interval_send_file_logs -= SSM_TICK;
++		}
++
+ 		if (g_ssm_interval_policy_sec < 0)
+ 		{
+ 			result = try_check_and_update_policy();
+ 			if (result != DAWIT_SUCCESS)
+ 			{
+ 				g_ssm_interval_policy_sec = SSM_policy_get_retry_time();
++
++				if (ssm_is_file_exist == DAWIT_TRUE)
++				{
++					g_ssm_interval_send_file_logs += g_ssm_interval_policy_sec + SSM_TICK;
++				}
++
+ 				g_ssm_interval_es_sec += g_ssm_interval_policy_sec + SSM_TICK;
+ 				g_ssm_interval_sys_sec += g_ssm_interval_policy_sec + SSM_TICK;
+ 				continue;
+@@ -479,6 +525,24 @@ static void SSM_client_task_func(int argc, char *argv[])
+ 			continue;
+ 		}
+ 
++		if (g_ssm_interval_send_file_logs < 0 && (ssm_is_file_exist == DAWIT_TRUE))
++		{
++			result = SSM_read_logs_from_file_and_send_impl();
++			if (result != DAWIT_SUCCESS)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to send SSM log file to server");
++			}
++
++			result = SSM_delete_stored_logs_file();
++			if (result != DAWIT_SUCCESS)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to delete SSM log file");
++			}
++			ssm_is_file_exist = DAWIT_FALSE;
++			g_ssm_interval_send_file_logs = 0;
++			continue;
++		}
++
+ 		if (g_ssm_interval_es_sec < 0)
+ 		{
+ 			result = try_send_es_log();
+@@ -1668,3 +1732,443 @@ const char* SSM_get_library_version(void)
+ {
+ 	return SSM_LIBRARY_VERSION;
+ }
++
++dawit_result SSM_Store_logs_to_file(unsigned int time_limit_ms)
++{
++	return SSM_store_logs_to_file_impl(time_limit_ms);
++}
++
++
++/* Set ES event data from a log_data linked list (read from file) into cJSON event array.
++ * Iterates through up to 20 log_data nodes and adds each as an event entry. */
++static void SSM_ES_set_event_from_list(log_data *head, cJSON *event)
++{
++	log_data *current = head;
++	int seqno = SSM_ES_get_seq_no();
++	int count = 0;
++
++	while (current != NULL && count < 20)
++	{
++		time_t utc_time = (time_t)current->time;
++		char str_time[20] = { 0, };
++		char str_seqno[12] = { 0, };
++		cJSON *obj = NULL;
++		cJSON *kpi = NULL;
++
++		strftime(str_time, 20, "%Y-%m-%d %H:%M:%S", gmtime(&utc_time));
++		snprintf(str_seqno, 12, "%d", seqno);
++
++		cJSON_AddItemToArray(event, obj = cJSON_CreateObject());
++		cJSON_AddStringToObject(obj, "name", current->code);
++		cJSON_AddStringToObject(obj, "dt", str_time);
++		if (current->message != NULL)
++		{
++			cJSON_AddItemToObject(obj, "kpi", kpi = cJSON_CreateObject());
++			cJSON_AddStringToObject(kpi, "DebugInfo", current->message);
++		}
++		cJSON_AddStringToObject(obj, "seqno", str_seqno);
++
++		seqno++;
++		count++;
++		current = current->next;
++	}
++
++	g_file_last_send_seqno = seqno ;
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Set %d ES events from file list", count);
++}
++
++/* Send a pre-built cJSON root payload to server via mTLS.
++ * Handles TLS connection, write, and read with HOST_PC reconnection support. */
++static dawit_result SSM_Send_log_v2(cJSON *root_payload)
++{
++	dawit_tls tls = { NULL, };
++	dawit_tls_config tls_config = { NULL, };
++	dawit_result result = DAWIT_SUCCESS;
++	char* outh = NULL;
++	char *json_out = NULL;
++	int json_len = 0;
++	bool tls_locked = false;
++	bool tls_created = false;
++
++	if (root_payload == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM_Send_log_v2: root_payload is NULL");
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM_Send_log_v2: Start sending log");
++
++	result = dawit_tls_lock();
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_lock error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++	tls_locked = true;
++
++	result = dawit_tls_create(&tls);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_create error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++	tls_created = true;
++
++	SSM_external_tls_config_get_ocf(&tls_config, g_ssm_host, g_cli_cert);
++	result = dawit_tls_connect(&tls, &tls_config);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_connect error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++
++	outh = (char *)calloc(1, sizeof(char) * AUTHORIZATION_KEY_LEN + 1);
++	if (outh == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "outh alloc fail !!! ");
++		result = DAWIT_FAIL;
++		goto SSM_SEND_V2_FREE;
++	}
++	make_Outh(outh);
++
++#ifdef HOST_PC
++	/* HOST_PC: Reconnect TLS to handle connection issues on host PC */
++	if (outh != NULL)
++	{
++		free(outh);
++		outh = NULL;
++	}
++	if (tls_created)
++	{
++		dawit_tls_destroy(&tls);
++		tls_created = false;
++	}
++	if (tls_locked)
++	{
++		dawit_tls_unlock();
++		tls_locked = false;
++	}
++
++	result = dawit_tls_lock();
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_lock error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++	tls_locked = true;
++
++	result = dawit_tls_create(&tls);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_create error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++	tls_created = true;
++
++	SSM_external_tls_config_get_ocf(&tls_config, g_ssm_host, g_cli_cert);
++	result = dawit_tls_connect(&tls, &tls_config);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "dawit_tls_connect error code: %d!\n", result);
++		goto SSM_SEND_V2_FREE;
++	}
++
++	outh = (char *)calloc(1, sizeof(char) * AUTHORIZATION_KEY_LEN + 1);
++	if (outh == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "outh alloc fail !!! ");
++		result = DAWIT_FAIL;
++		goto SSM_SEND_V2_FREE;
++	}
++	make_Outh(outh);
++#endif
++
++	/* Print JSON payload to string */
++	json_out = cJSON_Print(root_payload);
++	if (json_out == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "cJSON_Print failed");
++		result = DAWIT_FAIL;
++		goto SSM_SEND_V2_FREE;
++	}
++	json_len = strlen(json_out);
++
++	
++	/* Write to server */
++	result = SSM_Send_log_write(tls, outh, json_out, json_len);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM_Send_log_write failed");
++		goto SSM_SEND_V2_FREE;
++	}
++
++	/* Read response from server */
++	result = SSM_Send_log_read(tls, outh);
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM_Send_log_read failed");
++	}
++	else
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM_Send_log_v2: SUCCESS");
++	}
++
++SSM_SEND_V2_FREE:
++	if (json_out != NULL)
++	{
++		free(json_out);
++		json_out = NULL;
++	}
++	if (outh != NULL)
++	{
++		free(outh);
++		outh = NULL;
++	}
++	if (tls_created)
++	{
++		dawit_tls_destroy(&tls);
++	}
++	if (tls_locked)
++	{
++		dawit_tls_unlock();
++	}
++
++	return result;
++}
++
++/* Send ES logs read from file (log_data linked list) directly to server via mTLS.
++ * Creates JSON from the log_data nodes and sends via TLS. */
++dawit_result SSM_Send_ES_logs_from_file(void *node)
++{
++	dawit_result result = DAWIT_SUCCESS;
++	cJSON *root = NULL;
++	cJSON *event = NULL;
++	log_data *head = (log_data *)node;
++
++	if (head == NULL)
++	{
++		DAWIT_LOG_WARNING(DAWIT_TAG_SSM, "node is NULL");
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Start sending ES logs from list");
++
++	/* Build JSON: base request + eventlist from log_data nodes */
++	make_base_request(&root, SSM_EASYSETUP);
++	cJSON_AddItemToObject(root, "eventlist", event = cJSON_CreateArray());
++	SSM_ES_set_event_from_list(head, event);
++
++	/* Send via TLS */
++	result = SSM_Send_log_v2(root);
++	if(result == DAWIT_SUCCESS)
++	{
++		SSM_ES_update_seq_no(g_file_last_send_seqno);
++	}
++
++	/* Clean up the JSON root */
++	if (root != NULL)
++	{
++		cJSON_Delete(root);
++	}
++
++	return result;
++}
++
++
++static void SSM_SYS_set_event_from_table(kpi_file_data *kpi_data_array, unsigned int kpi_data_array_size ,cJSON *event)
++{
++
++	int seqno = 0;
++	int count = 0;
++	cJSON *kpi = NULL;
++	cJSON *obj = NULL;
++	char str_seqno[12] = { 0, };
++	char str_time[20] = { 0, };
++	time_t utc_time = 0; // file creation time
++
++    dawit_result time_result = SSM_get_file_creation_time(&utc_time);
++    if (time_result != DAWIT_SUCCESS) {
++        utc_time = time(NULL); // Use current time as fallback
++    }
++
++    strftime(str_time, sizeof(str_time), "%Y-%m-%d %H:%M:%S", gmtime(&utc_time));
++	
++	kpi = cJSON_CreateObject();
++
++	for (count = 0; count < kpi_data_array_size && count < KPI_BUFFER_SIZE; count++)
++	{
++
++		if (strncmp(kpi_data_array[count].data_type, "NUM", 3) == 0)
++		{
++			cJSON_AddNumberToObject(kpi, kpi_data_array[count].kpi_name, atoi(kpi_data_array[count].kpi_message));
++		}
++		else if (strncmp(kpi_data_array[count].data_type, "STR", 3) == 0)
++		{
++			cJSON_AddStringToObject(kpi, kpi_data_array[count].kpi_name, kpi_data_array[count].kpi_message);
++		}
++	}
++
++	snprintf(str_seqno, 12, "%d", seqno);
++	cJSON_AddItemToArray(event, obj = cJSON_CreateObject());
++	cJSON_AddStringToObject(obj, "name", "TizenRT_REPORT");
++	cJSON_AddStringToObject(obj, "dt", str_time);
++	cJSON_AddItemToObject(obj, "kpi", kpi);
++	cJSON_AddStringToObject(obj, "seqno", str_seqno);
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Set %d SYS from file list", count);
++}
++
++dawit_result SSM_Send_SYS_logs_from_file(void *table, unsigned int table_size)
++{
++	dawit_result result = DAWIT_SUCCESS;
++	cJSON *root = NULL;
++	cJSON *event = NULL;
++	kpi_file_data *kpi_data_array = (kpi_file_data *)table;
++	unsigned int kpi_data_array_size = table_size ;
++
++	if (kpi_data_array == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "kpi file data table is NULL");
++        return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Start sending SYS logs from file data");
++
++	/* Build JSON: base request + eventlist from table data entry*/
++	make_base_request(&root, SSM_SYSTEM);
++	cJSON_AddItemToObject(root, "eventlist", event = cJSON_CreateArray());
++	SSM_SYS_set_event_from_table(kpi_data_array, kpi_data_array_size, event);
++
++	/* Send via TLS */
++	result = SSM_Send_log_v2(root);
++	if(result == DAWIT_SUCCESS)
++	{
++		SSM_SYS_update_seq_no_by_value(1);
++	}
++
++	/* Clean up the JSON root */
++	if (root != NULL)
++	{
++		cJSON_Delete(root);
++	}
++
++	return result;
++}
++
++int SSM_get_es_interval_time(void)
++{
++	return g_ssm_interval_es_sec;
++}
++
++int SSM_get_sys_interval_time(void)
++{
++	return g_ssm_interval_sys_sec;
++}
++
++#ifdef CONFIG_CRASH_REPORT
++/****************************************************************************
++ * Private Data for Crash Reporter
++ ****************************************************************************/
++
++static int g_ssm_crashrpt_fd = -1;
++static pthread_t g_ssm_crash_reporter;
++static bool g_ssm_crash_reporter_running = false;
++
++/****************************************************************************
++ * Name: ssm_crash_reporter_thread
++ ****************************************************************************/
++
++static void *ssm_crash_reporter_thread(void *arg)
++{
++	int reason;
++
++	if (ioctl(g_ssm_crashrpt_fd, CRASHRPTIOC_REGISTER, 0) < 0) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "crashrpt register failed, errno %d\n", errno);
++		g_ssm_crash_reporter_running = false;
++		close(g_ssm_crashrpt_fd);
++		g_ssm_crashrpt_fd = -1;
++		return NULL;
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter registered and waiting\n");
++
++	for (;;) {
++		/* Parks here until the kernel wakes us from up_assert().
++		 * There is no timeout - the thread waits indefinitely for a crash.
++		 */
++		reason = fin_wait();
++
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter woken, reason %d\n", reason);
++
++		/* Store logs to file when crash occurs (1000ms = minimum valid time limit) */
++		SSM_Store_logs_to_file(1000);
++
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter stored logs, notifying driver\n");
++
++		/* Release the asserting thread whether or not the write succeeded */
++		if (ioctl(g_ssm_crashrpt_fd, CRASHRPTIOC_DONE, 0) < 0) {
++			DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "crashrpt done notification failed, errno %d\n", errno);
++		}
++	}
++
++	return NULL;
++}
++
++/****************************************************************************
++ * Name: SSM_crash_reporter_init
++ ****************************************************************************/
++
++dawit_result SSM_crash_reporter_init(void)
++{
++	pthread_attr_t attr;
++	struct sched_param param;
++	int ret;
++
++	if (g_ssm_crash_reporter_running) {
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter already running\n");
++		return DAWIT_SUCCESS;
++	}
++
++	g_ssm_crashrpt_fd = open(CRASHRPT_DEVPATH, O_RDWR);
++	if (g_ssm_crashrpt_fd < 0) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "cannot open %s, errno %d\n", CRASHRPT_DEVPATH, errno);
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "is CONFIG_CRASH_REPORT enabled?\n");
++		return DAWIT_FAIL;
++	}
++
++	pthread_attr_init(&attr);
++	pthread_attr_setstacksize(&attr, 8192);
++
++	/* High priority is required - the reporter must outrank all other threads */
++	param.sched_priority = SCHED_PRIORITY_MAX - 1;
++	pthread_attr_setschedparam(&attr, &param);
++
++	ret = pthread_create(&g_ssm_crash_reporter, &attr, ssm_crash_reporter_thread, NULL);
++	if (ret != 0) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "pthread_create failed, %d\n", ret);
++		close(g_ssm_crashrpt_fd);
++		g_ssm_crashrpt_fd = -1;
++		pthread_attr_destroy(&attr);
++		return DAWIT_FAIL;
++	}
++
++	pthread_setname_np(g_ssm_crash_reporter, "ssm_crash_rpt");
++	pthread_detach(g_ssm_crash_reporter);
++	pthread_attr_destroy(&attr);
++
++	g_ssm_crash_reporter_running = true;
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter initialized\n");
++	return DAWIT_SUCCESS;
++}
++
++/****************************************************************************
++ * Name: SSM_crash_reporter_store_logs
++ ****************************************************************************/
++
++void SSM_crash_reporter_store_logs(int reason)
++{
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SSM crash reporter store logs called, reason %d\n", reason);
++	SSM_Store_logs_to_file(0);
++}
++
++#endif /* CONFIG_CRASH_REPORT */
+diff --git a/DA-Service/SSM/src/SSM_client_ES.c b/DA-Service/SSM/src/SSM_client_ES.c
+index 806015f..f06e771 100644
+--- a/DA-Service/SSM/src/SSM_client_ES.c
++++ b/DA-Service/SSM/src/SSM_client_ES.c
+@@ -10,23 +10,7 @@
+ #define SSM_ES_TYPE_MAX 7
+ #define SSM_SEQ_MAX 1000000
+ 
+-typedef enum
+-{
+-	SSM_CS,
+-	SSM_ES,
+-	SSM_NS,
+-	SSM_AS,
+-	SSM_SS,
+-	SSM_PS,
+-	SSM_RR,
+-} SSM_Log_Type;
+-
+-typedef struct _SSMCodeInfo
+-{
+-	char code;
+-	dawit_bool SSM_status;
+-	int SSM_level;
+-} SSMCodeInfo;
++
+ 
+ static char *SSM_ES_Log_Type_Str[SSM_ES_TYPE_MAX] = { "CS", "ES", "NS", "AS", "SS", "PS", "RR"};
+ 
+@@ -518,3 +502,27 @@ int SSM_ES_get_next_time(void)
+ 	SSM_ES_last_interval_fail = SSM_ES_interval_fail;
+ 	return SSM_COMPUTE_NEXT_TIME(rand_num, SSM_ES_interval_success);
+ }
++
++SSMCodeInfo* SSM_ES_get_code_info(void)
++{
++	return &SSM_ES_code[0];
++}
++
++dawit_result SSM_ES_update_seq_no(int value)
++{
++	if (value < 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid argument [%d] ", value);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	SSM_ES_seqno_done = value;
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "SSM updated ES seq_no to [%d] ", SSM_ES_seqno_done);
++	return DAWIT_SUCCESS;
++}
++
++int SSM_ES_get_seq_no(void)
++{
++	return SSM_ES_seqno_done ;
++}
++
+diff --git a/DA-Service/SSM/src/SSM_client_SYS.c b/DA-Service/SSM/src/SSM_client_SYS.c
+index 34ecb81..6bacbac 100644
+--- a/DA-Service/SSM/src/SSM_client_SYS.c
++++ b/DA-Service/SSM/src/SSM_client_SYS.c
+@@ -7,14 +7,6 @@
+ #define SSM_SYS_INTERVAL_MAXIMUM 21600
+ #define SSM_SEQ_MAX 1000000
+ 
+-typedef struct _SSMSystemCodeInfo
+-{
+-	KPI_TAG_TYPE code;
+-	char *code_str;
+-	dawit_bool status;
+-	int level;
+-} SSM_SYS_code_info;
+-
+ typedef struct _SSM_systemlog_callback
+ {
+ 	char *name;
+@@ -355,6 +347,18 @@ void SSM_SYS_send_done(void)
+ 	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Set last system_log seqno %d", SSM_SYS_seqno_done);
+ }
+ 
++void SSM_SYS_update_seq_no_by_value(int value)
++{
++	if (value > 0)
++	{
++		SSM_SYS_seqno_done += value;
++		DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Updated system_log seqno [%d]", SSM_SYS_seqno_done);
++		return;
++	}
++	DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid input");
++	return;
++}
++
+ int SSM_SYS_get_retry_time(void)
+ {
+ 	int rand_num = 0;
+@@ -380,3 +384,8 @@ int SSM_SYS_get_next_time(void)
+ 	SSM_SYS_last_interval_fail = SSM_SYS_interval_fail;
+ 	return SSM_COMPUTE_NEXT_TIME(rand_num, SSM_SYS_interval_success);
+ }
++
++SSM_SYS_code_info* SSM_SYS_get_code_info(void)
++{
++	return &SSM_SYS_table[0];
++}
+diff --git a/DA-Service/SSM/src/SSM_command.c b/DA-Service/SSM/src/SSM_command.c
+index 3789985..694eac7 100644
+--- a/DA-Service/SSM/src/SSM_command.c
++++ b/DA-Service/SSM/src/SSM_command.c
+@@ -3,6 +3,7 @@
+ #include <strings.h>
+ #include "SSM_command.h"
+ #include "SSM_client.h"
++#include "SSM_file_logger.h"
+ #include "log_buffer.h"
+ #include "dawit_log.h"
+ #include <stdio.h>
+@@ -42,6 +43,7 @@ static ssm_cmd_result ssm_command_debug(int argc, char *argv[]);
+ static ssm_cmd_result ssm_command_test(int argc, char *argv[]);
+ static ssm_cmd_result ssm_command_prod(int argc, char *argv[]);
+ static ssm_cmd_result ssm_command_modelID(int argc, char *argv[]);
++static ssm_cmd_result ssm_command_store(int argc, char *argv[]);
+ 
+ static void print_help(ssm_command_t* commands, int commands_cnt, char *argv[]);
+ static void print_help_print(void);
+@@ -54,6 +56,7 @@ static void print_help_debug(void);
+ static void print_help_test(void);
+ static void print_help_prod(void);
+ static void print_help_modelID(void);
++static void print_help_store(void);
+ 
+ int ssm_command(int argc, char *argv[])
+ {
+@@ -67,6 +70,7 @@ int ssm_command(int argc, char *argv[])
+         { .name = "test", .cmd_func = ssm_command_test, .help_func = print_help_test },
+         { .name = "prod", .cmd_func = ssm_command_prod, .help_func = print_help_prod },
+         { .name = "modelID", .cmd_func = ssm_command_modelID, .help_func = print_help_modelID },
++	{ .name = "store", .cmd_func = ssm_command_store, .help_func = print_help_store },
+     };
+ 
+     int commands_cnt = sizeof(commands) / sizeof(ssm_command_t);
+@@ -348,3 +352,46 @@ static void print_help_modelID(void)
+ 			" you can enter the modelID within 50 characters .\n"
+ 			" (Usage) ssm modelID [ TP2X_TEST_20K ] \n");
+ }
++static ssm_cmd_result ssm_command_store(int argc, char *argv[])
++{
++    dawit_result result = DAWIT_SUCCESS;
++    unsigned int time_limit_ms = 0;
++    
++    if (argc != 3)
++    {
++        return SSM_COMMAND_INVALID_CMDS;
++    }
++
++	time_limit_ms = (unsigned int)atoi(argv[2]);
++	if (time_limit_ms == 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid time limit value: %s", argv[2]);
++		return SSM_COMMAND_INVALID_ARGS;
++	}
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Storing logs with time limit: %u ms", time_limit_ms);
++
++	result = SSM_Store_logs_to_file(time_limit_ms);
++
++
++    if (result == DAWIT_SUCCESS) {
++        DAWIT_LOG_INFO(DAWIT_TAG_SSM, "✓ Logs saved to file");
++    } else if (result == DAWIT_TIMEOUT) {
++        DAWIT_LOG_INFO(DAWIT_TAG_SSM, "⚠ Log save timed out (proceeding with reboot)");
++    } else {
++        DAWIT_LOG_INFO(DAWIT_TAG_SSM, "✗ Log save failed (proceeding with reboot)");
++    }
++    DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Rebooting now...");
++    exit(0);
++
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Successfully stored logs and KPI data to ssm_stored_logs file");
++
++    return SSM_COMMAND_SUCCESS;
++}
++static void print_help_store(void)
++{
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "\n" SSM_COMMAND_FONT_BOLD "ssm store" SSM_COMMAND_FONT_RESET
++			" stores both logs and KPI data to ssm_stored_logs file in CSV format.\n"
++			" (Usage) ssm store [time_limit_ms]\n"
++			"   time_limit_ms - optional time limit in milliseconds (default: no limit)\n");
++}
+diff --git a/DA-Service/SSM/src/SSM_file_helper.c b/DA-Service/SSM/src/SSM_file_helper.c
+new file mode 100644
+index 0000000..b269b5b
+--- /dev/null
++++ b/DA-Service/SSM/src/SSM_file_helper.c
+@@ -0,0 +1,229 @@
++#include "SSM_file_helper.h"
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/stat.h>
++#include <errno.h>
++#include <dawit_common.h>
++#include <dawit_log.h>
++
++#define MAX_FILE_NAME_SIZE 64
++
++// SSM file open function
++dawit_result SSM_file_open(ssm_file **file, char *file_name, char *open_mode)
++{
++	if (file_name == NULL || open_mode == NULL || file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: file=[%p], file_name=[%p], open_mode=[%p]", file, file_name, open_mode);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	*file = fopen(file_name, open_mode);
++	if (*file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to open file [%s] with mode [%s], errno=%d (%s)", file_name, open_mode, errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Successfully opened file [%s] with mode [%s]", file_name, open_mode);
++	return DAWIT_SUCCESS;
++}
++
++// SSM file close function
++dawit_result SSM_file_close(ssm_file *file)
++{
++	if (file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid argument: file=[%p]", file);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	if (fclose(file) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to close file, errno=%d (%s)", errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Successfully closed file");
++	return DAWIT_SUCCESS;
++}
++
++// SSM file read function
++dawit_result SSM_file_read(ssm_file *file, unsigned char *buffer, unsigned int read_size)
++{
++	int read_count = 0;
++
++	if (file == NULL || buffer == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: file=[%p], buffer=[%p]", file, buffer);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	read_count = fread(buffer, 1, read_size, file);
++
++	if (read_count != read_size)
++	{
++		if (feof(file))
++		{
++			DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Reached end of file");
++		}
++		else
++		{
++			DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to read file: expected [%u] bytes, read [%d] bytes, errno=%d (%s)", read_size, read_count, errno, strerror(errno));
++		}
++		return DAWIT_FAIL;
++	}
++
++	return DAWIT_SUCCESS;
++}
++
++
++// SSM file write function
++dawit_result SSM_file_write(ssm_file *file, unsigned char *data, unsigned int write_size)
++{
++	int writed_count = 0;
++
++	if (file == NULL || data == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: file=[%p], data=[%p]", file, data);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	writed_count = fwrite(data, 1, write_size, file);
++	if (writed_count != write_size)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to write file: expected [%u] bytes, wrote [%d] bytes, errno=%d (%s)", write_size, writed_count, errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++	return DAWIT_SUCCESS;
++}
++
++// SSM file seek function
++dawit_result SSM_file_seek(ssm_file *file, long offset, int whence)
++{
++	if (file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid argument: file=[%p]", file);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	if (fseek(file, offset, whence) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to seek file: offset=[%ld], whence=[%d], errno=%d (%s)", offset, whence, errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	return DAWIT_SUCCESS;
++}
++
++// SSM file get size function
++dawit_result SSM_file_get_size(ssm_file *file, unsigned int *file_size)
++{
++	int offset;
++	int retval;
++	int org_offset;
++
++	if (file == NULL || file_size == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: file=[%p], file_size=[%p]", file, file_size);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	org_offset = ftell(file);
++	if (org_offset == -1)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to get current file position, errno=%d (%s)", errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	retval = fseek(file, 0, SEEK_END);
++	if (retval != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to seek to end of file, errno=%d (%s)", errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	offset = ftell(file);
++	if (offset == -1)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to get file size, errno=%d (%s)", errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	if (fseek(file, org_offset, SEEK_SET) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to restore file position, errno=%d (%s)", errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	*file_size = offset;
++	return DAWIT_SUCCESS;
++}
++
++// SSM file is exist function
++dawit_result SSM_file_is_exist(char *file_name)
++{
++	struct stat st;
++
++	if (file_name == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid argument: file_name=[%p]", file_name);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	int ret = stat(file_name, &st);
++	if ((ret != 0) && (errno == ENOENT))
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "File [%s] does not exist", file_name);
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "File [%s] exists", file_name);
++	return DAWIT_SUCCESS;
++}
++
++// SSM file delete function
++dawit_result SSM_file_delete(char *file_name)
++{
++	if (file_name == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid argument: file_name=[%p]", file_name);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	if (unlink(file_name) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to delete file [%s], errno=%d (%s)", file_name, errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Successfully deleted file [%s]", file_name);
++	return DAWIT_SUCCESS;
++}
++
++// SSM rename file function
++dawit_result SSM_rename_file(const char *old_path, const char *new_path)
++{
++	char src_path[MAX_FILE_NAME_SIZE] = {0,};
++	char dst_path[MAX_FILE_NAME_SIZE] = {0,};
++
++	if (old_path == NULL || new_path == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: old_path=[%p], new_path=[%p]", old_path, new_path);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	snprintf(src_path, MAX_FILE_NAME_SIZE, "%s", old_path);
++	snprintf(dst_path, MAX_FILE_NAME_SIZE, "%s", new_path);
++
++	if (rename(src_path, dst_path) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to rename file from [%s] to [%s], errno=%d (%s)",
++						src_path, dst_path, errno, strerror(errno));
++		return DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "Successfully renamed file from [%s] to [%s]", src_path, dst_path);
++	return DAWIT_SUCCESS;
++}
+\ No newline at end of file
+diff --git a/DA-Service/SSM/src/SSM_file_logger.c b/DA-Service/SSM/src/SSM_file_logger.c
+new file mode 100644
+index 0000000..78354be
+--- /dev/null
++++ b/DA-Service/SSM/src/SSM_file_logger.c
+@@ -0,0 +1,977 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/stat.h>
++#include <dawit_log.h>
++#include <dawit_mutex.h>
++#include <dawit_task.h>
++#include <dawit_semaphore.h>
++#include <dawit_time.h>
++#include "SSM_file_logger.h"
++#include "SSM_common.h"
++#include "SSM_data_type.h"
++#include "SSM_client.h"
++#include "SSM_client_ES.h"
++#include "SSM_client_SYS.h"
++#include "SSM_file_helper.h"
++#include "kpi_buffer.h"
++#include "log_buffer.h"
++
++#define SSM_STORED_LOGS_TEMP_FILE "/mnt/ssm_stored_logs_temp"
++#define SSM_STORED_LOGS_FILE "/mnt/ssm_stored_logs"
++#define SSM_MIN_LOG_BUFFER_SIZE (64)
++#define SSM_MIN_KPI_BUFFER_SIZE (128)
++#define SSM_MAX_ES_LOG_READ_LINES 20
++#define SSM_MAX_SYS_LOG_READ_LINES 50
++#define KPI_BUFFER_SIZE 50
++
++typedef struct {
++    dawit_result result;
++    dawit_semaphore completion_sem;
++    bool completed;
++} ssm_file_write_timeout_context;
++
++static ssm_file_write_timeout_context g_ssm_file_write_context;
++static const char* KPI_DATA_TYPE_STR[] = { [KPI_DATA_NUM] = "NUM", [KPI_DATA_STR] = "STR" };
++static kpi_file_data kpi_file_table[KPI_BUFFER_SIZE];
++static unsigned int kpi_file_count = 0;
++static bool g_ssm_is_file_write_api_done = false;
++static bool g_ssm_file_write_timeout = false;
++static dawit_mutex g_ssm_file_write_timeout_mutex = DAWIT_MUTEX_INITIALIZER;
++
++static void SSM_set_file_write_timeout(bool value);
++static bool SSM_get_file_write_timeout(void);
++
++static const char* kpi_data_type_to_string(KPI_DATA_TYPE type);
++static dawit_result SSM_write_ES_logs_to_file(ssm_file *file);
++static dawit_result SSM_write_SYS_logs_to_file(ssm_file *file);
++static dawit_result SSM_write_logs_to_file(void);
++static void SSM_skip_to_next_line(ssm_file *file);
++static log_data* SSM_read_ES_log_from_file(ssm_file *file, bool *is_eof);
++static void SSM_append_log_to_list(log_data **head, log_data **tail, log_data *new_node);
++static log_data* SSM_read_ES_logs_batch(ssm_file *file, bool *is_eof);
++static int SSM_read_and_restore_SYS_log(ssm_file *file, bool *is_eof);
++static int SSM_restore_SYS_logs_batch(ssm_file *file, bool *is_eof);
++static dawit_result SSM_restore_and_send_ES_logs(log_data *head);
++static void SSM_free_log_data_list(log_data *head);
++static SSM_Log_Type SSM_map_code_to_log_type(char code);
++static dawit_result SSM_get_file_creation_time_imp(const char *file_path, time_t *creation_time);
++static void SSM_free_sys_kpi_table(void);
++
++static const char* kpi_data_type_to_string(KPI_DATA_TYPE type)
++{
++	if (type < 0 || type > KPI_DATA_STR)
++	{
++		return "UNKNOWN";
++	}
++	
++	return KPI_DATA_TYPE_STR[type] ;
++}
++
++static void SSM_set_file_write_timeout(bool value)
++{
++	dawit_mutex_acquire(&g_ssm_file_write_timeout_mutex, DAWIT_FOREVER);
++	g_ssm_file_write_timeout = value;
++	dawit_mutex_release(&g_ssm_file_write_timeout_mutex);
++}
++
++static bool SSM_get_file_write_timeout(void)
++{
++	bool value;
++	dawit_mutex_acquire(&g_ssm_file_write_timeout_mutex, DAWIT_FOREVER);
++	value = g_ssm_file_write_timeout;
++	dawit_mutex_release(&g_ssm_file_write_timeout_mutex);
++	return value;
++}
++
++
++static dawit_result SSM_write_ES_logs_to_file(ssm_file *file)
++{
++	dawit_result result = DAWIT_FAIL;
++	log_data *current_log = NULL;
++	char *line_buffer = NULL;
++	int line_size = 0;
++
++	if (file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "passed NUll file path");
++		return DAWIT_FAIL;
++	}
++
++	log_buffer_lock();
++	current_log = log_buffer_get_first();
++	SSMCodeInfo* codeInfo = SSM_ES_get_code_info();
++
++	while (current_log != NULL)
++	{
++
++		if (SSM_get_file_write_timeout())
++		{
++			DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM file write timeout");
++			log_buffer_unlock();
++			return DAWIT_FAIL;
++		}
++
++		SSM_Log_Type logType = SSM_map_code_to_log_type(current_log->code[0]);
++
++		if (codeInfo[logType].SSM_status == DAWIT_TRUE && 
++			current_log->level >= codeInfo[logType].SSM_level)
++		{
++			line_size = SSM_MIN_LOG_BUFFER_SIZE + LOG_BUFFER_CODE_SIZE + (current_log->message ? strlen(current_log->message) : 0);
++			line_buffer = (char *)calloc(1, line_size);
++
++			if (line_buffer == NULL)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for line buffer");
++				log_buffer_unlock();
++				return DAWIT_FAIL;
++			}
++
++			/* Format the line: (0,time,code,message) */
++			if (current_log->message != NULL)
++			{
++				snprintf(line_buffer, line_size, "<0#%d#%s#%s>\n", current_log->time, current_log->code, current_log->message);
++			}
++			else
++			{
++				snprintf(line_buffer, line_size, "<0#%d#%s#>\n", current_log->time, current_log->code);
++			}
++
++			/* Write to file */
++			dawit_result write_result = SSM_file_write(file, (unsigned char *)line_buffer, strlen(line_buffer));
++			if (write_result != DAWIT_SUCCESS)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to write to file");
++				free(line_buffer);
++				line_buffer = NULL;
++				log_buffer_unlock();
++				return DAWIT_FAIL;
++			}
++			free(line_buffer);
++			line_buffer = NULL;
++		}
++		current_log = current_log->next;
++	}
++	log_buffer_unlock();
++	return DAWIT_SUCCESS;
++}
++
++
++static dawit_result SSM_write_SYS_logs_to_file(ssm_file *file)
++{
++	dawit_result result = DAWIT_FAIL;
++	KPI_data *KPI_table = NULL;
++	int size = 0;
++	SSM_SYS_code_info* sysCodeInfo = SSM_SYS_get_code_info();
++
++	if (file == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "passed NUll file path");
++		return DAWIT_FAIL;
++	}
++
++	KPI_buffer_lock();
++	KPI_table = KPI_get_table(&size);
++
++	if (KPI_table != NULL && size > 0)
++	{
++		/* Iterate through all KPI data */
++		for (int i = 0; i < size+1; i++)
++		{
++
++			if (SSM_get_file_write_timeout())
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM file write timeout");
++				KPI_buffer_unlock();
++				return DAWIT_FAIL;
++			}
++
++			/* Skip KPI data with NONE send type */
++			if (KPI_table[i].KPI_send_type == KPI_SEND_NONE || KPI_table[i].KPI_send_type == KPI_SEND_NOW || sysCodeInfo[KPI_table[i].KPI_tag].status != DAWIT_TRUE)
++			{
++				continue;
++			}
++
++			/* Allocate buffer for the line (sufficiently large) */
++			int kpi_line_size = SSM_MIN_KPI_BUFFER_SIZE + (KPI_table[i].KPI_name ? strlen(KPI_table[i].KPI_name) : 0) +
++							(KPI_table[i].KPI_message_str ? strlen(KPI_table[i].KPI_message_str) : 0);
++			char *kpi_line_buffer = (char *)calloc(1, kpi_line_size);
++			if (kpi_line_buffer == NULL)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for line buffer");
++				KPI_buffer_unlock();
++				return DAWIT_FAIL;
++			}
++
++			/* Format the line: (1,kpi_name,data_type,message) */
++			if (KPI_table[i].KPI_data_type == KPI_DATA_NUM)
++			{
++				snprintf(kpi_line_buffer, kpi_line_size, "<1#%s#%s#%d>\n",
++						 KPI_table[i].KPI_name ? KPI_table[i].KPI_name : "",
++						 kpi_data_type_to_string(KPI_table[i].KPI_data_type),
++						 KPI_table[i].KPI_message_num);
++			}
++			else if (KPI_table[i].KPI_data_type == KPI_DATA_STR)
++			{
++				snprintf(kpi_line_buffer, kpi_line_size, "<1#%s#%s#%s>\n",
++						 KPI_table[i].KPI_name ? KPI_table[i].KPI_name : "",
++						 kpi_data_type_to_string(KPI_table[i].KPI_data_type),
++						 KPI_table[i].KPI_message_str ? KPI_table[i].KPI_message_str : "");
++			}
++			else
++			{
++				/* Unknown data type, skip this entry */
++				free(kpi_line_buffer);
++				kpi_line_buffer = NULL;
++				continue;
++			}
++
++			/* Write to file */
++			dawit_result write_result = SSM_file_write(file, (unsigned char *)kpi_line_buffer, strlen(kpi_line_buffer));
++			if (write_result != DAWIT_SUCCESS)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to write to file");
++				free(kpi_line_buffer);
++				kpi_line_buffer = NULL;
++				KPI_buffer_unlock();
++				return DAWIT_FAIL;
++			}
++
++			free(kpi_line_buffer);
++			kpi_line_buffer = NULL;
++		}
++	}
++
++	/* Unlock the KPI buffer */
++	KPI_buffer_unlock();
++	return DAWIT_SUCCESS;
++}
++
++static dawit_result SSM_get_file_creation_time_imp(const char *file_path, time_t *creation_time)
++{
++	struct stat file_stat;
++
++	if (file_path == NULL || creation_time == NULL)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid arguments: file_path=%p, creation_time=%p", file_path, creation_time);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	if (stat(file_path, &file_stat) != 0)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to get file stats for %s", file_path);
++		return DAWIT_FAIL;
++	}
++
++	/* On Linux/Tizen, st_ctime is the closest to creation time available vi a stat().
++	 * It represents the time of last inode change (set at file creation). */
++	*creation_time = file_stat.st_ctime;
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "File %s creation time: %ld (epoch seconds)", file_path, (long)*creation_time);
++	return DAWIT_SUCCESS;
++}
++
++dawit_result SSM_get_file_creation_time(time_t *creation_time)
++{
++	return SSM_get_file_creation_time_imp(SSM_STORED_LOGS_FILE, creation_time);
++}
++static dawit_result SSM_write_logs_to_file(void)
++{
++	ssm_file *file = NULL;
++	dawit_result result = DAWIT_SUCCESS;
++
++
++	result = SSM_file_open(&file, SSM_STORED_LOGS_TEMP_FILE, "w");
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to open %s file for writing", SSM_STORED_LOGS_FILE);
++		g_ssm_file_write_context.completed = true;
++		g_ssm_file_write_context.result = DAWIT_FAIL;
++		dawit_semaphore_release(&g_ssm_file_write_context.completion_sem);
++		return DAWIT_FAIL;
++	}
++
++	/* Write ES logs */
++	result =  SSM_write_ES_logs_to_file(file);
++	if( result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to Write ES logs to file ");
++		SSM_file_close(file);
++		g_ssm_file_write_context.completed = true;
++		g_ssm_file_write_context.result = DAWIT_FAIL;
++		dawit_semaphore_release(&g_ssm_file_write_context.completion_sem);
++		return DAWIT_FAIL;
++	}
++
++	result =  SSM_write_SYS_logs_to_file(file);
++	if( result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to Write SYS logs to file ");
++		SSM_file_close(file);
++		g_ssm_file_write_context.completed = true;
++		g_ssm_file_write_context.result = DAWIT_FAIL;
++		dawit_semaphore_release(&g_ssm_file_write_context.completion_sem);
++		return DAWIT_FAIL;
++	}
++
++	/* Close the file */
++	SSM_file_close(file);
++
++	if (SSM_check_stored_logs_file_exist() == DAWIT_SUCCESS)
++	{
++		if (SSM_delete_stored_logs_file() != DAWIT_SUCCESS)
++		{
++			DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Unable to delete old ssm logs file");
++			g_ssm_file_write_context.completed = true;
++			g_ssm_file_write_context.result = DAWIT_FAIL;
++			dawit_semaphore_release(&g_ssm_file_write_context.completion_sem);
++			return DAWIT_FAIL;
++		}
++	}
++
++	SSM_rename_file(SSM_STORED_LOGS_TEMP_FILE, SSM_STORED_LOGS_FILE);
++	g_ssm_file_write_context.completed = true;
++	g_ssm_file_write_context.result = DAWIT_SUCCESS;
++	dawit_semaphore_release(&g_ssm_file_write_context.completion_sem);
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Successfully stored logs and KPI data to %s file", SSM_STORED_LOGS_FILE);
++	return DAWIT_SUCCESS;
++}
++
++dawit_result SSM_store_logs_to_file_impl(unsigned int time_limit_ms)
++{
++	dawit_result final_result = DAWIT_FAIL;
++
++	g_ssm_file_write_context.result = DAWIT_FAIL;
++	g_ssm_file_write_context.completed = false;
++
++	if (g_ssm_is_file_write_api_done)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM store to file is already called");
++		return DAWIT_FAIL;
++	}
++
++	if (time_limit_ms < 1000)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Invalid time_limit [%u] >= 1000", time_limit_ms);
++		return DAWIT_INVALID_ARGS;
++	}
++
++	int ssm_es_time = SSM_get_es_interval_time();
++	int ssm_sys_time = SSM_get_sys_interval_time();
++	
++	//delay sending of ES,SYS logs
++	ssm_es_time += 30; 
++	ssm_sys_time += 30;
++
++	SSM_set_interval(SSM_EASYSETUP, ssm_es_time);
++	SSM_set_interval(SSM_SYSTEM, ssm_sys_time);
++	
++	dawit_result sem_result = dawit_semaphore_create(&g_ssm_file_write_context.completion_sem, 0);
++	if (sem_result != DAWIT_SUCCESS) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to create completion semaphore");
++		return DAWIT_FAIL;
++	}
++
++	dawit_task worker_task = 1;
++	dawit_result task_result = dawit_task_create((dawit_task*)&worker_task, "SSM_file_write_worker", 
++	                                (void*)SSM_write_logs_to_file, NULL,
++	                                DAWIT_NORMAL_PRIORITY, 1024*6);
++	if (task_result != DAWIT_SUCCESS) {
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to create SSM file write thread");
++		dawit_semaphore_destroy(&g_ssm_file_write_context.completion_sem);
++		return DAWIT_FAIL;
++	}
++
++	sem_result = dawit_semaphore_acquire(&g_ssm_file_write_context.completion_sem, time_limit_ms);
++	
++	if (sem_result == DAWIT_TIMEOUT)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "File write operation timed out after [%d] ms, ending SSM file write", time_limit_ms);
++		
++		SSM_set_file_write_timeout(true);
++		final_result = DAWIT_TIMEOUT;
++	}
++	else if (sem_result == DAWIT_SUCCESS)
++	{
++		/* Operation completed within timeout - get the result */
++		final_result = g_ssm_file_write_context.result;
++
++		if (g_ssm_file_write_context.completed)
++		{
++			if (g_ssm_file_write_context.result == DAWIT_SUCCESS)
++			{
++				DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Success to write SSM logs into file");
++			}
++			else
++			{
++				DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Failed to write SSM logs into file internal failure");
++			}
++		}
++	}
++	else
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Semaphore acquire failed");
++		final_result = DAWIT_FAIL;
++	}
++
++	DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "SSM write function end");
++	g_ssm_is_file_write_api_done = true;
++	return final_result;
++}
++
++/* Skip characters until newline is found */
++static void SSM_skip_to_next_line(ssm_file *file)
++{
++	unsigned char ch;
++	while (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)
++	{
++		if (ch == '\n')
++		{
++			break;
++		}
++	}
++}
++
++/* Read one ES log record from file directly into a log_data node.
++ * Reads character by character, no intermediate line buffer needed.
++ * Returns log_data node on success, NULL if non-ES/invalid/EOF.
++ * *is_eof is set to true when end of file is reached. */
++static log_data* SSM_read_ES_log_from_file(ssm_file *file, bool *is_eof)
++{
++	unsigned char ch;
++	int field = 0;  /* 0=type, 1=time, 2=code, 3=message */
++	int type_value = 0;
++	int time_value = 0;
++	char code_value[LOG_BUFFER_CODE_SIZE] = {0};
++	int code_pos = 0;
++	char *message_buf = NULL;
++	int message_pos = 0;
++	int message_size = 0;
++	dawit_result read_result = DAWIT_SUCCESS;
++
++	if (is_eof != NULL)
++	{
++		*is_eof = false;
++	}
++
++	/* Look for start of record '<' */
++	ch = '\0';
++	while ((read_result = SSM_file_read(file, &ch, 1)) == DAWIT_SUCCESS)
++	{
++		if (ch == '<')
++		{
++			break;
++		}
++		/* Skip anything before '<' (including newlines) */
++	}
++
++	/* If we couldn't read, it's EOF */
++	if (ch != '<')
++	{
++		if (is_eof != NULL) *is_eof = true;
++		DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "SSM ES file read EOF");
++		return NULL;
++	}
++
++	/* Parse fields character by character */
++	while ((read_result = SSM_file_read(file, &ch, 1)) == DAWIT_SUCCESS)
++	{
++		if (ch == '>')
++		{
++			/* End of record - consume trailing newline if present */
++			unsigned char next_ch;
++			if (SSM_file_read(file, &next_ch, 1) == DAWIT_SUCCESS && next_ch != '\n')
++			{
++				/* Not a newline, continue reading */
++				SSM_file_seek(file, -1, SEEK_CUR); /* Put the character back */
++			}
++
++			/* Null terminate message */
++			if (message_buf != NULL)
++			{
++				message_buf[message_pos] = '\0';
++			}
++
++			/* Only create node for ES records (type 0) with valid code */
++			if (type_value != 0 || code_pos == 0)
++			{
++				free(message_buf);
++				if (is_eof != NULL) *is_eof = true;
++				DAWIT_LOG_DEBUG(DAWIT_TAG_SSM, "SSM ES file read EOF");
++				return NULL;
++			}
++
++			log_data *new_node = (log_data *)calloc(1, sizeof(log_data));
++			if (new_node == NULL)
++			{
++				DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for log_data node");
++				free(message_buf);
++				return NULL;
++			}
++
++			new_node->time = time_value;
++			snprintf(new_node->code, LOG_BUFFER_CODE_SIZE, "%s", code_value);
++			new_node->message = message_buf;
++			new_node->level = 5;
++			new_node->pre = NULL;
++			new_node->next = NULL;
++			return new_node;
++		}
++
++		if (ch == '#')
++		{
++			field++;
++			continue;
++		}
++
++		switch (field)
++		{
++			case 0: /* Type */
++				if (ch >= '0' && ch <= '9')
++				{
++					type_value = type_value * 10 + (ch - '0');
++				}
++				break;
++			case 1: /* Time */
++				if (ch >= '0' && ch <= '9')
++				{
++					time_value = time_value * 10 + (ch - '0');
++				}
++				break;
++			case 2: /* Code */
++				if (code_pos < LOG_BUFFER_CODE_SIZE - 1)
++				{
++					code_value[code_pos++] = ch;
++				}
++				break;
++			case 3: /* Message - dynamically grow buffer */
++				if (message_pos >= message_size - 1)
++				{
++					message_size += 64;
++					char *new_buf = (char *)realloc(message_buf, message_size);
++					if (new_buf == NULL)
++					{
++						DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for message");
++						free(message_buf);
++						SSM_skip_to_next_line(file);
++						return NULL;
++					}
++					message_buf = new_buf;
++				}
++				message_buf[message_pos++] = ch;
++				break;
++		}
++	}
++
++	/* EOF reached before completing record */
++	if (is_eof != NULL) *is_eof = true;
++	free(message_buf);
++	return NULL;
++}
++
++/* Append a log_data node to the doubly linked list */
++static void SSM_append_log_to_list(log_data **head, log_data **tail, log_data *new_node)
++{
++	if (new_node == NULL)
++	{
++		return;
++	}
++
++	if (*head == NULL)
++	{
++		*head = new_node;
++		*tail = new_node;
++	}
++	else
++	{
++		(*tail)->next = new_node;
++		new_node->pre = *tail;
++		*tail = new_node;
++	}
++}
++
++/* Read up to SSM_MAX_ES_LOG_READ_LINES ES log records from an already-open file.
++ * Returns linked list of log_data. Sets *is_eof to true when file ends. */
++static log_data* SSM_read_ES_logs_batch(ssm_file *file, bool *is_eof)
++{
++	log_data *head = NULL;
++	log_data *tail = NULL;
++	int es_count = 0;
++
++	/* Read records directly into linked list, up to SSM_MAX_ES_LOG_READ_LINES ES records */
++	while (es_count < SSM_MAX_ES_LOG_READ_LINES && !(*is_eof))
++	{
++		log_data *new_node = SSM_read_ES_log_from_file(file, is_eof);
++		if (new_node != NULL)
++		{
++			SSM_append_log_to_list(&head, &tail, new_node);
++			es_count++;
++		}
++		/* NULL means non-ES record, invalid line, or EOF - continue until es_count reached or EOF */
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Read batch of %d ES log records", es_count);
++	return head;
++}
++
++/* Read one SYS log record from file and store in file data table.
++ * Returns 1 on success (SYS record saved), 0 if non-SYS/invalid record, -1 on EOF. */
++static int SSM_read_and_restore_SYS_log(ssm_file *file, bool *is_eof)
++{
++    unsigned char ch;
++    int field = 0;  /* 0=type, 1=kpi_name, 2=data_type, 3=message */
++    int type_value = 0;
++    char *kpi_name_buf = NULL;
++    int kpi_name_pos = 0;
++    int kpi_name_size = 0;
++    char data_type_buf[8] = {0};
++    int data_type_pos = 0;
++    char *message_buf = NULL;
++    int message_pos = 0;
++    int message_size = 0;
++
++    if (is_eof != NULL) *is_eof = false;
++
++    /* Look for start of record '<' */
++    ch = '\0';
++    while (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)
++    {
++        if (ch == '<') break;
++    }
++
++    if (ch != '<')
++    {
++        if (is_eof != NULL) *is_eof = true;
++        return -1;
++    }
++
++    /* Parse fields character by character */
++    while (SSM_file_read(file, &ch, 1) == DAWIT_SUCCESS)
++    {
++        if (ch == '>')
++        {
++            /* Consume trailing newline if present */
++            unsigned char next_ch;
++            if (SSM_file_read(file, &next_ch, 1) == DAWIT_SUCCESS && next_ch != '\n')
++            {
++                /* Not a newline, continue reading */
++                SSM_file_seek(file, -1, SEEK_CUR); /* Put the character back */
++            }
++
++            /* Null terminate buffers */
++            if (kpi_name_buf != NULL) kpi_name_buf[kpi_name_pos] = '\0';
++            if (message_buf != NULL) message_buf[message_pos] = '\0';
++
++            /* Only process SYS records (type 1) with valid kpi_name */
++            if (type_value != 1 || kpi_name_pos == 0)
++            {
++                free(kpi_name_buf);
++                free(message_buf);
++                return 0;
++            }
++
++            /* Check if we have space in the file data table */
++            if (kpi_file_count >= KPI_BUFFER_SIZE) {
++                DAWIT_LOG_WARNING(DAWIT_TAG_SSM, "KPI file data table is full, discarding entry");
++                free(kpi_name_buf);
++                free(message_buf);
++                return 0;
++            }
++
++            /* Store data in file data table */
++            kpi_file_table[kpi_file_count].kpi_name = kpi_name_buf;
++            snprintf(kpi_file_table[kpi_file_count].data_type, 
++                sizeof(kpi_file_table[kpi_file_count].data_type), "%s", data_type_buf);
++            kpi_file_table[kpi_file_count].kpi_message = message_buf;
++
++            DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Stored in file data table: name=%s, type=%s, message=%s",
++                kpi_file_table[kpi_file_count].kpi_name,
++                kpi_file_table[kpi_file_count].data_type,
++                kpi_file_table[kpi_file_count].kpi_message ? 
++                kpi_file_table[kpi_file_count].kpi_message : "");
++
++            kpi_file_count++;
++            return 1;
++        }
++
++        if (ch == '#')
++        {
++            field++;
++            continue;
++        }
++
++        switch (field)
++        {
++            case 0: /* Type */
++                if (ch >= '0' && ch <= '9') type_value = type_value * 10 + (ch - '0');
++                break;
++            case 1: /* KPI name */
++                if (kpi_name_pos >= kpi_name_size - 1)
++                {
++                    kpi_name_size += 64;
++                    char *new_buf = (char *)realloc(kpi_name_buf, kpi_name_size);
++                    if (new_buf == NULL)
++                    {
++                        DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for KPI name");
++                        free(kpi_name_buf);
++                        free(message_buf);
++                        SSM_skip_to_next_line(file);
++                        return 0;
++                    }
++                    kpi_name_buf = new_buf;
++                }
++                kpi_name_buf[kpi_name_pos++] = ch;
++                break;
++            case 2: /* Data type string */
++                if (data_type_pos < (int)sizeof(data_type_buf) - 1) data_type_buf[data_type_pos++] = ch;
++                break;
++            case 3: /* Message */
++                if (message_pos >= message_size - 1)
++                {
++                    message_size += 64;
++                    char *new_buf = (char *)realloc(message_buf, message_size);
++                    if (new_buf == NULL)
++                    {
++                        DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to allocate memory for message");
++                        free(kpi_name_buf);
++                        free(message_buf);
++                        SSM_skip_to_next_line(file);
++                        return 0;
++                    }
++                    message_buf = new_buf;
++                }
++                message_buf[message_pos++] = ch;
++                break;
++        }
++    }
++
++    /* EOF reached before completing record */
++    if (is_eof != NULL) *is_eof = true;
++    free(kpi_name_buf);
++    free(message_buf);
++    return -1;
++}
++
++
++/* Read up to SSM_MAX_SYS_LOG_READ_LINES SYS log records from file and
++ * directly save them to KPI_buffer_table_array (no linked list needed).
++ * Returns the number of SYS records restored in this batch. */
++static int SSM_restore_SYS_logs_batch(ssm_file *file, bool *is_eof)
++{
++	int sys_count = 0;
++
++	while (sys_count < SSM_MAX_SYS_LOG_READ_LINES && !(*is_eof))
++	{
++		int result = SSM_read_and_restore_SYS_log(file, is_eof);
++		if (result == 1)
++		{
++			sys_count++;
++		}
++		/* result == 0: non-SYS record or invalid, continue */
++		/* result == -1: EOF, loop will exit */
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Restored batch of %d SYS log records to KPI buffer", sys_count);
++	return sys_count;
++}
++
++/* Restore ES log records from file-read linked list into log_buffer,
++ * then call SSM_Send_ES_log_protected() which reads from log_buffer to send. */
++static dawit_result SSM_restore_and_send_ES_logs(log_data *head)
++{
++	if (head == NULL)
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "No ES logs to restore");
++		return DAWIT_FAIL;
++	}
++
++	dawit_result result = SSM_Send_ES_logs_from_file((void *)head);
++	if (result == DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "ES logs sent to server successfully");
++	}
++	else
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to send ES logs to server");
++	}
++
++	return result;
++}
++
++
++/* Free the linked list of log_data */
++static void SSM_free_log_data_list(log_data *head)
++{
++	log_data *current = head;
++	log_data *next_node = NULL;
++
++	while (current != NULL)
++	{
++		next_node = current->next;
++		if (current->message != NULL)
++		{
++			free(current->message);
++		}
++		free(current);
++		current = next_node;
++	}
++}
++
++dawit_result SSM_check_stored_logs_file_exist(void)
++{
++	return SSM_file_is_exist((char *)SSM_STORED_LOGS_FILE);
++}
++
++dawit_result SSM_delete_stored_logs_file(void)
++{
++	return SSM_file_delete((char *)SSM_STORED_LOGS_FILE);
++}
++
++dawit_result SSM_read_logs_from_file_and_send_impl(void)
++{
++	ssm_file *file = NULL;
++	bool is_eof = false;
++	int es_batch_num = 0;
++	int sys_batch_num = 0;
++	int total_es_count = 0;
++	int total_sys_count = 0;
++	dawit_result result = DAWIT_SUCCESS;
++	
++    if (SSM_is_policy_done() != DAWIT_TRUE)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "SSM policy is not yet loaded");
++		return DAWIT_FAIL;
++	}
++	/* Open file for reading */
++	result = SSM_file_open(&file, SSM_STORED_LOGS_FILE, "r");
++	if (result != DAWIT_SUCCESS)
++	{
++		DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to open %s file for reading", SSM_STORED_LOGS_FILE);
++		return DAWIT_FAIL;
++	}
++
++	/* Read ES records in batches of 20, print each batch, until file ends */
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "=== Reading ES Records ===");
++	while (!is_eof)
++	{
++		log_data *log_list = SSM_read_ES_logs_batch(file, &is_eof);
++
++		if (log_list == NULL)
++		{
++			break;
++		}
++
++		es_batch_num++;
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "=== ES Batch [%d] ===", es_batch_num);
++
++		log_data *current = log_list;
++		while (current != NULL)
++		{
++			total_es_count++;
++			current = current->next;
++		}
++
++		/* Restore ES logs to buffer and send to server */
++		SSM_restore_and_send_ES_logs(log_list);
++
++		SSM_free_log_data_list(log_list);
++	}
++
++	/* SYS records are at end of file, continue reading from current position */
++	is_eof = false;
++
++	/* Read SYS records in batches of 50 and save directly to KPI_buffer_table_array */
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "=== Reading SYS Records ===");
++	while (!is_eof)
++	{
++		int batch_count = SSM_restore_SYS_logs_batch(file, &is_eof);
++
++		if (batch_count == 0)
++		{
++			break;
++		}
++
++		sys_batch_num++;
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "=== SYS Batch [%d] ===", sys_batch_num);
++
++		total_sys_count += batch_count;
++	}
++
++	SSM_file_close(file);
++
++	/* Send all SYS logs from KPI buffer to server (after all batches are restored) */
++	if (total_sys_count > 0)
++	{
++
++		dawit_result sys_result = SSM_Send_SYS_logs_from_file(kpi_file_table, kpi_file_count);
++		if (sys_result == DAWIT_SUCCESS)
++		{
++			DAWIT_LOG_INFO(DAWIT_TAG_SSM, "SYS logs sent to server successfully");
++		}
++		else
++		{
++			DAWIT_LOG_ERROR(DAWIT_TAG_SSM, "Failed to send SYS logs to server");
++		}
++
++		SSM_free_sys_kpi_table();
++	}
++
++	DAWIT_LOG_INFO(DAWIT_TAG_SSM, "Total [%d] ES logs in [%d] batches, [%d] SYS logs in [%d] batches",
++		total_es_count, es_batch_num, total_sys_count, sys_batch_num);
++
++	if (total_es_count == 0 && total_sys_count == 0)
++	{
++		DAWIT_LOG_INFO(DAWIT_TAG_SSM, "No logs found in file");
++		return DAWIT_FAIL;
++	}
++
++	return DAWIT_SUCCESS;
++}
++
++static void SSM_free_sys_kpi_table(void)
++{
++	for (unsigned int i = 0; i < kpi_file_count && i < KPI_BUFFER_SIZE; i++)
++    {
++        if (kpi_file_table[i].kpi_name != NULL)
++        {
++            free(kpi_file_table[i].kpi_name);
++            kpi_file_table[i].kpi_name = NULL;
++        }
++        if (kpi_file_table[i].kpi_message != NULL)
++        {
++            free(kpi_file_table[i].kpi_message);
++            kpi_file_table[i].kpi_message = NULL;
++        }
++    }
++    kpi_file_count = 0;
++}
++static SSM_Log_Type SSM_map_code_to_log_type(char code)
++{
++	switch (code)
++	{
++	case 'C':
++	case 'c':
++		return SSM_CS;
++	case 'E':
++	case 'e':
++		return SSM_ES;
++	case 'N':
++	case 'n':
++		return SSM_NS;
++	case 'A':
++	case 'a':
++		return SSM_AS;
++	case 'S':
++	case 's':
++		return SSM_SS;
++	case 'P':
++	case 'p':
++		return SSM_PS;
++	case 'R':
++	case 'r':
++		return SSM_RR;
++	default:
++		return SSM_CS; // Default to CS for unknown codes
++	}
++}
+\ No newline at end of file
+diff --git a/conanfile.py b/conanfile.py
+index 58e4186..43fb0c1 100644
+--- a/conanfile.py
++++ b/conanfile.py
+@@ -48,10 +48,10 @@ class MyProjectConan(ConanFile):
+ 
+     def requirements(self):
+         self.requires(f"toolchain/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"kernel/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"system/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"ocf/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"trutils/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"wifi/[>=1.1.2-rc.14 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"dawit/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
+-        self.requires(f"miscs/[>=1.0 <2.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"kernel/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"system/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"ocf/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"trutils/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"wifi/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"dawit/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
++        self.requires(f"miscs/[>=2.0 <3.0]@tizenrt/{self.channel}", libs=True)
+diff --git a/src/Makefile b/src/Makefile
+index e4d8f01..82f1a5e 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -41,6 +41,8 @@ CSRCS += ${DA_SSM_SRC_PATH}/SSM_command.c
+ CSRCS += ${DA_SSM_SRC_PATH}/SSM_client_ai_inv.c
+ CSRCS += ${DA_SSM_SRC_PATH}/SSM_client_wifi_bigdata.c
+ CSRCS += ${DA_SSM_SRC_PATH}/SSM_log_data.c
++CSRCS += ${DA_SSM_SRC_PATH}/SSM_file_logger.c
++CSRCS += ${DA_SSM_SRC_PATH}/SSM_file_helper.c
+ CSRCS += ${DA_SSM_SRC_PATH}/SSM_wifi_bigdata_buffer.c
+ CSRCS += ${DA_SSM_SRC_PATH}/rtl8721csm_refactoring/SSM_external_module.c
+ 
+diff --git a/test/utc/Makefile b/test/utc/Makefile
+index 7edb961..d75762b 100644
+--- a/test/utc/Makefile
++++ b/test/utc/Makefile
+@@ -15,20 +15,25 @@ OBJS += SSM_client_wifi_bigdata_test.c
+ OBJS += SSM_log_data_test.c
+ OBJS += SSM_wifi_bigdata_buffer_test.c
+ OBJS += SSM_external_module_test.c
++OBJS += SSM_file_helper_test.c
++OBJS += SSM_file_logger_test.c
+ 
+ LDFLAGS += -Wl,--wrap=trt_se_read_certificate
+-LDFLAGS += -Wl,--wrap=log_buffer_get_last
+-LDFLAGS += -Wl,--wrap=log_buffer_get_first
+ LDFLAGS += -Wl,--wrap=prctl
+ LDFLAGS += -Wl,--wrap=wifi_manager_info_get
+-LDFLAGS += -Wl,--wrap=KPI_get_table
+-LDFLAGS += -Wl,--wrap=KPI_buffer_lock
+-LDFLAGS += -Wl,--wrap=KPI_buffer_unlock
+ LDFLAGS += -Wl,--wrap=system_time_check_china
+ LDFLAGS += -Wl,--wrap=ocf_manager_is_device_registered
+ LDFLAGS += -Wl,--wrap=gmtime
+ LDFLAGS += -Wl,--wrap=reset_disconnection_info
+ LDFLAGS += -Wl,--wrap=cJSON_Parse
++LDFLAGS += -Wl,--wrap=log_buffer_lock
++LDFLAGS += -Wl,--wrap=log_buffer_unlock
++LDFLAGS += -Wl,--wrap=log_buffer_init
++LDFLAGS += -Wl,--wrap=log_buffer_add_log
++LDFLAGS += -Wl,--wrap=log_buffer_get_first
++LDFLAGS += -Wl,--wrap=log_buffer_get_last
++LDFLAGS += -Wl,--wrap=log_buffer_clear
++LDFLAGS += -Wl,--wrap=SSM_is_policy_done
+ 
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_ES.c
+@@ -38,5 +43,7 @@ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_command.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_ai_inv.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_client_wifi_bigdata.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_log_data.c
++TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_file_logger.c
++TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_file_helper.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/SSM_wifi_bigdata_buffer.c
+ TRG_SRC += $(ROOTDIR)/DA-Service/SSM/src/rtl8721csm_refactoring/SSM_external_module.c
+diff --git a/test/utc/SSM_client_ES_test.c b/test/utc/SSM_client_ES_test.c
+index 663a026..2d46e5c 100644
+--- a/test/utc/SSM_client_ES_test.c
++++ b/test/utc/SSM_client_ES_test.c
+@@ -8,16 +8,6 @@
+ #include "json/cJSON.h"
+ #include "log_buffer.h"
+ 
+-static log_data mock_log_data_list[3] = {0};
+-static int mock_code = 0;
+-static int mock_call_count = 0;
+-static int mock_timestamp = 1609459200;
+-static char msg1[32] = "Debug message 1";
+-static char msg2[32] = "Debug message 2";
+-static char msg3[32] = "Debug message 3";
+-static int es_test_code = 0;
+-static log_data es_test_data = {0};
+-
+ struct tm* __wrap_gmtime(const time_t *timep)
+ {
+     static struct tm tm;
+@@ -32,101 +22,6 @@ struct tm* __wrap_gmtime(const time_t *timep)
+     return &tm;
+ }
+ 
+-log_data* __wrap_log_buffer_get_last(void)
+-{
+-    mock_call_count = 0;
+-    return &es_test_data;
+-}
+-
+-log_data* __wrap_log_buffer_get_first(void)
+-{
+-    mock_call_count++;
+-    
+-    memset(&es_test_data, 0, sizeof(es_test_data));
+-    es_test_data.level = 6;
+-    es_test_data.time = mock_timestamp + 100;
+-    es_test_data.message = msg1;
+-    es_test_data.next = NULL;
+-    
+-    if (es_test_code == 0)
+-    {
+-        es_test_data.code[0] = 'C';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 1)
+-    {
+-        es_test_data.code[0] = 'E';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 2)
+-    {
+-        es_test_data.code[0] = 'N';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 3)
+-    {
+-        es_test_data.code[0] = 'A';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 4)
+-    {
+-        es_test_data.code[0] = 'S';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 5)
+-    {
+-        es_test_data.code[0] = 'P';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 6)
+-    {
+-        es_test_data.code[0] = 'R';
+-        strncpy(&es_test_data.code[1], "R001", 4);
+-    }
+-    else if (es_test_code == 7)
+-    {
+-        es_test_data.code[0] = 'X';
+-        strncpy(&es_test_data.code[1], "X001", 4);
+-    }
+-    else if (es_test_code == 8)
+-    {
+-        es_test_data.code[0] = 'c';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 9)
+-    {
+-        es_test_data.code[0] = 'e';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 10)
+-    {
+-        es_test_data.code[0] = 'n';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 11)
+-    {
+-        es_test_data.code[0] = 'a';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 12)
+-    {
+-        es_test_data.code[0] = 's';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 13)
+-    {
+-        es_test_data.code[0] = 'p';
+-        strncpy(&es_test_data.code[1], "S001", 4);
+-    }
+-    else if (es_test_code == 14)
+-    {
+-        es_test_data.code[0] = 'r';
+-        strncpy(&es_test_data.code[1], "R001", 4);
+-    }
+-    
+-    return &es_test_data;
+-}
+-
+ START_TEST(SSM_ES_InitTable)
+ {
+     SSM_ES_init_table();
+@@ -223,7 +118,8 @@ START_TEST(SSM_ES_SetEvent_C_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 0;
++    LOG_BUFFER_ADD_INFO("CS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -234,7 +130,8 @@ START_TEST(SSM_ES_SetEvent_E_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 1;
++    LOG_BUFFER_ADD_INFO("ES001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -245,7 +142,8 @@ START_TEST(SSM_ES_SetEvent_N_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 2;
++    LOG_BUFFER_ADD_INFO("NS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -256,7 +154,8 @@ START_TEST(SSM_ES_SetEvent_A_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 3;
++    LOG_BUFFER_ADD_INFO("AS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -267,7 +166,8 @@ START_TEST(SSM_ES_SetEvent_S_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 4;
++    LOG_BUFFER_ADD_INFO("SS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -278,7 +178,8 @@ START_TEST(SSM_ES_SetEvent_P_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 5;
++    LOG_BUFFER_ADD_INFO("PS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -289,7 +190,8 @@ START_TEST(SSM_ES_SetEvent_R_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 6;
++    LOG_BUFFER_ADD_INFO("RR001", NULL);
++
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -300,7 +202,9 @@ START_TEST(SSM_ES_SetEvent_unknown_code)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 7;
++    
++    LOG_BUFFER_ADD_INFO("XS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -310,11 +214,15 @@ END_TEST
+ START_TEST(SSM_ES_SetEvent_lowercase_codes)
+ {
+     cJSON *event;
+-
+-    for (int i = 8; i <= 14; i++) {
++    const char *codes[] = {"cs001", "es001", "ns001", "as001", "ss001", "ps001", "rr001"};
++    
++    for (int i = 0; i < 7; i++) {
+         event = cJSON_CreateArray();
+         SSM_ES_init_table();
+-        es_test_code = i;
++        
++        
++        LOG_BUFFER_ADD_INFO(codes[i], NULL);
++        
+         int remain = SSM_ES_set_event(event);
+         (void)remain;
+         cJSON_Delete(event);
+@@ -343,7 +251,8 @@ START_TEST(SSM_ES_SetEvent_with_message)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 0;
++    LOG_BUFFER_ADD_INFO("CS001", "Test message");
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -354,8 +263,8 @@ START_TEST(SSM_ES_SetEvent_level_filtered)
+ {
+     cJSON *event = cJSON_CreateArray();
+     SSM_ES_init_table();
+-    es_test_code = 0;
+-    es_test_data.level = 3;
++    LOG_BUFFER_ADD_DEBUG("CS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -369,7 +278,10 @@ START_TEST(SSM_ES_SetEvent_disabled_status)
+     cJSON *policy = cJSON_Parse("{\"services\":[{\"interval_success\":7200,\"interval_fail\":300,\"loglevel\":5,\"status\":false,\"events\":[]}]}");
+     SSM_ES_update_policy_parse(policy, 3, false);
+     cJSON_Delete(policy);
+-    es_test_code = 0;
++    
++    
++    LOG_BUFFER_ADD_INFO("CS001", NULL);
++    
+     int remain = SSM_ES_set_event(event);
+     (void)remain;
+     cJSON_Delete(event);
+@@ -379,12 +291,13 @@ END_TEST
+ START_TEST(SSM_ES_SetEvent_level_filtered_ASPR)
+ {
+     cJSON *event;
++    const char *codes[] = {"AS001", "SS001", "PS001", "RR001"};
+     
+-    for (int i = 3; i <= 6; i++) {
++    for (int i = 0; i < 4; i++) {
+         event = cJSON_CreateArray();
+         SSM_ES_init_table();
+-        es_test_code = i;
+-        es_test_data.level = 3; // Lower than default level 5
++        LOG_BUFFER_ADD_DEBUG(codes[i], NULL);
++        
+         int remain = SSM_ES_set_event(event);
+         (void)remain;
+         cJSON_Delete(event);
+@@ -402,6 +315,67 @@ START_TEST(SSM_ES_GetNextTime_random)
+ }
+ END_TEST
+ 
++START_TEST(SSM_ES_get_code_info_success)
++{
++    SSM_ES_init_table();
++    SSMCodeInfo *code_info = SSM_ES_get_code_info();
++    ck_assert_ptr_nonnull(code_info);
++}
++END_TEST
++
++START_TEST(SSM_ES_update_seq_no_success)
++{
++    dawit_result result = SSM_ES_update_seq_no(100);
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++}
++END_TEST
++
++START_TEST(SSM_ES_update_seq_no_zero)
++{
++    dawit_result result = SSM_ES_update_seq_no(0);
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++}
++END_TEST
++
++START_TEST(SSM_ES_update_seq_no_negative)
++{
++    dawit_result result = SSM_ES_update_seq_no(-1);
++    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(SSM_ES_update_seq_no_large_value)
++{
++    dawit_result result = SSM_ES_update_seq_no(2147483647);
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++}
++END_TEST
++
++START_TEST(SSM_ES_get_seq_no_default)
++{
++    SSM_ES_init_table();
++    int seq_no = SSM_ES_get_seq_no();
++    (void)seq_no;
++}
++END_TEST
++
++START_TEST(SSM_ES_get_seq_no_after_update)
++{
++    int expected_value = 12345;
++    SSM_ES_update_seq_no(expected_value);
++    int seq_no = SSM_ES_get_seq_no();
++    ck_assert_int_eq(seq_no, expected_value);
++}
++END_TEST
++
++START_TEST(SSM_ES_get_seq_no_after_zero_update)
++{
++    SSM_ES_update_seq_no(0);
++    int seq_no = SSM_ES_get_seq_no();
++    ck_assert_int_eq(seq_no, 0);
++}
++END_TEST
++
+ void utc_SSM_client_ES(TCase *tc)
+ {
+     tcase_add_test(tc, SSM_ES_InitTable);
+@@ -430,4 +404,12 @@ void utc_SSM_client_ES(TCase *tc)
+     tcase_add_test(tc, SSM_ES_GetRetryTime_random);
+     tcase_add_test(tc, SSM_ES_GetNextTime_random);
+     tcase_add_test(tc, SSM_ES_SetEvent_level_filtered_ASPR);
+-}
++    tcase_add_test(tc, SSM_ES_get_code_info_success);
++    tcase_add_test(tc, SSM_ES_update_seq_no_success);
++    tcase_add_test(tc, SSM_ES_update_seq_no_zero);
++    tcase_add_test(tc, SSM_ES_update_seq_no_negative);
++    tcase_add_test(tc, SSM_ES_update_seq_no_large_value);
++    tcase_add_test(tc, SSM_ES_get_seq_no_default);
++    tcase_add_test(tc, SSM_ES_get_seq_no_after_update);
++    tcase_add_test(tc, SSM_ES_get_seq_no_after_zero_update);
++}
+\ No newline at end of file
+diff --git a/test/utc/SSM_client_SYS_test.c b/test/utc/SSM_client_SYS_test.c
+index 5468484..ba91f9c 100644
+--- a/test/utc/SSM_client_SYS_test.c
++++ b/test/utc/SSM_client_SYS_test.c
+@@ -4,35 +4,7 @@
+ 
+ #include "DA-Service/SSM/include/SSM_client_SYS.h"
+ #include "json/cJSON.h"
+-
+-static KPI_data mock_table[10] = {0};
+-static int mock_table_size = 0;
+-
+-KPI_data* __wrap_KPI_get_table(int* size)
+-{
+-    *size = mock_table_size;
+-    return mock_table;
+-}
+-
+-void __wrap_KPI_buffer_lock(void)
+-{
+-}
+-
+-void __wrap_KPI_buffer_unlock(void)
+-{
+-}
+-
+-void __wrap_KPI_set_sendmessage(int index)
+-{
+-}
+-
+-void __wrap_KPI_send_done(void)
+-{
+-}
+-
+-void __wrap_KPI_update_sendmessage(void)
+-{
+-}
++#include "log_buffer.h"
+ 
+ static void _fake_SSM_Send_Systemlog_Callback_Type(void)
+ {
+@@ -105,13 +77,7 @@ END_TEST
+ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_TrueStatus)
+ {
+     SSM_SYS_init_table();
+-    
+-    mock_table_size = 1;
+-    mock_table[0].KPI_tag = KPI_TAG_SSM;
+-    mock_table[0].KPI_send_type = KPI_SEND_ONCE;
+-    mock_table[0].KPI_data_type = KPI_DATA_NUM;
+-    mock_table[0].KPI_message_num = 123;
+-    mock_table[0].KPI_name = "test_kpi_num";
++    log_buffer_add_KPI_num(KPI_TAG_SSM, "test_kpi_num", 123, KPI_SEND_ONCE);
+     
+     cJSON *event = cJSON_CreateArray();
+     ck_assert_ptr_nonnull(event);
+@@ -121,22 +87,13 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_TrueStatus)
+     ck_assert_int_gt(cJSON_GetArraySize(event), 0);
+     
+     cJSON_Delete(event);
+-    
+-    mock_table_size = 0;
+-    memset(mock_table, 0, sizeof(mock_table));
+ }
+ END_TEST
+ 
+ START_TEST(SSM_SYS_SetEvent_WithKPI_STR_TrueStatus)
+ {
+     SSM_SYS_init_table();
+-    
+-    mock_table_size = 1;
+-    mock_table[0].KPI_tag = KPI_TAG_SSM;
+-    mock_table[0].KPI_send_type = KPI_SEND_EVERY;
+-    mock_table[0].KPI_data_type = KPI_DATA_STR;
+-    mock_table[0].KPI_message_str = "test_string_value";
+-    mock_table[0].KPI_name = "test_kpi_str";
++    log_buffer_add_KPI_str(KPI_TAG_SSM, "test_kpi_str", "test_string_value", KPI_SEND_EVERY);
+     
+     cJSON *event = cJSON_CreateArray();
+     ck_assert_ptr_nonnull(event);
+@@ -146,9 +103,6 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_STR_TrueStatus)
+     ck_assert_int_gt(cJSON_GetArraySize(event), 0);
+     
+     cJSON_Delete(event);
+-    
+-    mock_table_size = 0;
+-    memset(mock_table, 0, sizeof(mock_table));
+ }
+ END_TEST
+ 
+@@ -162,13 +116,7 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus)
+     
+     SSM_SYS_update_policy_parse(policy_json, 5, true);
+     cJSON_Delete(policy_json);
+-    
+-    mock_table_size = 1;
+-    mock_table[0].KPI_tag = KPI_TAG_SSM;
+-    mock_table[0].KPI_send_type = KPI_SEND_ONCE;
+-    mock_table[0].KPI_data_type = KPI_DATA_NUM;
+-    mock_table[0].KPI_message_num = 456;
+-    mock_table[0].KPI_name = "test_kpi_num_false";
++    log_buffer_add_KPI_num(KPI_TAG_SSM, "test_kpi_num_false", 456, KPI_SEND_ONCE);
+     
+     cJSON *event = cJSON_CreateArray();
+     ck_assert_ptr_nonnull(event);
+@@ -179,8 +127,6 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus)
+     
+     cJSON_Delete(event);
+     
+-    mock_table_size = 0;
+-    memset(mock_table, 0, sizeof(mock_table));
+     SSM_SYS_init_table();
+ }
+ END_TEST
+@@ -188,20 +134,8 @@ END_TEST
+ START_TEST(SSM_SYS_SetEvent_WithMultipleKPI)
+ {
+     SSM_SYS_init_table();
+-    
+-    mock_table_size = 2;
+-    
+-    mock_table[0].KPI_tag = KPI_TAG_SYSTEM;
+-    mock_table[0].KPI_send_type = KPI_SEND_EVERY;
+-    mock_table[0].KPI_data_type = KPI_DATA_NUM;
+-    mock_table[0].KPI_message_num = 100;
+-    mock_table[0].KPI_name = "system_kpi_num";
+-    
+-    mock_table[1].KPI_tag = KPI_TAG_WIFI;
+-    mock_table[1].KPI_send_type = KPI_SEND_ONCE;
+-    mock_table[1].KPI_data_type = KPI_DATA_STR;
+-    mock_table[1].KPI_message_str = "wifi_status_ok";
+-    mock_table[1].KPI_name = "wifi_kpi_str";
++    log_buffer_add_KPI_num(KPI_TAG_SYSTEM, "system_kpi_num", 100, KPI_SEND_EVERY);
++    log_buffer_add_KPI_str(KPI_TAG_WIFI, "wifi_kpi_str", "wifi_status_ok", KPI_SEND_ONCE);
+     
+     cJSON *event = cJSON_CreateArray();
+     ck_assert_ptr_nonnull(event);
+@@ -211,22 +145,13 @@ START_TEST(SSM_SYS_SetEvent_WithMultipleKPI)
+     ck_assert_int_gt(cJSON_GetArraySize(event), 0);
+     
+     cJSON_Delete(event);
+-    
+-    mock_table_size = 0;
+-    memset(mock_table, 0, sizeof(mock_table));
+ }
+ END_TEST
+ 
+ START_TEST(SSM_SYS_SetEvent_WithKPI_SEND_NONE)
+ {
+     SSM_SYS_init_table();
+-    
+-    mock_table_size = 1;
+-    mock_table[0].KPI_tag = KPI_TAG_SSM;
+-    mock_table[0].KPI_send_type = KPI_SEND_NONE;
+-    mock_table[0].KPI_data_type = KPI_DATA_NUM;
+-    mock_table[0].KPI_message_num = 789;
+-    mock_table[0].KPI_name = "test_kpi_none";
++    log_buffer_add_KPI_num(KPI_TAG_SSM, "test_kpi_none", 789, KPI_SEND_NONE);
+     
+     cJSON *event = cJSON_CreateArray();
+     ck_assert_ptr_nonnull(event);
+@@ -236,12 +161,33 @@ START_TEST(SSM_SYS_SetEvent_WithKPI_SEND_NONE)
+     ck_assert_int_ge(cJSON_GetArraySize(event), 0);
+     
+     cJSON_Delete(event);
+-    
+-    mock_table_size = 0;
+-    memset(mock_table, 0, sizeof(mock_table));
+ }
+ END_TEST
+ 
++START_TEST(SSM_SYS_get_code_info_success)
++{
++    SSM_SYS_init_table();
++    SSM_SYS_code_info *code_info = SSM_SYS_get_code_info();
++    ck_assert_ptr_nonnull(code_info);
++}
++END_TEST
++
++START_TEST(SSM_SYS_update_seq_no_by_value_positive)
++{
++    SSM_SYS_init_table();
++    SSM_SYS_update_seq_no_by_value(10);
++    SSM_SYS_update_seq_no_by_value(5);
++}
++END_TEST
++
++START_TEST(SSM_SYS_update_seq_no_by_value_negative)
++{
++    SSM_SYS_init_table();
++    SSM_SYS_update_seq_no_by_value(-5);
++}
++END_TEST
++
++
+ void utc_SSM_client_SYS(TCase *tc)
+ {
+     tcase_add_test(tc, SSM_SYS_SetEvent);
+@@ -257,4 +203,7 @@ void utc_SSM_client_SYS(TCase *tc)
+     tcase_add_test(tc, SSM_SYS_SetEvent_WithKPI_NUM_FalseStatus);
+     tcase_add_test(tc, SSM_SYS_SetEvent_WithMultipleKPI);
+     tcase_add_test(tc, SSM_SYS_SetEvent_WithKPI_SEND_NONE);
+-}
++    tcase_add_test(tc, SSM_SYS_get_code_info_success);
++    tcase_add_test(tc, SSM_SYS_update_seq_no_by_value_positive);
++    tcase_add_test(tc, SSM_SYS_update_seq_no_by_value_negative);
++}
+\ No newline at end of file
+diff --git a/test/utc/SSM_client_test.c b/test/utc/SSM_client_test.c
+index 6418de5..6df4d08 100644
+--- a/test/utc/SSM_client_test.c
++++ b/test/utc/SSM_client_test.c
+@@ -4,7 +4,9 @@
+ #include <string.h>
+ 
+ #include "DA-Service/SSM/include/SSM_client.h"
++#include "DA-Service/SSM/include/SSM_file_logger.h"
+ #include "json/cJSON.h"
++#include "log_buffer.h"
+ 
+ static int g_mock_cJSON_Parse_enabled = 0;
+ static cJSON *g_mock_json_obj = NULL;
+@@ -42,12 +44,6 @@ START_TEST(SSM_tls_Release)
+ }
+ END_TEST
+ 
+-START_TEST(SSM_Is_Policy_Done)
+-{
+-    ck_assert_int_ne(DAWIT_TRUE,SSM_is_policy_done());
+-}
+-END_TEST
+-
+ START_TEST(SSM_set_Debug)
+ {
+     SSM_set_debug(DAWIT_TRUE);
+@@ -251,12 +247,130 @@ START_TEST(SSM_Send_policy_with_new_version_mock)
+ }
+ END_TEST
+ 
++START_TEST(SSM_Send_ES_logs_from_file_null_node)
++{
++    dawit_result result = SSM_Send_ES_logs_from_file(NULL);
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(SSM_Send_ES_logs_from_file_single_node)
++{
++    log_data test_node;
++    memset(&test_node, 0, sizeof(log_data));
++    test_node.time = 1609459200;
++    strncpy(test_node.code, "CS001", 5);
++    test_node.message = "Test message";
++    test_node.next = NULL;
++    
++    dawit_result result = SSM_Send_ES_logs_from_file(&test_node);
++    (void)result;
++}
++END_TEST
++
++START_TEST(SSM_Send_ES_logs_from_file_multiple_nodes)
++{
++    log_data node1, node2, node3;
++    memset(&node1, 0, sizeof(log_data));
++    memset(&node2, 0, sizeof(log_data));
++    memset(&node3, 0, sizeof(log_data));
++    
++    node1.time = 1609459200;
++    strncpy(node1.code, "CS001", 5);
++    node1.message = "Message 1";
++    node1.next = &node2;
++    
++    node2.time = 1609459260;
++    strncpy(node2.code, "ES001", 5);
++    node2.message = "Message 2";
++    node2.next = &node3;
++    
++    node3.time = 1609459320;
++    strncpy(node3.code, "NS001", 5);
++    node3.message = "Message 3";
++    node3.next = NULL;
++    
++    dawit_result result = SSM_Send_ES_logs_from_file(&node1);
++    (void)result;
++}
++END_TEST
++
++START_TEST(SSM_Send_SYS_logs_from_file_null_table)
++{
++    dawit_result result = SSM_Send_SYS_logs_from_file(NULL, 0);
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(SSM_Send_SYS_logs_from_file_single_entry)
++{
++    kpi_file_data test_table[1];
++    memset(test_table, 0, sizeof(test_table));
++    
++    strncpy(test_table[0].data_type, "NUM", 3);
++    test_table[0].kpi_name = "test_kpi";
++    test_table[0].kpi_message = "12345";
++    
++    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 1);
++    (void)result;
++}
++END_TEST
++
++START_TEST(SSM_Send_SYS_logs_from_file_multiple_entries)
++{
++    kpi_file_data test_table[3];
++    memset(test_table, 0, sizeof(test_table));
++    
++    strncpy(test_table[0].data_type, "NUM", 3);
++    test_table[0].kpi_name = "kpi_num_1";
++    test_table[0].kpi_message = "100";
++    
++    strncpy(test_table[1].data_type, "STR", 3);
++    test_table[1].kpi_name = "kpi_str_1";
++    test_table[1].kpi_message = "test_string";
++    
++    strncpy(test_table[2].data_type, "NUM", 3);
++    test_table[2].kpi_name = "kpi_num_2";
++    test_table[2].kpi_message = "200";
++    
++    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 3);
++    (void)result;
++}
++END_TEST
++
++START_TEST(SSM_Send_SYS_logs_from_file_zero_size)
++{
++    kpi_file_data test_table[1];
++    memset(test_table, 0, sizeof(test_table));
++    
++    strncpy(test_table[0].data_type, "NUM", 3);
++    test_table[0].kpi_name = "test_kpi";
++    test_table[0].kpi_message = "12345";
++    
++    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 0);
++    (void)result;
++}
++END_TEST
++
++START_TEST(SSM_Send_SYS_logs_from_file_str_type)
++{
++    kpi_file_data test_table[1];
++    memset(test_table, 0, sizeof(test_table));
++    
++    strncpy(test_table[0].data_type, "STR", 3);
++    test_table[0].kpi_name = "string_kpi";
++    test_table[0].kpi_message = "test_value";
++    
++    dawit_result result = SSM_Send_SYS_logs_from_file(test_table, 1);
++    (void)result;
++}
++END_TEST
++
+ void utc_SSM_client(TCase *tc)
+ {
+     tcase_add_test(tc, SSM_set_Stage);
+     tcase_add_test(tc, SSM_deinit_fail_test);
+     tcase_add_test(tc, SSM_tls_Release);
+-    tcase_add_test(tc, SSM_Is_Policy_Done);
+     tcase_add_test(tc, SSM_set_Debug);
+     tcase_add_test(tc, SSM_Send_policy_Protected);
+     tcase_add_test(tc, SSM_tls_Lock);
+@@ -273,4 +387,12 @@ void utc_SSM_client(TCase *tc)
+     tcase_add_test(tc, SSM_update_policy_parse_unknown_type);
+     tcase_add_test(tc, SSM_update_policy_parse_null_endpoint);
+     tcase_add_test(tc, SSM_Send_policy_with_new_version_mock);
++    tcase_add_test(tc, SSM_Send_ES_logs_from_file_null_node);
++    tcase_add_test(tc, SSM_Send_ES_logs_from_file_single_node);
++    tcase_add_test(tc, SSM_Send_ES_logs_from_file_multiple_nodes);
++    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_null_table);
++    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_single_entry);
++    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_multiple_entries);
++    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_zero_size);
++    tcase_add_test(tc, SSM_Send_SYS_logs_from_file_str_type);
+ }
+diff --git a/test/utc/SSM_command_test.c b/test/utc/SSM_command_test.c
+index cca6131..039043f 100644
+--- a/test/utc/SSM_command_test.c
++++ b/test/utc/SSM_command_test.c
+@@ -198,6 +198,42 @@ START_TEST(test_ssm_command_sequence)
+ }
+ END_TEST
+ 
++/* ssm_command_store tests */
++START_TEST(test_ssm_command_store_no_args)
++{
++  char *argv[] = {"ssm", "store"};
++  ck_assert_int_eq(ssm_command(2, argv), 1);
++}
++END_TEST
++
++START_TEST(test_ssm_command_store_zero_time_limit)
++{
++  char *argv[] = {"ssm", "store", "0"};
++  ck_assert_int_eq(ssm_command(3, argv), 1);
++}
++END_TEST
++
++START_TEST(test_ssm_command_store_invalid_time_limit)
++{
++  char *argv[] = {"ssm", "store", "invalid"};
++  ck_assert_int_eq(ssm_command(3, argv), 1);
++}
++END_TEST
++
++START_TEST(test_ssm_command_store_extra_args)
++{
++  char *argv[] = {"ssm", "store", "1000", "extra"};
++  ck_assert_int_eq(ssm_command(4, argv), 1);
++}
++END_TEST
++
++START_TEST(test_ssm_command_store_negative_time_limit)
++{
++  char *argv[] = {"ssm", "store", "-1000"};
++  ck_assert_int_eq(ssm_command(3, argv), 1);
++}
++END_TEST
++
+ void utc_SSM_command(TCase *tc)
+ {
+     tcase_add_test(tc, test_ssm_command_help);
+@@ -227,4 +263,9 @@ void utc_SSM_command(TCase *tc)
+     tcase_add_test(tc, test_ssm_command_invalid_command);
+     tcase_add_test(tc, test_ssm_command_invalid_command_with_args);
+     tcase_add_test(tc, test_ssm_command_sequence);
++    tcase_add_test(tc, test_ssm_command_store_no_args);
++    tcase_add_test(tc, test_ssm_command_store_zero_time_limit);
++    tcase_add_test(tc, test_ssm_command_store_invalid_time_limit);
++    tcase_add_test(tc, test_ssm_command_store_extra_args);
++    tcase_add_test(tc, test_ssm_command_store_negative_time_limit);
+ }
+diff --git a/test/utc/SSM_file_helper_test.c b/test/utc/SSM_file_helper_test.c
+new file mode 100644
+index 0000000..5a6889a
+--- /dev/null
++++ b/test/utc/SSM_file_helper_test.c
+@@ -0,0 +1,391 @@
++#include <check.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "DA-Service/SSM/include/SSM_file_helper.h"
++
++#define TEST_FILE_NAME "test_file_helper_tmp.txt"
++#define TEST_FILE_NAME2 "test_file_helper_tmp2.txt"
++#define TEST_DATA "Hello, SSM File Helper Test!"
++#define TEST_DATA_SIZE (sizeof(TEST_DATA) - 1)
++
++static void setup(void)
++{
++	FILE *fp = fopen(TEST_FILE_NAME, "w");
++	if (fp != NULL) {
++		fwrite(TEST_DATA, 1, TEST_DATA_SIZE, fp);
++		fclose(fp);
++	}
++}
++
++static void teardown(void)
++{
++	unlink(TEST_FILE_NAME);
++	unlink(TEST_FILE_NAME2);
++}
++
++START_TEST(test_ssm_file_open_success)
++{
++	ssm_file *file = NULL;
++	dawit_result result = SSM_file_open(&file, TEST_FILE_NAME, "r");
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_ptr_nonnull(file);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_open_null_file)
++{
++	dawit_result result = SSM_file_open(NULL, TEST_FILE_NAME, "r");
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_open_null_file_name)
++{
++	ssm_file *file = NULL;
++	dawit_result result = SSM_file_open(&file, NULL, "r");
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_open_null_open_mode)
++{
++	ssm_file *file = NULL;
++	dawit_result result = SSM_file_open(&file, TEST_FILE_NAME, NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_open_nonexistent_file)
++{
++	ssm_file *file = NULL;
++	dawit_result result = SSM_file_open(&file, "nonexistent_file_12345.txt", "r");
++	ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_ssm_file_open_write_mode)
++{
++	ssm_file *file = NULL;
++	dawit_result result = SSM_file_open(&file, TEST_FILE_NAME2, "w");
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_ptr_nonnull(file);
++	SSM_file_close(file);
++	unlink(TEST_FILE_NAME2);
++}
++END_TEST
++
++START_TEST(test_ssm_file_close_success)
++{
++	ssm_file *file = NULL;
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_close(file);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_close_null_file)
++{
++	dawit_result result = SSM_file_close(NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_read_success)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[TEST_DATA_SIZE + 1] = {0};
++	
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_read(file, buffer, TEST_DATA_SIZE);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_str_eq((char *)buffer, TEST_DATA);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_read_null_file)
++{
++	unsigned char buffer[10] = {0};
++	dawit_result result = SSM_file_read(NULL, buffer, 10);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_read_null_buffer)
++{
++	ssm_file *file = NULL;
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_read(file, NULL, 10);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_read_partial)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[10] = {0};
++	
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_read(file, buffer, 10);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_int_eq(strncmp((char *)buffer, "Hello, SSM", 10), 0);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_read_beyond_end)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[100] = {0};
++	
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_read(file, buffer, 100);
++	ck_assert_int_eq(result, DAWIT_FAIL);
++	SSM_file_close(file);
++}
++END_TEST
++
++/* SSM_file_write tests */
++START_TEST(test_ssm_file_write_success)
++{
++	ssm_file *file = NULL;
++	unsigned char data[] = "Test write data";
++	
++	SSM_file_open(&file, TEST_FILE_NAME2, "w");
++	dawit_result result = SSM_file_write(file, data, strlen((char *)data));
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	SSM_file_close(file);
++	unlink(TEST_FILE_NAME2);
++}
++END_TEST
++
++START_TEST(test_ssm_file_write_null_file)
++{
++	unsigned char data[] = "Test data";
++	dawit_result result = SSM_file_write(NULL, data, strlen((char *)data));
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_write_null_data)
++{
++	ssm_file *file = NULL;
++	SSM_file_open(&file, TEST_FILE_NAME2, "w");
++	dawit_result result = SSM_file_write(file, NULL, 10);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++	SSM_file_close(file);
++	unlink(TEST_FILE_NAME2);
++}
++END_TEST
++
++START_TEST(test_ssm_file_seek_success)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[10] = {0};
++	
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_seek(file, 7, SEEK_SET);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	SSM_file_read(file, buffer, 5);
++	ck_assert_int_eq(strncmp((char *)buffer, "SSM F", 5), 0);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_seek_null_file)
++{
++	dawit_result result = SSM_file_seek(NULL, 0, SEEK_SET);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_seek_cur)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[10];
++	
++	memset(buffer, 0, sizeof(buffer));
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	SSM_file_seek(file, 5, SEEK_SET);
++	dawit_result result = SSM_file_seek(file, 2, SEEK_CUR);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	SSM_file_read(file, buffer, 5);
++	ck_assert_int_eq(strncmp((char *)buffer, "SSM F", 5), 0);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_seek_end)
++{
++	ssm_file *file = NULL;
++	unsigned char buffer[10];
++	
++	memset(buffer, 0, sizeof(buffer));
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_seek(file, -5, SEEK_END);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	SSM_file_read(file, buffer, 5);
++	ck_assert_int_eq(strncmp((char *)buffer, "Test!", 5), 0);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_get_size_success)
++{
++	ssm_file *file = NULL;
++	unsigned int file_size = 0;
++	
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_get_size(file, &file_size);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_int_eq(file_size, TEST_DATA_SIZE);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_get_size_null_file)
++{
++	unsigned int file_size = 0;
++	dawit_result result = SSM_file_get_size(NULL, &file_size);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_get_size_null_size)
++{
++	ssm_file *file = NULL;
++	SSM_file_open(&file, TEST_FILE_NAME, "r");
++	dawit_result result = SSM_file_get_size(file, NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++	SSM_file_close(file);
++}
++END_TEST
++
++START_TEST(test_ssm_file_is_exist_true)
++{
++	dawit_result result = SSM_file_is_exist(TEST_FILE_NAME);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_is_exist_false)
++{
++	dawit_result result = SSM_file_is_exist("nonexistent_file_12345.txt");
++	ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_ssm_file_is_exist_null)
++{
++	dawit_result result = SSM_file_is_exist(NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_delete_success)
++{
++
++	FILE *fp = fopen(TEST_FILE_NAME2, "w");
++	ck_assert_ptr_nonnull(fp);
++	fclose(fp);
++	
++	ck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_SUCCESS);
++	dawit_result result = SSM_file_delete(TEST_FILE_NAME2);
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_ssm_file_delete_null)
++{
++	dawit_result result = SSM_file_delete(NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_file_delete_nonexistent)
++{
++	dawit_result result = SSM_file_delete("nonexistent_file_12345.txt");
++	ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_ssm_rename_file_success)
++{
++	FILE *fp = fopen(TEST_FILE_NAME2, "w");
++	ck_assert_ptr_nonnull(fp);
++	fprintf(fp, "test content");
++	fclose(fp);
++	
++	dawit_result result = SSM_rename_file(TEST_FILE_NAME2, "renamed_file.txt");
++	ck_assert_int_eq(result, DAWIT_SUCCESS);
++	ck_assert_int_eq(SSM_file_is_exist(TEST_FILE_NAME2), DAWIT_FAIL);
++	ck_assert_int_eq(SSM_file_is_exist("renamed_file.txt"), DAWIT_SUCCESS);
++	unlink("renamed_file.txt");
++}
++END_TEST
++
++START_TEST(test_ssm_rename_file_null_old_path)
++{
++	dawit_result result = SSM_rename_file(NULL, TEST_FILE_NAME2);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_rename_file_null_new_path)
++{
++	dawit_result result = SSM_rename_file(TEST_FILE_NAME, NULL);
++	ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_ssm_rename_file_nonexistent_source)
++{
++	dawit_result result = SSM_rename_file("nonexistent_file_12345.txt", TEST_FILE_NAME2);
++	ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++void utc_SSM_file_helper(TCase *tc)
++{
++	tcase_add_checked_fixture(tc, setup, teardown);
++
++	tcase_add_test(tc, test_ssm_file_open_success);
++	tcase_add_test(tc, test_ssm_file_open_null_file);
++	tcase_add_test(tc, test_ssm_file_open_null_file_name);
++	tcase_add_test(tc, test_ssm_file_open_null_open_mode);
++	tcase_add_test(tc, test_ssm_file_open_nonexistent_file);
++	tcase_add_test(tc, test_ssm_file_open_write_mode);
++	tcase_add_test(tc, test_ssm_file_close_success);
++	tcase_add_test(tc, test_ssm_file_close_null_file);
++	tcase_add_test(tc, test_ssm_file_read_success);
++	tcase_add_test(tc, test_ssm_file_read_null_file);
++	tcase_add_test(tc, test_ssm_file_read_null_buffer);
++	tcase_add_test(tc, test_ssm_file_read_partial);
++	tcase_add_test(tc, test_ssm_file_read_beyond_end);
++	tcase_add_test(tc, test_ssm_file_write_success);
++	tcase_add_test(tc, test_ssm_file_write_null_file);
++	tcase_add_test(tc, test_ssm_file_write_null_data);
++	tcase_add_test(tc, test_ssm_file_seek_success);
++	tcase_add_test(tc, test_ssm_file_seek_null_file);
++	tcase_add_test(tc, test_ssm_file_seek_cur);
++	tcase_add_test(tc, test_ssm_file_seek_end);
++	tcase_add_test(tc, test_ssm_file_get_size_success);
++	tcase_add_test(tc, test_ssm_file_get_size_null_file);
++	tcase_add_test(tc, test_ssm_file_get_size_null_size);
++	tcase_add_test(tc, test_ssm_file_is_exist_true);
++	tcase_add_test(tc, test_ssm_file_is_exist_false);
++	tcase_add_test(tc, test_ssm_file_is_exist_null);
++	tcase_add_test(tc, test_ssm_file_delete_success);
++	tcase_add_test(tc, test_ssm_file_delete_null);
++	tcase_add_test(tc, test_ssm_file_delete_nonexistent);
++	tcase_add_test(tc, test_ssm_rename_file_success);
++	tcase_add_test(tc, test_ssm_rename_file_null_old_path);
++	tcase_add_test(tc, test_ssm_rename_file_null_new_path);
++	tcase_add_test(tc, test_ssm_rename_file_nonexistent_source);
++}
+\ No newline at end of file
+diff --git a/test/utc/SSM_file_logger_test.c b/test/utc/SSM_file_logger_test.c
+new file mode 100644
+index 0000000..1d99706
+--- /dev/null
++++ b/test/utc/SSM_file_logger_test.c
+@@ -0,0 +1,366 @@
++#include <check.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <time.h>
++#include <unistd.h>
++#include <stdarg.h>
++#include <pthread.h>
++
++#include "DA-Service/SSM/include/SSM_file_logger.h"
++#include "DA-Service/SSM/include/SSM_client_ES.h"
++#include "DA-Service/SSM/include/SSM_client_SYS.h"
++#include "DA-Service/SSM/include/SSM_client.h"
++#include "log_buffer.h"
++#include "kpi_buffer.h"
++#include "json/cJSON.h"
++
++#define TEST_LOG_FILE "/mnt/test_ssm_stored_logs"
++
++#define MOCK_LOG_BUFFER_SIZE 100
++
++typedef struct mock_log_data {
++	int time;
++	char code[LOG_BUFFER_CODE_SIZE];
++	char *message;
++	int level;
++	struct mock_log_data *pre;
++	struct mock_log_data *next;
++} mock_log_data_t;
++
++static mock_log_data_t mock_log_buffer_table[MOCK_LOG_BUFFER_SIZE];
++static mock_log_data_t *mock_first_log = NULL;
++static int mock_first_log_index = -1;
++static mock_log_data_t *mock_last_log = NULL;
++static int mock_last_log_index = -1;
++static int mock_base_time = 0;
++static pthread_mutex_t mock_log_lock = PTHREAD_MUTEX_INITIALIZER;
++
++void __wrap_log_buffer_lock(void)
++{
++	pthread_mutex_lock(&mock_log_lock);
++}
++
++void __wrap_log_buffer_unlock(void)
++{
++	pthread_mutex_unlock(&mock_log_lock);
++}
++
++void __wrap_log_buffer_init(int time_system_init)
++{
++	mock_base_time = time_system_init;
++}
++
++int __wrap_log_buffer_add_log(char *code, int level, const char *message_format, ...)
++{
++	int index;
++	char *message = NULL;
++	
++	if (code == NULL)
++	{
++		return -1;
++	}
++
++	if (message_format != NULL)
++	{
++		va_list message_args;
++		va_start(message_args, message_format);
++		vasprintf(&message, message_format, message_args);
++		va_end(message_args);
++	}
++
++	pthread_mutex_lock(&mock_log_lock);
++
++	index = (mock_last_log_index + 1) % MOCK_LOG_BUFFER_SIZE;
++	if (index == mock_first_log_index)
++	{
++		if (mock_log_buffer_table[mock_first_log_index].message != NULL)
++		{
++			free(mock_log_buffer_table[mock_first_log_index].message);
++			mock_log_buffer_table[mock_first_log_index].message = NULL;
++		}
++		mock_first_log_index = (mock_first_log_index + 1) % MOCK_LOG_BUFFER_SIZE;
++		mock_first_log = &mock_log_buffer_table[mock_first_log_index];
++		mock_log_buffer_table[mock_first_log_index].pre = NULL;
++	}
++
++	if (mock_first_log_index == -1)
++	{
++		mock_first_log_index = 0;
++		mock_first_log = &mock_log_buffer_table[mock_first_log_index];
++		mock_log_buffer_table[mock_first_log_index].pre = NULL;
++		mock_log_buffer_table[mock_first_log_index].next = NULL;
++	}
++	else
++	{
++		mock_log_buffer_table[index].pre = &mock_log_buffer_table[mock_last_log_index];
++		mock_log_buffer_table[mock_last_log_index].next = &mock_log_buffer_table[index];
++	}
++
++	mock_log_buffer_table[index].time = (int)time(NULL);
++	snprintf(mock_log_buffer_table[index].code, LOG_BUFFER_CODE_SIZE, "%s", code);
++	mock_log_buffer_table[index].message = message;
++	mock_log_buffer_table[index].next = NULL;
++	mock_log_buffer_table[index].level = level;
++
++	mock_last_log_index = index;
++	mock_last_log = &mock_log_buffer_table[mock_last_log_index];
++
++	pthread_mutex_unlock(&mock_log_lock);
++
++	return 0;
++}
++
++log_data *__wrap_log_buffer_get_first(void)
++{
++	return (log_data *)mock_first_log;
++}
++
++log_data *__wrap_log_buffer_get_last(void)
++{
++	return (log_data *)mock_last_log;
++}
++
++void __wrap_log_buffer_clear(void)
++{
++	mock_first_log = NULL;
++	mock_first_log_index = -1;
++	mock_last_log = NULL;
++	mock_last_log_index = -1;
++	mock_base_time = 0;
++}
++
++dawit_result __wrap_SSM_is_policy_done(void)
++{
++	return DAWIT_TRUE;
++}
++
++struct tm* __wrap_gmtime(const time_t *timep)
++{
++    static struct tm tm;
++    (void)timep;
++    tm.tm_year = 121;
++    tm.tm_mon = 0;
++    tm.tm_mday = 1;
++    tm.tm_hour = 12;
++    tm.tm_min = 0;
++    tm.tm_sec = 0;
++    tm.tm_isdst = 0;
++    return &tm;
++}
++
++static void setup_log_data(void)
++{
++    SSM_ES_init_table();
++    SSM_SYS_init_table();
++    
++    LOG_BUFFER_ADD_INFO("CS001", "Test message with message");  
++    LOG_BUFFER_ADD_INFO("ES001", NULL);
++    LOG_BUFFER_ADD_ERROR("NS001", "Error message");
++    LOG_BUFFER_ADD_ERROR("AS001", NULL);
++    LOG_BUFFER_ADD_DEBUG("SS001", "Debug message");
++    LOG_BUFFER_ADD_DEBUG("PS001", NULL);
++    LOG_BUFFER_ADD_INFO("RR001", "RR type message");
++    log_buffer_add_KPI_str(KPI_TAG_SYSTEM, "origin_time_zone", "Asia/Seoul", KPI_SEND_EVERY);
++    log_buffer_add_KPI_num(KPI_TAG_SYSTEM, "hello", 1, KPI_SEND_EVERY);
++}
++
++static void teardown_log_data(void)
++{
++    /* Log buffer and KPI buffer cleanup is handled internally */
++}
++
++START_TEST(test_SSM_store_logs_to_file_invalid_time_limit)
++{
++    dawit_result result = SSM_store_logs_to_file_impl(500);
++    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_SSM_store_logs_to_file_zero_time_limit)
++{
++    dawit_result result = SSM_store_logs_to_file_impl(0);
++    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_SSM_store_logs_to_file_valid_time_limit)
++{
++    setup_log_data();
++    dawit_result result = SSM_store_logs_to_file_impl(5000);
++    (void)result;
++    teardown_log_data();
++}
++END_TEST
++
++START_TEST(test_SSM_check_stored_logs_file_exist_no_file)
++{
++    SSM_delete_stored_logs_file();
++    
++    dawit_result result = SSM_check_stored_logs_file_exist();
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_SSM_check_stored_logs_file_exist_with_file)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "test data\n");
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_check_stored_logs_file_exist();
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++    
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++START_TEST(test_SSM_delete_stored_logs_file_no_file)
++{
++    SSM_delete_stored_logs_file();
++    dawit_result result = SSM_delete_stored_logs_file();
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_SSM_delete_stored_logs_file_with_file)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "test data\n");
++        fclose(fp);
++    }
++    
++    ck_assert_int_eq(SSM_check_stored_logs_file_exist(), DAWIT_SUCCESS);
++    
++    dawit_result result = SSM_delete_stored_logs_file();
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++    ck_assert_int_eq(SSM_check_stored_logs_file_exist(), DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_SSM_get_file_creation_time_null_param)
++{
++    dawit_result result = SSM_get_file_creation_time(NULL);
++    ck_assert_int_eq(result, DAWIT_INVALID_ARGS);
++}
++END_TEST
++
++START_TEST(test_SSM_get_file_creation_time_no_file)
++{
++    time_t creation_time;
++    SSM_delete_stored_logs_file();
++    
++    dawit_result result = SSM_get_file_creation_time(&creation_time);
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_SSM_get_file_creation_time_with_file)
++{
++    time_t creation_time;
++    
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "test data\n");
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_get_file_creation_time(&creation_time);
++    ck_assert_int_eq(result, DAWIT_SUCCESS);
++    ck_assert_int_ne(creation_time, 0);
++    
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++START_TEST(test_SSM_read_logs_from_file_no_file)
++{
++    SSM_delete_stored_logs_file();
++    
++    dawit_result result = SSM_read_logs_from_file_and_send_impl();
++    ck_assert_int_eq(result, DAWIT_FAIL);
++}
++END_TEST
++
++START_TEST(test_SSM_read_logs_from_file_with_empty_file)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_read_logs_from_file_and_send_impl();
++    (void)result;
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++START_TEST(test_SSM_read_logs_from_file_with_es_logs)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "<0#1609459200#CS001#Test message 1>\n");
++        fprintf(fp, "<0#1609459260#ES001#Test message 2>\n");
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_read_logs_from_file_and_send_impl();
++    (void)result;
++    
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++START_TEST(test_SSM_read_logs_from_file_with_sys_logs)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "<1#kpi_name_1#NUM#100>\n");
++        fprintf(fp, "<1#kpi_name_2#STR#test_string>\n");
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_read_logs_from_file_and_send_impl();
++    (void)result;
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++START_TEST(test_SSM_read_logs_from_file_with_mixed_logs)
++{
++    FILE *fp = fopen("/mnt/ssm_stored_logs", "w");
++    if (fp != NULL) {
++        fprintf(fp, "<0#1609459200#CS001#ES message 1>\n");
++        fprintf(fp, "<0#1609459260#ES001#ES message 2>\n");
++        fprintf(fp, "<1#kpi_num#NUM#200>\n");
++        fprintf(fp, "<1#kpi_str#STR#string_value>\n");
++        fclose(fp);
++    }
++    
++    dawit_result result = SSM_read_logs_from_file_and_send_impl();
++    (void)result;
++    SSM_delete_stored_logs_file();
++}
++END_TEST
++
++void utc_SSM_file_logger(TCase *tc)
++{
++    tcase_add_test(tc, test_SSM_store_logs_to_file_invalid_time_limit);
++    tcase_add_test(tc, test_SSM_store_logs_to_file_zero_time_limit);
++    tcase_add_test(tc, test_SSM_store_logs_to_file_valid_time_limit);
++    tcase_add_test(tc, test_SSM_check_stored_logs_file_exist_no_file);
++    tcase_add_test(tc, test_SSM_check_stored_logs_file_exist_with_file);
++    tcase_add_test(tc, test_SSM_delete_stored_logs_file_no_file);
++    tcase_add_test(tc, test_SSM_delete_stored_logs_file_with_file);
++    tcase_add_test(tc, test_SSM_get_file_creation_time_null_param);
++    tcase_add_test(tc, test_SSM_get_file_creation_time_no_file);
++    tcase_add_test(tc, test_SSM_get_file_creation_time_with_file);
++    tcase_add_test(tc, test_SSM_read_logs_from_file_no_file);
++    tcase_add_test(tc, test_SSM_read_logs_from_file_with_empty_file);
++    tcase_add_test(tc, test_SSM_read_logs_from_file_with_es_logs);
++    tcase_add_test(tc, test_SSM_read_logs_from_file_with_sys_logs);
++    tcase_add_test(tc, test_SSM_read_logs_from_file_with_mixed_logs);
++}
+\ No newline at end of file
+diff --git a/test/utc/utc.c b/test/utc/utc.c
+index 3b5f54c..65fa561 100644
+--- a/test/utc/utc.c
++++ b/test/utc/utc.c
+@@ -47,6 +47,8 @@ static Suite *my_suite(void)
+ 	utc_SSM_log_data(tc);
+ 	utc_SSM_wifi_bigdata_buffer(tc);
+ 	utc_SSM_external_module(tc);
++	utc_SSM_file_helper(tc);
++	utc_SSM_file_logger(tc);
+ 
+ 	tcase_add_test(tc, SSM_tc);
+ 	tcase_add_checked_fixture(tc, setup, teardown);
+diff --git a/test/utc/utcmk.defs b/test/utc/utcmk.defs
+index 328da46..6536d71 100644
+--- a/test/utc/utcmk.defs
++++ b/test/utc/utcmk.defs
+@@ -17,6 +17,8 @@ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_command.c
+ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_client_ai_inv.c
+ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_client_wifi_bigdata.c
+ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_log_data.c
++SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_file_logger.c
++SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_file_helper.c
+ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/SSM_wifi_bigdata_buffer.c
+ SRC += $(ROOTDIR_DACM)/DA-Service/SSM/src/rtl8721csm_refactoring/SSM_external_module.c
+ 

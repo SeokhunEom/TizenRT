@@ -1,0 +1,103 @@
+diff --git a/os/include/tinyara/binary_manager.h b/os/include/tinyara/binary_manager.h
+--- a/os/include/tinyara/binary_manager.h
++++ b/os/include/tinyara/binary_manager.h
+@@ -311,7 +311,6 @@
+ #ifdef CONFIG_USE_BP
+ int binary_manager_check_bootparam_set(void);
+ int binary_manager_recover_bootparam_set(void);
+-void binary_manager_set_bp_recovery_reason(uint8_t reason);
+ #endif
+ void binary_manager_deinit_modules(void);
+ 
+diff --git a/os/kernel/binary_manager/binary_manager_internal.h b/os/kernel/binary_manager/binary_manager_internal.h
+--- a/os/kernel/binary_manager/binary_manager_internal.h
++++ b/os/kernel/binary_manager/binary_manager_internal.h
+@@ -200,8 +200,9 @@
+ 	BP_UPDATE_BINARY_MANAGER_RECOVERY_NO_VALID_BP = 13,
+ 	BP_UPDATE_BINARY_MANAGER_RECOVERY_KERNEL_ADDR_MISMATCH = 14,
+ 	BP_UPDATE_BINARY_MANAGER_RECOVERY_BOOTLOADER_RECOVERED = 15,
+-	BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON = 16,
+-	BP_UPDATE_UNKNOWN = 17
++	/* Persisted format-v2 values must retain their existing meaning. */
++	BP_UPDATE_UNKNOWN = 16,
++	BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON = 17
+ };
+ 
+ /* Boot parameter head data, stored at the beginning of each BP. */
+@@ -345,6 +346,9 @@
+ void binary_manager_update_running_state(int bin_id);
+ int binary_manager_get_index_with_name(char *bin_name);
+ void binary_manager_dump_bpdata(void);
++#ifdef CONFIG_USE_BP
++void binary_manager_set_bp_recovery_reason(uint8_t reason);
++#endif
+ int binary_manager_scan_bootparam(binmgr_bpinfo_t *bp_info);
+ binmgr_bpdata_t *binary_manager_get_bpdata(void);
+ binmgr_bpdata_t *binary_manager_get_slot_bpdata(uint8_t bp_idx);
+diff --git a/os/kernel/binary_manager/binary_manager_load.c b/os/kernel/binary_manager/binary_manager_load.c
+--- a/os/kernel/binary_manager/binary_manager_load.c
++++ b/os/kernel/binary_manager/binary_manager_load.c
+@@ -155,6 +155,9 @@
+ static int binary_manager_load(int bin_idx)
+ {
+ 	int ret;
++#ifdef CONFIG_USE_BP
++	uint8_t recovery_reason;
++#endif
+ 	int bin_count;
+ 	load_attr_t load_attr;
+ 	char devpath[BINARY_PATH_LEN];
+@@ -170,6 +173,14 @@
+ 		bmdbg("Invalid bin idx %d\n", bin_idx);
+ 		return ERROR;
+ 	}
++
++#ifdef CONFIG_USE_BP
++#ifdef CONFIG_SUPPORT_COMMON_BINARY
++	recovery_reason = bin_idx == BM_CMNLIB_IDX ? BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON : BP_UPDATE_BINARY_MANAGER_RECOVERY_USER;
++#else
++	recovery_reason = BP_UPDATE_BINARY_MANAGER_RECOVERY_USER;
++#endif
++#endif
+ 
+ 	/* Check binary state */
+ 	if (BIN_STATE(bin_idx) != BINARY_INACTIVE) {
+@@ -203,11 +214,7 @@
+ #ifdef CONFIG_USE_BP
+ 				/* If bp needs to be updated because either app or common binary is invalid */
+ 				/* Scan all binaries and set valid binary set in bootparam */
+-#ifdef CONFIG_SUPPORT_COMMON_BINARY
+-				binary_manager_set_bp_recovery_reason(bin_idx == BM_CMNLIB_IDX ? BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON : BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#else
+-				binary_manager_set_bp_recovery_reason(BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#endif
++				binary_manager_set_bp_recovery_reason(recovery_reason);
+ 				ret = binary_manager_recover_bootparam_set();
+ 				if (ret != BINMGR_OK) {
+ 					bmdbg("Failed to recover bootparam set mismatch, ret %d\n", ret);
+@@ -247,11 +254,7 @@
+ #ifdef CONFIG_USE_BP
+ 				/* If bp needs to be updated because either app or common binary is invalid */
+ 				/* Scan all binaries and set valid binary set in bootparam */
+-#ifdef CONFIG_SUPPORT_COMMON_BINARY
+-				binary_manager_set_bp_recovery_reason(bin_idx == BM_CMNLIB_IDX ? BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON : BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#else
+-				binary_manager_set_bp_recovery_reason(BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#endif
++				binary_manager_set_bp_recovery_reason(recovery_reason);
+ 				ret = binary_manager_recover_bootparam_set();
+ 				if (ret != BINMGR_OK) {
+ 					bmdbg("Failed to recover bootparam set mismatch, ret %d\n", ret);
+@@ -308,11 +311,7 @@
+ 
+ #ifdef CONFIG_USE_BP
+ 		/* If bp needs to be updated because binary load failed */
+-#ifdef CONFIG_SUPPORT_COMMON_BINARY
+-		binary_manager_set_bp_recovery_reason(bin_idx == BM_CMNLIB_IDX ? BP_UPDATE_BINARY_MANAGER_RECOVERY_COMMON : BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#else
+-		binary_manager_set_bp_recovery_reason(BP_UPDATE_BINARY_MANAGER_RECOVERY_USER);
+-#endif
++		binary_manager_set_bp_recovery_reason(recovery_reason);
+ 		ret = binary_manager_recover_bootparam_set();
+ 		if (ret != BINMGR_OK) {
+ 			bmdbg("Failed to recover bootparam set mismatch, ret %d\n", ret);

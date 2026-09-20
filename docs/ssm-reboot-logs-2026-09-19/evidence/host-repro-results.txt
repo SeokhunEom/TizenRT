@@ -1,0 +1,30 @@
+CASE mixed_two_SYS: result=0 es=1 sys=1 first_sys=second last_message=hello
+CASE single_SYS: result=-1 es=0 sys=0 first_sys= last_message=
+CASE transport_failure: result=0 es=1 sys=1 first_sys=second last_message=hello
+CASE hash_message: result=0 es=1 sys=0 first_sys= last_message=before
+CASE angle_message: result=0 es=1 sys=0 first_sys= last_message=before
+
+===========================================
+Verifying: wrong_reason.txt
+===========================================
+  Header: FOUND
+  Test Case: 1
+  Expected Reason: 2
+  Actual Reason: 3
+  Report Sequence: 0
+===========================================
+Reason code 3 = KERNEL_ASSERT
+VERIFICATION: PARTIAL (reason code mismatch: expected 2, got 3)
+CASE wrong_reason: verify_result=0 (OK=0)
+
+===========================================
+Verifying: header_only.txt
+===========================================
+  Header: FOUND
+===========================================
+Reason code 0 = INVALID
+VERIFICATION: PASSED (reason code matches)
+CASE header_only: verify_result=0 (OK=0)
+REPRODUCED: all seven observed defects/scenarios; these assertions characterize current bugs, not desired behavior.
+
+exit_code=0
