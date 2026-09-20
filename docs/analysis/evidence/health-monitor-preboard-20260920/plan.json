@@ -1,0 +1,25 @@
+{
+  "health_source": "/Volumes/T7/Dev/TizenRT/codex/260901-health-monitor",
+  "qemu_source": "/Volumes/T7/Dev/TizenRT/codex/qemu-armv8m-kernel-tc",
+  "commit_push_authorized": false,
+  "physical_board": false,
+  "binary_manager_recovery_tested": false,
+  "unload_tested": false,
+  "rtl_modes": [
+    "off",
+    "on",
+    "test"
+  ],
+  "qemu_variants": [
+    "hello-off",
+    "hello-production",
+    "hello-probes",
+    "hello-capacity4",
+    "loadable_all-production",
+    "loadable_apps-production",
+    "xip_all-production",
+    "loadable_all-fault",
+    "loadable_apps-fault",
+    "xip_all-fault"
+  ]
+}

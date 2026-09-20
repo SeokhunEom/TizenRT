@@ -1,5 +1,7 @@
 # Health Monitor ARMv8-M QEMU 검증 보고서
 
+리뷰 수정 이후 최신 제품 코드 `6d4deed26`을 새로 빌드한 QEMU 10개 구성·실행 53개의 완료 결과는 [최신 사전 검증 보고서](Health_Monitor_Preboard_Validation.md)에 기록했다. 아래는 이전 실행 당시의 결과와 기준선이다.
+
 2026-09-20 추가 검증. **실제 사용자 CPU fault → 진단 로그 → fault sender → 오류 메시지 수신까지 20/20 PASS**다. 사용자 요청에 따라 Binary Manager 복구·재로딩과 deadline보다 오래 지속되는 unload 시험은 현재 검증 범위에서 제외했다. 모든 추가 실행은 복구 함수 호출 명령 직전에 중단했다. 아래에는 앞선 Health Monitor API·만료·등록 정리 및 네 recipe 회귀 결과도 보존한다. 이전에 재현한 loader 누수와 app1/TASH 수명주기 실패는 과거 진단 기록이며 이번 메시지 전달 시험의 실패로 집계하지 않는다. 추가 검증 종료 당시 Health Monitor 및 시험 변경은 미커밋이었으며, 검증 단계에서는 stage·commit·push를 하지 않았다. 이 보고서와 증거의 HEAD·index·커밋 수는 각 검증 종료 시점의 스냅샷이다.
 
 ## 기준선과 수정 범위

@@ -1,0 +1,24 @@
+{
+  "status": "pass",
+  "health_monitor_enabled": false,
+  "firmware_sha256": "98c047ca365f5759f1bd63d6b0335adccd99081dacb3204a3ccf0e59ea4cd15b",
+  "kernel_pass": 459,
+  "kernel_fail": 0,
+  "elapsed_seconds": 128.442,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-source/build/output/bin/tinyara",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

@@ -1,5 +1,7 @@
 # Health Monitor 리뷰 후속 수정·검증
 
+후속 전체 빌드/실행은 [최신 사전 검증 보고서](Health_Monitor_Preboard_Validation.md)에 완료 기록했다. 아래는 리뷰 수정과 당시 증거이며, 현재 구현 설명은 [아키텍처 문서](../health-monitor/architecture-and-implementation.md)를 참고한다. 아래의 미push 상태는 당시 기록이고, 제품 코드는 이후 `6d4deed26`으로 push되었다.
+
 2026-09-20. 수정 전 `cc00205af`의 리뷰에서 지적한 P2 두 건을 수정했다. 사용자가 선택한 최소 힙, deadline/check_at 분리, 단일 잠금, 잠금 없이 읽는 예약 사본과 STOP 선형 탐색을 유지했다. worker·범용 backend·추가 자료구조는 도입하지 않았다. 미래 PID 저장 방식에 대한 불필요한 주석을 줄이고, 선택 개선인 실제 만료 대상 로그를 추가했다.
 
 ## 수정 내용

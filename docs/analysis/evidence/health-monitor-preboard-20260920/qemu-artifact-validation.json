@@ -1,0 +1,105 @@
+{
+  "status": "pass",
+  "latest_health_files": 74,
+  "builds": [
+    {
+      "variant": "qemu-hello-capacity4-build",
+      "elf_sha256": "b4a186414801babc008d19238a33ba58a437fe122a2036128fb530e73bfbc2b9",
+      "config_sha256": "d60760a2a3d0a8e519a120cd99c8ea4ee86749684ed8c0b0df703eef650e2953",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 4,
+      "registry_bytes": 32
+    },
+    {
+      "variant": "qemu-hello-off-build",
+      "elf_sha256": "98c047ca365f5759f1bd63d6b0335adccd99081dacb3204a3ccf0e59ea4cd15b",
+      "config_sha256": "fa7bd51a8be52f095b61cba6df377a6b193236e0893246365746ba8960e26f92",
+      "health_monitor_enabled": false,
+      "product_log_present": false,
+      "status": "pass"
+    },
+    {
+      "variant": "qemu-hello-probes-build",
+      "elf_sha256": "841a58d41c2942ea6a78408dac581d114a316dad4932ff0946abf0d68368387e",
+      "config_sha256": "433b90512e50995067a9520eea5ba305e7f5ffd17634a6198780d7408402746c",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 256,
+      "registry_bytes": 2048
+    },
+    {
+      "variant": "qemu-hello-production-build",
+      "elf_sha256": "b6e1ab626704ad6a5a0e78f872013de8183ab5790f881ac6848bdea2fbc30930",
+      "config_sha256": "35f1b09794021d8bd63a18c395addecd07b19cb997b6f2706738e508d953e7f4",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 32,
+      "registry_bytes": 256
+    },
+    {
+      "variant": "qemu-loadable_all-fault-build",
+      "elf_sha256": "3059ce3592455c028109721aaca0122cc96c181af53ec17515acdb05a540bca7",
+      "config_sha256": "2b25700db38a02db125a471e758b6f3def09787fe0b6c267b1193962e0d05b1d",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 32,
+      "registry_bytes": 256
+    },
+    {
+      "variant": "qemu-loadable_all-production-build",
+      "elf_sha256": "a479214584347d65a87eca28b33b16e7221e45867798bdafb96b23b026b68249",
+      "config_sha256": "cefba515f019f543ff4293a158b85a79ae15a11413d8aaf5ada16e4484b0ca45",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 32,
+      "registry_bytes": 256
+    },
+    {
+      "variant": "qemu-loadable_apps-fault-build",
+      "elf_sha256": "45a780293ad4ffbe28736ca1158ea63befea2848059cb8c6fde5559521cfa7ac",
+      "config_sha256": "ac3f4ed8793eb65f649a5191463bc78c500d0ef5163814f9b4f52bd4f1f92acc",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 32,
+      "registry_bytes": 256
+    },
+    {
+      "variant": "qemu-loadable_apps-production-build",
+      "elf_sha256": "885eedf97fa264b3b1849cb2525427c626d71c1c77128e6a64650c95ca9ae027",
+      "config_sha256": "aba580d8f80717d9b426465467f76609f0067446e9a425b03bc7d945d1382cdd",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 32,
+      "registry_bytes": 256
+    },
+    {
+      "variant": "qemu-xip_all-fault-build",
+      "elf_sha256": "1a2831079ebe29a424ab5c4274e306f6d6e254a74e23bae9838013d805973153",
+      "config_sha256": "054db6d6b581341255ab851f2fece785057a238ee190de97521b541522d0edd4",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 256,
+      "registry_bytes": 2048
+    },
+    {
+      "variant": "qemu-xip_all-production-build",
+      "elf_sha256": "383542b03149a8f95d4a3ba0058c12e1d51a58dbc7eb141899d8462d760d8b8d",
+      "config_sha256": "47cbcf5ef9bd07bab6f2b151334af7b3798284706c4a8256049ec115fa166618",
+      "health_monitor_enabled": true,
+      "product_log_present": true,
+      "status": "pass",
+      "registry_capacity": 256,
+      "registry_bytes": 2048
+    }
+  ],
+  "runtime_and_build_records": 63
+}

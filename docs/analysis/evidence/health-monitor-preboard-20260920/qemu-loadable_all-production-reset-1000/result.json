@@ -1,0 +1,30 @@
+{
+  "status": "fail",
+  "profile": "loadable_all",
+  "case": "reset",
+  "source_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "firmware_sha256": "a479214584347d65a87eca28b33b16e7221e45867798bdafb96b23b026b68249",
+  "effective_config_sha256": "cefba515f019f543ff4293a158b85a79ae15a11413d8aaf5ada16e4484b0ca45",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "error": "Command '['qemu-system-arm', '-M', 'mps2-an505,memory-backend=qemu_ram', '-object', 'memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-loadable_all-production-reset-1000/qemu.state,share=on', '-device', 'loader,file=/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-loadable_all-production-reset-1000/qemu.kernel.bin,addr=0x10000000,force-raw=on', '-no-reboot', '-display', 'none', '-serial', 'stdio', '-monitor', 'none', '-nic', 'user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56']' timed out after 10 seconds",
+  "elapsed_seconds": 12.696,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505,memory-backend=qemu_ram",
+    "-object",
+    "memory-backend-file,id=qemu_ram,size=16777216,mem-path=/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-loadable_all-production-reset-1000/qemu.state,share=on",
+    "-device",
+    "loader,file=/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-loadable_all-production-reset-1000/qemu.kernel.bin,addr=0x10000000,force-raw=on",
+    "-no-reboot",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

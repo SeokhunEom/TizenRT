@@ -1,0 +1,827 @@
+diff --git a/build/configs/qemu-armv8m/hello/defconfig b/build/configs/qemu-armv8m/hello/defconfig
+index 2abfb7b62..18fa439d0 100644
+--- a/build/configs/qemu-armv8m/hello/defconfig
++++ b/build/configs/qemu-armv8m/hello/defconfig
+@@ -592,3 +592,7 @@ CONFIG_FS_AUTOMOUNT_PROCFS=y
+ #
+ CONFIG_FILESYSTEM_TEST=y
+ CONFIG_SMARTFS_TEST=y
++
++CONFIG_HEALTH_MONITOR=y
++CONFIG_EXAMPLES_HEALTH_MONITOR=y
++# CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU is not set
+diff --git a/build/configs/qemu-armv8m/loadable_all/defconfig b/build/configs/qemu-armv8m/loadable_all/defconfig
+index a1da2b576..a8cf327ac 100644
+--- a/build/configs/qemu-armv8m/loadable_all/defconfig
++++ b/build/configs/qemu-armv8m/loadable_all/defconfig
+@@ -618,3 +618,7 @@ CONFIG_BINMGR_UPDATE=y
+ # CONFIG_BINMGR_UPDATE_SAME_VERSION is not set
+ CONFIG_BINMGR_RELOAD_REBOOT=y
+ CONFIG_LIB_HASHMAP=y
++
++CONFIG_HEALTH_MONITOR=y
++CONFIG_EXAMPLES_HEALTH_MONITOR=y
++# CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU is not set
+diff --git a/build/configs/qemu-armv8m/loadable_apps/defconfig b/build/configs/qemu-armv8m/loadable_apps/defconfig
+index 6b29af7d6..251e3bfbd 100644
+--- a/build/configs/qemu-armv8m/loadable_apps/defconfig
++++ b/build/configs/qemu-armv8m/loadable_apps/defconfig
+@@ -618,3 +618,7 @@ CONFIG_BINMGR_UPDATE=y
+ # CONFIG_BINMGR_UPDATE_SAME_VERSION is not set
+ CONFIG_BINMGR_RELOAD_REBOOT=y
+ CONFIG_LIB_HASHMAP=y
++
++CONFIG_HEALTH_MONITOR=y
++CONFIG_EXAMPLES_HEALTH_MONITOR=y
++# CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU is not set
+diff --git a/build/configs/qemu-armv8m/xip_all/defconfig b/build/configs/qemu-armv8m/xip_all/defconfig
+index 3d33a887d..15e6346aa 100644
+--- a/build/configs/qemu-armv8m/xip_all/defconfig
++++ b/build/configs/qemu-armv8m/xip_all/defconfig
+@@ -613,3 +613,7 @@ CONFIG_BINMGR_UPDATE=y
+ # CONFIG_BINMGR_UPDATE_SAME_VERSION is not set
+ CONFIG_BINMGR_RELOAD_REBOOT=y
+ CONFIG_LIB_HASHMAP=y
++
++CONFIG_HEALTH_MONITOR=y
++CONFIG_EXAMPLES_HEALTH_MONITOR=y
++# CONFIG_EXAMPLES_HEALTH_MONITOR_QEMU is not set
+diff --git a/loadable_apps/loadable_sample/micomapp/micomapp.c b/loadable_apps/loadable_sample/micomapp/micomapp.c
+index 456477b56..136745af2 100644
+--- a/loadable_apps/loadable_sample/micomapp/micomapp.c
++++ b/loadable_apps/loadable_sample/micomapp/micomapp.c
+@@ -30,12 +30,19 @@
+ /****************************************************************************
+  * Public Functions
+  ****************************************************************************/
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++#include "../../health_monitor/health_monitor_user.inc"
++#endif
++
+ #ifdef CONFIG_APP_BINARY_SEPARATION
+ int main(int argc, char **argv)
+ #else
+ int micomapp_main(int argc, char **argv)
+ #endif
+ {
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++	return hm_user_main("app2");
++#endif
+ 	int ret;
+ #ifdef CONFIG_EXAMPLES_MICOM_TIMER_TEST
+ 	char *timer_args[TIMER_ARG_NUM];
+diff --git a/loadable_apps/loadable_sample/wifiapp/wifiapp.c b/loadable_apps/loadable_sample/wifiapp/wifiapp.c
+index a044e431c..815fa64cf 100644
+--- a/loadable_apps/loadable_sample/wifiapp/wifiapp.c
++++ b/loadable_apps/loadable_sample/wifiapp/wifiapp.c
+@@ -56,12 +56,22 @@ extern int preapp_start(int argc, char **argv);
+ extern int smartfs_powercut_main(int argc, char *argv[]);
+ #endif
+ 
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++#include "../../health_monitor/health_monitor_user.inc"
++#endif
++
+ #ifdef CONFIG_APP_BINARY_SEPARATION
+ int main(int argc, char **argv)
+ #else
+ int wifiapp_main(int argc, char **argv)
+ #endif
+ {
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++#if defined(CONFIG_SYSTEM_PREAPP_INIT) && defined(CONFIG_APP_BINARY_SEPARATION)
++	preapp_start(argc, argv);
++#endif
++	return hm_user_main("app1");
++#endif
+ #ifdef CONFIG_EXAMPLES_LOADABLE_MANUAL_TEST
+ 	int ch;
+ 	bool is_testing = true;
+diff --git a/os/arch/arm/Kconfig b/os/arch/arm/Kconfig
+index e3b9b801a..efa1e1bac 100644
+--- a/os/arch/arm/Kconfig
++++ b/os/arch/arm/Kconfig
+@@ -117,6 +117,7 @@ config ARCH_CHIP_AMEBALITE
+ 
+ config ARCH_CHIP_AMEBASMART
+ 	bool "Realtek AMEBASMART"
++	select ARCH_HAVE_WDOG_WAKEUP
+ 	select ARCH_CORTEXA32
+ 	select ARM_HAVE_NEON
+ 	select ARCH_HAVE_CRC32
+@@ -438,6 +439,13 @@ config ARCH_HAVE_TICKSUPPRESS
+ 	bool
+ 	default n
+ 
++config ARCH_HAVE_WDOG_WAKEUP
++	bool
++	default n
++	---help---
++		The IRQ watchdog port provides a conservative PM wakeup delay based
++		on elapsed hardware time since the last successful keepalive.
++
+ config DEBUG_HARDFAULT
+ 	bool "Verbose Hard-Fault Debug"
+ 	default n
+diff --git a/os/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c b/os/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c
+index d0d747d44..62301166d 100644
+--- a/os/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c
++++ b/os/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c
+@@ -59,10 +59,13 @@
+ #include <tinyara/kmalloc.h>
+ #include <tinyara/watchdog.h>
+ #include <tinyara/irq.h>
++#include <tinyara/arch.h>
++#include <tinyara/clock.h>
+ #include "wdt_api.h"
+ 
+ #ifdef CONFIG_WATCHDOG
+ 
++#ifndef CONFIG_WATCHDOG_FOR_IRQ
+ #define WDT_STOP	0
+ #define WDT_START	1
+ #define WDT_PAUSE	2
+@@ -464,22 +467,109 @@ int amebasmart_wdg_initialize(const char *devpath, uint32_t timeout_ms)
+ 	return OK;
+ }
+ 
+-#ifdef CONFIG_WATCHDOG_FOR_IRQ
++#else /* CONFIG_WATCHDOG_FOR_IRQ */
++
++/* The vendor timeout conversion truncates to whole seconds. Reject values
++ * which would silently program a shorter period, and fit up_wdog_init's ABI.
++ */
++#if CONFIG_WATCHDOG_FOR_IRQ_INTERVAL < 1000 || CONFIG_WATCHDOG_FOR_IRQ_INTERVAL > 65000 || \
++	(CONFIG_WATCHDOG_FOR_IRQ_INTERVAL % 1000) != 0
++#error "RTL8730E IRQ watchdog interval must be 1000..65000 ms in whole seconds"
++#endif
++#if defined(CONFIG_PM) && !defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP)
++#error "RTL8730E IRQ watchdog PM requires CONFIG_ARCH_HAVE_WDOG_WAKEUP"
++#endif
++
++static bool g_irq_wdog_started;
++static uint32_t g_irq_wdog_last_refresh;
++static uint16_t g_irq_wdog_timeout;
++
++int amebasmart_wdg_initialize(const char *devpath, uint32_t timeout_ms)
++{
++	/* WDG4 has one owner. Never register an ioctl path which can overwrite
++	 * the tick watchdog's timeout, mode or keepalive policy.
++	 */
++	(void)devpath;
++	(void)timeout_ms;
++	return -EBUSY;
++}
++
+ void up_wdog_init(uint16_t timeout)
+ {
++	irqstate_t flags = irqsave();
++
++	DEBUGASSERT(timeout == CONFIG_WATCHDOG_FOR_IRQ_INTERVAL);
++	if (g_irq_wdog_started) {
++		irqrestore(flags);
++		return;
++	}
++
++	/* Reset-only mode: IRQ delivery and PANIC are not prerequisites for
++	 * the HW fallback. WDG4 cannot be stopped once enabled.
++	 */
+ 	watchdog_init(timeout);
++	WDG_INTConfig(WDG4_DEV, WDG_BIT_EIE, DISABLE);
++	g_irq_wdog_timeout = timeout;
++	g_irq_wdog_last_refresh = SYSTIMER_TickGet();
++	watchdog_start();
++	g_irq_wdog_started = true;
++	irqrestore(flags);
+ }
+ 
+ void up_wdog_keepalive(void)
+ {
++#ifdef CONFIG_SMP
++	if (up_cpu_index() != 0) {
++		return;
++	}
++#endif
++	if (!g_irq_wdog_started) {
++		return;
++	}
++
++	/* Only the CPU0 timer calls this, after a completed monitor pass.
++	 * Timestamp before the hardware refresh for a conservative PM budget.
++	 */
++	g_irq_wdog_last_refresh = SYSTIMER_TickGet();
+ 	watchdog_refresh();
+ }
++
++int up_wdog_getwakeupdelay(void)
++{
++	uint32_t elapsed;
++	uint64_t elapsed_ms;
++	uint32_t budget_ms;
++	uint32_t delay;
++
++	/* PM and the tick run on CPU0 with local IRQs disabled. No registry or
++	 * scheduler lock is needed. The 32-kHz counter also covers preparation
++	 * time while the system tick is masked, and subtraction handles wrap.
++	 */
++	if (!g_irq_wdog_started) {
++		return 0;
++	}
++	elapsed = SYSTIMER_TickGet() - g_irq_wdog_last_refresh;
++	elapsed_ms = ((uint64_t)elapsed * 1000 + 32767) / 32768;
++	budget_ms = g_irq_wdog_timeout / 2;
++	if (elapsed_ms >= budget_ms) {
++		return -EAGAIN;
++	}
++
++	/* Wake within half the nominal period, leaving the other half for
++	 * clock tolerance, entry/exit and the next successful tick. This also
++	 * works if WDG4 keeps counting in sleep; never pretend to pause it.
++	 */
++	delay = ((uint64_t)(budget_ms - elapsed_ms) * USEC_PER_MSEC) / USEC_PER_TICK;
++	return delay > 0 ? (int)delay : -EAGAIN;
++}
+ #endif
+ 
+ void up_watchdog_disable(void)
+ {
++#ifndef CONFIG_WATCHDOG_FOR_IRQ
+ 	watchdog_stop();
++#endif
++	/* IRQ watchdog ownership preserves the fallback through PANIC. */
+ }
+ 
+ #endif							//CONFIG_WATCHDOG
+-
+diff --git a/os/board/qemu-armv8m/src/qemu_armv8m_boot.c b/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
+index 4a85d6cca..d64856070 100644
+--- a/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
++++ b/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
+@@ -29,6 +29,9 @@
+ #include <unistd.h>
+ 
+ #include <debug.h>
++#ifdef CONFIG_HEALTH_MONITOR
++#include <tinyara/health_monitor.h>
++#endif
+ 
+ #ifdef CONFIG_FLASH_PARTITION
+ #include "common.h"
+@@ -344,6 +347,14 @@ static int qemu_armv8m_load_app1(void)
+ #ifdef CONFIG_BOARD_INITIALIZE
+ void board_initialize(void)
+ {
++#ifdef CONFIG_HEALTH_MONITOR
++	int hm_ret = health_monitor_register();
++	if (hm_ret < 0) {
++		lldbg("QEMU health monitor: registration failed %d\n", hm_ret);
++		return;
++	}
++	printf("QEMU health monitor: /dev/health_monitor ready\n");
++#endif
+ #ifdef CONFIG_FLASH_PARTITION
+ 	{
+ 		FAR struct mtd_dev_s *mtd;
+diff --git a/os/board/rtl8730e/src/rtl8730e_boot.c b/os/board/rtl8730e/src/rtl8730e_boot.c
+index 0193b7fc2..3d23bc45b 100644
+--- a/os/board/rtl8730e/src/rtl8730e_boot.c
++++ b/os/board/rtl8730e/src/rtl8730e_boot.c
+@@ -63,6 +63,9 @@
+ 
+ #include <tinyara/fs/mksmartfs.h>
+ #include <tinyara/board.h>
++#ifdef CONFIG_HEALTH_MONITOR
++#include <tinyara/health_monitor.h>
++#endif
+ #ifdef CONFIG_BINARY_MANAGER
+ #include <tinyara/binary_manager.h>
+ #endif
+@@ -448,9 +451,17 @@ void board_initialize(void)
+ 	rtl8730e_ist415_initialize();
+ #endif
+ 
+-#ifdef CONFIG_WATCHDOG
++#if defined(CONFIG_WATCHDOG) && !defined(CONFIG_WATCHDOG_FOR_IRQ)
+ 	amebasmart_wdg_initialize(CONFIG_WATCHDOG_DEVPATH, 5000);
+ #endif
++#ifdef CONFIG_HEALTH_MONITOR
++	{
++		int ret = health_monitor_register();
++		if (ret < 0) {
++			lldbg("Failed to register health monitor: %d\n", ret);
++		}
++	}
++#endif
+ #ifdef CONFIG_TIMER
+ 	int i;
+ 	char path[CONFIG_PATH_MAX];
+diff --git a/os/drivers/Kconfig b/os/drivers/Kconfig
+index 6db9452e3..77cc71378 100644
+--- a/os/drivers/Kconfig
++++ b/os/drivers/Kconfig
+@@ -383,16 +383,22 @@ config WATCHDOG_FOR_IRQ
+ 	depends on !SUPPRESS_INTERRUPTS && !SUPPRESS_TIMER_INTS && !SYSTEMTICK_EXTCLK
+ 	---help---
+ 		If there is no irq within interval, watchdog resets the system.
++		On RTL8730E, the CPU0 tick exclusively owns WDG4 and the watchdog
++		device is not registered. With HEALTH_MONITOR, only a completed
++		non-expiring inspection refreshes the watchdog.
+ 
+ if WATCHDOG_FOR_IRQ
+ 
+ config WATCHDOG_FOR_IRQ_INTERVAL
+ 	int "Interval for resetting watchdog(ms)"
+ 	default 1000
++	range 1000 65000 if ARCH_CHIP_AMEBASMART
+ 	---help---
+ 		After this interval, watchdog for irq expires.
+ 		This value should be greater than USER_PER_TICK.
+ 		Default interval is 1000ms.
++		RTL8730E requires whole seconds (1000, 2000, ..., 65000 ms).
++		Its PM path reserves half the interval for wakeup and tick recovery.
+ 
+ endif # WATCHDOG_FOR_IRQ
+ 
+diff --git a/os/drivers/Makefile b/os/drivers/Makefile
+index 645224f29..2a27d053a 100644
+--- a/os/drivers/Makefile
++++ b/os/drivers/Makefile
+@@ -132,6 +132,11 @@ ifeq ($(CONFIG_WATCHDOG),y)
+   CSRCS += watchdog.c
+ endif
+ 
++ifeq ($(CONFIG_HEALTH_MONITOR),y)
++  CSRCS += health_monitor.c
++  CFLAGS += -I $(TOPDIR)/kernel
++endif
++
+ ifeq ($(CONFIG_TIMER),y)
+   CSRCS += timer.c
+ endif
+diff --git a/os/drivers/os_api_test/os_api_test_drv.c b/os/drivers/os_api_test/os_api_test_drv.c
+index c2d1189a6..01dc6c2da 100644
+--- a/os/drivers/os_api_test/os_api_test_drv.c
++++ b/os/drivers/os_api_test/os_api_test_drv.c
+@@ -28,6 +28,9 @@
+ #include <tinyara/os_api_test_drv.h>
+ #include <tinyara/sched.h>
+ #include "os_api_test_proto.h"
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++#include "health_monitor/tests/armv8m/control.inc"
++#endif
+ #ifdef CONFIG_EXAMPLES_MEM_PROTECT_TEST
+ #include <tinyara/binfmt/binfmt.h>
+ #include <tinyara/mem_protect_test.h>
+@@ -83,6 +86,11 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long
+ 	/* Handle built-in ioctl commands */
+ 
+ 	switch (cmd) {
++#ifdef CONFIG_EXAMPLES_HEALTH_MONITOR_ARMV8M
++	case HM_TESTIOC_STATUS:
++	case HM_TESTIOC_RECOVER:
++		return hm_control_ioctl(cmd);
++#endif
+ 	/* TESTFWIOC_DRIVER_ANALOG - Run the test case for /os/driver/analog module
+ 	 *
+ 	 *   ioctl argument:  An integer value indicating the particular test to be run
+diff --git a/os/include/tinyara/arch.h b/os/include/tinyara/arch.h
+index ee47a95d4..569cd16d5 100644
+--- a/os/include/tinyara/arch.h
++++ b/os/include/tinyara/arch.h
+@@ -2543,6 +2543,14 @@ void up_wdog_init(uint16_t timeout);
+  ****************************************************************************/
+ void up_wdog_keepalive(void);
+ 
++#ifdef CONFIG_ARCH_HAVE_WDOG_WAKEUP
++/* Called on CPU0 with local IRQs disabled. Returns a positive conservative
++ * sleep delay in system ticks, zero if not started, or a negative value
++ * to defer sleep. Does not refresh the watchdog or acquire a global lock.
++ */
++int up_wdog_getwakeupdelay(void);
++#endif
++
+ #endif
+ 
+ /****************************************************************************
+diff --git a/os/include/tinyara/fs/ioctl.h b/os/include/tinyara/fs/ioctl.h
+index c1700eb72..51170792a 100644
+--- a/os/include/tinyara/fs/ioctl.h
++++ b/os/include/tinyara/fs/ioctl.h
+@@ -108,6 +108,7 @@
+ #define _MIPIDSIBASE    (0x3900) 	/* Mipidsi device ioctl commands */
+ #define _CSIIOCBASE     (0x3a00) 	/* Wifi CSI ioctl commands */
+ #define _SILENTRBCBASE  (0x3b00) 	/* Silent reboot ioctl commands */
++#define _HMIOCBASE      (0x3c00)	/* Thread health monitor ioctl commands */
+ 
+ 
+ /* boardctl() commands share the same number space */
+@@ -137,6 +138,11 @@
+ #define _WDIOCVALID(c)  (_IOC_TYPE(c) == _WDIOCBASE)
+ #define _WDIOC(nr)      _IOC(_WDIOCBASE, nr)
+ 
++/* Thread health monitor ioctl commands ************************************/
++
++#define _HMIOCVALID(c)  (_IOC_TYPE(c) == _HMIOCBASE)
++#define _HMIOC(nr)      _IOC(_HMIOCBASE, nr)
++
+ /* TinyAra file system ioctl definitions **************************************/
+ 
+ #define _FIOCVALID(c)   (_IOC_TYPE(c) == _FIOCBASE)
+diff --git a/os/include/tinyara/reboot_reason.h b/os/include/tinyara/reboot_reason.h
+index 5c7f58cd6..5556fa2c4 100644
+--- a/os/include/tinyara/reboot_reason.h
++++ b/os/include/tinyara/reboot_reason.h
+@@ -43,6 +43,7 @@ typedef enum {
+ 	REBOOT_SYSTEM_PERIODIC_REBOOT      = 59, /* Periodic reboot */
+ 	REBOOT_SYSTEM_ASSERT               = 60, /* Reboot from ASSERT or PANIC */
+ 	REBOOT_SYSTEM_WITHOUT_SET_REASON   = 61, /* Software reboot without setting reboot reason beforehand */
++	REBOOT_SYSTEM_HEALTH_MONITOR_TIMEOUT = 62, /* Registered thread deadline expired */
+ 
+ 	REBOOT_NETWORK_WIFICORE_WATCHDOG   = 80, /* Wi-Fi Core Watchdog Reset */
+ 	REBOOT_NETWORK_WIFICORE_PANIC      = 81, /* Wi-Fi Core Panic */
+diff --git a/os/include/tinyara/sched.h b/os/include/tinyara/sched.h
+index b86675518..3b81c2a42 100644
+--- a/os/include/tinyara/sched.h
++++ b/os/include/tinyara/sched.h
+@@ -522,6 +522,17 @@ struct task_group_s {
+ 					&& (((struct task_tcb_s *)tcb)->bininfo != NULL))
+ #endif
+ 
++#ifdef CONFIG_HEALTH_MONITOR
++/* Health monitor code resolves this storage through health_monitor_state().
++ * Access to registered state is protected by the health monitor lock.
++ */
++
++struct health_monitor_s {
++	uint32_t deadline;		/* Absolute system tick, modulo 2^32 */
++	uint32_t timeout;		/* Timeout in ticks; zero means unregistered */
++};
++#endif
++
+ /* struct tcb_s ******************************************************************/
+ 
+ FAR struct wdog_s;				/* Forward reference                   */
+@@ -581,6 +592,10 @@ struct tcb_s {
+ #endif
+ 	FAR struct wdog_s *waitdog;	/* All timed waits used this wdog      */
+ 
++#ifdef CONFIG_HEALTH_MONITOR
++	struct health_monitor_s health_monitor;
++#endif
++
+ 	/* Stack-Related Fields ****************************************************** */
+ 
+ 	size_t adj_stack_size;		/* Stack size after adjustment         */
+diff --git a/os/kernel/Kconfig b/os/kernel/Kconfig
+index 0314a72a1..039e4de06 100644
+--- a/os/kernel/Kconfig
++++ b/os/kernel/Kconfig
+@@ -268,6 +268,20 @@ config PREALLOC_TIMERS
+ 		pool of preallocated timer structures to minimize dynamic allocations.  Set to
+ 		zero for all dynamic allocations.
+ 
++config HEALTH_MONITOR
++	bool "Thread health monitor"
++	default n
++	depends on !SCHED_TICKLESS && !SUPPRESS_INTERRUPTS && !SUPPRESS_TIMER_INTS
++	depends on NFILE_DESCRIPTORS > 0
++	---help---
++		Monitor threads that register a timeout and periodically kick their
++		deadline. The system timer checks registered threads and enters the
++		existing panic path when a deadline has expired at inspection time.
++
++		The monitor uses per-TCB state and a statically sized timer heap.
++		Applications access it through a dedicated ioctl driver. Normal PM
++		tick suppression is supported; a tickless scheduler is not supported.
++
+ endmenu # Clocks and Timers
+ 
+ menu "Tasks and Scheduling"
+diff --git a/os/kernel/Makefile b/os/kernel/Makefile
+index b1bca38e7..2fab45426 100644
+--- a/os/kernel/Makefile
++++ b/os/kernel/Makefile
+@@ -66,6 +66,7 @@ include sched/Make.defs
+ include task/Make.defs
+ include errno/Make.defs
+ include wdog/Make.defs
++include health_monitor/Make.defs
+ include semaphore/Make.defs
+ include binary_manager/Make.defs
+ include signal/Make.defs
+diff --git a/os/kernel/sched/sched_processtimer.c b/os/kernel/sched/sched_processtimer.c
+index 2579fbde5..9fc2f0936 100644
+--- a/os/kernel/sched/sched_processtimer.c
++++ b/os/kernel/sched/sched_processtimer.c
+@@ -57,6 +57,9 @@
+ #include <tinyara/config.h>
+ #include <tinyara/compiler.h>
+ #include <time.h>
++#ifdef CONFIG_WATCHDOG_FOR_IRQ
++#include <tinyara/arch.h>
++#endif
+ 
+ #if CONFIG_RR_INTERVAL > 0
+ #include <sched.h>
+@@ -66,6 +69,9 @@
+ #include "sched/sched.h"
+ #include "wdog/wdog.h"
+ #include "clock/clock.h"
++#ifdef CONFIG_HEALTH_MONITOR
++#include "health_monitor/health_monitor.h"
++#endif
+ 
+ /************************************************************************
+  * Pre-processor Definitions
+@@ -243,7 +249,7 @@ static inline void sched_process_scheduler(void)
+ 
+ void sched_process_timer(void)
+ {
+-#ifdef CONFIG_WATCHDOG_FOR_IRQ
++#if defined(CONFIG_WATCHDOG_FOR_IRQ) && !defined(CONFIG_HEALTH_MONITOR)
+ 	up_wdog_keepalive();
+ #endif
+ 	/* Increment the system time (if in the link) */
+@@ -254,6 +260,20 @@ void sched_process_timer(void)
+ 	{
+ 		clock_timer();
+ 	}
++#ifdef CONFIG_HEALTH_MONITOR
++	/* Inspect the updated time before scheduler/watchdog global locks. */
++
++#ifdef CONFIG_WATCHDOG_FOR_IRQ
++	if (health_monitor_timer()) {
++		/* No refresh after a deferred inspection or an expired deadline.
++		 * The hardware timeout is the fallback; no extra SW threshold.
++		 */
++		up_wdog_keepalive();
++	}
++#else
++	(void)health_monitor_timer();
++#endif
++#endif
+ #if defined(CONFIG_SCHED_CPULOAD) && !defined(CONFIG_SCHED_CPULOAD_EXTCLK)
+ 	/* Perform CPU load measurements (before any timer-initiated context
+ 	 * switches can occur)
+diff --git a/os/kernel/sched/sched_releasetcb.c b/os/kernel/sched/sched_releasetcb.c
+index b8398be1f..51517d6e7 100644
+--- a/os/kernel/sched/sched_releasetcb.c
++++ b/os/kernel/sched/sched_releasetcb.c
+@@ -66,6 +66,9 @@
+ #include "sched/sched.h"
+ #include "group/group.h"
+ #include "timer/timer.h"
++#ifdef CONFIG_HEALTH_MONITOR
++#include "health_monitor/health_monitor.h"
++#endif
+ #ifdef CONFIG_BINARY_MANAGER
+ #include "binary_manager/binary_manager_internal.h"
+ #endif
+@@ -139,6 +142,12 @@ int sched_releasetcb(FAR struct tcb_s *tcb, uint8_t ttype)
+ 		 * the process ID was never allocated to this TCB.
+ 		 */
+ 		if (tcb->pid) {
++#ifdef CONFIG_HEALTH_MONITOR
++			/* Remove references before this PID slot can be reused. */
++
++			health_monitor_cleanup(tcb);
++#endif
++
+ #ifndef CONFIG_DISABLE_POSIX_TIMERS
+ 			/* Release any timers that the task might hold.  We do this
+ 			 * before release the PID because it may still be trying to
+diff --git a/os/kernel/task/task_recover.c b/os/kernel/task/task_recover.c
+index ada55342e..67cab0abe 100644
+--- a/os/kernel/task/task_recover.c
++++ b/os/kernel/task/task_recover.c
+@@ -64,6 +64,9 @@
+ #include "wdog/wdog.h"
+ #include "mqueue/mqueue.h"
+ #include "task/task.h"
++#ifdef CONFIG_HEALTH_MONITOR
++#include "health_monitor/health_monitor.h"
++#endif
+ 
+ /****************************************************************************
+  * Pre-processor Definitions
+@@ -114,6 +117,12 @@
+ 
+ void task_recover(FAR struct tcb_s *tcb)
+ {
++#ifdef CONFIG_HEALTH_MONITOR
++	/* Also reached by normal exit, task restart and binary unload. */
++
++	health_monitor_cleanup(tcb);
++#endif
++
+ 	/* The task is being deleted.  Cancel in pending timeout events. */
+ 
+ 	wd_recover(tcb);
+diff --git a/os/kernel/task/task_setup.c b/os/kernel/task/task_setup.c
+index 9ec49a5c5..6c14fc7bd 100644
+--- a/os/kernel/task/task_setup.c
++++ b/os/kernel/task/task_setup.c
+@@ -74,6 +74,9 @@
+ #include "group/group.h"
+ #include "task/task.h"
+ #include "clock/clock.h"
++#ifdef CONFIG_HEALTH_MONITOR
++#include "health_monitor/health_monitor.h"
++#endif
+ 
+ /****************************************************************************
+  * Pre-processor Definitions
+@@ -416,6 +419,10 @@ static int thread_schedsetup(FAR struct tcb_s *tcb, int priority, start_t start,
+ 
+ 	ret = task_assignpid(tcb);
+ 	if (ret == OK) {
++#ifdef CONFIG_HEALTH_MONITOR
++		health_monitor_task_init(tcb);
++#endif
++
+ 		/* Save task priority and entry point in the TCB */
+ 
+ 		tcb->sched_priority = (uint8_t)priority;
+diff --git a/os/pm/pm_idle.c b/os/pm/pm_idle.c
+index 416fa77a2..c43af32cd 100644
+--- a/os/pm/pm_idle.c
++++ b/os/pm/pm_idle.c
+@@ -22,11 +22,15 @@
+ 
+ #include <tinyara/config.h>
+ #include <assert.h>
++#include <limits.h>
+ #include <tinyara/pm/pm.h>
+ #include <tinyara/clock.h>
+ #include <tinyara/irq.h>
+ #include <tinyara/arch.h>
+ #include "../kernel/sched/sched.h"
++#ifdef CONFIG_HEALTH_MONITOR
++#include "../kernel/health_monitor/health_monitor.h"
++#endif
+ 
+ #include "pm.h"
+ 
+@@ -42,7 +46,9 @@
+ 
+ static clock_t stime;
+ 
++#ifdef CONFIG_SMP
+ static cpu_set_t g_active_cpu_snapshot;
++#endif
+ 
+ /****************************************************************************
+  * Private Functions
+@@ -265,12 +271,13 @@ enable_timer:
+ 	(void)up_timer_enable();
+ }
+ 
+-#ifdef CONFIG_PM_TIMEDWAKEUP
++#if defined(CONFIG_PM_TIMEDWAKEUP) || defined(CONFIG_HEALTH_MONITOR) || \
++	(defined(CONFIG_WATCHDOG_FOR_IRQ) && defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP))
+ /****************************************************************************
+  * Name: get_next_wakeup_time
+  *
+  * Description:
+- *   This function gets the next wakeup time from the watchdog timer.
++ *   Select the earliest software watchdog, monitor or HW watchdog wakeup.
+  *   If the delay is too short (less than SLEEP_ENTRY_WAIT), it returns ERROR
+  *   to abort sleep.
+  *
+@@ -278,23 +285,89 @@ enable_timer:
+  *   None
+  *
+  * Returned Value:
+- *   The next wakeup time in ticks, or ERROR if sleep should be aborted.
++ *   Positive delay in ticks, zero for no reservation, or ERROR to defer sleep.
+  *
+  ****************************************************************************/
+ static int get_next_wakeup_time(void)
+ {
+-	clock_t delay;
++	clock_t delay = 0;
+ 
++#ifdef CONFIG_PM_TIMEDWAKEUP
+ 	/* get wakeup timer */
+ 	delay = wd_getwakeupdelay();
++#endif
++#ifdef CONFIG_HEALTH_MONITOR
++	uint32_t check_at;
++	int status = health_monitor_next_check(&check_at);
++
++	/* PM holds the scheduler lock. Read only the published hint; never
++	 * acquire the registry lock or wait for an in-progress publication.
++	 */
++	if (status < 0) {
++		return ERROR;
++	}
++	if (status > 0) {
++#if defined(CONFIG_PM_TIMEDWAKEUP) && defined(CONFIG_PM_TICKSUPPRESS)
++		struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
++		int32_t remaining = (int32_t)(check_at - (uint32_t)clock_systimer());
++
++		/* Tick zero is a valid reservation, and a due reservation must not
++		 * be mistaken for no wakeup. Sleep must preserve elapsed time too.
++		 */
++		if (remaining <= 0 || !sleep_ops || !sleep_ops->sleep ||
++			!sleep_ops->set_timer || !sleep_ops->get_missingtick) {
++			return ERROR;
++		}
++		if (delay == 0 || (clock_t)remaining < delay) {
++			delay = remaining;
++		}
++#else
++		/* Active monitoring needs timed wakeup and sleep-time accounting. */
++		return ERROR;
++#endif
++	}
++#endif
++
++#if defined(CONFIG_WATCHDOG_FOR_IRQ) && defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP)
++	int wdog_delay = up_wdog_getwakeupdelay();
++
++	if (wdog_delay < 0) {
++		return ERROR;
++	}
++	if (wdog_delay > 0) {
++#if defined(CONFIG_PM_TIMEDWAKEUP) && defined(CONFIG_PM_TICKSUPPRESS)
++		struct pm_sleep_ops *sleep_ops = g_pmglobals.sleep_ops;
++		if (!sleep_ops || !sleep_ops->sleep || !sleep_ops->set_timer ||
++			!sleep_ops->get_missingtick) {
++			return ERROR;
++		}
++		if (delay == 0 || (clock_t)wdog_delay < delay) {
++			delay = wdog_delay;
++		}
++#else
++		/* An unstoppable HW watchdog cannot allow untimed sleep. */
++		return ERROR;
++#endif
++	}
++#endif
++
++#ifdef CONFIG_PM_TIMEDWAKEUP
+ 	if ((delay > 0) && (delay < MSEC2TICK(CONFIG_PM_SLEEP_ENTRY_WAIT_MS))) {
+ 		pmllvdbg("Wdog Timer Delay: %ldms is less than SLEEP_ENTRY_WAIT: %ldms\n", TICK2MSEC(delay), CONFIG_PM_SLEEP_ENTRY_WAIT_MS);
+ 		return ERROR;
+ 	}
++#endif
+ 
+-	return delay;
++	/* The caller uses a signed result so ERROR remains distinct. A long
++	 * watchdog delay may exceed int even though monitor delays cannot.
++	 */
++	return delay > INT_MAX ? INT_MAX : (int)delay;
+ }
++#else
++#define get_next_wakeup_time() (0)
++#endif
+ 
++#ifdef CONFIG_PM_TIMEDWAKEUP
+ /****************************************************************************
+  * Name: set_pm_wakeup_timer
+  *
+@@ -312,15 +385,20 @@ static int get_next_wakeup_time(void)
+ static int set_pm_wakeup_timer(int delay) 
+ {
+ 	if (delay > 0) {
+-		/* set wakeup timer */
++		/* Board timers accept unsigned microseconds. Clamp long delays
++		 * to an early wakeup instead of overflowing the conversion.
++		 */
++		uint64_t delay_us = (uint64_t)delay * USEC_PER_TICK;
++		if (delay_us > UINT_MAX) {
++			delay_us = UINT_MAX;
++		}
+ 		pmllvdbg("Setting timer and board will wake up after %ld millisecond\n", delay);
+-		return g_pmglobals.sleep_ops->set_timer(TICK2USEC(delay));
++		return g_pmglobals.sleep_ops->set_timer((unsigned int)delay_us);
+ 	}
+ 
+ 	return OK;
+ }
+ #else
+-#define get_next_wakeup_time()       (0)
+ #define set_pm_wakeup_timer(delay)  (OK)
+ #endif
+ 
+@@ -419,6 +497,19 @@ static void enter_sleep(void)
+ 		goto CPUS_ENABLE;
+ 	}
+ 
++#if defined(CONFIG_HEALTH_MONITOR) || \
++	(defined(CONFIG_WATCHDOG_FOR_IRQ) && defined(CONFIG_ARCH_HAVE_WDOG_WAKEUP))
++	/* Suspend callbacks and other CPUs may have changed the reservation.
++	 * Recheck after quiescing them, before stopping the system tick. On
++	 * deferral, resume CPUs/devices without compensating a nonexistent sleep.
++	 * The HW watchdog budget also includes time spent in these callbacks.
++	 */
++	next_wakeup_time = get_next_wakeup_time();
++	if (next_wakeup_time < 0) {
++		goto CPUS_ENABLE;
++	}
++#endif
++
+ 	if (disable_systick() != OK) {
+ 		goto SYSTICK_ENABLE;
+ 	}

@@ -1,0 +1,19 @@
+{
+  "name": "hello-probes-build",
+  "profile": "hello",
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 41.273,
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "hello",
+    "1"
+  ],
+  "health_head": "6d4deed26f836378d961561c50617cde1a8ce00a",
+  "qemu_port_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "clean_build": true,
+  "firmware_sha256": "841a58d41c2942ea6a78408dac581d114a316dad4932ff0946abf0d68368387e"
+}

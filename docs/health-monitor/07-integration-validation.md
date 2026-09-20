@@ -1,5 +1,7 @@
 # 7단계: 통합 검증·기준 설정 활성화
 
+2026-09-20 후속: 리뷰 수정 이후의 RTL OFF/ON/test 전체 빌드와 QEMU 최신 실행을 [사전 검증 보고서](../analysis/Health_Monitor_Preboard_Validation.md)에 완료 기록했다. [현재 아키텍처와 구현](architecture-and-implementation.md)을 함께 참고한다. 아래는 7단계 진행 당시 기록이다.
+
 전제: 6단계가 확인·커밋됐고 사용자가 7단계 시작을 지시했다. [공통 진행 방식](README.md)과 [설계 문서](../HealthMonitorImplementationPlan.md)의 11절을 사용한다.
 
 ## 목표

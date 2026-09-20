@@ -1,0 +1,19 @@
+{
+  "name": "xip_all-fault-build",
+  "profile": "xip_all",
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 66.299,
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "xip_all",
+    "1"
+  ],
+  "health_head": "6d4deed26f836378d961561c50617cde1a8ce00a",
+  "qemu_port_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "clean_build": true,
+  "firmware_sha256": "1a2831079ebe29a424ab5c4274e306f6d6e254a74e23bae9838013d805973153"
+}

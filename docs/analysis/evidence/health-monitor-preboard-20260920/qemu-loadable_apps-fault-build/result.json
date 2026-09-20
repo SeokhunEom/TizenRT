@@ -1,0 +1,19 @@
+{
+  "name": "loadable_apps-fault-build",
+  "profile": "loadable_apps",
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 62.88,
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "loadable_apps",
+    "1"
+  ],
+  "health_head": "6d4deed26f836378d961561c50617cde1a8ce00a",
+  "qemu_port_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "clean_build": true,
+  "firmware_sha256": "45a780293ad4ffbe28736ca1158ea63befea2848059cb8c6fde5559521cfa7ac"
+}

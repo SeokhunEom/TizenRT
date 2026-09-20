@@ -1,4 +1,14 @@
-# Health Monitor 단계별 구현·검토·커밋 계획
+# Health Monitor 문서
+
+현재 구현을 처음 읽을 때는 [호출 흐름·아키텍처·상세 구현](architecture-and-implementation.md)을 먼저 참고한다. 공개 API, deadline/check_at, 잠금과 TCB 수명, tick 만료 판정, PM 시간 보정, RTL8730E watchdog, 사용자 CPU fault 메시지 경로를 설명한다.
+
+- [최신 사전 검증 결과](../analysis/Health_Monitor_Preboard_Validation.md): 제품 코드 `6d4deed26`의 RTL 전체 빌드 3개, QEMU 새 빌드 10개·실행 53개. 물리 보드 시험은 미실행.
+- [RTL8730E 사용·보드 시험](board-validation.md): 설정과 TASH 명령, 보드 수령 후 실행할 절차.
+- [설계 기준](../HealthMonitorImplementationPlan.md): 기능 정책과 요구사항.
+
+## 단계별 구현·검토·커밋 계획
+
+아래는 단계별 진행 당시의 기록이다. 이후 리뷰 수정은 관련 기존 커밋에 amend되어 일부 단계 해시가 바뀌었다. 현재 제품 코드 기준과 최신 결과는 위 문서를 사용한다.
 
 [설계 기준](../HealthMonitorImplementationPlan.md)의 기능을 사용자가 순차적으로 확인할 수 있도록 분리한 실행 계획이다. 설계 기준은 동작 정책을, 이 문서는 진행 순서와 확인 지점을 관리한다.
 

@@ -1,0 +1,25 @@
+/evidence/rtl-on/source/build/output/bin/tinyara.axf  :
+section                    size         addr
+.xip_image2.text         928972    234881056
+.code                     12288   1611661312
+.ARM.exidx                    8    235810028
+.fini_array                 780    235810036
+.data                      7364   1611673600
+.bss                     129928   1611681024
+.heap                      8192   1611810952
+.stack                     2048   1611819264
+.psram_heap.start             0   1611821312
+.bluetooth_trace.text     59879   3363831808
+.ARM.attributes              53            0
+.debug_line             1098065            0
+.debug_info             4174788            0
+.debug_abbrev            523302            0
+.debug_aranges            60976            0
+.debug_str               358374            0
+.debug_ranges            100080            0
+.comment                    118            0
+.debug_frame             150864            0
+.debug_loc              1127169            0
+Total                   8743248
+
+

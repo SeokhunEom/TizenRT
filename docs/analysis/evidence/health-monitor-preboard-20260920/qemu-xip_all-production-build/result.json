@@ -1,0 +1,19 @@
+{
+  "name": "xip_all-production-build",
+  "profile": "xip_all",
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 70.5,
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "5",
+    "qemu-armv8m",
+    "xip_all",
+    "1"
+  ],
+  "health_head": "6d4deed26f836378d961561c50617cde1a8ce00a",
+  "qemu_port_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "clean_build": true,
+  "firmware_sha256": "383542b03149a8f95d4a3ba0058c12e1d51a58dbc7eb141899d8462d760d8b8d"
+}

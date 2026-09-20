@@ -1,0 +1,37 @@
+ M build/configs/qemu-armv8m/hello/defconfig
+ M build/configs/qemu-armv8m/loadable_all/defconfig
+ M build/configs/qemu-armv8m/loadable_apps/defconfig
+ M build/configs/qemu-armv8m/xip_all/defconfig
+ M loadable_apps/loadable_sample/micomapp/micomapp.c
+ M loadable_apps/loadable_sample/wifiapp/wifiapp.c
+ M os/arch/arm/Kconfig
+ M os/arch/arm/src/amebasmart/amebasmart_idle.c
+ M os/arch/arm/src/amebasmart/amebasmart_timerisr.c
+ M os/arch/arm/src/amebasmart/amebasmart_watchdog_lowerhalf.c
+ M os/arch/arm/src/amebasmart/arch_timer.h
+ M os/board/qemu-armv8m/src/qemu_armv8m_boot.c
+ M os/board/rtl8730e/src/rtl8730e_boot.c
+ M os/drivers/Kconfig
+ M os/drivers/Makefile
+ M os/drivers/os_api_test/os_api_test_drv.c
+ M os/include/tinyara/arch.h
+ M os/include/tinyara/fs/ioctl.h
+ M os/include/tinyara/pm/pm.h
+ M os/include/tinyara/reboot_reason.h
+ M os/include/tinyara/sched.h
+ M os/kernel/Kconfig
+ M os/kernel/Makefile
+ M os/kernel/sched/sched_processtimer.c
+ M os/kernel/sched/sched_releasetcb.c
+ M os/kernel/task/task_recover.c
+ M os/kernel/task/task_setup.c
+ M os/pm/pm_idle.c
+?? apps/examples/health_monitor/
+?? apps/examples/health_monitor_armv8m/
+?? apps/examples/health_monitor_qemu/
+?? loadable_apps/health_monitor/
+?? os/drivers/health_monitor.c
+?? os/include/tinyara/health_monitor.h
+?? os/kernel/health_monitor/
+?? tools/qemu-armv8m-health-monitor/
+?? tools/qemu-build-test/

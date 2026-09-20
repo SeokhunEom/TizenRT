@@ -1,0 +1,22 @@
+/evidence/rtl-on/source/build/output/bin/common_dbg  :
+section               size         addr
+.text               714688    237375504
+.ARM.extab           16532    238090192
+.ARM.exidx           14064    238106724
+.rodata             203408    238120792
+.ctors                  32    238324200
+.data                 1768   1677197312
+.bss                  9336   1677199080
+.comment               118            0
+.ARM.attributes         55            0
+.debug_abbrev       697992            0
+.debug_info       25063872            0
+.debug_line        1509018            0
+.debug_aranges       63936            0
+.debug_str         7708360            0
+.debug_loc         2694397            0
+.debug_ranges       339352            0
+.debug_frame        186952            0
+Total             39223880
+
+

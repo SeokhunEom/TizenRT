@@ -1,0 +1,272 @@
+{
+  "status": "pass",
+  "profile": "hello",
+  "case": "all",
+  "source_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "firmware_sha256": "841a58d41c2942ea6a78408dac581d114a316dad4932ff0946abf0d68368387e",
+  "effective_config_sha256": "433b90512e50995067a9520eea5ba305e7f5ffd17634a6198780d7408402746c",
+  "qemu_version": "QEMU emulator version 11.1.1",
+  "baseline": {
+    "task_ids": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "task_count": 5,
+    "used": 49856,
+    "free": 12859072,
+    "largest": 12325920,
+    "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800075d8 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+    "free_output": "              total       used       free    largest\r\n Mem:\t   12908928      49856   12859072   12325920\r\nTASH>>"
+  },
+  "rounds": [
+    {
+      "number": 1,
+      "cases": [
+        {
+          "case": "api",
+          "status": "pass",
+          "checks": 64,
+          "elapsed_seconds": 0.005,
+          "output": "\u0000hm_qemu api\r\nTASH>>\u0000HM_QEMU BEGIN case=api capacity=256\r\nHM_QEMU PASS case=api checks=64 count=0"
+        },
+        {
+          "case": "shared",
+          "status": "pass",
+          "checks": 32,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu shared\r\nTASH>>\u0000HM_QEMU BEGIN case=shared capacity=256\r\nHM_QEMU PASS case=shared checks=32 count=0"
+        },
+        {
+          "case": "lifecycle",
+          "status": "pass",
+          "checks": 45,
+          "elapsed_seconds": 1.609,
+          "output": "\u0000hm_qemu lifecycle\r\nTASH>>\u0000HM_QEMU BEGIN case=lifecycle capacity=256\r\nHM_QEMU lifecycle cancel=1 pthread_exit=1 task_restart=1 task_delete=1 task_return=1 same_tcb=1\r\nHM_QEMU PASS case=lifecycle checks=45 count=0"
+        },
+        {
+          "case": "reuse",
+          "status": "pass",
+          "checks": 417,
+          "elapsed_seconds": 3.144,
+          "output": "\u0000hm_qemu reuse\r\nTASH>>\u0000HM_QEMU BEGIN case=reuse capacity=256\r\nHM_QEMU reuse pid_reused=31 tcb_reused=31 pid=17 tcb=8003b3a0 cursor_controlled=1\r\nHM_QEMU PASS case=reuse checks=417 count=0"
+        },
+        {
+          "case": "boundary",
+          "status": "pass",
+          "checks": 29,
+          "elapsed_seconds": 0.297,
+          "output": "\u0000hm_qemu boundary\r\nTASH>>\u0000HM_QEMU BEGIN case=boundary capacity=256\r\nHM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_timer_irq=1\r\nHM_QEMU PASS case=boundary checks=29 count=0"
+        },
+        {
+          "case": "active",
+          "status": "pass",
+          "checks": 599,
+          "elapsed_seconds": 1.505,
+          "output": "\u0000hm_qemu active\r\nTASH>>\u0000HM_QEMU BEGIN case=active capacity=256\r\nHM_QEMU stress workers=7 rounds=1 operations=280 natural_time=1\r\nHM_QEMU PASS case=active checks=599 count=0"
+        },
+        {
+          "case": "stress",
+          "status": "pass",
+          "checks": 863,
+          "elapsed_seconds": 5.573,
+          "output": "\u0000hm_qemu stress\r\nTASH>>\u0000HM_QEMU BEGIN case=stress capacity=256\r\nHM_QEMU stress workers=7 rounds=10 operations=70000 natural_time=1\r\nHM_QEMU PASS case=stress checks=863 count=0"
+        },
+        {
+          "case": "many",
+          "status": "pass",
+          "checks": 1540,
+          "elapsed_seconds": 5.433,
+          "output": "\u0000hm_qemu many\r\nTASH>>\u0000HM_QEMU BEGIN case=many capacity=256\r\nHM_QEMU many real_workers=128 all_registered=1 exited_registered=1 survived_old_deadlines=1\r\nHM_QEMU PASS case=many checks=1540 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 52672,
+        "free": 12856256,
+        "largest": 12009472,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800075d8 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12908928      52672   12856256   12009472\r\nTASH>>"
+      }
+    },
+    {
+      "number": 2,
+      "cases": [
+        {
+          "case": "api",
+          "status": "pass",
+          "checks": 64,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu api\r\nTASH>>\u0000HM_QEMU BEGIN case=api capacity=256\r\nHM_QEMU PASS case=api checks=64 count=0"
+        },
+        {
+          "case": "shared",
+          "status": "pass",
+          "checks": 32,
+          "elapsed_seconds": 0.006,
+          "output": "\u0000hm_qemu shared\r\nTASH>>\u0000HM_QEMU BEGIN case=shared capacity=256\r\nHM_QEMU PASS case=shared checks=32 count=0"
+        },
+        {
+          "case": "lifecycle",
+          "status": "pass",
+          "checks": 45,
+          "elapsed_seconds": 1.61,
+          "output": "\u0000hm_qemu lifecycle\r\nTASH>>\u0000HM_QEMU BEGIN case=lifecycle capacity=256\r\nHM_QEMU lifecycle cancel=1 pthread_exit=1 task_restart=1 task_delete=1 task_return=1 same_tcb=1\r\nHM_QEMU PASS case=lifecycle checks=45 count=0"
+        },
+        {
+          "case": "reuse",
+          "status": "pass",
+          "checks": 417,
+          "elapsed_seconds": 3.142,
+          "output": "\u0000hm_qemu reuse\r\nTASH>>\u0000HM_QEMU BEGIN case=reuse capacity=256\r\nHM_QEMU reuse pid_reused=31 tcb_reused=31 pid=237 tcb=8003b3a0 cursor_controlled=1\r\nHM_QEMU PASS case=reuse checks=417 count=0"
+        },
+        {
+          "case": "boundary",
+          "status": "pass",
+          "checks": 29,
+          "elapsed_seconds": 0.295,
+          "output": "\u0000hm_qemu boundary\r\nTASH>>\u0000HM_QEMU BEGIN case=boundary capacity=256\r\nHM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_timer_irq=1\r\nHM_QEMU PASS case=boundary checks=29 count=0"
+        },
+        {
+          "case": "active",
+          "status": "pass",
+          "checks": 599,
+          "elapsed_seconds": 1.505,
+          "output": "\u0000hm_qemu active\r\nTASH>>\u0000HM_QEMU BEGIN case=active capacity=256\r\nHM_QEMU stress workers=7 rounds=1 operations=280 natural_time=1\r\nHM_QEMU PASS case=active checks=599 count=0"
+        },
+        {
+          "case": "stress",
+          "status": "pass",
+          "checks": 863,
+          "elapsed_seconds": 5.571,
+          "output": "\u0000hm_qemu stress\r\nTASH>>\u0000HM_QEMU BEGIN case=stress capacity=256\r\nHM_QEMU stress workers=7 rounds=10 operations=70000 natural_time=1\r\nHM_QEMU PASS case=stress checks=863 count=0"
+        },
+        {
+          "case": "many",
+          "status": "pass",
+          "checks": 1540,
+          "elapsed_seconds": 5.436,
+          "output": "\u0000hm_qemu many\r\nTASH>>\u0000HM_QEMU BEGIN case=many capacity=256\r\nHM_QEMU many real_workers=128 all_registered=1 exited_registered=1 survived_old_deadlines=1\r\nHM_QEMU PASS case=many checks=1540 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 52672,
+        "free": 12856256,
+        "largest": 12009472,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800075d8 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12908928      52672   12856256   12009472\r\nTASH>>"
+      }
+    },
+    {
+      "number": 3,
+      "cases": [
+        {
+          "case": "api",
+          "status": "pass",
+          "checks": 64,
+          "elapsed_seconds": 0.008,
+          "output": "\u0000hm_qemu api\r\nTASH>>\u0000HM_QEMU BEGIN case=api capacity=256\r\nHM_QEMU PASS case=api checks=64 count=0"
+        },
+        {
+          "case": "shared",
+          "status": "pass",
+          "checks": 32,
+          "elapsed_seconds": 0.008,
+          "output": "\u0000hm_qemu shared\r\nTASH>>\u0000HM_QEMU BEGIN case=shared capacity=256\r\nHM_QEMU PASS case=shared checks=32 count=0"
+        },
+        {
+          "case": "lifecycle",
+          "status": "pass",
+          "checks": 45,
+          "elapsed_seconds": 1.612,
+          "output": "\u0000hm_qemu lifecycle\r\nTASH>>\u0000HM_QEMU BEGIN case=lifecycle capacity=256\r\nHM_QEMU lifecycle cancel=1 pthread_exit=1 task_restart=1 task_delete=1 task_return=1 same_tcb=1\r\nHM_QEMU PASS case=lifecycle checks=45 count=0"
+        },
+        {
+          "case": "reuse",
+          "status": "pass",
+          "checks": 417,
+          "elapsed_seconds": 3.149,
+          "output": "\u0000hm_qemu reuse\r\nTASH>>\u0000HM_QEMU BEGIN case=reuse capacity=256\r\nHM_QEMU reuse pid_reused=31 tcb_reused=31 pid=462 tcb=8003b3a0 cursor_controlled=1\r\nHM_QEMU PASS case=reuse checks=417 count=0"
+        },
+        {
+          "case": "boundary",
+          "status": "pass",
+          "checks": 29,
+          "elapsed_seconds": 0.298,
+          "output": "\u0000hm_qemu boundary\r\nTASH>>\u0000HM_QEMU BEGIN case=boundary capacity=256\r\nHM_QEMU boundary late_kick=1 stale_root_repair=1 wrap_survival=1 stop_due=1 unstable_hint_deferred=1 real_timer_irq=1\r\nHM_QEMU PASS case=boundary checks=29 count=0"
+        },
+        {
+          "case": "active",
+          "status": "pass",
+          "checks": 599,
+          "elapsed_seconds": 1.507,
+          "output": "\u0000hm_qemu active\r\nTASH>>\u0000HM_QEMU BEGIN case=active capacity=256\r\nHM_QEMU stress workers=7 rounds=1 operations=280 natural_time=1\r\nHM_QEMU PASS case=active checks=599 count=0"
+        },
+        {
+          "case": "stress",
+          "status": "pass",
+          "checks": 863,
+          "elapsed_seconds": 5.569,
+          "output": "\u0000hm_qemu stress\r\nTASH>>\u0000HM_QEMU BEGIN case=stress capacity=256\r\nHM_QEMU stress workers=7 rounds=10 operations=70000 natural_time=1\r\nHM_QEMU PASS case=stress checks=863 count=0"
+        },
+        {
+          "case": "many",
+          "status": "pass",
+          "checks": 1540,
+          "elapsed_seconds": 5.435,
+          "output": "\u0000hm_qemu many\r\nTASH>>\u0000HM_QEMU BEGIN case=many capacity=256\r\nHM_QEMU many real_workers=128 all_registered=1 exited_registered=1 survived_old_deadlines=1\r\nHM_QEMU PASS case=many checks=1540 count=0"
+        }
+      ],
+      "snapshot": {
+        "task_ids": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "task_count": 5,
+        "used": 52672,
+        "free": 12856256,
+        "largest": 12009472,
+        "ps_output": "\r\n  PID | PRIO | FLAG |  TYPE   | NP |  STATUS  | WAIT INFO  | CPU | IRQCOUNT | NAME\r\n------|------|------|---------|----|----------|------------|-----|----------|-----\r\n    0 |    0 | FIFO | KTHREAD | N  | RUNNING  |          - |   0 |       NA | Idle Task\r\n    1 |  224 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | hpwork\r\n    2 |   50 | RR   | KTHREAD |    | WAITSIG  |   00020000 |   0 |       NA | lpwork\r\n    3 |  110 | RR   | KTHREAD |    | WAITSEM  | 0x800075d8 |   0 |       NA | tcpip_thread\r\n    6 |  125 | RR   | TASK    |    | WAITSEM  |          0 |   0 |       NA | tash\r\nTASH>>",
+        "free_output": "              total       used       free    largest\r\n Mem:\t   12908928      52672   12856256   12009472\r\nTASH>>"
+      }
+    }
+  ],
+  "heap_growth_after_warmup": 0,
+  "elapsed_seconds": 53.899,
+  "qemu_command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-source/build/output/bin/tinyara",
+    "-nic",
+    "user,ipv4=on,ipv6=on,net=10.0.2.0/24,host=10.0.2.2,ipv6-net=fec0::/64,ipv6-host=fec0::2,hostname=tizenrt-qemu,mac=52:54:00:12:34:56",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit_after_cleanup": 0
+}

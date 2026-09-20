@@ -1,0 +1,141 @@
+{
+  "mode": "test",
+  "status": "pass",
+  "packages": [
+    {
+      "name": "app1_rtl8730e_190412.trpk",
+      "bytes": 449,
+      "header_bytes": 44,
+      "payload_bytes": 401,
+      "partition_bytes": 4894720,
+      "crc32_ok": true,
+      "length_ok": true,
+      "sha256": "385a88ea5fc863d53dc64b11d171c3aee9155b211089774cf2395dbd15ff6755"
+    },
+    {
+      "name": "common_rtl8730e_200204.trpk",
+      "bytes": 952608,
+      "header_bytes": 12,
+      "payload_bytes": 952592,
+      "partition_bytes": 8679424,
+      "crc32_ok": true,
+      "length_ok": true,
+      "sha256": "e99674ad0d65a708dc3a622131833edaa9ce5218c2c7c37a810a4dd9930342e2"
+    },
+    {
+      "name": "kernel_rtl8730e_200204.trpk",
+      "bytes": 1680458,
+      "header_bytes": 12,
+      "payload_bytes": 1680442,
+      "partition_bytes": 2936832,
+      "crc32_ok": true,
+      "length_ok": true,
+      "sha256": "a70abd467b9d5179688244c872c3347da7810a0afdd4c0152a87b33aa4875904"
+    },
+    {
+      "name": "resource_rtl8730e_240421.trpk",
+      "bytes": 40960,
+      "header_bytes": 10,
+      "payload_bytes": 36864,
+      "partition_bytes": 31850496,
+      "crc32_ok": true,
+      "length_ok": true,
+      "sha256": "9f8216afba56c2596aa8bb1c31c9879ce958136b0b2e60aa217ba9fe4893e37d"
+    }
+  ],
+  "elf": {
+    "tinyara.axf": {
+      "sha256": "1cb92b615d745ff29bc8f8c95ed65a67d3cf3164e83659cdeb42765fb876e345",
+      "sections": {
+        ".xip_image2.text": 928972,
+        ".code": 12288,
+        ".ARM.exidx": 8,
+        ".fini_array": 780,
+        ".data": 7364,
+        ".bss": 129928,
+        ".heap": 8192,
+        ".stack": 2048,
+        ".psram_heap.start": 0,
+        ".bluetooth_trace.text": 59879,
+        ".ARM.attributes": 53,
+        ".debug_line": 1098065,
+        ".debug_info": 4174788,
+        ".debug_abbrev": 523302,
+        ".debug_aranges": 60976,
+        ".debug_str": 358374,
+        ".debug_ranges": 100080,
+        ".comment": 118,
+        ".debug_frame": 150864,
+        ".debug_loc": 1127169
+      },
+      "arm_elf32_le": true,
+      "health_monitor_present": true,
+      "elapsed_callback_linked": true
+    },
+    "common_dbg": {
+      "sha256": "b0aa9789983de3929d8c747cdaed1429b4188093ab15fd78ac0283a7885f1d85",
+      "sections": {
+        ".text": 715996,
+        ".ARM.extab": 16532,
+        ".ARM.exidx": 14064,
+        ".rodata": 204200,
+        ".ctors": 32,
+        ".data": 1768,
+        ".bss": 9336,
+        ".comment": 118,
+        ".ARM.attributes": 55,
+        ".debug_abbrev": 699449,
+        ".debug_info": 25073981,
+        ".debug_line": 1511618,
+        ".debug_aranges": 64056,
+        ".debug_str": 7708660,
+        ".debug_loc": 2697316,
+        ".debug_ranges": 339560,
+        ".debug_frame": 187192
+      },
+      "arm_elf32_le": true
+    },
+    "app1_dbg": {
+      "sha256": "5350859f85e12baf663c6efaf322bf210f2a85ebd7fc47c8ecfb29a543e77e55",
+      "sections": {
+        ".text": 228,
+        ".rodata": 169,
+        ".data": 4,
+        ".bss": 28,
+        ".comment": 73,
+        ".ARM.attributes": 57,
+        ".debug_abbrev": 605,
+        ".debug_info": 1841,
+        ".debug_line": 729,
+        ".debug_aranges": 56,
+        ".debug_loc": 172,
+        ".debug_ranges": 40,
+        ".debug_str": 1312,
+        ".debug_frame": 48
+      },
+      "arm_elf32_le": true
+    }
+  },
+  "bootparam": {
+    "bytes": 8192,
+    "crc32_ok": true,
+    "secondary_erased": true,
+    "format_version": 2,
+    "kernel_addresses": [
+      134742016,
+      151252992
+    ],
+    "update_reason": 0
+  },
+  "fip": {
+    "sha256": "e533787b39e559e2c2ff5fa219bd410e1121929ca8be528adb73bfd002ff8d77",
+    "bl2_bl32_bl33": true,
+    "bl33_matches_kernel_ram": true
+  },
+  "physical_board_tested": false,
+  "tcb_bytes": {
+    "tcb": 240,
+    "task_tcb": 260,
+    "pthread_tcb": 328
+  }
+}

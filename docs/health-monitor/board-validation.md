@@ -1,6 +1,6 @@
 # RTL8730E Health Monitor 사용·보드 시험 절차
 
-기준은 `rtl8730e/loadable_ext_ddr_st7785`, CPU 2개, tick 1ms, 최대 task 256개다. 이 문서는 시험 준비 절차다. **2026-09-18 현재 실제 보드가 없어 부팅·절전·리셋·실행 시간은 미측정이다.** 빌드와 호스트 결과는 [7단계 결과](07-integration-validation.md)에 별도로 기록한다.
+기준은 `rtl8730e/loadable_ext_ddr_st7785`, CPU 2개, tick 1ms, 최대 task 256개다. 이 문서는 시험 준비 절차다. **2026-09-20 현재 실제 보드가 없어 부팅·절전·리셋·실행 시간은 미측정이다.** 최신 코드의 RTL 전체 빌드·QEMU 실행은 [사전 검증 보고서](../analysis/Health_Monitor_Preboard_Validation.md), 동작 설명은 [아키텍처 문서](architecture-and-implementation.md)에 기록했다. 이전 호스트·통합 결과는 [7단계 결과](07-integration-validation.md)에 보존한다.
 
 ## 설정과 빌드
 

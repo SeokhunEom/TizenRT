@@ -1,0 +1,19 @@
+/evidence/rtl-test/source/build/output/bin/app1_dbg  :
+section           size         addr
+.text              228    246054960
+.rodata            169    246055188
+.data                4   1671954432
+.bss                28   1671954436
+.comment            73            0
+.ARM.attributes     57            0
+.debug_abbrev      605            0
+.debug_info       1841            0
+.debug_line        729            0
+.debug_aranges      56            0
+.debug_loc         172            0
+.debug_ranges       40            0
+.debug_str        1312            0
+.debug_frame        48            0
+Total             5362
+
+

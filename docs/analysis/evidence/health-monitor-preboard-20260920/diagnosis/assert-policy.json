@@ -1,0 +1,16 @@
+{
+  "cause": "test plan requested software reset on a CONFIG_BOARD_ASSERT_SYSTEM_HALT firmware",
+  "product_change_required": false,
+  "health_expiry_and_panic_observed": true,
+  "timeout_log": [
+    [
+      "10",
+      "2353",
+      "2353"
+    ]
+  ],
+  "config_system_halt": true,
+  "config_autoreset": false,
+  "original_failure": "/private/tmp/hm-preboard-20260920-8_tdqiqr/qemu-loadable_all-production-reset-1000/result.json",
+  "resolution": "Use expiry on HALT profiles, retaining reset tests on the AUTORESET hello profile."
+}

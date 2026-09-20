@@ -1,0 +1,18 @@
+{
+  "name": "hello-off-build",
+  "profile": "hello",
+  "status": "pass",
+  "exit_code": 0,
+  "elapsed_seconds": 37.213,
+  "command": [
+    "/opt/homebrew/bin/bash",
+    "./dbuild.sh",
+    "qemu-armv8m",
+    "hello",
+    "1"
+  ],
+  "health_head": "6d4deed26f836378d961561c50617cde1a8ce00a",
+  "qemu_port_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "clean_build": true,
+  "firmware_sha256": "98c047ca365f5759f1bd63d6b0335adccd99081dacb3204a3ccf0e59ea4cd15b"
+}
