@@ -38,6 +38,7 @@
 
 #define MPS2_UART0_BASE                 0x40200000
 #define MPS2_TIMER0_BASE                0x40000000
+#define MPS2_TIMER1_BASE                0x40001000
 #define MPS2_LAN9118_BASE               0x42000000
 
 #define MPS2_TIMER_CTRL_OFFSET          0x0000
@@ -49,6 +50,12 @@
 #define MPS2_TIMER0_VALUE               (MPS2_TIMER0_BASE + MPS2_TIMER_VALUE_OFFSET)
 #define MPS2_TIMER0_RELOAD              (MPS2_TIMER0_BASE + MPS2_TIMER_RELOAD_OFFSET)
 #define MPS2_TIMER0_INTSTATUS           (MPS2_TIMER0_BASE + MPS2_TIMER_INTSTATUS_OFFSET)
+
+/* TIMER1 is reserved as the free-running system-time reference. */
+#define MPS2_TIMER1_CTRL                (MPS2_TIMER1_BASE + MPS2_TIMER_CTRL_OFFSET)
+#define MPS2_TIMER1_VALUE               (MPS2_TIMER1_BASE + MPS2_TIMER_VALUE_OFFSET)
+#define MPS2_TIMER1_RELOAD              (MPS2_TIMER1_BASE + MPS2_TIMER_RELOAD_OFFSET)
+#define MPS2_TIMER1_INTSTATUS           (MPS2_TIMER1_BASE + MPS2_TIMER_INTSTATUS_OFFSET)
 
 #define MPS2_TIMER_CTRL_EN              (1 << 0)
 #define MPS2_TIMER_CTRL_IRQEN           (1 << 3)
