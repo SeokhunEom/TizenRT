@@ -336,6 +336,8 @@ def main():
     assert args.qemu and args.repeat > 0
     cfg = args.config.read_text()
     assert 'CONFIG_QEMU_FAULT_LAB=y' in cfg
+    assert 'CONFIG_ARMV8M_FAULT_RECOVERY=y' not in cfg, \
+        'Recovery is enabled: use recover.py; run.py verifies historical stop behavior.'
     assert 'CONFIG_BOARD_ASSERT_AUTORESET=y' not in cfg
     assert 'CONFIG_ARCH_FPU=y' not in cfg
     irq_header = (root/'os/arch/arm/include/armv8-m/irq_cmnvector.h').read_text()

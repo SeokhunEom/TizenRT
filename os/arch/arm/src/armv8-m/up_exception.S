@@ -156,6 +156,13 @@
 	.type	exception_common, function
 	.thumb_func
 exception_common:
+#ifdef CONFIG_ARCH_NESTED_INTERRUPT
+	/* BASEPRI cannot mask priority zero. Keep only the context construction
+	 * atomic; the original PRIMASK lives in a private, per-entry call frame,
+	 * not in the task context ABI. No stack access precedes this mask.
+	 */
+	mrs		r12, primask
+#endif
 
 	/* First, we must save the basepri register and disable interrupts */
 
@@ -163,6 +170,9 @@ exception_common:
 	mrs		r3, basepri				/* R3=Current BASEPRI setting */
 #else
 	mrs		r3, primask				/* R3=Current PRIMASK setting */
+#endif
+#ifdef CONFIG_ARCH_NESTED_INTERRUPT
+	cpsid	i
 #endif
 
 #ifdef CONFIG_ARCH_NESTED_INTERRUPT
@@ -191,8 +201,8 @@ exception_common:
 #endif
 
 	/* Test-only schedule hook, placed after the patched entry has masked
-	 * BASEPRI-eligible interrupts. Highest-priority nested IRQs can still
-	 * arrive here, as they can on the target hardware.
+	 * BASEPRI-eligible interrupts. Priority-zero IRQs are now held by PRIMASK until
+	 * the software context and interrupt stack are ready.
 	 */
 #ifdef CONFIG_QEMU_FAULT_LAB
 	mrs		r0, ipsr
@@ -204,16 +214,16 @@ exception_common:
 	.global	qemu_fault_lab_irq_window
 .Lqemu_fault_lab_outer_window:
 qemu_fault_lab_irq_window:
-	ldr		r12, =g_qemu_fault_lab_irq_pending
-	ldr		r12, [r12]
-	cmp		r12, #0
+	ldr		r0, =g_qemu_fault_lab_irq_pending
+	ldr		r0, [r0]
+	cmp		r0, #0
 	beq		.Lqemu_fault_lab_window_done
-	ldr		r12, =g_qemu_fault_lab_irq_pending
+	ldr		r0, =g_qemu_fault_lab_irq_pending
 	mov		r2, #0
-	str		r2, [r12]
-	ldr		r12, =0xe000e208
+	str		r2, [r0]
+	ldr		r0, =0xe000e208
 	mov		r2, #0x80
-	str		r2, [r12]
+	str		r2, [r0]
 	b		.Lqemu_fault_lab_window_done
 	.global	qemu_fault_lab_nested_irq_window
 .Lqemu_fault_lab_nested_window:
@@ -226,23 +236,23 @@ qemu_fault_lab_nested_irq_window:
 
 	/* The EXC_RETURN value tells us whether the context is on the MSP or PSP */
 
-	tst		r14, #EXC_RETURN_PROCESS_STACK /* nonzero if context on process stack */
-	beq		1f						/* Branch if context already on the MSP */
-	mrs		r1, psp					/* R1=The process stack pointer (PSP) */
-	mov     sp, r1					/* Set the MSP to the PSP */
-
-1:
-
-	mov		r2, sp					/* R2=Copy of the main/process stack pointer */
-	add		r2, #HW_XCPT_SIZE		/* R2=MSP/PSP before the interrupt was taken */
-
+	tst		r14, #EXC_RETURN_PROCESS_STACK
+	ite		eq
+	mrseq		r2, msp
+	mrsne		r2, psp
 #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
-	mov		r0, #0x0
-	ittee		eq
+	ite		eq
 	mrseq		r1, msplim
-	msreq		msplim, r0
 	mrsne		r1, psplim
-	msrne		psplim, r0
+	/* The selected context can be below the old MSP limit. Clear the
+	 * handler limit before using that stack; restore a limit on the IRQ stack.
+	 */
+	mov		r0, #0
+	msr		msplim, r0
+#endif
+	mov		sp, r2
+	add		r2, #HW_XCPT_SIZE
+#ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
 	stmdb		sp!, {r1}
 #endif
 
@@ -304,21 +314,39 @@ qemu_fault_lab_nested_irq_window:
 	ldr		sp, =g_intstackbase
 
 9:
-	/* Reenabling the interrupts before going into up_doirq
-	 * so that any higher priority interrupt can be served.
-	 */
-
 #ifdef CONFIG_ARCH_NESTED_INTERRUPT
+	/* Callee-saved registers are now in the interrupted context. Keep an
+	 * aligned C call frame, including the incoming PRIMASK and raw MSP.
+	 * Nested entries have their own frame, even at priority zero.
+	 */
+	mov		r4, r12
+	mov		r5, sp
+	bic		r6, r5, #7
+	mov		sp, r6
+#ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+	ldr		r6, =g_intstackalloc
+	msr		msplim, r6
+#endif
+	push	{r1, r4, r5, lr}
 #ifdef CONFIG_ARMV8M_USEBASEPRI
 	msr		basepri, r3
+#endif
+	msr		primask, r4
+	bl		up_doirq
+	/* up_doirq leaves PRIMASK set before publishing outermost return. */
+	pop		{r1, r2, r12, lr}
+	mov		sp, r12
+	mov		r12, r2
 #else
-	cpsie	i
+	/* Preserve the frame pointer while meeting AAPCS stack alignment. */
+	mov		r4, sp
+	bic		r5, r4, #7
+	mov		sp, r5
+	push	{r1, r4}
+	bl		up_doirq
+	pop		{r1, r4}
+	mov		sp, r4
 #endif
-#endif
-
-	push	{r1}					/* Save the MSP on the interrupt stack */
-	bl		up_doirq				/* R0=IRQ, R1=register save area on stack */
-	pop		{r1}					/* Recover R1=main stack pointer */
 
 #else
 	/* Otherwise, we will re-use the interrupted thread's stack.  That may
@@ -421,7 +449,11 @@ qemu_fault_lab_nested_irq_window:
 	 * of the running process. In order to avoid this, we will set the msp to a backup
 	 * irq stack at this point.
 	 */
-	ldr             r1, =g_nestedirqstkbase
+#ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+	ldr		r0, =g_nestedirqstkalloc
+	msr		msplim, r0
+#endif
+	ldr		r1, =g_nestedirqstkbase
 	msr		msp, r1
 
 	b		6f
@@ -443,6 +475,14 @@ qemu_fault_lab_nested_irq_window:
 	ite		eq						/* next two instructions conditional */
 	msreq	msp, r1					/* R1=The main stack pointer */
 	msrne	psp, r1					/* R1=The process stack pointer */
+	beq		.Lflat_stack_ready
+#ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+	ldr		r0, =g_nestedirqstkalloc
+	msr		msplim, r0
+#endif
+	ldr		r1, =g_nestedirqstkbase
+	msr		msp, r1
+.Lflat_stack_ready:
 #endif
 	/* Restore the interrupt state */
 
@@ -454,6 +494,10 @@ qemu_fault_lab_nested_irq_window:
 
 #else
 	msr		primask, r3				/* Restore interrupts */
+#endif
+
+#ifdef CONFIG_ARCH_NESTED_INTERRUPT
+	msr		primask, r12
 #endif
 
 	/* Always return with R14 containing the special value that will: (1)

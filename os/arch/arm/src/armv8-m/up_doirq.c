@@ -97,9 +97,6 @@ uint32_t *up_doirq(int irq, uint32_t *regs)
 	g_irq_nums[1] = g_irq_nums[0];
 	g_irq_nums[0] = irq;
 
-#ifdef CONFIG_ARCH_NESTED_INTERRUPT
-	irqstate_t flags;
-#endif
 	board_led_on(LED_INIRQ);
 #ifdef CONFIG_SUPPRESS_INTERRUPTS
 	PANIC();
@@ -121,7 +118,7 @@ uint32_t *up_doirq(int irq, uint32_t *regs)
 	 * only be modified for outermost interrupt handler (when g_nestlevel == 0)
 	 */
 
-	irqrestore(flags);
+	/* exception_common restored the incoming mask after building its frame. */
 #else
 	uint32_t *savestate;
 
@@ -152,7 +149,15 @@ uint32_t *up_doirq(int irq, uint32_t *regs)
 	 * only be performed when the outermost interrupt handler returns.
 	 */
 
-	flags = irqsave();
+	/* Protect g_nestlevel/current_regs and the assembly epilogue from
+	 * priority-zero interrupts as well. Assembly restores the saved PRIMASK.
+	 */
+#ifdef CONFIG_ARMV8M_LAZYFPU
+	/* The separate lazy-FPU entry retains its original BASEPRI contract. */
+	(void)irqsave();
+#else
+	__asm__ __volatile__("cpsid i" : : : "memory");
+#endif
 
 	g_nestlevel--;
 

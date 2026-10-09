@@ -1,0 +1,17 @@
+{
+  "elf_sha256": "713f942735844e7ca9d10409ef13c1957dd771e0f66683b8ee4f172d5d7ebb49",
+  "config_sha256": "9adb2099769e39c88cb9913edc2e137bbc9cea565b1667ed15f8568ce56d48b5",
+  "qemu": "QEMU emulator version 11.1.2",
+  "head": "8393684abd7a42dae87d1ded508f3d48bbc30127",
+  "working_source_sha256": {
+    "os/arch/arm/src/armv8-m/up_exception.S": "334f758bf1fa62bcad4a39887e19d89cc58aa294a49c17398ee9230ce8d82155",
+    "os/arch/arm/src/armv8-m/up_doirq.c": "5df6dcca6b67a719e61098ccfe38e58489f1dbbc14a1690ea426a9d528d0d17e",
+    "os/arch/arm/src/armv8-m/up_fault_entry.S": "c1a3de488aa880eb00bb9144f6a90fd015ed04a5eff3fe95d288f630258cfdb4",
+    "os/arch/arm/src/armv8-m/up_fault_recovery.c": "d9dc666621aaeac7f684bfe05b68bc9af82549849590f491cdc23e419ce1c372",
+    "os/arch/arm/src/armv8-m/up_vectors.c": "d4226b173fc9d629aef39dc293bb7f0e56851f4166a2c4249f22078947c82bb4",
+    "os/arch/arm/src/qemu-armv8m/qemu_armv8m_serial.c": "608e6425a170300764fcfd8a5e23b3faafdc542151e5c903d9a6e8456e2d3131",
+    "os/board/qemu-armv8m/src/qemu_armv8m_fault_lab.c": "f3a84cb3547aaee0ab3e7e7059fc8058b20ec0d60d23ed94590fd844a6d97525",
+    "build/configs/qemu-armv8m/scripts/mps2-an505.ld": "b24fe7fbd8a662faa7945008f0a65e54a72021295b084a9fa5fc4a782f900abd"
+  },
+  "source_note": "Working files at invocation; use ELF hash and build evidence to establish provenance."
+}

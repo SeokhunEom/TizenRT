@@ -1,0 +1,18 @@
+                0x00000000800001a0                _sbss = ABSOLUTE (.)
+ *(.bss .bss.*)
+ .bss           0x00000000800001a0        0x0 /root/tizenrt/os/../build/output/libraries/libkarch.a(qemu_armv8m_start.o)
+                0x0000000080001610                g_nestedirqstkalloc
+                0x0000000080001810                g_nestedirqstkbase
+ .bss           0x0000000080001810        0x0 /root/tizenrt/os/../build/output/libraries/libdrivers.a(serial.o)
+                0x0000000080001810                g_nestedirqstkbase
+ .bss           0x0000000080001810        0x0 /root/tizenrt/os/../build/output/libraries/libdrivers.a(serial.o)
+ .bss           0x0000000080001810        0x0 /root/tizenrt/os/../build/output/libraries/libdrivers.a(serialirq.o)
+                0x000000008002a444                _ebss = ABSOLUTE (.)
+                0x000000008002a444                _sidle_stack = ABSOLUTE (.)
+                0x000000008002c444                . = (. + CONFIG_IDLETHREAD_STACKSIZE)
+                0x000000008002a444                _sidle_stack = ABSOLUTE (.)
+                0x000000008002c444                . = (. + CONFIG_IDLETHREAD_STACKSIZE)
+ *fill*         0x000000008002a444     0x2000 
+                0x000000008002c444                _sint_heap = ABSOLUTE (.)
+
+.stab

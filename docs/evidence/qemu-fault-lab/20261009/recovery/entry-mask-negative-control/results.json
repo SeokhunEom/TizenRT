@@ -1,0 +1,91 @@
+[
+  {
+    "case": 1,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-09T13:02:56.883769+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-z175hnhq/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.01273916696663946,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 2,
+    "passed": false,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791550977,
+          "microseconds": 149037
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-09T13:02:57.033031+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-ijr4anyq/qmp,server=on,wait=off"
+    ],
+    "error": "prompt returned without required recovery evidence",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-09T13:02:57.199858+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-5zmhagys/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.004623041953891516,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  }
+]

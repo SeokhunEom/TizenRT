@@ -70,6 +70,11 @@ SECTIONS
 		_edata = ABSOLUTE(.);
 	} > ram AT > ssram
 
+	/* Kept outside the startup BSS clear, before the heap/idle stack. */
+	.fault_record (NOLOAD) : ALIGN(8) {
+		KEEP(*(.fault_record))
+	} > ram
+
 	.bss : {
 		_sbss = ABSOLUTE(.);
 		*(.bss .bss.*)

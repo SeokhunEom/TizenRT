@@ -10,8 +10,8 @@ config QEMU_FAULT_LAB
 	default n
 	depends on ARCH_CHIP_QEMU_ARMV8M && BUILD_FLAT && TASH
 	---help---
-		Register faultlab panic|lockup|uart. Each command intentionally
-		stops the emulated guest. For controlled debugger experiments only.
+		Register faultlab 1..6. Cases 1-3 test nested IRQ return; cases 4-6
+		inject destructive faults. Recovery depends on ARMV8M_FAULT_RECOVERY.
 
 config ARCH_CHIP_MPS2_AN505
 	bool "MPS2-AN505"
@@ -22,3 +22,15 @@ config ARCH_CHIP_MPS2_AN505
 	select ARCH_HAVE_SERIAL_TERMIOS
 	---help---
 		QEMU MPS2-AN505 Cortex-M33 machine.
+
+config ARMV8M_FAULT_RECOVERY
+	bool "Retain minimal hardware-fault diagnostics and reset"
+	default n
+	depends on ARCH_CHIP_QEMU_ARMV8M && BUILD_FLAT && ARMV8M_USEBASEPRI && !ARCH_FPU && !SMP
+	---help---
+		Handle HardFault, MemManage, BusFault and UsageFault on reserved
+		emergency stacks, retain a checksum-protected record across warm
+		reset and report it at boot. Limit panic UART polling globally.
+		This bypasses interactive panic dumps for hardware faults. It does
+		not recover an already locked-up core; hardware ports must provide
+		RAM bounds, retention and an independent prearmed watchdog.

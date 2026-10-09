@@ -1,0 +1,46 @@
+
+/root/tizenrt/build/qemu-fault-lab/ready-nested-image/tinyara:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+10001798 <arm_fault_entry>:
+10001798:	f3ef 8410 	mrs	r4, PRIMASK
+1000179c:	b672      	cpsid	i
+1000179e:	f3ef 8005 	mrs	r0, IPSR
+100017a2:	4671      	mov	r1, lr
+100017a4:	f3ef 8208 	mrs	r2, MSP
+100017a8:	f3ef 8309 	mrs	r3, PSP
+100017ac:	f8df c06c 	ldr.w	ip, [pc, #108]	; 1000181c <arm_fault_entry+0x84>
+100017b0:	f8cc 4000 	str.w	r4, [ip]
+100017b4:	f3ef 8411 	mrs	r4, BASEPRI
+100017b8:	f8cc 4004 	str.w	r4, [ip, #4]
+100017bc:	f3ef 8414 	mrs	r4, CONTROL
+100017c0:	f8cc 4008 	str.w	r4, [ip, #8]
+100017c4:	f3ef 840a 	mrs	r4, MSPLIM
+100017c8:	f8cc 400c 	str.w	r4, [ip, #12]
+100017cc:	f3ef 840b 	mrs	r4, PSPLIM
+100017d0:	f8cc 4010 	str.w	r4, [ip, #16]
+100017d4:	f8df c048 	ldr.w	ip, [pc, #72]	; 10001820 <arm_fault_entry+0x88>
+100017d8:	f8dc 4000 	ldr.w	r4, [ip]
+100017dc:	2c02      	cmp	r4, #2
+100017de:	d214      	bcs.n	1000180a <arm_fault_entry+0x72>
+100017e0:	3401      	adds	r4, #1
+100017e2:	f8cc 4000 	str.w	r4, [ip]
+100017e6:	2c01      	cmp	r4, #1
+100017e8:	bf0c      	ite	eq
+100017ea:	4c0e      	ldreq	r4, [pc, #56]	; (10001824 <arm_fault_entry+0x8c>)
+100017ec:	4c0e      	ldrne	r4, [pc, #56]	; (10001828 <arm_fault_entry+0x90>)
+100017ee:	f04f 0500 	mov.w	r5, #0
+100017f2:	f385 880a 	msr	MSPLIM, r5
+100017f6:	f504 65c0 	add.w	r5, r4, #1536	; 0x600
+100017fa:	f385 8808 	msr	MSP, r5
+100017fe:	f384 880a 	msr	MSPLIM, r4
+10001802:	f3bf 8f6f 	isb	sy
+10001806:	f7fe bf31 	b.w	1000066c <arm_fault_recover>
+1000180a:	4808      	ldr	r0, [pc, #32]	; (1000182c <arm_fault_entry+0x94>)
+1000180c:	4908      	ldr	r1, [pc, #32]	; (10001830 <arm_fault_entry+0x98>)
+1000180e:	f3bf 8f4f 	dsb	sy
+10001812:	6001      	str	r1, [r0, #0]
+10001814:	f3bf 8f4f 	dsb	sy
+10001818:	e7fe      	b.n	10001818 <arm_fault_entry+0x80>

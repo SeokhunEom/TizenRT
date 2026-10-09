@@ -1,0 +1,36 @@
+
+=== 4-1 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 4-2 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 4-3 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 5-1 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 5-2 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 5-3 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 6-1 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 6-2 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)
+
+=== 6-3 ===
+qemu-system-arm: warning: nic lan9118.0 has no peer
+qemu-system-arm: terminating on signal 15 from pid 16861 (<unknown process>)

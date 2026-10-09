@@ -21,6 +21,9 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+#include "up_fault_recovery.h"
+#endif
 
 #include <sys/types.h>
 #include <stdint.h>
@@ -381,7 +384,27 @@ void qemu_armv8m_lowsetup(void)
 
 void qemu_armv8m_lowputc(char ch)
 {
-	while ((getreg32(MPS2_UART0_STATE) & MPS2_UART_STATE_TXFULL) != 0) {
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+	/* One budget for the whole fatal path, not a fresh timeout per byte.
+	 * Normal console behavior is unchanged. Once exhausted, every later
+	 * panic write is dropped so the caller can reach SYSRESETREQ.
+	 */
+	if (g_arm_fault_depth != 0) {
+		for (;;) {
+			if (g_arm_fault_output_budget == 0) {
+				arm_fault_uart_timeout();
+				return;
+			}
+			g_arm_fault_output_budget--;
+			if ((getreg32(MPS2_UART0_STATE) & MPS2_UART_STATE_TXFULL) == 0) {
+				break;
+			}
+		}
+	} else
+#endif
+	{
+		while ((getreg32(MPS2_UART0_STATE) & MPS2_UART_STATE_TXFULL) != 0) {
+		}
 	}
 
 	putreg32(ch & 0xff, MPS2_UART0_DATA);

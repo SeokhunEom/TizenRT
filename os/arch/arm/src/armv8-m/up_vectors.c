@@ -78,6 +78,9 @@ extern void __start(void);
 /* Common exception entrypoint */
 
 extern void exception_common(void);
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+extern void arm_fault_entry(void);
+#endif
 
 /************************************************************************************
  * Public data
@@ -101,6 +104,12 @@ unsigned _vectors[] __attribute__((section(".vectors"))) = {
 	IDLE_STACK,
 	/* Reset exception handler */
 	(unsigned) &__start,
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+	[2] = (unsigned) &exception_common,
+	[3 ... 6] = (unsigned) &arm_fault_entry,
+	[7 ...(15 + ARMV8M_PERIPHERAL_INTERRUPTS)] = (unsigned) &exception_common
+#else
 	/* Vectors 2 - n point directly at the generic handler */
 	[2 ...(15 + ARMV8M_PERIPHERAL_INTERRUPTS)] = (unsigned) &exception_common
+#endif
 };

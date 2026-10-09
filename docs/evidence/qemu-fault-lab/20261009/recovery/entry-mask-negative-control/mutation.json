@@ -1,0 +1,6 @@
+{
+  "change": "Omit only entry cpsid i; all return/capture/test improvements remain",
+  "expected_rejection": true,
+  "runner_exit": 1,
+  "restored_source_sha256": "334f758bf1fa62bcad4a39887e19d89cc58aa294a49c17398ee9230ce8d82155"
+}

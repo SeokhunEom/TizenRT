@@ -81,3 +81,8 @@ CHIP_CSRCS += qemu_armv8m_timerisr.c qemu_armv8m_serial.c
 ifeq ($(CONFIG_LIBC_ARCH_ELF),y)
 CHIP_CSRCS += qemu_armv8m_elf.c
 endif
+
+ifeq ($(CONFIG_ARMV8M_FAULT_RECOVERY),y)
+CMN_ASRCS += up_fault_entry.S
+CMN_CSRCS += up_fault_recovery.c
+endif

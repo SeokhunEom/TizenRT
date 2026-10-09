@@ -33,7 +33,7 @@ def run_case(args, elf, case, out):
         'events': [],
         'started_at_utc': datetime.now(timezone.utc).isoformat(),
         'guest_fault_register_writes': False,
-        'guest_sets_psp_and_msp_to_the_same_valid_stack_value': True,
+        'guest_uses_private_psp_and_interrupt_msp': True,
         'debugger_target_writes': False,
         'scenario': 'controlled NVIC scheduling; no invalid stack or fault injection',
         'usagefault_handler_entered': False,

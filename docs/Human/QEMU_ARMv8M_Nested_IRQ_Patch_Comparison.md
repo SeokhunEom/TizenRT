@@ -1,5 +1,11 @@
 # QEMU ARMv8-M 중첩 IRQ 수정 제거 비교
 
+> 이 문서는 `68f42f203`까지의 **과거 정지 재현/패치 비교** 기록이다.
+> 현재 브랜치는 2022년 패치를 복원하고 복구 정책을 추가했다.
+> 현재 코드의 빌드·실행은 [복구 검증 결과](QEMU_ARMv8M_Fault_Recovery_Results.md)를 따른다.
+> 아래 `patch-present.patch` 적용/제거 절차는 `68f42f203`의 별도 checkout에서만 실행한다.
+> 현재 checkout에 같은 패치를 다시 적용하거나 제거하지 않는다.
+
 2026-10-09에 QEMU 11.1.2 `mps2-an505`에서 2022년 중첩 IRQ 수정 전후를
 같은 NVIC 스케줄로 비교했다. 패치가 없는 빌드에서는 첫 예외 진입 중
 중첩 IRQ를 받은 경우 UsageFault가 HardFault로 에스컬레이션된 뒤

@@ -1,0 +1,3 @@
+# Keep captured output byte-for-byte, including compiler/console whitespace.
+*.log -whitespace
+memory-layout.txt -whitespace

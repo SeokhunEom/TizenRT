@@ -1,0 +1,24 @@
+.fault_record   0x0000000080000200       0xf0 load address 0x000000001007dfd8
+ *(.fault_record)
+ .fault_record  0x0000000080000200       0xf0 /root/tizenrt/os/../build/output/libraries/libarch.a(up_fault_recovery.o)
+ .fault_record  0x0000000080000200       0xf0 /root/tizenrt/os/../build/output/libraries/libarch.a(up_fault_recovery.o)
+
+.bss            0x00000000800002f0    0x2d05c load address 0x000000001007dfd8
+                0x00000000800002f0                _sbss = ABSOLUTE (.)
+ *(.bss .bss.*)
+ .bss           0x00000000800002f0        0x0 /root/tizenrt/os/../build/output/libraries/libarch.a(qemu_armv8m_start.o)
+                0x0000000080001780                g_nestedirqstkalloc
+                0x0000000080001980                g_nestedirqstkbase
+ .bss           0x0000000080001980      0xc00 /root/tizenrt/os/../build/output/libraries/libarch.a(up_fault_entry.o)
+                0x0000000080001980                g_nestedirqstkbase
+ .bss           0x0000000080001980      0xc00 /root/tizenrt/os/../build/output/libraries/libarch.a(up_fault_entry.o)
+ .bss           0x0000000080002580        0x0 /root/tizenrt/os/../build/output/libraries/libdrivers.a(serial.o)
+                0x000000008002b34c                _ebss = ABSOLUTE (.)
+                0x000000008002b34c                _sidle_stack = ABSOLUTE (.)
+                0x000000008002d34c                . = (. + CONFIG_IDLETHREAD_STACKSIZE)
+                0x000000008002b34c                _sidle_stack = ABSOLUTE (.)
+                0x000000008002d34c                . = (. + CONFIG_IDLETHREAD_STACKSIZE)
+ *fill*         0x000000008002b34c     0x2000 
+                0x000000008002d34c                _sint_heap = ABSOLUTE (.)
+
+.stab

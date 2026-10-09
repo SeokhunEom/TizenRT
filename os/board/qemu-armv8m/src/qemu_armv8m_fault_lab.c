@@ -7,6 +7,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <sched.h>
+#include <unistd.h>
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+#include "up_fault_recovery.h"
+#endif
 #include <debug.h>
 #include <tinyara/irq.h>
 #include <tinyara/arch.h>
@@ -28,6 +33,16 @@ volatile uint32_t g_qemu_fault_lab_nested_irq_count;
 
 #define FAULTLAB_IRQ_OUTER (MPS2_IRQ_FIRST + 70)
 #define FAULTLAB_IRQ_NESTED (MPS2_IRQ_FIRST + 71)
+
+#ifdef CONFIG_ARCH_NESTED_INTERRUPT
+static uint32_t g_qemu_fault_lab_saved[6] __attribute__((used));
+static volatile uint32_t g_qemu_fault_lab_progress;
+
+static int qemu_fault_lab_progress_task(int argc, char **argv)
+{
+	g_qemu_fault_lab_progress++;
+	return OK;
+}
 
 /* A private, bounded process stack for the synthetic Thread/PSP context. */
 static uint32_t g_qemu_fault_lab_psp_stack[512]
@@ -59,26 +74,68 @@ static int qemu_fault_lab_nested_irq(int irq, FAR void *context, FAR void *arg)
  * bounded PSP stack, with MSP on the architecture's interrupt stack. The
  * QEMU-only assembly hook pends IRQ_NESTED at the first prologue window.
  */
-__attribute__((naked, noreturn, noinline)) static void qemu_fault_lab_nested_launch(void)
+__attribute__((naked, noinline)) static void qemu_fault_lab_nested_launch(void)
 {
-	__asm__ volatile("ldr r0, =g_qemu_fault_lab_psp_stack\n"
+	__asm__ volatile("mrs r3, primask\n"
+			 "cpsid i\n"
+			 "push {r4-r11, lr}\n"
+			 "ldr r0, =g_qemu_fault_lab_saved\n"
+			 "mrs r1, msp\n"
+			 "str r1, [r0, #0]\n"
+			 "mrs r1, psp\n"
+			 "str r1, [r0, #4]\n"
+			 "mrs r1, control\n"
+			 "str r1, [r0, #8]\n"
+			 "mrs r1, msplim\n"
+			 "str r1, [r0, #12]\n"
+			 "mrs r1, psplim\n"
+			 "str r1, [r0, #16]\n"
+			 "str r3, [r0, #20]\n"
+			 "ldr r0, =g_qemu_fault_lab_psp_stack\n"
 			 "msr psplim, r0\n"
-			 "ldr r1, =2048\n"
-			 "add r0, r0, r1\n"
+			 "add r0, r0, #2048\n"
 			 "msr psp, r0\n"
-			 "ldr r0, =g_intstackalloc\n"
+			 "movs r0, #0\n"
 			 "msr msplim, r0\n"
 			 "ldr r0, =g_intstackbase\n"
 			 "msr msp, r0\n"
+			 "ldr r0, =g_intstackalloc\n"
+			 "msr msplim, r0\n"
 			 "movs r1, #2\n"
 			 "msr control, r1\n"
 			 "isb\n"
 			 "ldr r0, =0xe000e208\n"
 			 "movs r1, #0x40\n"
 			 "str r1, [r0]\n"
+			 "dsb\n"
+			 "msr primask, r3\n"
+			 "isb\n"
 			 ".global qemu_fault_lab_nested_spin\n"
 			 "qemu_fault_lab_nested_spin:\n"
-			 "b qemu_fault_lab_nested_spin\n");
+			 "ldr r0, =g_qemu_fault_lab_nested_irq_count\n"
+			 "ldr r0, [r0]\n"
+			 "cmp r0, #1\n"
+			 "bne qemu_fault_lab_nested_spin\n"
+			 "cpsid i\n"
+			 "ldr r0, =g_qemu_fault_lab_saved\n"
+			 "movs r1, #0\n"
+			 "msr msplim, r1\n"
+			 "msr psplim, r1\n"
+			 "ldr r1, [r0, #0]\n"
+			 "msr msp, r1\n"
+			 "ldr r1, [r0, #4]\n"
+			 "msr psp, r1\n"
+			 "ldr r1, [r0, #8]\n"
+			 "msr control, r1\n"
+			 "isb\n"
+			 "ldr r1, [r0, #12]\n"
+			 "msr msplim, r1\n"
+			 "ldr r1, [r0, #16]\n"
+			 "msr psplim, r1\n"
+			 "ldr r1, [r0, #20]\n"
+			 "pop {r4-r11, lr}\n"
+			 "msr primask, r1\n"
+			 "bx lr\n");
 }
 
 static int qemu_fault_lab_nested_start(const char *scenario)
@@ -121,9 +178,37 @@ static int qemu_fault_lab_nested_start(const char *scenario)
 	up_enable_irq(FAULTLAB_IRQ_NESTED);
 	lldbg("FAULTLAB: nested scenario=%s outer=0x%x nested=0x%x priority=0x%x\n",
 	      scenario, FAULTLAB_IRQ_OUTER, FAULTLAB_IRQ_NESTED, nested_priority);
+	/* Do not let a tick switch the TCB to our short-lived synthetic stack. */
+	sched_lock();
 	qemu_fault_lab_nested_launch();
-	return OK;
+	sched_unlock();
+	up_disable_irq(FAULTLAB_IRQ_OUTER);
+	up_disable_irq(FAULTLAB_IRQ_NESTED);
+	printf("FAULTLAB: returned outer=%u nested=%u\n",
+	       g_qemu_fault_lab_outer_irq_count, g_qemu_fault_lab_nested_irq_count);
+	g_qemu_fault_lab_progress = 0;
+	ret = task_create("fault-progress", 100, 2048,
+	                  qemu_fault_lab_progress_task, NULL);
+	if (ret < 0) {
+		return ret;
+	}
+	for (int i = 0; i < 100 && g_qemu_fault_lab_progress == 0; i++) {
+		usleep(1000);
+	}
+	if (g_qemu_fault_lab_progress == 1) {
+		printf("FAULTLAB: scheduler progressed\n");
+		return OK;
+	}
+	return -1;
 }
+
+#else
+static int qemu_fault_lab_nested_start(const char *scenario)
+{
+	printf("faultlab 1-3 require the fault_lab_nested configuration\n");
+	return -1;
+}
+#endif
 
 __attribute__((noinline)) void qemu_fault_lab_checkpoint(void)
 {
@@ -141,7 +226,11 @@ __attribute__((naked, noinline, noreturn)) void qemu_fault_lab_bad_stack(void)
 	 * produces this address. A second UDF escalates while UsageFault is active;
 	 * HardFault then cannot execute its software save on this invalid MSP.
 	 */
-	__asm__ volatile("ldr r0, =0x60000000\n\tmsr msp, r0\n\tudf #1\n\tb .");
+	/* Clear the emergency stack's limit so this still exercises unmapped
+	 * MSP, rather than being intercepted earlier by MSPLIM's STKOF check.
+	 */
+	__asm__ volatile("movs r1, #0\n\tmsr msplim, r1\n\t"
+			 "ldr r0, =0x60000000\n\tmsr msp, r0\n\tudf #1\n\tb .");
 }
 
 void qemu_fault_lab_on_usagefault(void)
@@ -152,6 +241,9 @@ void qemu_fault_lab_on_usagefault(void)
 		lldbg("FAULTLAB: injecting invalid MSP and secondary fault\n");
 		g_qemu_fault_lab_stage = 3;
 		qemu_fault_lab_checkpoint();
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+		arm_fault_note_injection(5);
+#endif
 		qemu_fault_lab_bad_stack();
 	} else if (g_qemu_fault_lab_mode == 3) {
 		lldbg("FAULTLAB: disabling UART TX and filling its buffer\n");
@@ -160,6 +252,9 @@ void qemu_fault_lab_on_usagefault(void)
 		putreg32('!', MPS2_UART0_DATA);
 		g_qemu_fault_lab_stage = 3;
 		qemu_fault_lab_checkpoint();
+#ifdef CONFIG_ARMV8M_FAULT_RECOVERY
+		arm_fault_note_injection(6);
+#endif
 		/* Exercise the real polling driver, without replacing its loop. */
 		lldbg("FAULTLAB: this output cannot finish\n");
 	}
@@ -177,7 +272,7 @@ static int qemu_fault_lab_command(int argc, char **argv)
 		printf("  4 UsageFault panic halt injection\n");
 		printf("  5 invalid-MSP architectural lockup injection\n");
 		printf("  6 UART polling wait injection\n");
-		printf("Each run is intentionally non-returning; reboot QEMU before another case.\n");
+		printf("Cases 1-3 return; 4-6 inject fatal faults (reboot with recovery enabled).\n");
 		return OK;
 	}
 	if (argc == 2) {

@@ -1,0 +1,9 @@
+{
+  "build/output/bin/tinyara_memstats.txt": "e32e78444e4e1572b0ee9db25a8f85f2804565df04bb03973992c04395ed23cd",
+  "build/output/bin/tinyara": "713f942735844e7ca9d10409ef13c1957dd771e0f66683b8ee4f172d5d7ebb49",
+  "build/output/bin/tinyara.map": "0122f3e0f97bd8b4b6dd8b56c621f6e296fa4adc8754b7e05e5effaa96d60cb6",
+  "build/output/bin/System.map": "4dfe6743e6795ffec2252fe516d9ce8ec4848111145a31125d7d90d0222d6b62",
+  "build/output/bin/.gitignore": "8732775eee770018db7d79d035a0163015a016de17ebbf8884902ec6d1d9fcf2",
+  "build/output/bin/tinyara.bin": "01b99395632148fab6d4d1c953d53d8e106311ae219c2b18e22d13424cfc52d1",
+  "build/output/bin/tinyara_binarysize.txt": "917390fce802a331a2176b17151c8c3adf7c510a5ef8711c98b9991df760ddb1"
+}
