@@ -596,3 +596,5 @@ CONFIG_SMARTFS_TEST=y
 
 # Destructive, opt-in QEMU observation harness
 CONFIG_QEMU_FAULT_LAB=y
+
+CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
