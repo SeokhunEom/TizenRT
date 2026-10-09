@@ -1,0 +1,445 @@
+> ?
+< T05core:01;
+> qXfer:features:read:target.xml:0,800
+< l<?xml version="1.0"?><!DOCTYPE target SYSTEM "gdb-target.dtd"><target><architecture>arm</architecture><xi:include href="arm-m-profile.xml"/><xi:include href="arm-vfp.xml"/><xi:include href="system-registers.xml"/><xi:include href="arm-m-system.xml"/><xi:include href="arm-m-secext.xml"/></target>
+> qXfer:features:read:arm-m-profile.xml:0,800
+< l<?xml version="1.0"?>
+<!-- Copyright (C) 2010-2020 Free Software Foundation, Inc.
+
+     Copying and distribution of this file, with or without modification,
+     are permitted in any medium without royalty provided the copyright
+     notice and this notice are preserved.  -->
+
+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
+<feature name="org.gnu.gdb.arm.m-profile">
+  <reg name="r0" bitsize="32"/>
+  <reg name="r1" bitsize="32"/>
+  <reg name="r2" bitsize="32"/>
+  <reg name="r3" bitsize="32"/>
+  <reg name="r4" bitsize="32"/>
+  <reg name="r5" bitsize="32"/>
+  <reg name="r6" bitsize="32"/>
+  <reg name="r7" bitsize="32"/>
+  <reg name="r8" bitsize="32"/>
+  <reg name="r9" bitsize="32"/>
+  <reg name="r10" bitsize="32"/>
+  <reg name="r11" bitsize="32"/>
+  <reg name="r12" bitsize="32"/>
+  <reg name="sp" bitsize="32" type="data_ptr"/>
+  <reg name="lr" bitsize="32"/>
+  <reg name="pc" bitsize="32" type="code_ptr"/>
+  <reg name="xpsr" bitsize="32" regnum="25"/>
+</feature>
+
+> qXfer:features:read:arm-vfp.xml:0,800
+< l<?xml version="1.0"?>
+<!-- Copyright (C) 2008 Free Software Foundation, Inc.
+
+     Copying and distribution of this file, with or without modification,
+     are permitted in any medium without royalty provided the copyright
+     notice and this notice are preserved.  -->
+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
+<feature name="org.gnu.gdb.arm.vfp">
+  <reg name="d0" bitsize="64" type="float"/>
+  <reg name="d1" bitsize="64" type="float"/>
+  <reg name="d2" bitsize="64" type="float"/>
+  <reg name="d3" bitsize="64" type="float"/>
+  <reg name="d4" bitsize="64" type="float"/>
+  <reg name="d5" bitsize="64" type="float"/>
+  <reg name="d6" bitsize="64" type="float"/>
+  <reg name="d7" bitsize="64" type="float"/>
+  <reg name="d8" bitsize="64" type="float"/>
+  <reg name="d9" bitsize="64" type="float"/>
+  <reg name="d10" bitsize="64" type="float"/>
+  <reg name="d11" bitsize="64" type="float"/>
+  <reg name="d12" bitsize="64" type="float"/>
+  <reg name="d13" bitsize="64" type="float"/>
+  <reg name="d14" bitsize="64" type="float"/>
+  <reg name="d15" bitsize="64" type="float"/>
+
+  <reg name="fpscr" bitsize="32" type="int" group="float"/>
+</feature>
+
+> qXfer:features:read:system-registers.xml:0,800
+< l<?xml version="1.0"?><!DOCTYPE feature SYSTEM "gdb-target.dtd"><feature name="org.qemu.gdb.arm.sys.regs"></feature>
+> qXfer:features:read:arm-m-system.xml:0,800
+< l<?xml version="1.0"?><!DOCTYPE feature SYSTEM "gdb-target.dtd"><feature name="org.gnu.gdb.arm.m-system"><reg name="msp" bitsize="32" regnum="43" type="int"/><reg name="psp" bitsize="32" regnum="44" type="int"/><reg name="primask" bitsize="32" regnum="45" type="int"/><reg name="control" bitsize="32" regnum="46" type="int"/><reg name="basepri" bitsize="32" regnum="47" type="int"/><reg name="faultmask" bitsize="32" regnum="48" type="int"/><reg name="msplim" bitsize="32" regnum="49" type="int"/><reg name="psplim" bitsize="32" regnum="50" type="int"/></feature>
+> qXfer:features:read:arm-m-secext.xml:0,800
+< l<?xml version="1.0"?><!DOCTYPE feature SYSTEM "gdb-target.dtd"><feature name="org.gnu.gdb.arm.secext"><reg name="msp_ns" bitsize="32" regnum="51" type="int"/><reg name="msp_s" bitsize="32" regnum="52" type="int"/><reg name="psp_ns" bitsize="32" regnum="53" type="int"/><reg name="psp_s" bitsize="32" regnum="54" type="int"/><reg name="primask_ns" bitsize="32" regnum="55" type="int"/><reg name="primask_s" bitsize="32" regnum="56" type="int"/><reg name="control_ns" bitsize="32" regnum="57" type="int"/><reg name="control_s" bitsize="32" regnum="58" type="int"/><reg name="basepri_ns" bitsize="32" regnum="59" type="int"/><reg name="basepri_s" bitsize="32" regnum="60" type="int"/><reg name="faultmask_ns" bitsize="32" regnum="61" type="int"/><reg name="faultmask_s" bitsize="32" regnum="62" type="int"/><reg name="msplim_ns" bitsize="32" regnum="63" type="int"/><reg name="msplim_s" bitsize="32" regnum="64" type="int"/><reg name="psplim_ns" bitsize="32" regnum="65" type="int"/><reg name="psplim_s" bitsize="32" regnum="66" type="int"/></feature>
+> Z1,10001d40,2
+< OK
+> c
+< T05thread:01;
+> p0
+< 63000000
+> p1
+< 76610610
+> p2
+< 00000000
+> p3
+< 9d560010
+> pd
+< 78b30380
+> pe
+< fd1d0010
+> pf
+< 401d0010
+> p19
+< 00000061
+> p2b
+< 78b30380
+> p2c
+< 00000000
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< e0000000
+> p30
+< 00000000
+> p31
+< a0a40380
+> p32
+< 00000000
+> p33
+< 00000000
+> p34
+< 78b30380
+> p35
+< 00000000
+> p36
+< 00000000
+> me000e108,4
+< c0000000
+> me000e208,4
+< 00000000
+> me000e444,4
+< 80808000
+> me000e308,4
+< 00000000
+> z1,10001d40,2
+< OK
+> Z1,100013e2,2
+< OK
+> Z1,1000140a,2
+< OK
+> Z1,10001030,2
+< OK
+> Z1,10001178,2
+< OK
+> Z1,10000868,2
+< OK
+> c
+< T05thread:01;
+> p0
+< 56000000
+> p1
+< 20000000
+> p2
+< 00000000
+> p3
+< e0000000
+> pd
+< 701e0080
+> pe
+< fdffffff
+> pf
+< e2130010
+> p19
+< 56000061
+> p2b
+< 701e0080
+> p2c
+< 78280080
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< 20000000
+> p30
+< 00000000
+> p31
+< 70160080
+> p32
+< 98200080
+> p33
+< 00000000
+> p34
+< 701e0080
+> p35
+< 00000000
+> p36
+< 78280080
+> me000ed28,4
+< 00000000
+> me000ed2c,4
+< 00000000
+> me000ed24,4
+< 00000500
+> me000ed04,4
+< 56080000
+> m8000208c,4
+< 0a000000
+> m80002080,4
+< 00000000
+> m80002088,4
+< 00000000
+> m80002090,4
+< 01000000
+> me000e108,4
+< c0000000
+> me000e208,4
+< 00000000
+> me000e308,4
+< 40000000
+> z1,100013e2,2
+< OK
+> c
+< T05thread:01;
+> p0
+< 57000000
+> p1
+< 20000000
+> p2
+< 80000000
+> p3
+< 20000000
+> pd
+< 501e0080
+> pe
+< f1ffffff
+> pf
+< 0a140010
+> p19
+< 57000061
+> p2b
+< 501e0080
+> p2c
+< 78280080
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< 20000000
+> p30
+< 00000000
+> p31
+< 70160080
+> p32
+< 98200080
+> p33
+< 00000000
+> p34
+< 501e0080
+> p35
+< 00000000
+> p36
+< 78280080
+> me000ed28,4
+< 00000000
+> me000ed2c,4
+< 00000000
+> me000ed24,4
+< 00000500
+> me000ed04,4
+< 57000000
+> m8000208c,4
+< 0a000000
+> m80002080,4
+< 00000000
+> m80002088,4
+< 00000000
+> m80002090,4
+< 00000000
+> me000e108,4
+< c0000000
+> me000e208,4
+< 00000000
+> me000e308,4
+< c0000000
+> z1,1000140a,2
+< OK
+> Z1,10001d6c,2
+< OK
+> c
+< T05thread:01;
+> p0
+< 03000000
+> p1
+< 1c1e0080
+> p2
+< 00000000
+> p3
+< 79110010
+> pd
+< 5c1e0080
+> pe
+< 43110010
+> pf
+< 78110010
+> p19
+< 03000081
+> p2b
+< 5c1e0080
+> p2c
+< 78280080
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< 00000000
+> p30
+< 00000000
+> p31
+< 00000000
+> p32
+< 98200080
+> p33
+< 00000000
+> p34
+< 5c1e0080
+> p35
+< 00000000
+> p36
+< 78280080
+> me000ed28,4
+< 00000200
+> me000ed2c,4
+< 00000040
+> me000ed24,4
+< 04000500
+> me000ed04,4
+< 03000000
+> m8000208c,4
+< 0a000000
+> m80002080,4
+< 00000000
+> m80002088,4
+< 01000000
+> m80002090,4
+< 00000000
+> me000e108,4
+< c0000000
+> me000e208,4
+< 00000000
+> me000e308,4
+< 40000000
+> z1,10001178,2
+< OK
+> c
+< T05thread:01;
+> p0
+< 25600610
+> p1
+< d7000000
+> p2
+< 00000000
+> p3
+< 20000000
+> pd
+< 241e0080
+> pe
+< 75120010
+> pf
+< 68080010
+> p19
+< 03000021
+> p2b
+< 241e0080
+> p2c
+< 78280080
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< 20000000
+> p30
+< 00000000
+> p31
+< 00000000
+> p32
+< 98200080
+> p33
+< 00000000
+> p34
+< 241e0080
+> p35
+< 00000000
+> p36
+< 78280080
+> me000ed28,4
+< 00000200
+> me000ed2c,4
+< 00000040
+> me000ed24,4
+< 04000500
+> me000ed04,4
+< 03304100
+> m8000208c,4
+< 0a000000
+> m80002080,4
+< 00000000
+> m80002088,4
+< 01000000
+> m80002090,4
+< 00000000
+> me000e108,4
+< c0000000
+> me000e208,4
+< 00000000
+> me000e308,4
+< 40000000
+> z1,10001030,2
+< OK
+> z1,10001d6c,2
+< OK
+> z1,10000868,2
+< OK
+> c
+> INTERRUPT
+< T02thread:01;
+> p0
+< 58000000
+> p1
+< d3560610
+> p2
+< 00000000
+> p3
+< 20000000
+> pd
+< d41d0080
+> pe
+< 390d0010
+> pf
+< 420d0010
+> p19
+< 03000021
+> p2b
+< d41d0080
+> p2c
+< 78280080
+> p2d
+< 00000000
+> p2e
+< 00000000
+> p2f
+< 20000000
+> p30
+< 00000000
+> p31
+< 00000000
+> p32
+< 98200080
+> p33
+< 00000000
+> p34
+< d41d0080
+> p35
+< 00000000
+> p36
+< 78280080

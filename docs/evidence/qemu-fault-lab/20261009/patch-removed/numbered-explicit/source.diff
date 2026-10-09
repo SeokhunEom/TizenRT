@@ -1,0 +1,133 @@
+diff --git a/docs/Human/QEMU_ARMv8M_Nested_IRQ_Patch_Comparison.md b/docs/Human/QEMU_ARMv8M_Nested_IRQ_Patch_Comparison.md
+index b812c043a..09c9c4aa7 100644
+--- a/docs/Human/QEMU_ARMv8M_Nested_IRQ_Patch_Comparison.md
++++ b/docs/Human/QEMU_ARMv8M_Nested_IRQ_Patch_Comparison.md
+@@ -86,6 +86,27 @@ polling 대기가 나오지 않았다. 자연 중첩 조건에서 추가로 확
+ | 패치 제거 | [results.json](../../build/qemu-fault-lab/evidence-20261009/patch-removed-explicit/committed-final/results.json) |
+ | 패치 포함 | [results.json](../../../qemu-armv8m-fault-fix-control/build/qemu-fault-lab/evidence-20261009/patch-present-explicit/committed-final/results.json) |
+ 
++## TASH에서 1–6번으로 선택 실행
++
++테스트용 `faultlab` TASH 명령은 두 실험 빌드 모두에서 숫자 선택자를 지원한다.
++세 중첩 IRQ 조건과 세 명시적 정지 주입을 한 `fault_lab_nested` 이미지에
++포함했으므로, 패치 제거/포함 각각 같은 방식으로 선택할 수 있다.
++
++| 명령 | 조건 |
++| --- | --- |
++| `faultlab 1` | `early40`: 첫 예외 진입 창, 중첩 IRQ priority `0x40` |
++| `faultlab 2` | `early00`: 첫 예외 진입 창, 중첩 IRQ priority `0x00` |
++| `faultlab 3` | `late40`: 인터럽트 스택 전환 뒤 중첩 IRQ |
++| `faultlab 4` | UsageFault → panic halt 명시 주입 |
++| `faultlab 5` | 잘못된 MSP와 2차 fault로 architectural lockup 명시 주입 |
++| `faultlab 6` | UART TX 중단으로 polling 대기 명시 주입 |
++
++인자 없이 `faultlab`을 실행하면 선택 목록을 출력한다. 각 선택은 의도적으로
++TASH 프롬프트로 돌아오지 않는다. 따라서 한 번 부팅한 게스트에서는 한 조건만
++실행하고, 다음 조건은 QEMU를 재부팅해 실행한다. 자동 검증기
++`nested.py`와 `run.py`도 이 숫자 명령을 각각 보내며, 각 조건을 새 QEMU
++인스턴스에서 검증한다.
++
+ ## 재실행
+ 
+ 테스트 코드는 [중첩 IRQ runner](../../tools/qemu-fault-lab/nested.py),
+diff --git a/os/board/qemu-armv8m/src/qemu_armv8m_fault_lab.c b/os/board/qemu-armv8m/src/qemu_armv8m_fault_lab.c
+index 5be3e071b..10c3a7b1a 100644
+--- a/os/board/qemu-armv8m/src/qemu_armv8m_fault_lab.c
++++ b/os/board/qemu-armv8m/src/qemu_armv8m_fault_lab.c
+@@ -168,6 +168,30 @@ void qemu_fault_lab_on_usagefault(void)
+ static int qemu_fault_lab_command(int argc, char **argv)
+ {
+ 	uint32_t mode;
++	const char *scenario;
++	if (argc == 1) {
++		printf("usage: faultlab <1..6>\n");
++		printf("  1 early40 nested IRQ during exception entry (priority 0x40)\n");
++		printf("  2 early00 nested IRQ during exception entry (priority 0x00)\n");
++		printf("  3 late40 nested IRQ after interrupt-stack switch\n");
++		printf("  4 UsageFault panic halt injection\n");
++		printf("  5 invalid-MSP architectural lockup injection\n");
++		printf("  6 UART polling wait injection\n");
++		printf("Each run is intentionally non-returning; reboot QEMU before another case.\n");
++		return OK;
++	}
++	if (argc == 2) {
++		if (strcmp(argv[1], "1") == 0) {
++			scenario = "early40";
++			return qemu_fault_lab_nested_start(scenario);
++		} else if (strcmp(argv[1], "2") == 0) {
++			scenario = "early00";
++			return qemu_fault_lab_nested_start(scenario);
++		} else if (strcmp(argv[1], "3") == 0) {
++			scenario = "late40";
++			return qemu_fault_lab_nested_start(scenario);
++		}
++	}
+ 	if (argc >= 2 && strcmp(argv[1], "nested") == 0) {
+ 		if (argc != 3) {
+ 			printf("usage: faultlab nested early40|early00|late40\n");
+@@ -185,10 +209,18 @@ static int qemu_fault_lab_command(int argc, char **argv)
+ 		mode = 2;
+ 	} else if (strcmp(argv[1], "uart") == 0) {
+ 		mode = 3;
++	} else if (strcmp(argv[1], "4") == 0) {
++		mode = 1;
++	} else if (strcmp(argv[1], "5") == 0) {
++		mode = 2;
++	} else if (strcmp(argv[1], "6") == 0) {
++		mode = 3;
+ 	} else {
++		printf("unknown scenario; run 'faultlab' to list cases\n");
+ 		return -1;
+ 	}
+-	lldbg("FAULTLAB: begin %s\n", argv[1]);
++	lldbg("FAULTLAB: begin scenario %s (%s)\n", argv[1],
++	      mode == 1 ? "panic" : (mode == 2 ? "lockup" : "uart"));
+ 	g_qemu_fault_lab_mode = mode;
+ 	g_qemu_fault_lab_stage = 1;
+ 	up_enable_irq(MPS2_IRQ_USAGEFAULT);
+diff --git a/tools/qemu-fault-lab/nested.py b/tools/qemu-fault-lab/nested.py
+index 18cf62bee..9a6ab628a 100644
+--- a/tools/qemu-fault-lab/nested.py
++++ b/tools/qemu-fault-lab/nested.py
+@@ -81,7 +81,8 @@ def run_case(args, elf, case, out):
+                     raise RuntimeError('fresh TASH prompt not reached')
+                 if select.select([conn], [], [], .05)[0]:
+                     raise RuntimeError('unexpected stop before TASH: ' + remote.packet())
+-            proc.stdin.write(f'faultlab nested {case}\n'.encode())
++            selection = {'early40': 1, 'early00': 2, 'late40': 3}[case]
++            proc.stdin.write(f'faultlab {selection}\n'.encode())
+             proc.stdin.flush()
+             if not select.select([conn], [], [], max(0, deadline-time.monotonic()))[0]:
+                 raise RuntimeError('faultlab nested command did not reach its launch breakpoint')
+diff --git a/tools/qemu-fault-lab/run.py b/tools/qemu-fault-lab/run.py
+index ebfe2a035..d240b0250 100644
+--- a/tools/qemu-fault-lab/run.py
++++ b/tools/qemu-fault-lab/run.py
+@@ -225,7 +225,8 @@ def run_case(args, elf, case, out):
+                     raise RuntimeError('fresh TASH prompt not reached')
+                 if select.select([conn], [], [], .05)[0]:
+                     raise RuntimeError('unexpected stop before command: '+remote.packet())
+-            proc.stdin.write(f'faultlab {case}\n'.encode()); proc.stdin.flush()
++            selection = {'panic': 4, 'lockup': 5, 'uart': 6}[case]
++            proc.stdin.write(f'faultlab {selection}\n'.encode()); proc.stdin.flush()
+             observed = False
+             while time.monotonic() < deadline:
+                 if proc.poll() is not None:
+@@ -327,7 +328,7 @@ def main():
+     parser.add_argument('--repeat', type=int, default=1)
+     parser.add_argument('--qemu', default=shutil.which('qemu-system-arm'))
+     args = parser.parse_args()
+-    args.elf, args.output = args.elf.resolve(), args.output.resolve()
++    args.elf, args.config, args.output = args.elf.resolve(), args.config.resolve(), args.output.resolve()
+     assert args.qemu and args.repeat > 0
+     cfg = args.config.read_text()
+     assert 'CONFIG_QEMU_FAULT_LAB=y' in cfg
+@@ -356,7 +357,7 @@ def main():
+                     Path('os/arch/arm/src/armv8-m/up_usagefault.c'),
+                     Path('os/arch/arm/src/armv8-m/up_exception.S'),
+                     Path('os/arch/arm/include/armv8-m/irq_cmnvector.h'),
+-                    Path('build/configs/qemu-armv8m/fault_lab/defconfig')]
++                    args.config.relative_to(root)]
+     result['source_sha256'] = {}
+     for path in source_paths:
+         destination = args.output/'sources'/path

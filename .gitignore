@@ -30,3 +30,6 @@ tags
 *.tmp.*
 *.log
 *.log.old
+
+# QEMU fault experiment firmware and raw observation evidence
+/build/qemu-fault-lab/

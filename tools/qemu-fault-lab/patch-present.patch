@@ -1,0 +1,403 @@
+diff --git a/build/configs/qemu-armv8m/fault_lab_nested/defconfig b/build/configs/qemu-armv8m/fault_lab_nested/defconfig
+index a257c72f5..142043532 100644
+--- a/build/configs/qemu-armv8m/fault_lab_nested/defconfig
++++ b/build/configs/qemu-armv8m/fault_lab_nested/defconfig
+@@ -596,3 +596,5 @@ CONFIG_SMARTFS_TEST=y
+ 
+ # Destructive, opt-in QEMU observation harness
+ CONFIG_QEMU_FAULT_LAB=y
++
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+diff --git a/build/configs/rtl8721csm/cxxtest/defconfig b/build/configs/rtl8721csm/cxxtest/defconfig
+index 6b33d05a7..d639e993f 100644
+--- a/build/configs/rtl8721csm/cxxtest/defconfig
++++ b/build/configs/rtl8721csm/cxxtest/defconfig
+@@ -191,6 +191,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/hello/defconfig b/build/configs/rtl8721csm/hello/defconfig
+index d94e01f1d..9956ec37a 100644
+--- a/build/configs/rtl8721csm/hello/defconfig
++++ b/build/configs/rtl8721csm/hello/defconfig
+@@ -190,6 +190,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/ipv6/defconfig b/build/configs/rtl8721csm/ipv6/defconfig
+index 947e11f30..54686cec4 100644
+--- a/build/configs/rtl8721csm/ipv6/defconfig
++++ b/build/configs/rtl8721csm/ipv6/defconfig
+@@ -185,6 +185,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/loadable_apps/defconfig b/build/configs/rtl8721csm/loadable_apps/defconfig
+index 5232b0c9a..c723ea65a 100644
+--- a/build/configs/rtl8721csm/loadable_apps/defconfig
++++ b/build/configs/rtl8721csm/loadable_apps/defconfig
+@@ -192,6 +192,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/nettest/defconfig b/build/configs/rtl8721csm/nettest/defconfig
+index f26316658..acd73863c 100644
+--- a/build/configs/rtl8721csm/nettest/defconfig
++++ b/build/configs/rtl8721csm/nettest/defconfig
+@@ -182,6 +182,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ # CONFIG_ARCH_HAVE_NESTED_INTERRUPT is not set
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/rdp/defconfig b/build/configs/rtl8721csm/rdp/defconfig
+index 8aaa672c5..634ab7f7d 100644
+--- a/build/configs/rtl8721csm/rdp/defconfig
++++ b/build/configs/rtl8721csm/rdp/defconfig
+@@ -177,6 +177,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ # CONFIG_ARCH_HAVE_NESTED_INTERRUPT is not set
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/security_hal_test_tz/defconfig b/build/configs/rtl8721csm/security_hal_test_tz/defconfig
+index 40d14bacb..b97ee7c14 100644
+--- a/build/configs/rtl8721csm/security_hal_test_tz/defconfig
++++ b/build/configs/rtl8721csm/security_hal_test_tz/defconfig
+@@ -185,6 +185,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/tc/defconfig b/build/configs/rtl8721csm/tc/defconfig
+index a58be0aa5..9c076b314 100644
+--- a/build/configs/rtl8721csm/tc/defconfig
++++ b/build/configs/rtl8721csm/tc/defconfig
+@@ -190,6 +190,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ CONFIG_ARCH_HAVE_NESTED_INTERRUPT=y
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/build/configs/rtl8721csm/tls_test/defconfig b/build/configs/rtl8721csm/tls_test/defconfig
+index 8982a3307..6db912175 100644
+--- a/build/configs/rtl8721csm/tls_test/defconfig
++++ b/build/configs/rtl8721csm/tls_test/defconfig
+@@ -182,6 +182,7 @@ CONFIG_BOARD_LOOPSPERMSEC=22222
+ #
+ CONFIG_ARCH_HAVE_INTERRUPTSTACK=y
+ CONFIG_ARCH_INTERRUPTSTACK=0
++CONFIG_ARCH_NESTED_IRQ_STACK_SIZE=512
+ # CONFIG_ARCH_HAVE_NESTED_INTERRUPT is not set
+ CONFIG_ARCH_HAVE_HIPRI_INTERRUPT=y
+ # CONFIG_ARCH_HIPRI_INTERRUPT is not set
+diff --git a/os/arch/Kconfig b/os/arch/Kconfig
+index cc0ce0de9..af757e333 100644
+--- a/os/arch/Kconfig
++++ b/os/arch/Kconfig
+@@ -582,6 +582,15 @@ config ARCH_INTERRUPTSTACK
+ 		defined to be zero), the user task stacks will be used during interrupt
+ 		handling.
+ 
++config ARCH_NESTED_IRQ_STACK_SIZE
++	int "Nested IRQ secondary stack size"
++	depends on ARCH_HAVE_INTERRUPTSTACK && ARCH_ARMV8M_FAMILY
++	default 512
++	---help---
++		This is an additional stack which will be used only when nested irq
++		happens with a stale or invalid value of MSP. That is, when the nested
++		IRQ occurs in handler mode, but the MSP value has not yet been updated.
++
+ config ARCH_HAVE_NESTED_INTERRUPT
+ 	bool
+ 	default n
+diff --git a/os/arch/arm/include/armv8-m/irq_cmnvector.h b/os/arch/arm/include/armv8-m/irq_cmnvector.h
+index 7298bd3f1..e6749e7eb 100644
+--- a/os/arch/arm/include/armv8-m/irq_cmnvector.h
++++ b/os/arch/arm/include/armv8-m/irq_cmnvector.h
+@@ -115,10 +115,12 @@
+ /* The total number of registers saved by software */
+ 
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+-#define REG_SPLIM           (SW_INT_REGS + SW_FPU_REGS + 0) /* REG_SPLIM */
+-#define SW_XCPT_REGS        (SW_INT_REGS + SW_FPU_REGS + 1)
++#define REG_PSP             (SW_INT_REGS + SW_FPU_REGS)
++#define REG_SPLIM           (SW_INT_REGS + SW_FPU_REGS + 1) /* REG_SPLIM */
++#define SW_XCPT_REGS        (SW_INT_REGS + SW_FPU_REGS + 2)
+ #else
+-#define SW_XCPT_REGS        (SW_INT_REGS + SW_FPU_REGS)
++#define REG_PSP             (SW_INT_REGS + SW_FPU_REGS)
++#define SW_XCPT_REGS        (SW_INT_REGS + SW_FPU_REGS + 1)
+ #endif
+ #define SW_XCPT_SIZE        (4 * SW_XCPT_REGS)
+ 
+diff --git a/os/arch/arm/src/armv8-m/up_exception.S b/os/arch/arm/src/armv8-m/up_exception.S
+index 2ae4091cf..549c4d17b 100644
+--- a/os/arch/arm/src/armv8-m/up_exception.S
++++ b/os/arch/arm/src/armv8-m/up_exception.S
+@@ -96,6 +96,10 @@
+ #  endif
+ #endif
+ 
++#if CONFIG_ARCH_NESTED_IRQ_STACK_SIZE == 0
++#error CONFIG_ARCH_NESTED_IRQ_STACK_SIZE must not be zero. It may lead to system failure.
++#endif
++
+ /************************************************************************************
+  * Global Symbols
+  ************************************************************************************/
+@@ -153,9 +157,45 @@
+ 	.thumb_func
+ exception_common:
+ 
+-	mrs		r0, ipsr				/* R0=exception number */
++	/* First, we must save the basepri register and disable interrupts */
++
++#ifdef CONFIG_ARMV8M_USEBASEPRI
++	mrs		r3, basepri				/* R3=Current BASEPRI setting */
++#else
++	mrs		r3, primask				/* R3=Current PRIMASK setting */
++#endif
++
++#ifdef CONFIG_ARCH_NESTED_INTERRUPT
++#ifdef CONFIG_ARMV8M_USEBASEPRI
++	mov r1, #NVIC_SYSH_DISABLE_PRIORITY
++	msr basepri,r1						/* Set base priority */
++#else
++	cpsid	i
++#endif
++
++#elif defined(CONFIG_ARCH_HIPRI_INTERRUPT)
++	/* Set the BASEPRI register so that further normal interrupts will be
++	 * masked.  Nested, high priority may still occur, however.
++	 */
+ 
++	mov		r2, #NVIC_SYSH_DISABLE_PRIORITY
++	msr		basepri, r2				/* Set the BASEPRI */
++
++#else
++	/* Disable interrupts, select the stack to use for interrupt handling
++	 * and call up_doirq to handle the interrupt
++	 */
++
++	cpsid	i						/* Disable further interrupts */
++
++#endif
++
++	/* Test-only schedule hook, placed after the patched entry has masked
++	 * BASEPRI-eligible interrupts. Highest-priority nested IRQs can still
++	 * arrive here, as they can on the target hardware.
++	 */
+ #ifdef CONFIG_QEMU_FAULT_LAB
++	mrs		r0, ipsr
+ 	cmp		r0, #86
+ 	beq		.Lqemu_fault_lab_outer_window
+ 	cmp		r0, #87
+@@ -192,23 +232,30 @@ qemu_fault_lab_nested_irq_window:
+ 	mov     sp, r1					/* Set the MSP to the PSP */
+ 
+ 1:
++
+ 	mov		r2, sp					/* R2=Copy of the main/process stack pointer */
+ 	add		r2, #HW_XCPT_SIZE		/* R2=MSP/PSP before the interrupt was taken */
+-									/* (ignoring the xPSR[9] alignment bit) */
++
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+-	mov		r3, #0x0
++	mov		r0, #0x0
+ 	ittee		eq
+ 	mrseq		r1, msplim
+-	msreq		msplim, r3
++	msreq		msplim, r0
+ 	mrsne		r1, psplim
+-	msrne		psplim, r3
++	msrne		psplim, r0
+ 	stmdb		sp!, {r1}
+ #endif
+-#ifdef CONFIG_ARMV8M_USEBASEPRI
+-	mrs		r3, basepri				/* R3=Current BASEPRI setting */
+-#else
+-	mrs		r3, primask				/* R3=Current PRIMASK setting */
+-#endif
++
++	/* If we are entering in handler mode, and the previous mode was thread mode with psp,
++	 * then, we need to store that previous psp value onto the SW exception context,
++	 * instead of storing the current msp value which is for the handler mode
++	 */
++	mov		r1, #0
++	cmp             r14, #EXC_RETURN_HANDLER
++	bne             10f
++	mrs		r1, psp
++10:
++	stmdb		sp!, {r1}					/* Either store psp or zero onto stack */
+ 
+ #ifdef CONFIG_ARCH_FPU
+ 
+@@ -230,31 +277,6 @@ qemu_fault_lab_nested_irq_window:
+ 	stmdb	sp!, {r2-r11,r14}		/* Save the remaining registers plus the SP/PRIMASK values */
+ 
+ 
+-#ifdef CONFIG_ARCH_NESTED_INTERRUPT
+-#ifdef CONFIG_ARMV8M_USEBASEPRI
+-	mov r1, #NVIC_SYSH_DISABLE_PRIORITY
+-	msr basepri,r1						/* Set base priority */
+-#else
+-	cpsid	i
+-#endif
+-
+-#elif defined(CONFIG_ARCH_HIPRI_INTERRUPT)
+-	/* Set the BASEPRI register so that further normal interrupts will be
+-	 * masked.  Nested, high priority may still occur, however.
+-	 */
+-
+-	mov		r2, #NVIC_SYSH_DISABLE_PRIORITY
+-	msr		basepri, r2				/* Set the BASEPRI */
+-
+-#else
+-	/* Disable interrupts, select the stack to use for interrupt handling
+-	 * and call up_doirq to handle the interrupt
+-	 */
+-
+-	cpsid	i						/* Disable further interrupts */
+-
+-#endif
+-
+ 	/* There are two arguments to up_doirq:
+ 	 *
+ 	 *   R0 = The IRQ number
+@@ -262,6 +284,7 @@ qemu_fault_lab_nested_irq_window:
+ 	 */
+ 
+ 	mov		r1, sp
++	mrs		r0, ipsr				/* R0=exception number */
+ 
+ #if CONFIG_ARCH_INTERRUPTSTACK > 3
+ 	/* If CONFIG_ARCH_INTERRUPTSTACK is defined, we will set the MSP to use
+@@ -278,8 +301,8 @@ qemu_fault_lab_nested_irq_window:
+ 	ldr		r5, =current_regs
+ 	str		r1, [r5]
+ #endif
+-
+ 	ldr		sp, =g_intstackbase
++
+ 9:
+ 	/* Reenabling the interrupts before going into up_doirq
+ 	 * so that any higher priority interrupt can be served.
+@@ -346,9 +369,11 @@ qemu_fault_lab_nested_irq_window:
+ 	vldmia	r0!, {s16-s31}			/* Recover S16-S31 */
+ #endif
+ 
++	ldmia	r0!, {r2}						/* Remove the PSP value from stack */
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+ 	ldmia	r0, {r0}				/* Get psplim/msplim*/
+ #endif
++
+ 	b		3f						/* Re-join common logic */
+ 
+ 2:
+@@ -361,36 +386,52 @@ qemu_fault_lab_nested_irq_window:
+ 	vldmia  r1!, {s16-s31}			/* Recover S16-S31 */
+ #endif
+ 
++	ldmia	r1!, {r2}			/* Remove the PSP value from stack */
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+ 	ldmia	r1!, {r0}				/* Get psplim/msplim */
+ #endif
+ 3:
+-	/* The EXC_RETURN value tells us whether we are returning on the MSP or PSP
++
++	/* If we are returning to handler mode after handling the nested irq, 
++	 * we will restore the PSP to the value it had before the first irq happened
+ 	 */
++	cmp     r14, #EXC_RETURN_HANDLER
++	bne     4f
++	msr 	psp, r2
+ 
++4:
+ #ifdef CONFIG_BUILD_PROTECTED
+ 	/* The EXC_RETURN value will be 0xfffffff9 (privileged thread) or 0xfffffff1
+ 	 * (handler mode) if the stack is on the MSP.  It can only be on the PSP if
+ 	 * EXC_RETURN is 0xfffffffd (unprivileged thread)
+ 	 */
+-
+ 	mrs		r2, control				/* R2=Contents of the control register */
+ 	tst		r14, #EXC_RETURN_PROCESS_STACK /* nonzero if context on process stack */
+-	beq		4f						/* Branch if privileged */
++	beq		5f						/* Branch if privileged */
+ 
+ 	orr		r2, r2, #1				/* Unprivileged mode */
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+ 	msr		psplim, r0
+ #endif
+ 	msr		psp, r1					/* R1=The process stack pointer */
+-	b		5f
+-4:
++
++	/* When we return to thread mode with psp, the previous value of msp might not be
++	 * valid. If this condition is followed by a nested interrupt, the processor will
++	 * store the nested irq hw context on the invalid msp. This will corrupt the stack
++	 * of the running process. In order to avoid this, we will set the msp to a backup
++	 * irq stack at this point.
++	 */
++	ldr             r1, =g_nestedirqstkbase
++	msr		msp, r1
++
++	b		6f
++5:
+ 	bic		r2, r2, #1				/* Privileged mode */
+ #ifdef CONFIG_REG_STACK_OVERFLOW_PROTECTION
+ 	msr		msplim, r0
+ #endif
+ 	msr		msp, r1					/* R1=The main stack pointer */
+-5:
++6:
+ 	msr		control, r2				/* Save the updated control register */
+ #else
+ 	tst		r14, #EXC_RETURN_PROCESS_STACK /* nonzero if context on process stack */
+@@ -403,7 +444,6 @@ qemu_fault_lab_nested_irq_window:
+ 	msreq	msp, r1					/* R1=The main stack pointer */
+ 	msrne	psp, r1					/* R1=The process stack pointer */
+ #endif
+-
+ 	/* Restore the interrupt state */
+ 
+ #ifdef CONFIG_ARMV8M_USEBASEPRI
+@@ -447,4 +487,13 @@ g_nestlevel:
+ 	.size   g_nestlevel, 4
+ #endif
+ 
++	.bss
++	.global	g_nestedirqstkalloc
++	.global	g_nestedirqstkbase
++	.align	4
++g_nestedirqstkalloc:
++	.skip   (CONFIG_ARCH_NESTED_IRQ_STACK_SIZE & ~3)
++g_nestedirqstkbase:
++	.size	g_nestedirqstkalloc, .-g_nestedirqstkalloc
++
+ 	.end

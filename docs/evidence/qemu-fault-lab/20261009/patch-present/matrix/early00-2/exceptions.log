@@ -1,0 +1,1063 @@
+Loaded reset SP 0x0 PC 0x0 from vector table
+Loaded reset SP 0x8002d648 PC 0x100001b1 from vector table
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...tailchaining to pending exception
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 2 [SVC] on CPU 0
+...taking pending secure exception 11
+...loading from element 11 of secure vector table at 0x1000002c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 11
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 48
+...loading from element 48 of secure vector table at 0x100000c0
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 48
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 49
+...loading from element 49 of secure vector table at 0x100000c4
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 49
+...tailchaining to pending exception
+...taking pending secure exception 58
+...loading from element 58 of secure vector table at 0x100000e8
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 58
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 19
+...loading from element 19 of secure vector table at 0x1000004c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff9 previous exception 19
+...successful exception return
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 86
+...loading from element 86 of secure vector table at 0x10000158
+...loaded new PC 0x100013c9
+Taking exception 5 [IRQ] on CPU 0
+...taking pending secure exception 87
+...loading from element 87 of secure vector table at 0x1000015c
+...loaded new PC 0x100013c9
+Taking exception 8 [QEMU v7M exception exit] on CPU 0
+Exception return: magic PC fffffff1 previous exception 87
+...successful exception return
+Taking exception 18 [v7M INVSTATE UsageFault] on CPU 0
+...taking pending secure exception 3
+...loading from element 3 of secure vector table at 0x1000000c
+...loaded new PC 0x100013c9
+MPU region out of range 8/8
+MPU region out of range 9/8
+MPU region out of range 10/8
+MPU region out of range 11/8
+MPU region out of range 12/8
+MPU region out of range 13/8
+MPU region out of range 14/8
+MPU region out of range 15/8
