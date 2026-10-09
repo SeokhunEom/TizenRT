@@ -38,6 +38,9 @@ CSRCS += boardctl.c
 endif
 
 CSRCS += qemu_armv8m_boot.c qemu_armv8m_flash.c
+ifeq ($(CONFIG_QEMU_FAULT_LAB),y)
+CSRCS += qemu_armv8m_fault_lab.c
+endif
 ifeq ($(CONFIG_NET),y)
 ifeq ($(CONFIG_NET_NETMGR),y)
 CSRCS += qemu_armv8m_lan9118.c

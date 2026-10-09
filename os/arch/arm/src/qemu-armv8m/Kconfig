@@ -5,6 +5,14 @@
 
 comment "QEMU ARMv8-M Configuration Options"
 
+config QEMU_FAULT_LAB
+	bool "Enable destructive fault observation commands (QEMU only)"
+	default n
+	depends on ARCH_CHIP_QEMU_ARMV8M && BUILD_FLAT && TASH
+	---help---
+		Register faultlab panic|lockup|uart. Each command intentionally
+		stops the emulated guest. For controlled debugger experiments only.
+
 config ARCH_CHIP_MPS2_AN505
 	bool "MPS2-AN505"
 	default y

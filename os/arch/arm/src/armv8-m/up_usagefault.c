@@ -130,6 +130,12 @@ int up_usagefault(int irq, FAR void *context, FAR void *arg)
 		print_usagefault_detail(regs, cfsr);
 	}
 
+#ifdef CONFIG_QEMU_FAULT_LAB
+	/* Opt-in QEMU experiments run after the real fault diagnostic. */
+	extern void qemu_fault_lab_on_usagefault(void);
+	qemu_fault_lab_on_usagefault();
+#endif
+
 #ifdef CONFIG_SYSTEM_REBOOT_REASON
 	 up_reboot_reason_write(REBOOT_SYSTEM_PREFETCHABORT);
 #endif
