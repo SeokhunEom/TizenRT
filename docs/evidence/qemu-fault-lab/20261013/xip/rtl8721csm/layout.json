@@ -1,0 +1,20 @@
+{
+  "xiplab_ram_entry": "0x10005d4c",
+  "xiplab_capture": "0x10005bde",
+  "xiplab_checksum": "0x10005b9c",
+  "xiplab_arm": "0x10005c80",
+  "xiplab_region": "0x10005bbc",
+  "xiplab_trigger": "0x10005d90",
+  "xiplab_read_dependency": "0x10005d94",
+  "xiplab_dependency_load": "0x10005d96",
+  "g_xiplab_record": "0x10026820",
+  "g_xiplab_vectors": "0x10042a00",
+  "g_xiplab_stack": "0x100424b0",
+  "xiplab_flash_entry": "0xe085a30",
+  "g_xiplab_flash_word": "0xe0baf34",
+  "_sbss": "0x10026a00",
+  "_ebss": "0x100587c0",
+  "_sdata": "0x10025658",
+  "_edata": "0x10026806",
+  "__ram_image2_text_end__": "0x10026806"
+}

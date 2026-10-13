@@ -1,0 +1,193 @@
+
+/work/build/qemu-fault-lab/rtl-xip-firmware/tinyara.axf:     file format elf32-littlearm
+
+
+Disassembly of section .ram_image2.text:
+
+10005b9c <xiplab_checksum>:
+10005b9c:	2301      	movs	r3, #1
+10005b9e:	4805      	ldr	r0, [pc, #20]	; (10005bb4 <xiplab_checksum+0x18>)
+10005ba0:	4905      	ldr	r1, [pc, #20]	; (10005bb8 <xiplab_checksum+0x1c>)
+10005ba2:	f851 2023 	ldr.w	r2, [r1, r3, lsl #2]
+10005ba6:	3301      	adds	r3, #1
+10005ba8:	2b0a      	cmp	r3, #10
+10005baa:	ea82 60f0 	eor.w	r0, r2, r0, ror #27
+10005bae:	d1f8      	bne.n	10005ba2 <xiplab_checksum+0x6>
+10005bb0:	4770      	bx	lr
+10005bb2:	bf00      	nop
+10005bb4:	58495031 	.word	0x58495031
+10005bb8:	10026820 	.word	0x10026820
+
+10005bbc <xiplab_region>:
+10005bbc:	b510      	push	{r4, lr}
+10005bbe:	f04f 24e0 	mov.w	r4, #3758153728	; 0xe000e000
+10005bc2:	f022 021f 	bic.w	r2, r2, #31
+10005bc6:	ea42 0243 	orr.w	r2, r2, r3, lsl #1
+10005bca:	4319      	orrs	r1, r3
+10005bcc:	f042 0201 	orr.w	r2, r2, #1
+10005bd0:	f8c4 0d98 	str.w	r0, [r4, #3480]	; 0xd98
+10005bd4:	f8c4 1d9c 	str.w	r1, [r4, #3484]	; 0xd9c
+10005bd8:	f8c4 2da0 	str.w	r2, [r4, #3488]	; 0xda0
+10005bdc:	bd10      	pop	{r4, pc}
+
+10005bde <xiplab_capture>:
+10005bde:	f04f 22e0 	mov.w	r2, #3758153728	; 0xe000e000
+10005be2:	b510      	push	{r4, lr}
+10005be4:	4c22      	ldr	r4, [pc, #136]	; (10005c70 <xiplab_capture+0x92>)
+10005be6:	6923      	ldr	r3, [r4, #16]
+10005be8:	f8d2 1d28 	ldr.w	r1, [r2, #3368]	; 0xd28
+10005bec:	61a1      	str	r1, [r4, #24]
+10005bee:	f8d2 1d2c 	ldr.w	r1, [r2, #3372]	; 0xd2c
+10005bf2:	61e1      	str	r1, [r4, #28]
+10005bf4:	f8d2 1d94 	ldr.w	r1, [r2, #3476]	; 0xd94
+10005bf8:	6221      	str	r1, [r4, #32]
+10005bfa:	f8d2 2d08 	ldr.w	r2, [r2, #3336]	; 0xd08
+10005bfe:	f003 0103 	and.w	r1, r3, #3
+10005c02:	6262      	str	r2, [r4, #36]	; 0x24
+10005c04:	69a2      	ldr	r2, [r4, #24]
+10005c06:	f022 427f 	bic.w	r2, r2, #4278190080	; 0xff000000
+10005c0a:	f422 026f 	bic.w	r2, r2, #15663104	; 0xef0000
+10005c0e:	f422 4247 	bic.w	r2, r2, #50944	; 0xc700
+10005c12:	f022 02c7 	bic.w	r2, r2, #199	; 0xc7
+10005c16:	430a      	orrs	r2, r1
+10005c18:	d10c      	bne.n	10005c34 <xiplab_capture+0x56>
+10005c1a:	4a16      	ldr	r2, [pc, #88]	; (10005c74 <xiplab_capture+0x96>)
+10005c1c:	f103 4170 	add.w	r1, r3, #4026531840	; 0xf0000000
+10005c20:	4291      	cmp	r1, r2
+10005c22:	d905      	bls.n	10005c30 <xiplab_capture+0x52>
+10005c24:	f103 417e 	add.w	r1, r3, #4261412864	; 0xfe000000
+10005c28:	f502 1240 	add.w	r2, r2, #3145728	; 0x300000
+10005c2c:	4291      	cmp	r1, r2
+10005c2e:	d801      	bhi.n	10005c34 <xiplab_capture+0x56>
+10005c30:	699b      	ldr	r3, [r3, #24]
+10005c32:	6163      	str	r3, [r4, #20]
+10005c34:	6863      	ldr	r3, [r4, #4]
+10005c36:	2b02      	cmp	r3, #2
+10005c38:	d105      	bne.n	10005c46 <xiplab_capture+0x68>
+10005c3a:	2316      	movs	r3, #22
+10005c3c:	60a3      	str	r3, [r4, #8]
+10005c3e:	f3bf 8f4f 	dsb	sy
+10005c42:	f000 f8a7 	bl	10005d94 <xiplab_read_dependency>
+10005c46:	231e      	movs	r3, #30
+10005c48:	60a3      	str	r3, [r4, #8]
+10005c4a:	f7ff ffa7 	bl	10005b9c <xiplab_checksum>
+10005c4e:	62a0      	str	r0, [r4, #40]	; 0x28
+10005c50:	f3bf 8f4f 	dsb	sy
+10005c54:	4b08      	ldr	r3, [pc, #32]	; (10005c78 <xiplab_capture+0x9a>)
+10005c56:	6023      	str	r3, [r4, #0]
+10005c58:	f3bf 8f4f 	dsb	sy
+10005c5c:	f04f 23e0 	mov.w	r3, #3758153728	; 0xe000e000
+10005c60:	4a06      	ldr	r2, [pc, #24]	; (10005c7c <xiplab_capture+0x9e>)
+10005c62:	f8c3 2d0c 	str.w	r2, [r3, #3340]	; 0xd0c
+10005c66:	f3bf 8f4f 	dsb	sy
+10005c6a:	bf00      	nop
+10005c6c:	e7fd      	b.n	10005c6a <xiplab_capture+0x8c>
+10005c6e:	bf00      	nop
+10005c70:	10026820 	.word	0x10026820
+10005c74:	000fffe0 	.word	0x000fffe0
+10005c78:	58495031 	.word	0x58495031
+10005c7c:	05fa0004 	.word	0x05fa0004
+
+10005c80 <xiplab_arm>:
+10005c80:	f04f 21e0 	mov.w	r1, #3758153728	; 0xe000e000
+10005c84:	b508      	push	{r3, lr}
+10005c86:	f8d1 3d90 	ldr.w	r3, [r1, #3472]	; 0xd90
+10005c8a:	4604      	mov	r4, r0
+10005c8c:	f3c3 2307 	ubfx	r3, r3, #8, #8
+10005c90:	b672      	cpsid	i
+10005c92:	f3bf 8f4f 	dsb	sy
+10005c96:	f3bf 8f6f 	isb	sy
+10005c9a:	4a27      	ldr	r2, [pc, #156]	; (10005d38 <xiplab_arm+0xb8>)
+10005c9c:	f8c1 2d08 	str.w	r2, [r1, #3336]	; 0xd08
+10005ca0:	2200      	movs	r2, #0
+10005ca2:	f8c1 2d94 	str.w	r2, [r1, #3476]	; 0xd94
+10005ca6:	f3bf 8f4f 	dsb	sy
+10005caa:	f3bf 8f6f 	isb	sy
+10005cae:	4610      	mov	r0, r2
+10005cb0:	429a      	cmp	r2, r3
+10005cb2:	d13a      	bne.n	10005d2a <xiplab_arm+0xaa>
+10005cb4:	2344      	movs	r3, #68	; 0x44
+10005cb6:	f8c1 3dc0 	str.w	r3, [r1, #3520]	; 0xdc0
+10005cba:	2300      	movs	r3, #0
+10005cbc:	f04f 5180 	mov.w	r1, #268435456	; 0x10000000
+10005cc0:	4618      	mov	r0, r3
+10005cc2:	4a1e      	ldr	r2, [pc, #120]	; (10005d3c <xiplab_arm+0xbc>)
+10005cc4:	f7ff ff7a 	bl	10005bbc <xiplab_region>
+10005cc8:	2001      	movs	r0, #1
+10005cca:	f04f 7100 	mov.w	r1, #33554432	; 0x2000000
+10005cce:	4a1c      	ldr	r2, [pc, #112]	; (10005d40 <xiplab_arm+0xc0>)
+10005cd0:	f7ff ff74 	bl	10005bbc <xiplab_region>
+10005cd4:	4603      	mov	r3, r0
+10005cd6:	f06f 4220 	mvn.w	r2, #2684354560	; 0xa0000000
+10005cda:	f04f 4180 	mov.w	r1, #1073741824	; 0x40000000
+10005cde:	2002      	movs	r0, #2
+10005ce0:	f7ff ff6c 	bl	10005bbc <xiplab_region>
+10005ce4:	f04f 4160 	mov.w	r1, #3758096384	; 0xe0000000
+10005ce8:	2003      	movs	r0, #3
+10005cea:	4a16      	ldr	r2, [pc, #88]	; (10005d44 <xiplab_arm+0xc4>)
+10005cec:	f7ff ff66 	bl	10005bbc <xiplab_region>
+10005cf0:	b93c      	cbnz	r4, 10005d02 <xiplab_arm+0x82>
+10005cf2:	4623      	mov	r3, r4
+10005cf4:	f06f 4270 	mvn.w	r2, #4026531840	; 0xf0000000
+10005cf8:	f04f 6100 	mov.w	r1, #134217728	; 0x8000000
+10005cfc:	2004      	movs	r0, #4
+10005cfe:	f7ff ff5d 	bl	10005bbc <xiplab_region>
+10005d02:	f04f 23e0 	mov.w	r3, #3758153728	; 0xe000e000
+10005d06:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
+10005d0a:	210a      	movs	r1, #10
+10005d0c:	f8c3 2d28 	str.w	r2, [r3, #3368]	; 0xd28
+10005d10:	f8c3 2d2c 	str.w	r2, [r3, #3372]	; 0xd2c
+10005d14:	4a0c      	ldr	r2, [pc, #48]	; (10005d48 <xiplab_arm+0xc8>)
+10005d16:	6091      	str	r1, [r2, #8]
+10005d18:	2203      	movs	r2, #3
+10005d1a:	f8c3 2d94 	str.w	r2, [r3, #3476]	; 0xd94
+10005d1e:	f3bf 8f4f 	dsb	sy
+10005d22:	f3bf 8f6f 	isb	sy
+10005d26:	f000 f833 	bl	10005d90 <xiplab_trigger>
+10005d2a:	f8c1 2d98 	str.w	r2, [r1, #3480]	; 0xd98
+10005d2e:	f8c1 0da0 	str.w	r0, [r1, #3488]	; 0xda0
+10005d32:	3201      	adds	r2, #1
+10005d34:	e7bc      	b.n	10005cb0 <xiplab_arm+0x30>
+10005d36:	bf00      	nop
+10005d38:	10042a00 	.word	0x10042a00
+10005d3c:	100fffff 	.word	0x100fffff
+10005d40:	023fffff 	.word	0x023fffff
+10005d44:	e00fffff 	.word	0xe00fffff
+10005d48:	10026820 	.word	0x10026820
+
+10005d4c <xiplab_ram_entry>:
+10005d4c:	b672      	cpsid	i
+10005d4e:	480e      	ldr	r0, [pc, #56]	; (10005d88 <xiplab_ram_entry+0x3c>)
+10005d50:	2114      	movs	r1, #20
+10005d52:	6081      	str	r1, [r0, #8]
+10005d54:	f3ef 8105 	mrs	r1, IPSR
+10005d58:	60c1      	str	r1, [r0, #12]
+10005d5a:	f01e 0f04 	tst.w	lr, #4
+10005d5e:	bf0c      	ite	eq
+10005d60:	f3ef 8108 	mrseq	r1, MSP
+10005d64:	f3ef 8109 	mrsne	r1, PSP
+10005d68:	6101      	str	r1, [r0, #16]
+10005d6a:	2100      	movs	r1, #0
+10005d6c:	f381 880a 	msr	MSPLIM, r1
+10005d70:	4906      	ldr	r1, [pc, #24]	; (10005d8c <xiplab_ram_entry+0x40>)
+10005d72:	f501 6280 	add.w	r2, r1, #1024	; 0x400
+10005d76:	f382 8808 	msr	MSP, r2
+10005d7a:	f381 880a 	msr	MSPLIM, r1
+10005d7e:	f3bf 8f6f 	isb	sy
+10005d82:	f7ff bf2c 	b.w	10005bde <xiplab_capture>
+10005d86:	0000      	.short	0x0000
+10005d88:	10026820 	.word	0x10026820
+10005d8c:	100424b0 	.word	0x100424b0
+
+10005d90 <xiplab_trigger>:
+10005d90:	de00      	udf	#0
+10005d92:	e7fe      	b.n	10005d92 <xiplab_trigger+0x2>
+
+10005d94 <xiplab_read_dependency>:
+10005d94:	4801      	ldr	r0, [pc, #4]	; (10005d9c <xiplab_dependency_load+0x6>)
+
+10005d96 <xiplab_dependency_load>:
+10005d96:	6800      	ldr	r0, [r0, #0]
+10005d98:	4770      	bx	lr
+10005d9a:	0000      	.short	0x0000
+10005d9c:	0e0baf34 	.word	0x0e0baf34

@@ -86,3 +86,8 @@ ifeq ($(CONFIG_ARMV8M_FAULT_RECOVERY),y)
 CMN_ASRCS += up_fault_entry.S
 CMN_CSRCS += up_fault_recovery.c
 endif
+
+ifeq ($(CONFIG_ARMV8M_XIP_FAULT_LAB),y)
+CMN_ASRCS += up_xip_lab_entry.S
+CMN_CSRCS += up_xip_lab.c
+endif

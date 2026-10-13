@@ -64,6 +64,7 @@ SECTIONS
 
 	.data : {
 		_sdata = ABSOLUTE(.);
+		*(.image2.ram.text.xiplab)
 		*(.data .data.*)
 		*(.gnu.linkonce.d.*)
 		CONSTRUCTORS
@@ -73,6 +74,10 @@ SECTIONS
 	/* Kept outside the startup BSS clear, before the heap/idle stack. */
 	.fault_record (NOLOAD) : ALIGN(8) {
 		KEEP(*(.fault_record))
+	} > ram
+
+	.xiplab_record (NOLOAD) : ALIGN(32) {
+		KEEP(*(.xiplab_record))
 	} > ram
 
 	.bss : {

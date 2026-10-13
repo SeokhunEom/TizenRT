@@ -1,0 +1,2675 @@
+make[1]: Entering directory '/root/tizenrt/os/tools'
+make[1]: Leaving directory '/root/tizenrt/os/tools'
+echo "create .version file"; \
+tools/version.sh -v 5.0 .version; \
+chmod 755 .version
+create .version file
+GIT version information is not available
+make[1]: Entering directory '/root/tizenrt/os/tools'
+make[1]: Leaving directory '/root/tizenrt/os/tools'
+LN: include/arch to arch/arm/include
+LN: include/arch/board to board/rtl8721csm/include
+LN: include/arch/chip to arch/arm/include/amebad
+LN: arch/arm/src/board to board/rtl8721csm/src
+LN: arch/arm/src/chip to arch/arm/src/amebad
+LN: include/apps to ../apps/include
+make[1]: Entering directory '/root/tizenrt/apps'
+make[2]: Entering directory '/root/tizenrt/apps/examples'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mqtt_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mqtt_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/cxxtest'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/cxxtest'
+make[3]: Entering directory '/root/tizenrt/apps/examples/st_things'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/st_things'
+make[3]: Entering directory '/root/tizenrt/apps/examples/uart_hw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/uart_hw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotbus_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotbus_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/bluetooth'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/bluetooth'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+Register: ble_rmc
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rtc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rtc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/curl_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/curl_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dnsclient_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dnsclient_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediarecorder'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediarecorder'
+make[3]: Entering directory '/root/tizenrt/apps/examples/heavy_signal_message_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/heavy_signal_message_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/camera'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/camera'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webserver'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webserver'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wave_gen'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wave_gen'
+make[3]: Entering directory '/root/tizenrt/apps/examples/aifw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/aifw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/touchscreen'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/touchscreen'
+make[3]: Entering directory '/root/tizenrt/apps/examples/err_report_demo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/err_report_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ftpc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ftpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/telnetd'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/telnetd'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dm_wifi_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dm_wifi_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/security_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/seclink'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/seclink'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/security_api'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/security_api'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/hal'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/hal'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/sltool'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/sltool'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/mbedtls_self'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/mbedtls_self'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/see_api'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/see_api'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/security_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/fota_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/fota_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lwnl_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lwnl_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/xmlrpc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/xmlrpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wakerec'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wakerec'
+make[3]: Entering directory '/root/tizenrt/apps/examples/avs_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/avs_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/aws'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/aws'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ftpd'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ftpd'
+make[3]: Entering directory '/root/tizenrt/apps/examples/log_dump'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/log_dump'
+make[3]: Entering directory '/root/tizenrt/apps/examples/timer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/timer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smartfs'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smart'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smart'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/fs_performance'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/fs_performance'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smart_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smart_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smartfs_powercut'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smartfs_powercut'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/buffer_optimization'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/buffer_optimization'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smartfs'
+make[3]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer'
+make[4]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer/player'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer/player'
+make[4]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer/controller'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer/controller'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediaplayer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediaplayer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/websocket'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/websocket'
+make[3]: Entering directory '/root/tizenrt/apps/examples/setjmp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/setjmp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/virtkey'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/virtkey'
+make[3]: Entering directory '/root/tizenrt/apps/examples/nettest'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/nettest'
+make[3]: Entering directory '/root/tizenrt/apps/examples/stdk_smart_lamp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/stdk_smart_lamp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lcd_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lcd_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rssi_report'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rssi_report'
+make[3]: Entering directory '/root/tizenrt/apps/examples/touch_visual_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/touch_visual_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/csifw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/csifw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dtls'
+make[4]: Entering directory '/root/tizenrt/apps/examples/dtls/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/dtls/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/dtls/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/dtls/server'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dtls'
+make[3]: Entering directory '/root/tizenrt/apps/examples/i2schar'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/i2schar'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webserver_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webserver_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ntpclient_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ntpclient_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/reboot_reason_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/reboot_reason_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mtdpart'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mtdpart'
+make[3]: Entering directory '/root/tizenrt/apps/examples/tls'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/server'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/selftest'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/selftest'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/tls'
+make[3]: Entering directory '/root/tizenrt/apps/examples/testcase'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/testcase'
+make[3]: Entering directory '/root/tizenrt/apps/examples/kernel_update_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/kernel_update_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wakaama_client'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wakaama_client'
+make[3]: Entering directory '/root/tizenrt/apps/examples/csifw_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/csifw_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotivity_simpleserver'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotivity_simpleserver'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediastreamer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediastreamer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/watchdog'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/watchdog'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_perfs'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_perfs'
+make[3]: Entering directory '/root/tizenrt/apps/examples/simple_file_transfer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/simple_file_transfer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/eeprom_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/eeprom_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/eventloop'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/eventloop'
+make[3]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_nn_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_nn_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_storage_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_storage_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/cy4390x_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/cy4390x_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_world_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_world_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_mipi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_mipi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_wifi_csi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_wifi_csi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/esp32_wifi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/esp32_wifi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/artik_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/artik_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_dsp_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_dsp_demo'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mem_protect'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mem_protect'
+make[3]: Entering directory '/root/tizenrt/apps/examples/speech_detector_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/speech_detector_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mdns_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mdns_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webclient'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webclient'
+make[3]: Entering directory '/root/tizenrt/apps/examples/messaging_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/messaging_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/stack_protection'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/stack_protection'
+make[3]: Entering directory '/root/tizenrt/apps/examples/select_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/select_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/libtuv'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/libtuv'
+make[3]: Entering directory '/root/tizenrt/apps/examples/grpc'
+make[4]: Entering directory '/root/tizenrt/apps/examples/grpc/greeter_client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/grpc/greeter_client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/grpc/route_client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/grpc/route_client'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/grpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lwm2m_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lwm2m_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello'
+Register: hello
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello'
+make[3]: Entering directory '/root/tizenrt/apps/examples/uart_loopback'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/uart_loopback'
+make[3]: Entering directory '/root/tizenrt/apps/examples/task_manager_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/task_manager_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/fs_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/fs_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rdp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rdp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+Register: ble_tester
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+make[3]: Entering directory '/root/tizenrt/apps/examples/helloxx'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/helloxx'
+make[3]: Entering directory '/root/tizenrt/apps/examples/power'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/power'
+make[3]: Entering directory '/root/tizenrt/apps/examples/memory_fragmentation_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/memory_fragmentation_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/kernel_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/kernel_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/libcoap'
+make[4]: Entering directory '/root/tizenrt/apps/examples/libcoap/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/libcoap/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/libcoap/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/libcoap/server'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/libcoap'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smtp_client'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smtp_client'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello_tfmicro'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello_tfmicro'
+make[3]: Entering directory '/root/tizenrt/apps/examples/performance'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/context_switching'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/context_switching'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_benchmark'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_benchmark'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_seclink'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_seclink'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_handshake'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_handshake'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/heap'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/heap'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/syscall'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/syscall'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/performance'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wifi_manager'
+make[4]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/tahi'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/tahi'
+make[4]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+Register: wm_test
+make[4]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager'
+make[3]: Entering directory '/root/tizenrt/apps/examples/led_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/led_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotjs_startup'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotjs_startup'
+make[3]: Entering directory '/root/tizenrt/apps/examples/nanopb_simple'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/nanopb_simple'
+make[3]: Entering directory '/root/tizenrt/apps/examples/connect_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/connect_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/sensorbd_demo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/sensorbd_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/protobuf'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/basic_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/basic_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/gtest'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/gtest'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/msgtype_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/msgtype_test'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/protobuf'
+make[3]: Entering directory '/root/tizenrt/apps/examples/tick_compensation_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/tick_compensation_test'
+make[2]: Leaving directory '/root/tizenrt/apps/examples'
+make[2]: Entering directory '/root/tizenrt/apps'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+Register: ble_rmc
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello'
+Register: hello
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+Register: ble_tester
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+Register: wm_test
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[3]: Entering directory '/root/tizenrt/apps/builtin'
+make[4]: Entering directory '/root/tizenrt/apps/builtin/registry'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/builtin/registry'
+make[3]: Leaving directory '/root/tizenrt/apps/builtin'
+make[3]: Entering directory '/root/tizenrt/apps/shell'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/shell'
+make[3]: Entering directory '/root/tizenrt/apps/system/iperf'
+Register: iperf
+make[3]: Leaving directory '/root/tizenrt/apps/system/iperf'
+make[3]: Entering directory '/root/tizenrt/apps/system/readline'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/readline'
+make[3]: Entering directory '/root/tizenrt/apps/system/netdb'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/netdb'
+make[3]: Entering directory '/root/tizenrt/apps/system/sysinfo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/sysinfo'
+make[3]: Entering directory '/root/tizenrt/apps/system/utils'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/utils'
+make[3]: Entering directory '/root/tizenrt/apps/system/system_file'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/system_file'
+make[3]: Entering directory '/root/tizenrt/apps/system/init'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/init'
+make[3]: Entering directory '/root/tizenrt/apps/platform'
+LN: platform/board to /root/tizenrt/apps/platform/dummy
+make[3]: Leaving directory '/root/tizenrt/apps/platform'
+make[2]: Leaving directory '/root/tizenrt/apps'
+make[1]: Leaving directory '/root/tizenrt/apps'
+make[1]: Entering directory '/root/tizenrt/tools'
+make[1]: Nothing to be done for 'context'.
+make[1]: Leaving directory '/root/tizenrt/tools'
+make[1]: Entering directory '/root/tizenrt/os/mm'
+make[1]: Leaving directory '/root/tizenrt/os/mm'
+make[1]: Entering directory '/root/tizenrt/os/wqueue'
+make[1]: Nothing to be done for 'context'.
+make[1]: Leaving directory '/root/tizenrt/os/wqueue'
+make[1]: Entering directory '/root/tizenrt/os/tools'
+make[1]: Leaving directory '/root/tizenrt/os/tools'
+make[1]: Entering directory '/root/tizenrt/loadable_apps'
+make[1]: Nothing to be done for 'depend'.
+make[1]: Leaving directory '/root/tizenrt/loadable_apps'
+make[1]: Entering directory '/root/tizenrt/os/kernel'
+make[1]: Leaving directory '/root/tizenrt/os/kernel'
+make[1]: Entering directory '/root/tizenrt/os/arch/arm/src'
+make[2]: Entering directory '/root/tizenrt/os/board/rtl8721csm/src'
+make[2]: Leaving directory '/root/tizenrt/os/board/rtl8721csm/src'
+make[1]: Leaving directory '/root/tizenrt/os/arch/arm/src'
+make[1]: Entering directory '/root/tizenrt/apps'
+make[2]: Entering directory '/root/tizenrt/apps/examples'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mqtt_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mqtt_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/cxxtest'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/cxxtest'
+make[3]: Entering directory '/root/tizenrt/apps/examples/st_things'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/st_things'
+make[3]: Entering directory '/root/tizenrt/apps/examples/uart_hw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/uart_hw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotbus_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotbus_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/bluetooth'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/bluetooth'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+Register: ble_rmc
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rtc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rtc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/curl_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/curl_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dnsclient_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dnsclient_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediarecorder'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediarecorder'
+make[3]: Entering directory '/root/tizenrt/apps/examples/heavy_signal_message_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/heavy_signal_message_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/camera'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/camera'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webserver'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webserver'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wave_gen'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wave_gen'
+make[3]: Entering directory '/root/tizenrt/apps/examples/aifw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/aifw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/touchscreen'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/touchscreen'
+make[3]: Entering directory '/root/tizenrt/apps/examples/err_report_demo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/err_report_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ftpc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ftpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/telnetd'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/telnetd'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dm_wifi_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dm_wifi_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/security_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/seclink'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/seclink'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/security_api'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/security_api'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/hal'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/hal'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/sltool'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/sltool'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/mbedtls_self'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/mbedtls_self'
+make[4]: Entering directory '/root/tizenrt/apps/examples/security_test/see_api'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/security_test/see_api'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/security_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/fota_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/fota_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lwnl_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lwnl_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/xmlrpc'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/xmlrpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wakerec'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wakerec'
+make[3]: Entering directory '/root/tizenrt/apps/examples/avs_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/avs_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/aws'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/aws'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ftpd'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ftpd'
+make[3]: Entering directory '/root/tizenrt/apps/examples/log_dump'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/log_dump'
+make[3]: Entering directory '/root/tizenrt/apps/examples/timer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/timer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smartfs'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smart'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smart'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/fs_performance'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/fs_performance'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smart_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smart_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/smartfs_powercut'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/smartfs_powercut'
+make[4]: Entering directory '/root/tizenrt/apps/examples/smartfs/buffer_optimization'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/smartfs/buffer_optimization'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smartfs'
+make[3]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer'
+make[4]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer/player'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer/player'
+make[4]: Entering directory '/root/tizenrt/apps/examples/SoundPlayer/controller'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer/controller'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/SoundPlayer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediaplayer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediaplayer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/websocket'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/websocket'
+make[3]: Entering directory '/root/tizenrt/apps/examples/setjmp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/setjmp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/virtkey'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/virtkey'
+make[3]: Entering directory '/root/tizenrt/apps/examples/nettest'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/nettest'
+make[3]: Entering directory '/root/tizenrt/apps/examples/stdk_smart_lamp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/stdk_smart_lamp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lcd_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lcd_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rssi_report'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rssi_report'
+make[3]: Entering directory '/root/tizenrt/apps/examples/touch_visual_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/touch_visual_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/csifw_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/csifw_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/dtls'
+make[4]: Entering directory '/root/tizenrt/apps/examples/dtls/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/dtls/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/dtls/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/dtls/server'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/dtls'
+make[3]: Entering directory '/root/tizenrt/apps/examples/i2schar'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/i2schar'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webserver_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webserver_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ntpclient_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ntpclient_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/reboot_reason_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/reboot_reason_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mtdpart'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mtdpart'
+make[3]: Entering directory '/root/tizenrt/apps/examples/tls'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/server'
+make[4]: Entering directory '/root/tizenrt/apps/examples/tls/selftest'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/tls/selftest'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/tls'
+make[3]: Entering directory '/root/tizenrt/apps/examples/testcase'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/testcase'
+make[3]: Entering directory '/root/tizenrt/apps/examples/kernel_update_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/kernel_update_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wakaama_client'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wakaama_client'
+make[3]: Entering directory '/root/tizenrt/apps/examples/csifw_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/csifw_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotivity_simpleserver'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotivity_simpleserver'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mediastreamer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mediastreamer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/watchdog'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/watchdog'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_perfs'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_perfs'
+make[3]: Entering directory '/root/tizenrt/apps/examples/simple_file_transfer'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/simple_file_transfer'
+make[3]: Entering directory '/root/tizenrt/apps/examples/eeprom_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/eeprom_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/eventloop'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/eventloop'
+make[3]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_nn_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_nn_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_storage_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_storage_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/cy4390x_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/cy4390x_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_world_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_secure_world_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_mipi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_mipi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_wifi_csi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_wifi_csi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/esp32_wifi_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/esp32_wifi_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/artik_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/artik_demo'
+make[4]: Entering directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_dsp_demo'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo/ameba_cmsis_dsp_demo'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/board_specific_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mem_protect'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mem_protect'
+make[3]: Entering directory '/root/tizenrt/apps/examples/speech_detector_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/speech_detector_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/mdns_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/mdns_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/webclient'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/webclient'
+make[3]: Entering directory '/root/tizenrt/apps/examples/messaging_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/messaging_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/stack_protection'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/stack_protection'
+make[3]: Entering directory '/root/tizenrt/apps/examples/select_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/select_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/libtuv'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/libtuv'
+make[3]: Entering directory '/root/tizenrt/apps/examples/grpc'
+make[4]: Entering directory '/root/tizenrt/apps/examples/grpc/greeter_client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/grpc/greeter_client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/grpc/route_client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/grpc/route_client'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/grpc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/lwm2m_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/lwm2m_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello'
+Register: hello
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello'
+make[3]: Entering directory '/root/tizenrt/apps/examples/uart_loopback'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/uart_loopback'
+make[3]: Entering directory '/root/tizenrt/apps/examples/task_manager_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/task_manager_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/fs_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/fs_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/rdp'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/rdp'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+Register: ble_tester
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+make[3]: Entering directory '/root/tizenrt/apps/examples/helloxx'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/helloxx'
+make[3]: Entering directory '/root/tizenrt/apps/examples/power'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/power'
+make[3]: Entering directory '/root/tizenrt/apps/examples/memory_fragmentation_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/memory_fragmentation_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/kernel_sample'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/kernel_sample'
+make[3]: Entering directory '/root/tizenrt/apps/examples/libcoap'
+make[4]: Entering directory '/root/tizenrt/apps/examples/libcoap/client'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/libcoap/client'
+make[4]: Entering directory '/root/tizenrt/apps/examples/libcoap/server'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/libcoap/server'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/libcoap'
+make[3]: Entering directory '/root/tizenrt/apps/examples/smtp_client'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/smtp_client'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello_tfmicro'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello_tfmicro'
+make[3]: Entering directory '/root/tizenrt/apps/examples/performance'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/context_switching'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/context_switching'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_benchmark'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_benchmark'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_seclink'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_seclink'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/tls_handshake'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/tls_handshake'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/heap'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/heap'
+make[4]: Entering directory '/root/tizenrt/apps/examples/performance/syscall'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/performance/syscall'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/performance'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wifi_manager'
+make[4]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/tahi'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/tahi'
+make[4]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+Register: wm_test
+make[4]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager'
+make[3]: Entering directory '/root/tizenrt/apps/examples/led_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/led_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/iotjs_startup'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/iotjs_startup'
+make[3]: Entering directory '/root/tizenrt/apps/examples/nanopb_simple'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/nanopb_simple'
+make[3]: Entering directory '/root/tizenrt/apps/examples/connect_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/connect_test'
+make[3]: Entering directory '/root/tizenrt/apps/examples/sensorbd_demo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/sensorbd_demo'
+make[3]: Entering directory '/root/tizenrt/apps/examples/protobuf'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/basic_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/basic_test'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/gtest'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/gtest'
+make[4]: Entering directory '/root/tizenrt/apps/examples/protobuf/msgtype_test'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/examples/protobuf/msgtype_test'
+make[3]: Leaving directory '/root/tizenrt/apps/examples/protobuf'
+make[3]: Entering directory '/root/tizenrt/apps/examples/tick_compensation_test'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/examples/tick_compensation_test'
+make[2]: Leaving directory '/root/tizenrt/apps/examples'
+make[2]: Entering directory '/root/tizenrt/apps'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+Register: ble_rmc
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+make[3]: Entering directory '/root/tizenrt/apps/examples/hello'
+Register: hello
+make[3]: Leaving directory '/root/tizenrt/apps/examples/hello'
+make[3]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+Register: ble_tester
+make[3]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+make[3]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+Register: wm_test
+make[3]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[3]: Entering directory '/root/tizenrt/apps/builtin'
+make[4]: Entering directory '/root/tizenrt/apps/builtin/registry'
+make[4]: Nothing to be done for 'context'.
+make[4]: Leaving directory '/root/tizenrt/apps/builtin/registry'
+make[3]: Leaving directory '/root/tizenrt/apps/builtin'
+make[3]: Entering directory '/root/tizenrt/apps/shell'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/shell'
+make[3]: Entering directory '/root/tizenrt/apps/system/iperf'
+Register: iperf
+make[3]: Leaving directory '/root/tizenrt/apps/system/iperf'
+make[3]: Entering directory '/root/tizenrt/apps/system/readline'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/readline'
+make[3]: Entering directory '/root/tizenrt/apps/system/netdb'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/netdb'
+make[3]: Entering directory '/root/tizenrt/apps/system/sysinfo'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/sysinfo'
+make[3]: Entering directory '/root/tizenrt/apps/system/utils'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/utils'
+make[3]: Entering directory '/root/tizenrt/apps/system/system_file'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/system_file'
+make[3]: Entering directory '/root/tizenrt/apps/system/init'
+make[3]: Nothing to be done for 'context'.
+make[3]: Leaving directory '/root/tizenrt/apps/system/init'
+make[3]: Entering directory '/root/tizenrt/apps/platform'
+LN: platform/board to /root/tizenrt/apps/platform/dummy
+make[3]: Leaving directory '/root/tizenrt/apps/platform'
+make[2]: Leaving directory '/root/tizenrt/apps'
+make[2]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+make[2]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+make[2]: Entering directory '/root/tizenrt/apps/examples/hello'
+make[2]: Leaving directory '/root/tizenrt/apps/examples/hello'
+make[2]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+make[2]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+make[2]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[2]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+make[2]: Entering directory '/root/tizenrt/apps/builtin'
+make[2]: Leaving directory '/root/tizenrt/apps/builtin'
+make[2]: Entering directory '/root/tizenrt/apps/shell'
+make[2]: Leaving directory '/root/tizenrt/apps/shell'
+make[2]: Entering directory '/root/tizenrt/apps/system/iperf'
+make[2]: Leaving directory '/root/tizenrt/apps/system/iperf'
+make[2]: Entering directory '/root/tizenrt/apps/system/readline'
+make[2]: Leaving directory '/root/tizenrt/apps/system/readline'
+make[2]: Entering directory '/root/tizenrt/apps/system/netdb'
+make[2]: Leaving directory '/root/tizenrt/apps/system/netdb'
+make[2]: Entering directory '/root/tizenrt/apps/system/sysinfo'
+make[2]: Leaving directory '/root/tizenrt/apps/system/sysinfo'
+make[2]: Entering directory '/root/tizenrt/apps/system/utils'
+make[2]: Leaving directory '/root/tizenrt/apps/system/utils'
+make[2]: Entering directory '/root/tizenrt/apps/system/system_file'
+make[2]: Leaving directory '/root/tizenrt/apps/system/system_file'
+make[2]: Entering directory '/root/tizenrt/apps/system/init'
+make[2]: Leaving directory '/root/tizenrt/apps/system/init'
+make[2]: Entering directory '/root/tizenrt/apps/platform'
+LN: platform/board to /root/tizenrt/apps/platform/dummy
+make[2]: Leaving directory '/root/tizenrt/apps/platform'
+make[1]: Leaving directory '/root/tizenrt/apps'
+make[1]: Entering directory '/root/tizenrt/external'
+make[2]: Entering directory '/root/tizenrt/external/netutils'
+make[2]: Leaving directory '/root/tizenrt/external/netutils'
+make[2]: Entering directory '/root/tizenrt/external/stress_tool'
+make[2]: Leaving directory '/root/tizenrt/external/stress_tool'
+make[2]: Entering directory '/root/tizenrt/external/mbedtls'
+make[2]: Leaving directory '/root/tizenrt/external/mbedtls'
+make[2]: Entering directory '/root/tizenrt/external/json'
+make[2]: Leaving directory '/root/tizenrt/external/json'
+make[2]: Entering directory '/root/tizenrt/external/dhcpd'
+make[2]: Leaving directory '/root/tizenrt/external/dhcpd'
+make[2]: Entering directory '/root/tizenrt/external/dhcpc'
+make[2]: Leaving directory '/root/tizenrt/external/dhcpc'
+make[1]: Leaving directory '/root/tizenrt/external'
+make[1]: Entering directory '/root/tizenrt/framework'
+make[1]: Leaving directory '/root/tizenrt/framework'
+make[1]: Entering directory '/root/tizenrt/tools'
+make[1]: Nothing to be done for 'depend'.
+make[1]: Leaving directory '/root/tizenrt/tools'
+make[1]: Entering directory '/root/tizenrt/lib/libc'
+make[1]: Leaving directory '/root/tizenrt/lib/libc'
+make[1]: Entering directory '/root/tizenrt/os/mm'
+make[1]: Leaving directory '/root/tizenrt/os/mm'
+make[1]: Entering directory '/root/tizenrt/os/wqueue'
+make[1]: Leaving directory '/root/tizenrt/os/wqueue'
+make[1]: Entering directory '/root/tizenrt/os/fs'
+make[1]: Leaving directory '/root/tizenrt/os/fs'
+make[1]: Entering directory '/root/tizenrt/os/drivers'
+make[1]: Leaving directory '/root/tizenrt/os/drivers'
+make[1]: Entering directory '/root/tizenrt/os/net'
+make[1]: Leaving directory '/root/tizenrt/os/net'
+make[1]: Entering directory '/root/tizenrt/os/kernel'
+CC:  init/os_start.c
+CC:  init/os_bringup.c
+CC:  irq/irq_initialize.c
+CC:  irq/irq_attach.c
+CC:  irq/irq_dispatch.c
+CC:  irq/irq_unexpectedisr.c
+CC:  irq/fin_wait.c
+CC:  irq/fin_notify.c
+CC:  paging/pg_miss.c
+CC:  paging/pg_worker.c
+CC:  group/group_create.c
+CC:  group/group_join.c
+CC:  group/group_leave.c
+CC:  group/group_find.c
+CC:  group/group_setupstreams.c
+CC:  group/group_setupidlefiles.c
+CC:  group/group_setuptaskfiles.c
+CC:  group/group_foreachchild.c
+CC:  group/group_killchildren.c
+CC:  task/task_reparent.c
+CC:  group/group_signal.c
+CC:  sched/sched_garbage.c
+CC:  sched/sched_getfiles.c
+CC:  sched/sched_addreadytorun.c
+CC:  sched/sched_removereadytorun.c
+CC:  sched/sched_addprioritized.c
+CC:  sched/sched_mergepending.c
+CC:  sched/sched_mergeprioritized.c
+CC:  sched/sched_addblocked.c
+CC:  sched/sched_removeblocked.c
+CC:  sched/sched_free.c
+CC:  sched/sched_gettcb.c
+CC:  sched/sched_verifytcb.c
+CC:  sched/sched_releasetcb.c
+CC:  sched/sched_getsockets.c
+CC:  sched/sched_getstreams.c
+CC:  sched/sched_setparam.c
+CC:  sched/sched_setpriority.c
+CC:  sched/sched_getparam.c
+CC:  sched/sched_setscheduler.c
+CC:  sched/sched_getscheduler.c
+CC:  sched/sched_yield.c
+CC:  sched/sched_rrgetinterval.c
+CC:  sched/sched_foreach.c
+CC:  sched/sched_lock.c
+CC:  sched/sched_unlock.c
+CC:  sched/sched_lockcount.c
+CC:  sched/sched_self.c
+CC:  sched/sched_getaffinity.c
+CC:  sched/sched_setaffinity.c
+CC:  sched/sched_getcpu.c
+CC:  sched/sched_resumescheduler.c
+CC:  sched/sched_waitpid.c
+CC:  sched/sched_waitid.c
+CC:  sched/sched_wait.c
+CC:  sched/sched_cpuload.c
+CC:  sched/sched_processtimer.c
+CC:  task/task_create.c
+CC:  task/task_init.c
+CC:  task/task_setup.c
+CC:  task/task_activate.c
+CC:  task/task_start.c
+CC:  task/task_delete.c
+CC:  task/task_exit.c
+CC:  task/task_exithook.c
+CC:  task/task_recover.c
+CC:  task/task_restart.c
+CC:  task/task_terminate.c
+CC:  task/task_getgroup.c
+CC:  task/task_prctl.c
+CC:  task/task_getpid.c
+CC:  task/exit.c
+CC:  task/task_setcancelstate.c
+CC:  task/task_dumptasks.c
+CC:  task/task_vfork.c
+CC:  task/task_atexit.c
+CC:  task/task_onexit.c
+CC:  errno/errno_getptr.c
+CC:  wdog/wd_initialize.c
+CC:  wdog/wd_create.c
+CC:  wdog/wd_start.c
+CC:  wdog/wd_cancel.c
+CC:  wdog/wd_delete.c
+CC:  wdog/wd_gettime.c
+CC:  wdog/wd_recover.c
+CC:  wdog/wd_dbg.c
+CC:  semaphore/sem_destroy.c
+CC:  semaphore/sem_wait.c
+CC:  semaphore/sem_trywait.c
+CC:  semaphore/sem_timedwait.c
+CC:  semaphore/sem_post.c
+CC:  semaphore/sem_recover.c
+CC:  semaphore/sem_reset.c
+CC:  semaphore/sem_waitirq.c
+CC:  semaphore/sem_tickwait.c
+CC:  signal/sig_initialize.c
+CC:  signal/sig_action.c
+wdog/wd_dbg.c: In function 'wd_corruption_dbg':
+wdog/wd_dbg.c:56:11: warning: unused variable 'wd_node' [-Wunused-variable]
+   56 |  uint32_t wd_node;
+      |           ^~~~~~~
+CC:  signal/sig_procmask.c
+CC:  signal/sig_pending.c
+CC:  signal/sig_suspend.c
+CC:  signal/sig_kill.c
+CC:  signal/sig_queue.c
+CC:  signal/sig_waitinfo.c
+CC:  signal/sig_timedwait.c
+CC:  signal/sig_findaction.c
+CC:  signal/sig_allocatependingsigaction.c
+CC:  signal/sig_releasependingsigaction.c
+CC:  signal/sig_unmaskpendingsignal.c
+CC:  signal/sig_removependingsignal.c
+CC:  signal/sig_releasependingsignal.c
+CC:  signal/sig_lowest.c
+CC:  signal/sig_mqnotempty.c
+CC:  signal/sig_cleanup.c
+CC:  signal/sig_dispatch.c
+CC:  signal/sig_deliver.c
+CC:  signal/sig_pause.c
+CC:  signal/sig_nanosleep.c
+CC:  signal/sig_sethandler.c
+CC:  signal/sig_is_handler_registered.c
+CC:  pthread/pthread_create.c
+CC:  pthread/pthread_exit.c
+CC:  pthread/pthread_join.c
+CC:  pthread/pthread_detach.c
+CC:  pthread/pthread_tryjoin_np.c
+CC:  pthread/pthread_join_internal.c
+CC:  pthread/pthread_getschedparam.c
+CC:  pthread/pthread_setschedparam.c
+CC:  pthread/pthread_mutexinit.c
+CC:  pthread/pthread_mutexdestroy.c
+CC:  pthread/pthread_mutexlock.c
+CC:  pthread/pthread_mutextrylock.c
+CC:  pthread/pthread_mutexunlock.c
+CC:  pthread/pthread_condwait.c
+CC:  pthread/pthread_condsignal.c
+CC:  pthread/pthread_condbroadcast.c
+CC:  pthread/pthread_cancel.c
+CC:  pthread/pthread_keycreate.c
+CC:  pthread/pthread_setspecific.c
+CC:  pthread/pthread_getspecific.c
+CC:  pthread/pthread_keydelete.c
+CC:  pthread/pthread_keydestroy.c
+CC:  pthread/pthread_initialize.c
+CC:  pthread/pthread_completejoin.c
+CC:  pthread/pthread_findjoininfo.c
+CC:  pthread/pthread_release.c
+CC:  pthread/pthread_setschedprio.c
+CC:  pthread/pthread_condtimedwait.c
+CC:  pthread/pthread_kill.c
+CC:  pthread/pthread_sigmask.c
+CC:  pthread/pthread_setaffinity.c
+CC:  pthread/pthread_getaffinity.c
+CC:  mqueue/mq_send.c
+CC:  mqueue/mq_timedsend.c
+CC:  mqueue/mq_sndinternal.c
+CC:  mqueue/mq_receive.c
+CC:  mqueue/mq_timedreceive.c
+CC:  mqueue/mq_rcvinternal.c
+CC:  mqueue/mq_initialize.c
+CC:  mqueue/mq_descreate.c
+CC:  mqueue/mq_desclose.c
+CC:  mqueue/mq_msgfree.c
+CC:  mqueue/mq_msgqalloc.c
+CC:  mqueue/mq_msgqfree.c
+CC:  mqueue/mq_release.c
+CC:  mqueue/mq_recover.c
+CC:  mqueue/mq_setattr.c
+CC:  mqueue/mq_getattr.c
+CC:  mqueue/mq_waitirq.c
+CC:  mqueue/mq_notify.c
+CC:  clock/clock_initialize.c
+CC:  clock/clock_settime.c
+CC:  clock/clock_gettime.c
+CC:  clock/clock_getres.c
+CC:  clock/clock_time2ticks.c
+CC:  clock/clock_abstime2ticks.c
+CC:  clock/clock_ticks2time.c
+CC:  clock/clock_gettimeofday.c
+CC:  clock/clock_systimer.c
+CC:  clock/clock_systimespec.c
+CC:  clock/clock.c
+CC:  timer/timer_initialize.c
+CC:  timer/timer_create.c
+CC:  timer/timer_delete.c
+CC:  timer/timer_getoverrun.c
+CC:  timer/timer_gettime.c
+CC:  timer/timer_settime.c
+CC:  timer/timer_release.c
+CC:  environ/env_getenvironptr.c
+CC:  environ/env_dup.c
+CC:  environ/env_release.c
+CC:  environ/env_findvar.c
+CC:  environ/env_removevar.c
+CC:  environ/env_clearenv.c
+CC:  environ/env_getenv.c
+CC:  environ/env_putenv.c
+CC:  environ/env_setenv.c
+CC:  environ/env_unsetenv.c
+CC:  debug/dbg_termination_info.c
+AR:   os_start.o os_bringup.o irq_initialize.o irq_attach.o irq_dispatch.o irq_unexpectedisr.o fin_wait.o fin_notify.o pg_miss.o pg_worker.o group_create.o group_join.o group_leave.o group_find.o group_setupstreams.o group_setupidlefiles.o group_setuptaskfiles.o group_foreachchild.o group_killchildren.o task_reparent.o group_signal.o sched_garbage.o sched_getfiles.o sched_addreadytorun.o sched_removereadytorun.o sched_addprioritized.o sched_mergepending.o sched_mergeprioritized.o sched_addblocked.o sched_removeblocked.o sched_free.o sched_gettcb.o sched_verifytcb.o sched_releasetcb.o sched_getsockets.o sched_getstreams.o sched_setparam.o sched_setpriority.o sched_getparam.o sched_setscheduler.o sched_getscheduler.o sched_yield.o sched_rrgetinterval.o sched_foreach.o sched_lock.o sched_unlock.o sched_lockcount.o sched_self.o sched_getaffinity.o sched_setaffinity.o sched_getcpu.o sched_resumescheduler.o sched_waitpid.o sched_waitid.o sched_wait.o sched_cpuload.o sched_processtimer.o task_create.o task_init.o task_setup.o task_activate.o task_start.o task_delete.o task_exit.o task_exithook.o task_recover.o task_restart.o task_terminate.o task_getgroup.o task_prctl.o task_getpid.o exit.o task_setcancelstate.o task_dumptasks.o task_vfork.o task_atexit.o task_onexit.o errno_getptr.o wd_initialize.o wd_create.o wd_start.o wd_cancel.o wd_delete.o wd_gettime.o wd_recover.o wd_dbg.o sem_destroy.o sem_wait.o sem_trywait.o sem_timedwait.o sem_post.o sem_recover.o sem_reset.o sem_waitirq.o sem_tickwait.o sig_initialize.o sig_action.o sig_procmask.o sig_pending.o sig_suspend.o sig_kill.o sig_queue.o sig_waitinfo.o sig_timedwait.o sig_findaction.o sig_allocatependingsigaction.o sig_releasependingsigaction.o sig_unmaskpendingsignal.o sig_removependingsignal.o sig_releasependingsignal.o sig_lowest.o sig_mqnotempty.o sig_cleanup.o sig_dispatch.o sig_deliver.o sig_pause.o sig_nanosleep.o sig_sethandler.o sig_is_handler_registered.o pthread_create.o pthread_exit.o pthread_join.o pthread_detach.o pthread_tryjoin_np.o pthread_join_internal.o pthread_getschedparam.o pthread_setschedparam.o pthread_mutexinit.o pthread_mutexdestroy.o pthread_mutexlock.o pthread_mutextrylock.o pthread_mutexunlock.o pthread_condwait.o pthread_condsignal.o pthread_condbroadcast.o pthread_cancel.o pthread_keycreate.o pthread_setspecific.o pthread_getspecific.o pthread_keydelete.o pthread_keydestroy.o pthread_initialize.o pthread_completejoin.o pthread_findjoininfo.o pthread_release.o pthread_setschedprio.o pthread_condtimedwait.o pthread_kill.o pthread_sigmask.o pthread_setaffinity.o pthread_getaffinity.o mq_send.o mq_timedsend.o mq_sndinternal.o mq_receive.o mq_timedreceive.o mq_rcvinternal.o mq_initialize.o mq_descreate.o mq_desclose.o mq_msgfree.o mq_msgqalloc.o mq_msgqfree.o mq_release.o mq_recover.o mq_setattr.o mq_getattr.o mq_waitirq.o mq_notify.o clock_initialize.o clock_settime.o clock_gettime.o clock_getres.o clock_time2ticks.o clock_abstime2ticks.o clock_ticks2time.o clock_gettimeofday.o clock_systimer.o clock_systimespec.o clock.o timer_initialize.o timer_create.o timer_delete.o timer_getoverrun.o timer_gettime.o timer_settime.o timer_release.o env_getenvironptr.o env_dup.o env_release.o env_findvar.o env_removevar.o env_clearenv.o env_getenv.o env_putenv.o env_setenv.o env_unsetenv.o dbg_termination_info.o
+make[1]: Leaving directory '/root/tizenrt/os/kernel'
+make[1]: Entering directory '/root/tizenrt/lib/libc'
+AS:  machine/arm/setjmp.S
+CC:  stdio/lib_dtoa_data.c
+CC:  stdio/lib_dtoa_engine.c
+CC:  stdio/lib_ultoa_invert.c
+CC:  stdio/lib_fileno.c
+CC:  stdio/lib_printf.c
+CC:  stdio/lib_sprintf.c
+CC:  stdio/lib_asprintf.c
+CC:  stdio/lib_snprintf.c
+CC:  stdio/lib_libsprintf.c
+CC:  stdio/lib_vsprintf.c
+CC:  stdio/lib_vasprintf.c
+CC:  stdio/lib_vsnprintf.c
+CC:  stdio/lib_libvsprintf.c
+CC:  stdio/lib_dprintf.c
+CC:  stdio/lib_vdprintf.c
+CC:  stdio/lib_meminstream.c
+CC:  stdio/lib_memoutstream.c
+CC:  stdio/lib_memsistream.c
+CC:  stdio/lib_memsostream.c
+CC:  stdio/lib_lowinstream.c
+CC:  stdio/lib_lowoutstream.c
+CC:  stdio/lib_zeroinstream.c
+CC:  stdio/lib_nullinstream.c
+CC:  stdio/lib_nulloutstream.c
+CC:  stdio/lib_sscanf.c
+CC:  stdio/lib_rawinstream.c
+CC:  stdio/lib_rawoutstream.c
+CC:  stdio/lib_rawsistream.c
+CC:  stdio/lib_rawsostream.c
+CC:  stdio/lib_fopen.c
+CC:  stdio/lib_freopen.c
+CC:  stdio/lib_fclose.c
+CC:  stdio/lib_fread.c
+CC:  stdio/lib_libfread.c
+CC:  stdio/lib_fseek.c
+CC:  stdio/lib_ftell.c
+CC:  stdio/lib_fsetpos.c
+CC:  stdio/lib_fgetpos.c
+CC:  stdio/lib_fgetc.c
+CC:  stdio/lib_fgets.c
+CC:  stdio/lib_gets_s.c
+CC:  stdio/lib_gets.c
+CC:  stdio/lib_libfgets.c
+CC:  stdio/lib_fwrite.c
+CC:  stdio/lib_libfwrite.c
+CC:  stdio/lib_fflush.c
+CC:  stdio/lib_libflushall.c
+CC:  stdio/lib_libfflush.c
+CC:  stdio/lib_rdflush.c
+CC:  stdio/lib_wrflush.c
+CC:  stdio/lib_fputc.c
+CC:  stdio/lib_puts.c
+CC:  stdio/lib_fputs.c
+CC:  stdio/lib_ungetc.c
+CC:  stdio/lib_vprintf.c
+CC:  stdio/lib_fprintf.c
+CC:  stdio/lib_vfprintf.c
+CC:  stdio/lib_stdinstream.c
+CC:  stdio/lib_stdoutstream.c
+CC:  stdio/lib_stdsistream.c
+CC:  stdio/lib_stdsostream.c
+CC:  stdio/lib_perror.c
+CC:  stdio/lib_feof.c
+CC:  stdio/lib_ferror.c
+CC:  stdio/lib_clearerr.c
+CC:  stdio/lib_setbuf.c
+CC:  stdio/lib_setvbuf.c
+CC:  stdio/lib_remove.c
+CC:  stdio/lib_tempnam.c
+CC:  stdio/lib_tmpnam.c
+CC:  stdio/lib_libnoflush.c
+CC:  stdio/lib_libsnoflush.c
+CC:  stdlib/lib_abs.c
+CC:  stdlib/lib_abort.c
+CC:  stdlib/lib_div.c
+CC:  stdlib/lib_ldiv.c
+CC:  stdlib/lib_lldiv.c
+CC:  stdlib/lib_itoa.c
+CC:  stdlib/lib_labs.c
+CC:  stdlib/lib_llabs.c
+CC:  stdlib/lib_bsearch.c
+CC:  stdlib/lib_rand.c
+CC:  stdlib/lib_qsort.c
+CC:  stdlib/lib_strtol.c
+CC:  stdlib/lib_strtoll.c
+CC:  stdlib/lib_strtoul.c
+CC:  stdlib/lib_strtoull.c
+CC:  stdlib/lib_strtod.c
+CC:  stdlib/lib_strtof.c
+CC:  stdlib/lib_checkbase.c
+CC:  stdlib/lib_strtold.c
+CC:  stdlib/lib_mktemp.c
+CC:  stdlib/__randname.c
+CC:  stdlib/lib_mkstemp.c
+CC:  unistd/lib_access.c
+CC:  unistd/lib_swab.c
+CC:  unistd/lib_getopt.c
+CC:  unistd/lib_getoptargp.c
+CC:  unistd/lib_getoptindp.c
+CC:  unistd/lib_getoptoptp.c
+CC:  unistd/lib_chdir.c
+CC:  unistd/lib_getcwd.c
+CC:  unistd/lib_truncate.c
+CC:  unistd/lib_sleep.c
+CC:  unistd/lib_usleep.c
+CC:  sched/sched_getprioritymax.c
+CC:  sched/sched_getprioritymin.c
+CC:  sched/task_setcanceltype.c
+CC:  sched/task_testcancel.c
+CC:  sched/sched_cpucount.c
+CC:  syslog/lib_syslog.c
+CC:  syslog/lib_lowsyslog.c
+CC:  syslog/lib_setlogmask.c
+CC:  string/lib_isbasedigit.c
+CC:  string/lib_memset.c
+CC:  string/lib_memchr.c
+CC:  string/lib_memccpy.c
+CC:  string/lib_memcmp.c
+CC:  string/lib_memmove.c
+CC:  string/lib_skipspace.c
+CC:  string/lib_stpcpy.c
+CC:  string/lib_stpncpy.c
+CC:  string/lib_strcasecmp.c
+CC:  string/lib_strcat.c
+CC:  string/lib_strchr.c
+CC:  string/lib_strcpy.c
+CC:  string/lib_strlcpy.c
+CC:  string/lib_strcmp.c
+CC:  string/lib_strcspn.c
+CC:  string/lib_strdup.c
+CC:  string/lib_strerror.c
+CC:  string/lib_strlen.c
+CC:  string/lib_strnlen.c
+CC:  string/lib_strncasecmp.c
+CC:  string/lib_strncat.c
+CC:  string/lib_strncmp.c
+CC:  string/lib_strncpy.c
+CC:  string/lib_strndup.c
+CC:  string/lib_strcasestr.c
+CC:  string/lib_strpbrk.c
+CC:  string/lib_strrchr.c
+CC:  string/lib_strspn.c
+CC:  string/lib_strstr.c
+CC:  string/lib_strtok.c
+CC:  string/lib_strtokr.c
+CC:  string/lib_strerrorr.c
+CC:  string/lib_fls.c
+CC:  string/lib_vikmemcpy.c
+CC:  string/lib_strsignal.c
+CC:  pthread/pthread_attrinit.c
+CC:  pthread/pthread_attrdestroy.c
+CC:  pthread/pthread_attrsetschedpolicy.c
+CC:  pthread/pthread_attrgetschedpolicy.c
+CC:  pthread/pthread_attrsetinheritsched.c
+CC:  pthread/pthread_attrgetinheritsched.c
+CC:  pthread/pthread_attrsetstacksize.c
+CC:  pthread/pthread_attrsetschedparam.c
+CC:  pthread/pthread_attrgetstacksize.c
+CC:  pthread/pthread_attrgetschedparam.c
+CC:  pthread/pthread_barrierattrinit.c
+CC:  pthread/pthread_barrierattrdestroy.c
+CC:  pthread/pthread_barrierattrgetpshared.c
+CC:  pthread/pthread_barrierattrsetpshared.c
+CC:  pthread/pthread_barrierinit.c
+CC:  pthread/pthread_barrierdestroy.c
+CC:  pthread/pthread_barrierwait.c
+CC:  pthread/pthread_condattrinit.c
+CC:  pthread/pthread_condattrdestroy.c
+CC:  pthread/pthread_condinit.c
+CC:  pthread/pthread_conddestroy.c
+CC:  pthread/pthread_mutexattrinit.c
+CC:  pthread/pthread_mutexattrdestroy.c
+CC:  pthread/pthread_mutexattrgetpshared.c
+CC:  pthread/pthread_mutexattrsetpshared.c
+CC:  pthread/pthread_mutexattr_setprotocol.c
+CC:  pthread/pthread_mutexattr_getprotocol.c
+CC:  pthread/pthread_mutexattrsettype.c
+CC:  pthread/pthread_mutexattrgettype.c
+CC:  pthread/pthread_mutexattr_setrobust.c
+CC:  pthread/pthread_mutexattr_getrobust.c
+CC:  pthread/pthread_setcancelstate.c
+CC:  pthread/pthread_setcanceltype.c
+CC:  pthread/pthread_testcancel.c
+CC:  pthread/pthread_rwlock.c
+CC:  pthread/pthread_rwlock_rdlock.c
+CC:  pthread/pthread_rwlock_wrlock.c
+CC:  pthread/pthread_once.c
+CC:  pthread/pthread_yield.c
+CC:  pthread/pthread_attr_getaffinity.c
+CC:  pthread/pthread_attr_setaffinity.c
+CC:  semaphore/sem_init.c
+CC:  semaphore/sem_getprotocol.c
+CC:  semaphore/sem_getvalue.c
+CC:  semaphore/sem_setprotocol.c
+CC:  signal/sig_addset.c
+CC:  signal/sig_delset.c
+CC:  signal/sig_emptyset.c
+CC:  signal/sig_fillset.c
+CC:  signal/sig_hold.c
+CC:  signal/sig_ignore.c
+CC:  signal/sig_ismember.c
+CC:  signal/sig_pause.c
+CC:  signal/sig_psignal.c
+CC:  signal/sig_raise.c
+CC:  signal/sig_relse.c
+CC:  signal/sig_set.c
+CC:  signal/signal.c
+CC:  signal/sigwait.c
+CC:  math/lib_acosf.c
+CC:  math/lib_asinf.c
+CC:  math/lib_atan2f.c
+CC:  math/lib_atanf.c
+CC:  math/lib_cbrtf.c
+CC:  math/lib_ceilf.c
+CC:  math/lib_cosf.c
+CC:  math/lib_coshf.c
+CC:  math/lib_expf.c
+CC:  math/lib_exp2f.c
+CC:  math/lib_fabsf.c
+CC:  math/lib_floorf.c
+CC:  math/lib_fdimf.c
+CC:  math/lib_fmaxf.c
+CC:  math/lib_fminf.c
+CC:  math/lib_fmodf.c
+CC:  math/lib_frexpf.c
+CC:  math/lib_hypotf.c
+CC:  math/lib_ldexpf.c
+CC:  math/lib_logf.c
+CC:  math/lib_log10f.c
+CC:  math/lib_log2f.c
+CC:  math/lib_modff.c
+CC:  math/lib_powf.c
+CC:  math/lib_rintf.c
+CC:  math/lib_roundf.c
+CC:  math/lib_scalbnf.c
+CC:  math/lib_sinf.c
+CC:  math/lib_sinhf.c
+CC:  math/lib_sqrtf.c
+CC:  math/lib_tanf.c
+CC:  math/lib_tanhf.c
+CC:  math/lib_asinhf.c
+CC:  math/lib_acoshf.c
+CC:  math/lib_atanhf.c
+CC:  math/lib_erff.c
+CC:  math/lib_copysignf.c
+CC:  math/lib_truncf.c
+CC:  math/lib_j0f.c
+CC:  math/lib_j1f.c
+CC:  math/lib_jnf.c
+CC:  math/lib_nextafterf.c
+CC:  math/lib_nexttowardf.c
+CC:  math/lib_remainderf.c
+CC:  math/lib_remquof.c
+CC:  math/lib_lrintf.c
+CC:  math/lib_acos.c
+CC:  math/lib_asin.c
+CC:  math/lib_atan2.c
+CC:  math/lib_atan.c
+CC:  math/lib_cbrt.c
+CC:  math/lib_ceil.c
+CC:  math/lib_cos.c
+CC:  math/lib_cosh.c
+CC:  math/lib_exp.c
+CC:  math/lib_exp2.c
+CC:  math/lib_fabs.c
+CC:  math/lib_floor.c
+CC:  math/lib_fdim.c
+CC:  math/lib_fmax.c
+CC:  math/lib_fmin.c
+CC:  math/lib_fmod.c
+CC:  math/lib_frexp.c
+CC:  math/lib_hypot.c
+CC:  math/lib_ldexp.c
+CC:  math/lib_log.c
+CC:  math/lib_log10.c
+CC:  math/lib_log2.c
+CC:  math/lib_modf.c
+CC:  math/lib_pow.c
+CC:  math/lib_rint.c
+CC:  math/lib_round.c
+CC:  math/lib_scalbn.c
+CC:  math/lib_sin.c
+CC:  math/lib_sinh.c
+CC:  math/lib_sqrt.c
+CC:  math/lib_tan.c
+CC:  math/lib_tanh.c
+CC:  math/lib_asinh.c
+CC:  math/lib_acosh.c
+CC:  math/lib_atanh.c
+CC:  math/lib_erf.c
+CC:  math/lib_copysign.c
+CC:  math/lib_trunc.c
+CC:  math/lib_j0.c
+CC:  math/lib_j1.c
+CC:  math/lib_jn.c
+CC:  math/lib_nextafter.c
+CC:  math/lib_nexttoward.c
+CC:  math/lib_remainder.c
+CC:  math/lib_remquo.c
+CC:  math/lib_lrint.c
+CC:  math/lib_acosl.c
+CC:  math/lib_asinl.c
+CC:  math/lib_atan2l.c
+CC:  math/lib_atanl.c
+CC:  math/lib_cbrtl.c
+CC:  math/lib_ceill.c
+CC:  math/lib_cosl.c
+CC:  math/lib_coshl.c
+CC:  math/lib_expl.c
+CC:  math/lib_exp2l.c
+CC:  math/lib_fabsl.c
+CC:  math/lib_floorl.c
+CC:  math/lib_fdiml.c
+CC:  math/lib_fmaxl.c
+CC:  math/lib_fminl.c
+CC:  math/lib_fmodl.c
+CC:  math/lib_frexpl.c
+CC:  math/lib_hypotl.c
+CC:  math/lib_ldexpl.c
+CC:  math/lib_logl.c
+CC:  math/lib_log10l.c
+CC:  math/lib_log2l.c
+CC:  math/lib_modfl.c
+CC:  math/lib_powl.c
+CC:  math/lib_rintl.c
+CC:  math/lib_roundl.c
+CC:  math/lib_scalbnl.c
+CC:  math/lib_sinl.c
+CC:  math/lib_sinhl.c
+CC:  math/lib_sqrtl.c
+CC:  math/lib_tanl.c
+CC:  math/lib_tanhl.c
+CC:  math/lib_asinhl.c
+CC:  math/lib_acoshl.c
+CC:  math/lib_atanhl.c
+CC:  math/lib_erfl.c
+CC:  math/lib_copysignl.c
+CC:  math/lib_truncl.c
+CC:  math/lib_nextafterl.c
+CC:  math/lib_nexttowardl.c
+CC:  math/lib_remainderl.c
+CC:  math/lib_remquol.c
+CC:  math/lib_lrintl.c
+CC:  math/lib_erfc.c
+CC:  math/lib_erfcf.c
+CC:  math/lib_erfcl.c
+CC:  math/lib_expm1.c
+CC:  math/lib_expm1f.c
+CC:  math/lib_expm1l.c
+CC:  math/lib_lround.c
+CC:  math/lib_lroundf.c
+CC:  math/lib_lroundl.c
+CC:  math/lib_llround.c
+CC:  math/lib_llroundf.c
+CC:  math/lib_llroundl.c
+CC:  math/lib_nan.c
+CC:  math/lib_nanf.c
+CC:  math/lib_nanl.c
+CC:  math/__cos.c
+CC:  math/__sin.c
+CC:  math/lib_gamma.c
+CC:  math/lib_lgamma.c
+CC:  math/lib_nearbyint.c
+CC:  math/lib_nearbyintf.c
+CC:  math/lib_nearbyintl.c
+CC:  math/lib_libexpi.c
+CC:  math/lib_libsqrtapprox.c
+CC:  fixedmath/lib_fixedmath.c
+CC:  fixedmath/lib_b16sin.c
+CC:  fixedmath/lib_b16cos.c
+CC:  fixedmath/lib_b16atan2.c
+CC:  net/lib_addrconfig.c
+CC:  net/lib_etherntoa.c
+CC:  net/lib_htonl.c
+CC:  net/lib_htons.c
+CC:  net/lib_inetaddr.c
+CC:  net/lib_inetaton.c
+CC:  net/lib_inetntoa.c
+CC:  net/lib_inetntop.c
+CC:  net/lib_inetpton.c
+CC:  netdb/lib_freeaddrinfo.c
+CC:  netdb/lib_getaddrinfo.c
+CC:  netdb/lib_gethostbyname.c
+CC:  netdb/lib_getnameinfo.c
+CC:  netdb/lib_getifaddr.c
+CC:  time/lib_strftime.c
+CC:  time/lib_strptime.c
+CC:  time/lib_calendar2utc.c
+CC:  time/lib_daysbeforemonth.c
+CC:  time/lib_isleapyear.c
+CC:  time/lib_time.c
+CC:  time/lib_difftime.c
+CC:  time/lib_asctime.c
+CC:  time/lib_asctimer.c
+CC:  time/lib_ctime.c
+CC:  time/lib_ctimer.c
+CC:  time/lib_dayofweek.c
+CC:  time/lib_mktime.c
+CC:  time/lib_gmtime.c
+CC:  time/lib_gmtimer.c
+CC:  inttypes/lib_imaxabs.c
+CC:  inttypes/lib_imaxdiv.c
+CC:  inttypes/lib_strtoimax.c
+CC:  inttypes/lib_strtoumax.c
+CC:  libgen/lib_basename.c
+CC:  libgen/lib_dirname.c
+CC:  dirent/lib_readdirr.c
+CC:  dirent/lib_telldir.c
+CC:  termios/lib_cfgetspeed.c
+CC:  termios/lib_cfsetspeed.c
+CC:  termios/lib_isatty.c
+CC:  termios/lib_tcflush.c
+CC:  termios/lib_tcgetattr.c
+CC:  termios/lib_tcsetattr.c
+CC:  queue/sq_addlast.c
+CC:  queue/sq_addfirst.c
+CC:  queue/sq_addafter.c
+CC:  queue/sq_rem.c
+CC:  queue/sq_remlast.c
+CC:  queue/sq_remfirst.c
+CC:  queue/sq_remafter.c
+CC:  queue/dq_addlast.c
+CC:  queue/dq_addfirst.c
+CC:  queue/dq_addafter.c
+CC:  queue/dq_addbefore.c
+CC:  queue/dq_rem.c
+CC:  queue/dq_remlast.c
+CC:  queue/dq_remfirst.c
+CC:  queue/sq_cat.c
+CC:  queue/dq_cat.c
+CC:  misc/lib_stream.c
+CC:  misc/lib_filesem.c
+CC:  misc/lib_xorshift128.c
+CC:  misc/lib_sendfile.c
+CC:  misc/lib_streamsem.c
+CC:  misc/lib_match.c
+CC:  misc/lib_crc32.c
+CC:  misc/lib_crc16.c
+CC:  misc/lib_crc16_ccitt.c
+CC:  misc/lib_crc8.c
+CC:  misc/lib_dumpbuffer.c
+CC:  misc/lib_dbg.c
+CC:  uio/lib_readv.c
+CC:  uio/lib_writev.c
+AR:   bin/setjmp.o  bin/lib_dtoa_data.o  bin/lib_dtoa_engine.o  bin/lib_ultoa_invert.o  bin/lib_fileno.o  bin/lib_printf.o  bin/lib_sprintf.o  bin/lib_asprintf.o  bin/lib_snprintf.o  bin/lib_libsprintf.o  bin/lib_vsprintf.o  bin/lib_vasprintf.o  bin/lib_vsnprintf.o  bin/lib_libvsprintf.o  bin/lib_dprintf.o  bin/lib_vdprintf.o  bin/lib_meminstream.o  bin/lib_memoutstream.o  bin/lib_memsistream.o  bin/lib_memsostream.o  bin/lib_lowinstream.o  bin/lib_lowoutstream.o  bin/lib_zeroinstream.o  bin/lib_nullinstream.o  bin/lib_nulloutstream.o  bin/lib_sscanf.o  bin/lib_rawinstream.o  bin/lib_rawoutstream.o  bin/lib_rawsistream.o  bin/lib_rawsostream.o  bin/lib_fopen.o  bin/lib_freopen.o  bin/lib_fclose.o  bin/lib_fread.o  bin/lib_libfread.o  bin/lib_fseek.o  bin/lib_ftell.o  bin/lib_fsetpos.o  bin/lib_fgetpos.o  bin/lib_fgetc.o  bin/lib_fgets.o  bin/lib_gets_s.o  bin/lib_gets.o  bin/lib_libfgets.o  bin/lib_fwrite.o  bin/lib_libfwrite.o  bin/lib_fflush.o  bin/lib_libflushall.o  bin/lib_libfflush.o  bin/lib_rdflush.o  bin/lib_wrflush.o  bin/lib_fputc.o  bin/lib_puts.o  bin/lib_fputs.o  bin/lib_ungetc.o  bin/lib_vprintf.o  bin/lib_fprintf.o  bin/lib_vfprintf.o  bin/lib_stdinstream.o  bin/lib_stdoutstream.o  bin/lib_stdsistream.o  bin/lib_stdsostream.o  bin/lib_perror.o  bin/lib_feof.o  bin/lib_ferror.o  bin/lib_clearerr.o  bin/lib_setbuf.o  bin/lib_setvbuf.o  bin/lib_remove.o  bin/lib_tempnam.o  bin/lib_tmpnam.o  bin/lib_libnoflush.o  bin/lib_libsnoflush.o  bin/lib_abs.o  bin/lib_abort.o  bin/lib_div.o  bin/lib_ldiv.o  bin/lib_lldiv.o  bin/lib_itoa.o  bin/lib_labs.o  bin/lib_llabs.o  bin/lib_bsearch.o  bin/lib_rand.o  bin/lib_qsort.o  bin/lib_strtol.o  bin/lib_strtoll.o  bin/lib_strtoul.o  bin/lib_strtoull.o  bin/lib_strtod.o  bin/lib_strtof.o  bin/lib_strtold.o  bin/lib_checkbase.o  bin/lib_mktemp.o  bin/__randname.o  bin/lib_mkstemp.o  bin/lib_access.o  bin/lib_swab.o  bin/lib_getopt.o  bin/lib_getoptargp.o  bin/lib_getoptindp.o  bin/lib_getoptoptp.o  bin/lib_chdir.o  bin/lib_getcwd.o  bin/lib_truncate.o  bin/lib_sleep.o  bin/lib_usleep.o  bin/sched_getprioritymax.o  bin/sched_getprioritymin.o  bin/task_setcanceltype.o  bin/task_testcancel.o  bin/sched_cpucount.o  bin/lib_syslog.o  bin/lib_lowsyslog.o  bin/lib_setlogmask.o  bin/lib_isbasedigit.o  bin/lib_memset.o  bin/lib_memchr.o  bin/lib_memccpy.o  bin/lib_memcmp.o  bin/lib_memmove.o  bin/lib_skipspace.o  bin/lib_stpcpy.o  bin/lib_stpncpy.o  bin/lib_strcasecmp.o  bin/lib_strcat.o  bin/lib_strchr.o  bin/lib_strcpy.o  bin/lib_strlcpy.o  bin/lib_strcmp.o  bin/lib_strcspn.o  bin/lib_strdup.o  bin/lib_strerror.o  bin/lib_strlen.o  bin/lib_strnlen.o  bin/lib_strncasecmp.o  bin/lib_strncat.o  bin/lib_strncmp.o  bin/lib_strncpy.o  bin/lib_strndup.o  bin/lib_strcasestr.o  bin/lib_strpbrk.o  bin/lib_strrchr.o  bin/lib_strspn.o  bin/lib_strstr.o  bin/lib_strtok.o  bin/lib_strtokr.o  bin/lib_strerrorr.o  bin/lib_fls.o  bin/lib_vikmemcpy.o  bin/lib_strsignal.o  bin/pthread_attrinit.o  bin/pthread_attrdestroy.o  bin/pthread_attrsetschedpolicy.o  bin/pthread_attrgetschedpolicy.o  bin/pthread_attrsetinheritsched.o  bin/pthread_attrgetinheritsched.o  bin/pthread_attrsetstacksize.o  bin/pthread_attrgetstacksize.o  bin/pthread_attrsetschedparam.o  bin/pthread_attrgetschedparam.o  bin/pthread_barrierattrinit.o  bin/pthread_barrierattrdestroy.o  bin/pthread_barrierattrgetpshared.o  bin/pthread_barrierattrsetpshared.o  bin/pthread_barrierinit.o  bin/pthread_barrierdestroy.o  bin/pthread_barrierwait.o  bin/pthread_condattrinit.o  bin/pthread_condattrdestroy.o  bin/pthread_condinit.o  bin/pthread_conddestroy.o  bin/pthread_mutexattrinit.o  bin/pthread_mutexattrdestroy.o  bin/pthread_mutexattrgetpshared.o  bin/pthread_mutexattrsetpshared.o  bin/pthread_mutexattr_setprotocol.o  bin/pthread_mutexattr_getprotocol.o  bin/pthread_mutexattrsettype.o  bin/pthread_mutexattrgettype.o  bin/pthread_mutexattr_setrobust.o  bin/pthread_mutexattr_getrobust.o  bin/pthread_setcancelstate.o  bin/pthread_setcanceltype.o  bin/pthread_testcancel.o  bin/pthread_rwlock.o  bin/pthread_rwlock_rdlock.o  bin/pthread_rwlock_wrlock.o  bin/pthread_once.o  bin/pthread_yield.o  bin/pthread_attr_getaffinity.o  bin/pthread_attr_setaffinity.o  bin/sem_init.o  bin/sem_getprotocol.o  bin/sem_getvalue.o  bin/sem_setprotocol.o  bin/sig_addset.o  bin/sig_delset.o  bin/sig_emptyset.o  bin/sig_fillset.o  bin/sig_hold.o  bin/sig_ignore.o  bin/sig_ismember.o  bin/sig_pause.o  bin/sig_psignal.o  bin/sig_raise.o  bin/sig_relse.o  bin/sig_set.o  bin/signal.o  bin/sigwait.o  bin/lib_acosf.o  bin/lib_asinf.o  bin/lib_atan2f.o  bin/lib_atanf.o  bin/lib_cbrtf.o  bin/lib_ceilf.o  bin/lib_cosf.o  bin/lib_coshf.o  bin/lib_expf.o  bin/lib_exp2f.o  bin/lib_fabsf.o  bin/lib_floorf.o  bin/lib_fdimf.o  bin/lib_fmaxf.o  bin/lib_fminf.o  bin/lib_fmodf.o  bin/lib_frexpf.o  bin/lib_hypotf.o  bin/lib_ldexpf.o  bin/lib_logf.o  bin/lib_log10f.o  bin/lib_log2f.o  bin/lib_modff.o  bin/lib_powf.o  bin/lib_rintf.o  bin/lib_roundf.o  bin/lib_scalbnf.o  bin/lib_sinf.o  bin/lib_sinhf.o  bin/lib_sqrtf.o  bin/lib_tanf.o  bin/lib_tanhf.o  bin/lib_asinhf.o  bin/lib_acoshf.o  bin/lib_atanhf.o  bin/lib_erff.o  bin/lib_copysignf.o  bin/lib_truncf.o  bin/lib_j0f.o  bin/lib_j1f.o  bin/lib_jnf.o  bin/lib_nextafterf.o  bin/lib_nexttowardf.o  bin/lib_remainderf.o  bin/lib_remquof.o  bin/lib_lrintf.o  bin/lib_acos.o  bin/lib_asin.o  bin/lib_atan2.o  bin/lib_atan.o  bin/lib_cbrt.o  bin/lib_ceil.o  bin/lib_cos.o  bin/lib_cosh.o  bin/lib_exp.o  bin/lib_exp2.o  bin/lib_fabs.o  bin/lib_floor.o  bin/lib_fdim.o  bin/lib_fmax.o  bin/lib_fmin.o  bin/lib_fmod.o  bin/lib_frexp.o  bin/lib_hypot.o  bin/lib_ldexp.o  bin/lib_log.o  bin/lib_log10.o  bin/lib_log2.o  bin/lib_modf.o  bin/lib_pow.o  bin/lib_rint.o  bin/lib_round.o  bin/lib_scalbn.o  bin/lib_sin.o  bin/lib_sinh.o  bin/lib_sqrt.o  bin/lib_tan.o  bin/lib_tanh.o  bin/lib_asinh.o  bin/lib_acosh.o  bin/lib_atanh.o  bin/lib_erf.o  bin/lib_copysign.o  bin/lib_trunc.o  bin/lib_j0.o  bin/lib_j1.o  bin/lib_jn.o  bin/lib_nextafter.o  bin/lib_nexttoward.o  bin/lib_remainder.o  bin/lib_remquo.o  bin/lib_lrint.o  bin/lib_acosl.o  bin/lib_asinl.o  bin/lib_atan2l.o  bin/lib_atanl.o  bin/lib_cbrtl.o  bin/lib_ceill.o  bin/lib_cosl.o  bin/lib_coshl.o  bin/lib_expl.o  bin/lib_exp2l.o  bin/lib_fabsl.o  bin/lib_floorl.o  bin/lib_fdiml.o  bin/lib_fmaxl.o  bin/lib_fminl.o  bin/lib_fmodl.o  bin/lib_frexpl.o  bin/lib_hypotl.o  bin/lib_ldexpl.o  bin/lib_logl.o  bin/lib_log10l.o  bin/lib_log2l.o  bin/lib_modfl.o  bin/lib_powl.o  bin/lib_rintl.o  bin/lib_roundl.o  bin/lib_scalbnl.o  bin/lib_sinl.o  bin/lib_sinhl.o  bin/lib_sqrtl.o  bin/lib_tanl.o  bin/lib_tanhl.o  bin/lib_asinhl.o  bin/lib_acoshl.o  bin/lib_atanhl.o  bin/lib_erfl.o  bin/lib_copysignl.o  bin/lib_truncl.o  bin/lib_nextafterl.o  bin/lib_nexttowardl.o  bin/lib_remainderl.o  bin/lib_remquol.o  bin/lib_lrintl.o  bin/lib_erfc.o  bin/lib_erfcf.o  bin/lib_erfcl.o  bin/lib_expm1.o  bin/lib_expm1f.o  bin/lib_expm1l.o  bin/lib_lround.o  bin/lib_lroundf.o  bin/lib_lroundl.o  bin/lib_llround.o  bin/lib_llroundf.o  bin/lib_llroundl.o  bin/lib_nan.o  bin/lib_nanf.o  bin/lib_nanl.o  bin/__cos.o  bin/__sin.o  bin/lib_gamma.o  bin/lib_lgamma.o  bin/lib_nearbyint.o  bin/lib_nearbyintf.o  bin/lib_nearbyintl.o  bin/lib_libexpi.o  bin/lib_libsqrtapprox.o  bin/lib_fixedmath.o  bin/lib_b16sin.o  bin/lib_b16cos.o  bin/lib_b16atan2.o  bin/lib_addrconfig.o  bin/lib_etherntoa.o  bin/lib_htonl.o  bin/lib_htons.o  bin/lib_inetaddr.o  bin/lib_inetaton.o  bin/lib_inetntoa.o  bin/lib_inetntop.o  bin/lib_inetpton.o  bin/lib_freeaddrinfo.o  bin/lib_getaddrinfo.o  bin/lib_gethostbyname.o  bin/lib_getnameinfo.o  bin/lib_getifaddr.o  bin/lib_strftime.o  bin/lib_strptime.o  bin/lib_calendar2utc.o  bin/lib_daysbeforemonth.o  bin/lib_isleapyear.o  bin/lib_time.o  bin/lib_difftime.o  bin/lib_asctime.o  bin/lib_asctimer.o  bin/lib_ctime.o  bin/lib_ctimer.o  bin/lib_dayofweek.o  bin/lib_mktime.o  bin/lib_gmtime.o  bin/lib_gmtimer.o  bin/lib_imaxabs.o  bin/lib_imaxdiv.o  bin/lib_strtoimax.o  bin/lib_strtoumax.o  bin/lib_basename.o  bin/lib_dirname.o  bin/lib_readdirr.o  bin/lib_telldir.o  bin/lib_cfgetspeed.o  bin/lib_cfsetspeed.o  bin/lib_isatty.o  bin/lib_tcflush.o  bin/lib_tcgetattr.o  bin/lib_tcsetattr.o  bin/sq_addlast.o  bin/sq_addfirst.o  bin/sq_addafter.o  bin/sq_rem.o  bin/sq_remlast.o  bin/sq_remfirst.o  bin/sq_remafter.o  bin/dq_addlast.o  bin/dq_addfirst.o  bin/dq_addafter.o  bin/dq_addbefore.o  bin/dq_rem.o  bin/dq_remlast.o  bin/dq_remfirst.o  bin/sq_cat.o  bin/dq_cat.o  bin/lib_stream.o  bin/lib_filesem.o  bin/lib_xorshift128.o  bin/lib_sendfile.o  bin/lib_streamsem.o  bin/lib_match.o  bin/lib_crc32.o  bin/lib_crc16.o  bin/lib_crc16_ccitt.o  bin/lib_crc8.o  bin/lib_dumpbuffer.o  bin/lib_dbg.o  bin/lib_readv.o  bin/lib_writev.o
+make[1]: Leaving directory '/root/tizenrt/lib/libc'
+make[1]: Entering directory '/root/tizenrt/os/mm'
+CC:  mm_heap/mm_initialize.c
+CC:  mm_heap/mm_sem.c
+CC:  mm_heap/mm_addfreechunk.c
+CC:  mm_heap/mm_size2ndx.c
+CC:  mm_heap/mm_shrinkchunk.c
+CC:  mm_heap/mm_brkaddr.c
+CC:  mm_heap/mm_calloc.c
+CC:  mm_heap/mm_extend.c
+CC:  mm_heap/mm_free.c
+CC:  mm_heap/mm_mallinfo.c
+CC:  mm_heap/mm_malloc.c
+CC:  mm_heap/mm_memalign.c
+CC:  mm_heap/mm_realloc.c
+CC:  mm_heap/mm_zalloc.c
+CC:  mm_heap/mm_heap_regioninfo.c
+CC:  mm_heap/mm_getheap.c
+CC:  mm_heap/mm_check_heap_corruption.c
+CC:  mm_heap/mm_manage_allocfail.c
+CC:  mm_heap/mm_getsize.c
+CC:  mm_heap/mm_heap_dbg.c
+CC:  umm_heap/umm_initialize.c
+CC:  umm_heap/umm_addregion.c
+CC:  umm_heap/umm_sem.c
+CC:  umm_heap/umm_brkaddr.c
+CC:  umm_heap/umm_calloc.c
+CC:  umm_heap/umm_extend.c
+CC:  umm_heap/umm_free.c
+CC:  umm_heap/umm_mallinfo.c
+CC:  umm_heap/umm_malloc.c
+CC:  umm_heap/umm_memalign.c
+CC:  umm_heap/umm_realloc.c
+CC:  umm_heap/umm_zalloc.c
+CC:  umm_heap/umm_getheap.c
+CC:  umm_heap/umm_getsize.c
+CC:  umm_heap/umm_xalloc_user_at.c
+CC:  kmm_heap/kmm_initialize.c
+CC:  kmm_heap/kmm_addregion.c
+CC:  kmm_heap/kmm_sem.c
+CC:  kmm_heap/kmm_brkaddr.c
+CC:  kmm_heap/kmm_calloc.c
+CC:  kmm_heap/kmm_extend.c
+CC:  kmm_heap/kmm_free.c
+CC:  kmm_heap/kmm_mallinfo.c
+CC:  kmm_heap/kmm_malloc.c
+CC:  kmm_heap/kmm_memalign.c
+CC:  kmm_heap/kmm_realloc.c
+CC:  kmm_heap/kmm_zalloc.c
+CC:  kmm_heap/kmm_getheap.c
+CC:  kmm_heap/kmm_getsize.c
+CC:  kmm_heap/kmm_heapmember.c
+AR:    bin/mm_initialize.o  bin/mm_sem.o  bin/mm_addfreechunk.o  bin/mm_size2ndx.o  bin/mm_shrinkchunk.o  bin/mm_brkaddr.o  bin/mm_calloc.o  bin/mm_extend.o  bin/mm_free.o  bin/mm_mallinfo.o  bin/mm_malloc.o  bin/mm_memalign.o  bin/mm_realloc.o  bin/mm_zalloc.o  bin/mm_heap_regioninfo.o  bin/mm_getheap.o  bin/mm_check_heap_corruption.o  bin/mm_manage_allocfail.o  bin/mm_getsize.o  bin/mm_heap_dbg.o  bin/umm_initialize.o  bin/umm_addregion.o  bin/umm_sem.o  bin/umm_brkaddr.o  bin/umm_calloc.o  bin/umm_extend.o  bin/umm_free.o  bin/umm_mallinfo.o  bin/umm_malloc.o  bin/umm_memalign.o  bin/umm_realloc.o  bin/umm_zalloc.o  bin/umm_getheap.o  bin/umm_getsize.o  bin/umm_xalloc_user_at.o  bin/kmm_initialize.o  bin/kmm_addregion.o  bin/kmm_sem.o  bin/kmm_brkaddr.o  bin/kmm_calloc.o  bin/kmm_extend.o  bin/kmm_free.o  bin/kmm_mallinfo.o  bin/kmm_malloc.o  bin/kmm_memalign.o  bin/kmm_realloc.o  bin/kmm_zalloc.o  bin/kmm_getheap.o  bin/kmm_getsize.o  bin/kmm_heapmember.o
+make[1]: Leaving directory '/root/tizenrt/os/mm'
+make[1]: Entering directory '/root/tizenrt/os/wqueue'
+CC:  kwqueue/kwork_queue.c
+CC:  kwqueue/kwork_cancel.c
+CC:  kwqueue/kwork_signal.c
+CC:  kwqueue/kwork_hpthread.c
+CC:  kwqueue/kwork_lpthread.c
+CC:  work_queue.c
+CC:  work_process.c
+CC:  work_cancel.c
+CC:  work_signal.c
+AR:    bin/kwork_queue.o  bin/kwork_cancel.o  bin/kwork_signal.o  bin/kwork_hpthread.o  bin/kwork_lpthread.o  bin/work_queue.o  bin/work_process.o  bin/work_cancel.o  bin/work_signal.o
+make[1]: Leaving directory '/root/tizenrt/os/wqueue'
+make[1]: Entering directory '/root/tizenrt/os/arch/arm/src'
+AS:  armv8-m/up_saveusercontext.S
+AS:  armv8-m/up_fullcontextrestore.S
+AS:  armv8-m/up_switchcontext.S
+AS:  armv8-m/up_fetchadd.S
+AS:  armv8-m/vfork.S
+AS:  armv8-m/up_exception.S
+AS:  armv8-m/up_xip_lab_entry.S
+CC:  chip/amebad_start.c
+CC:  chip/amebad_flash.c
+CC:  chip/amebad_idle.c
+CC:  chip/amebad_irq.c
+CC:  chip/amebad_timerisr.c
+CC:  chip/amebad_serial.c
+CC:  chip/amebad_lowerhalf.c
+CC:  chip/amebad_enet.c
+CC:  chip/amebad_timer_lowerhalf.c
+CC:  chip/amebad_rtc_lowerhalf.c
+CC:  chip/amebad_rtc.c
+CC:  chip/amebad_watchdog_lowerhalf.c
+CC:  chip/amebad_i2c.c
+CC:  chip/amebad_spi.c
+chip/amebad_timerisr.c:88:26: warning: "SystemCoreClock" is not defined, evaluates to 0 [-Wundef]
+   88 | #define SYSTICK_RELOAD ((SystemCoreClock / CLK_TCK) - 1)
+      |                          ^~~~~~~~~~~~~~~
+chip/amebad_timerisr.c:90:5: note: in expansion of macro 'SYSTICK_RELOAD'
+   90 | #if SYSTICK_RELOAD > 0x00ffffff
+      |     ^~~~~~~~~~~~~~
+CC:  chip/amebad_systemreset.c
+CC:  armv8-m/up_assert.c
+CC:  armv8-m/up_blocktask.c
+chip/amebad_enet.c: In function 'rtk_set_multicast_packet_filters':
+chip/amebad_enet.c:119:30: warning: 'packet_filter.pattern' is used uninitialized in this function [-Wuninitialized]
+  119 |  RTK_ETHER_COPY(packet_filter.pattern, addr);
+      |                              ^
+CC:  armv8-m/up_copyfullstate.c
+CC:  armv8-m/up_coherent_dcache.c
+CC:  common/up_createstack.c
+CC:  common/up_mdelay.c
+chip/amebad_timer_lowerhalf.c: In function 'amebad_gpt_start':
+CC:  common/up_udelay.c
+chip/amebad_timer_lowerhalf.c:186:18: warning: assignment to 'uint32_t' {aka 'unsigned int'} from 'struct amebad_gpt_lowerhalf_s *' makes integer from pointer without a cast [-Wint-conversion]
+  186 |    priv->obj.hid = priv;
+      |                  ^
+chip/amebad_timer_lowerhalf.c:191:19: warning: assignment to 'uint32_t' {aka 'unsigned int'} from 'struct amebad_gpt_lowerhalf_s *' makes integer from pointer without a cast [-Wint-conversion]
+  191 |     priv->obj.hid = priv;
+      |                   ^
+chip/amebad_timer_lowerhalf.c:194:66: warning: passing argument 4 of 'gtimer_start_periodical' makes integer from pointer without a cast [-Wint-conversion]
+  194 |     gtimer_start_periodical(&priv->obj, priv->gpt_timeout, NULL, NULL);
+      |                                                                  ^~~~
+      |                                                                  |
+      |                                                                  void *
+In file included from chip/amebad_timer_lowerhalf.c:66:
+/root/tizenrt/os/board/rtl8721csm/src/component/common/mbed/hal/timer_api.h:106:92: note: expected 'uint32_t' {aka 'unsigned int'} but argument is of type 'void *'
+  106 | void gtimer_start_periodical (gtimer_t *obj, uint32_t duration_us, void* handler, uint32_t hid);
+      |                                                                                   ~~~~~~~~~^~~
+CC:  common/up_exit.c
+chip/amebad_timer_lowerhalf.c: In function 'amebad_gpt_setcallback':
+chip/amebad_timer_lowerhalf.c:355:18: warning: assignment to 'uint32_t' {aka 'unsigned int'} from 'struct amebad_gpt_lowerhalf_s *' makes integer from pointer without a cast [-Wint-conversion]
+  355 |    priv->obj.hid = priv;
+      |                  ^
+chip/amebad_timer_lowerhalf.c:358:18: warning: assignment to 'uint32_t' {aka 'unsigned int'} from 'void *' makes integer from pointer without a cast [-Wint-conversion]
+  358 |    priv->obj.hid = NULL;
+      |                  ^
+CC:  common/up_puts.c
+CC:  common/up_initialize.c
+CC:  armv8-m/up_initialstate.c
+chip/amebad_serial.c:231:13: warning: initialization of 'int (*)(struct uart_dev_s *, unsigned int *)' from incompatible pointer type 'int (*)(struct uart_dev_s *, uint8_t *)' {aka 'int (*)(struct uart_dev_s *, unsigned char *)'} [-Wincompatible-pointer-types]
+  231 |  .receive = rtl8721d_up_receive,
+      |             ^~~~~~~~~~~~~~~~~~~
+chip/amebad_serial.c:231:13: note: (near initialization for 'g_uart_ops.receive')
+CC:  common/up_interruptcontext.c
+CC:  common/up_flush_console.c
+CC:  armv8-m/up_memfault.c
+CC:  armv8-m/up_busfault.c
+chip/amebad_spi.c:187:18: warning: initialization of 'int (*)(struct spi_dev_s *, enum spi_dev_e,  _Bool8)' {aka 'int (*)(struct spi_dev_s *, enum spi_dev_e,  unsigned char)'} from incompatible pointer type 'int (*)(struct spi_dev_s *, uint32_t,  _Bool8)' {aka 'int (*)(struct spi_dev_s *, unsigned int,  unsigned char)'} [-Wincompatible-pointer-types]
+  187 |  .cmddata      = amebad_spi0cmddata,
+      |                  ^~~~~~~~~~~~~~~~~~
+chip/amebad_spi.c:187:18: note: (near initialization for 'g_spi0ops.cmddata')
+chip/amebad_spi.c:241:18: warning: initialization of 'int (*)(struct spi_dev_s *, enum spi_dev_e,  _Bool8)' {aka 'int (*)(struct spi_dev_s *, enum spi_dev_e,  unsigned char)'} from incompatible pointer type 'int (*)(struct spi_dev_s *, uint32_t,  _Bool8)' {aka 'int (*)(struct spi_dev_s *, unsigned int,  unsigned char)'} [-Wincompatible-pointer-types]
+  241 |  .cmddata      = amebad_spi1cmddata,
+      |                  ^~~~~~~~~~~~~~~~~~
+chip/amebad_spi.c:241:18: note: (near initialization for 'g_spi1ops.cmddata')
+CC:  armv8-m/up_usagefault.c
+CC:  common/up_modifyreg8.c
+CC:  common/up_modifyreg16.c
+CC:  common/up_modifyreg32.c
+CC:  armv8-m/up_releasepending.c
+CC:  common/up_releasestack.c
+CC:  armv8-m/up_reprioritizertr.c
+CC:  armv8-m/up_schedulesigaction.c
+CC:  armv8-m/up_sigdeliver.c
+CC:  common/up_stackframe.c
+CC:  common/up_checkstackoverflow.c
+CC:  armv8-m/up_unblocktask.c
+CC:  common/up_usestack.c
+CC:  armv8-m/up_doirq.c
+CC:  armv8-m/up_hardfault.c
+CC:  armv8-m/up_svcall.c
+CC:  common/up_vfork.c
+CC:  armv8-m/up_trigger_irq.c
+CC:  armv8-m/up_systemreset.c
+CC:  armv8-m/up_unblocktask_withoutsavereg.c
+CC:  common/up_restoretask.c
+CC:  armv8-m/up_vectors.c
+CC:  armv8-m/arch_enable_dcache.c
+CC:  armv8-m/arch_disable_dcache.c
+CC:  armv8-m/arch_invalidate_dcache.c
+CC:  armv8-m/arch_invalidate_dcache_all.c
+CC:  armv8-m/arch_clean_dcache.c
+CC:  armv8-m/arch_clean_dcache_all.c
+CC:  armv8-m/arch_flush_dcache.c
+CC:  armv8-m/arch_flush_dcache_all.c
+CC:  common/up_allocateheap.c
+CC:  common/up_mpuinit.c
+CC:  armv8-m/up_xip_lab.c
+AR:  up_saveusercontext.o up_fullcontextrestore.o up_switchcontext.o up_fetchadd.o vfork.o up_exception.o up_xip_lab_entry.o amebad_start.o amebad_flash.o amebad_idle.o amebad_irq.o amebad_timerisr.o amebad_serial.o amebad_lowerhalf.o amebad_enet.o amebad_timer_lowerhalf.o amebad_rtc_lowerhalf.o amebad_rtc.o amebad_watchdog_lowerhalf.o amebad_i2c.o amebad_spi.o amebad_systemreset.o up_assert.o up_blocktask.o up_copyfullstate.o up_coherent_dcache.o up_createstack.o up_mdelay.o up_udelay.o up_exit.o up_puts.o up_initialize.o up_initialstate.o up_interruptcontext.o up_flush_console.o up_memfault.o up_busfault.o up_usagefault.o up_modifyreg8.o up_modifyreg16.o up_modifyreg32.o up_releasepending.o up_releasestack.o up_reprioritizertr.o up_schedulesigaction.o up_sigdeliver.o up_stackframe.o up_checkstackoverflow.o up_unblocktask.o up_usestack.o up_doirq.o up_hardfault.o up_svcall.o up_vfork.o up_trigger_irq.o up_systemreset.o up_unblocktask_withoutsavereg.o up_restoretask.o up_vectors.o arch_enable_dcache.o arch_disable_dcache.o arch_invalidate_dcache.o arch_invalidate_dcache_all.o arch_clean_dcache.o arch_clean_dcache_all.o arch_flush_dcache.o arch_flush_dcache_all.o up_allocateheap.o up_mpuinit.o up_xip_lab.o
+make[1]: Leaving directory '/root/tizenrt/os/arch/arm/src'
+make[1]: Entering directory '/root/tizenrt/external'
+make[2]: Entering directory '/root/tizenrt/external/stress_tool'
+CC:  st_perf.c
+CC:  st_perf_print.c
+make[2]: Entering directory '/root/tizenrt/external/json'
+CC:  cJSON.c
+make[2]: Entering directory '/root/tizenrt/external/netutils'
+CC:  netlib.c
+CC:  netlib_parsehttpurl.c
+make[2]: Entering directory '/root/tizenrt/external/dhcpc'
+CC:  dhcpc_lwip.c
+make[2]: Entering directory '/root/tizenrt/external/dhcpd'
+CC:  netlib_setifstatus.c
+CC:  netlib_getifstatus.c
+CC:  dhcpd_lwip.c
+make[2]: Entering directory '/root/tizenrt/external/mbedtls'
+CC:  aes.c
+CC:  netlib_getifaddrs.c
+CC:  aesni.c
+CC:  aesce.c
+CC:  aria.c
+CC:  asn1parse.c
+CC:  netlib_getstats.c
+CC:  asn1write.c
+CC:  netlib_netmon.c
+CC:  netlib_setipv4addr.c
+CC:  netlib_getipv4addr.c
+CC:  netlib_getdripv4addr.c
+AR:   dhcpc_lwip.o
+make[2]: Leaving directory '/root/tizenrt/external/dhcpc'
+CC:  base64.c
+AR:   dhcpd_lwip.o
+AR:   st_perf.o st_perf_print.o
+make[2]: Leaving directory '/root/tizenrt/external/dhcpd'
+CC:  netlib_setdripv4addr.c
+make[2]: Leaving directory '/root/tizenrt/external/stress_tool'
+CC:  bignum.c
+CC:  netlib_setipv4netmask.c
+AR:   cJSON.o
+CC:  bignum_core.c
+CC:  netlib_setipv6addr.c
+CC:  netlib_prefix2ipv6netmask.c
+CC:  netlib_ipv6netmask2prefix.c
+CC:  netlib_setipv6type.c
+CC:  netlib_setmacaddr.c
+make[2]: Leaving directory '/root/tizenrt/external/json'
+CC:  bignum_mod.c
+CC:  netlib_getmacaddr.c
+CC:  bignum_mod_raw.c
+CC:  camellia.c
+CC:  ccm.c
+CC:  netlib_setdnsserver.c
+CC:  chacha20.c
+CC:  chachapoly.c
+CC:  cipher.c
+CC:  cipher_wrap.c
+CC:  cmac.c
+CC:  constant_time.c
+CC:  ctr_drbg.c
+CC:  des.c
+CC:  dhm.c
+AR:   netlib.o netlib_parsehttpurl.o netlib_setifstatus.o netlib_getifstatus.o netlib_getifaddrs.o netlib_getstats.o netlib_netmon.o netlib_setipv4addr.o netlib_getipv4addr.o netlib_getdripv4addr.o netlib_setdripv4addr.o netlib_setipv4netmask.o netlib_setipv6addr.o netlib_prefix2ipv6netmask.o netlib_ipv6netmask2prefix.o netlib_setipv6type.o netlib_setmacaddr.o netlib_getmacaddr.o netlib_setdnsserver.o
+CC:  ecdh.c
+CC:  ecdsa.c
+make[2]: Leaving directory '/root/tizenrt/external/netutils'
+CC:  ecjpake.c
+CC:  ecp.c
+CC:  ecp_curves.c
+CC:  entropy.c
+CC:  entropy_poll.c
+CC:  error.c
+CC:  gcm.c
+CC:  hash_info.c
+CC:  hkdf.c
+CC:  hmac_drbg.c
+CC:  lmots.c
+CC:  lms.c
+CC:  md.c
+CC:  md5.c
+CC:  memory_buffer_alloc.c
+CC:  nist_kw.c
+CC:  oid.c
+CC:  padlock.c
+CC:  pem.c
+CC:  pk.c
+CC:  pk_wrap.c
+CC:  pkcs12.c
+CC:  pkcs5.c
+CC:  pkparse.c
+CC:  pkwrite.c
+CC:  platform.c
+CC:  platform_util.c
+CC:  poly1305.c
+CC:  ripemd160.c
+CC:  rsa.c
+CC:  rsa_alt_helpers.c
+CC:  sha1.c
+CC:  sha256.c
+CC:  sha512.c
+CC:  threading.c
+CC:  timing.c
+CC:  version.c
+CC:  version_features.c
+CC:  x509.c
+CC:  x509_create.c
+CC:  x509_crl.c
+CC:  x509_crt.c
+CC:  x509_csr.c
+CC:  x509write_crt.c
+CC:  x509write_csr.c
+CC:  pkcs7.c
+CC:  debug.c
+CC:  mps_reader.c
+CC:  mps_trace.c
+CC:  net_sockets.c
+CC:  ssl_cache.c
+CC:  ssl_ciphersuites.c
+CC:  ssl_client.c
+CC:  ssl_cookie.c
+CC:  ssl_debug_helpers_generated.c
+CC:  ssl_msg.c
+CC:  ssl_ticket.c
+CC:  ssl_tls.c
+CC:  ssl_tls12_client.c
+CC:  ssl_tls12_server.c
+CC:  ssl_tls13_keys.c
+CC:  ssl_tls13_client.c
+CC:  ssl_tls13_server.c
+CC:  ssl_tls13_generic.c
+CC:  alt/dhm_alt.c
+CC:  alt/ecdh_alt.c
+CC:  alt/entropy_poll_alt.c
+CC:  alt/pk_wrap_alt.c
+CC:  alt/alt_utils.c
+CC:  alt/aes_alt.c
+CC:  test/certs.c
+CC:  psa_crypto.c
+CC:  psa_crypto_aead.c
+CC:  psa_crypto_cipher.c
+CC:  psa_crypto_client.c
+CC:  psa_crypto_driver_wrappers.c
+CC:  psa_crypto_ecp.c
+CC:  psa_crypto_hash.c
+CC:  psa_crypto_mac.c
+CC:  psa_crypto_pake.c
+CC:  psa_crypto_rsa.c
+CC:  psa_crypto_se.c
+CC:  psa_crypto_slot_management.c
+CC:  psa_crypto_storage.c
+CC:  psa_its_file.c
+CC:  psa_util.c
+AR:   aes.o aesni.o aesce.o aria.o asn1parse.o asn1write.o base64.o bignum.o bignum_core.o bignum_mod.o bignum_mod_raw.o camellia.o ccm.o chacha20.o chachapoly.o cipher.o cipher_wrap.o cmac.o constant_time.o ctr_drbg.o des.o dhm.o ecdh.o ecdsa.o ecjpake.o ecp.o ecp_curves.o entropy.o entropy_poll.o error.o gcm.o hash_info.o hkdf.o hmac_drbg.o lmots.o lms.o md.o md5.o memory_buffer_alloc.o nist_kw.o oid.o padlock.o pem.o pk.o pk_wrap.o pkcs12.o pkcs5.o pkparse.o pkwrite.o platform.o platform_util.o poly1305.o ripemd160.o rsa.o rsa_alt_helpers.o sha1.o sha256.o sha512.o threading.o timing.o version.o version_features.o x509.o x509_create.o x509_crl.o x509_crt.o x509_csr.o x509write_crt.o x509write_csr.o pkcs7.o debug.o mps_reader.o mps_trace.o net_sockets.o ssl_cache.o ssl_ciphersuites.o ssl_client.o ssl_cookie.o ssl_debug_helpers_generated.o ssl_msg.o ssl_ticket.o ssl_tls.o ssl_tls12_client.o ssl_tls12_server.o ssl_tls13_keys.o ssl_tls13_client.o ssl_tls13_server.o ssl_tls13_generic.o dhm_alt.o ecdh_alt.o entropy_poll_alt.o pk_wrap_alt.o alt_utils.o aes_alt.o certs.o psa_crypto.o psa_crypto_aead.o psa_crypto_cipher.o psa_crypto_client.o psa_crypto_driver_wrappers.o psa_crypto_ecp.o psa_crypto_hash.o psa_crypto_mac.o psa_crypto_pake.o psa_crypto_rsa.o psa_crypto_se.o psa_crypto_slot_management.o psa_crypto_storage.o psa_its_file.o psa_util.o
+make[2]: Leaving directory '/root/tizenrt/external/mbedtls'
+AR:
+make[1]: Leaving directory '/root/tizenrt/external'
+make[1]: Entering directory '/root/tizenrt/apps'
+make[2]: Entering directory '/root/tizenrt/apps/builtin'
+CC:  builtin_list.c
+make[2]: Entering directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+CC:  wm_test_stress.c
+make[2]: Entering directory '/root/tizenrt/apps/examples/hello'
+CC:  hello_main.c
+make[2]: Entering directory '/root/tizenrt/apps/system/sysinfo'
+make[2]: Entering directory '/root/tizenrt/apps/system/readline'
+CC:  sysinfo.c
+CC:  readline_common.c
+make[2]: Entering directory '/root/tizenrt/apps/examples/ble_rmc'
+CC:  ble_rmc_main.c
+make[2]: Entering directory '/root/tizenrt/apps/shell'
+CC:  tash_command.c
+make[2]: Entering directory '/root/tizenrt/apps/system/utils'
+CC:  fs_getpath.c
+make[2]: Entering directory '/root/tizenrt/apps/examples/ble_tester'
+CC:  ble_tester_main.c
+make[2]: Entering directory '/root/tizenrt/apps/system/netdb'
+CC:  netdb_main.c
+make[2]: Entering directory '/root/tizenrt/apps/system/iperf'
+make[2]: Entering directory '/root/tizenrt/apps/system/system_file'
+CC:  iperf_api.c
+CC:  system_file.c
+AR:   builtin_list.o
+CC:  wm_test_stress_test1.c
+make[2]: Leaving directory '/root/tizenrt/apps/builtin'
+AR:    hello_main.o
+ble_rmc_main.c: In function 'multi_adv_thread':
+ble_rmc_main.c:258:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  258 | }
+      | ^
+ble_rmc_main.c: At top level:
+ble_rmc_main.c:337:9: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  337 |   .cb = utc_cb_charact_a_1,
+      |         ^~~~~~~~~~~~~~~~~~
+ble_rmc_main.c:337:9: note: (near initialization for 'gatt_profile[1].cb')
+ble_rmc_main.c:347:9: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  347 |   .cb = utc_cb_desc_b_1,
+      |         ^~~~~~~~~~~~~~~
+ble_rmc_main.c:347:9: note: (near initialization for 'gatt_profile[2].cb')
+make[2]: Leaving directory '/root/tizenrt/apps/examples/hello'
+CC:  systemcmd.c
+make[2]: Entering directory '/root/tizenrt/apps/system/init'
+CC:  init.c
+CC:  readline.c
+ble_tester_main.c:333:65: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  333 |  .attr_handle = BLE_STATE_MANAGER_RMC_HANDLE_KEY_COMMAND, .cb = utc_cb_charact_a_1, .arg = "char_1"},
+      |                                                                 ^~~~~~~~~~~~~~~~~~
+ble_tester_main.c:333:65: note: (near initialization for 'gatt_profile[1].cb')
+ble_tester_main.c:337:62: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  337 |  .attr_handle = BLE_STATE_MANAGER_RMC_HANDLE_KEY_CCCD, .cb = utc_cb_desc_b_1, .arg = "desc_1"},
+      |                                                              ^~~~~~~~~~~~~~~
+ble_tester_main.c:337:62: note: (near initialization for 'gatt_profile[2].cb')
+ble_tester_main.c:344:52: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  344 |  .attr_handle = BLE_APP_HANDLE_CHAR_RMC_KEY, .cb = utc_cb_charact_a_1, .arg = "char_2"},
+      |                                                    ^~~~~~~~~~~~~~~~~~
+ble_tester_main.c:344:52: note: (near initialization for 'gatt_profile[4].cb')
+ble_tester_main.c:348:52: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  348 |  .attr_handle = BLE_APP_HANDLE_DESC_RMC_KEY, .cb = utc_cb_desc_b_1, .arg = "desc_2"},
+      |                                                    ^~~~~~~~~~~~~~~
+ble_tester_main.c:348:52: note: (near initialization for 'gatt_profile[5].cb')
+ble_tester_main.c:355:53: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  355 |  .attr_handle = BLE_APP_HANDLE_CHAR_RMC_SYNC, .cb = ble_peri_cb_charact_rmc_sync, .arg = "char_3"},
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ble_tester_main.c:355:53: note: (near initialization for 'gatt_profile[7].cb')
+ble_tester_main.c:362:65: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  362 |  .attr_handle = BLE_STATE_MANAGER_RMC_HANDLE_OTA_COMMAND, .cb = ble_peri_cb_charact_ota, .arg = "char_4"},
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~~~
+ble_tester_main.c:362:65: note: (near initialization for 'gatt_profile[9].cb')
+ble_tester_main.c:366:67: warning: initialization of 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *, uint16_t,  uint16_t)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *, short unsigned int,  short unsigned int)'} from incompatible pointer type 'void (*)(ble_server_attr_cb_type_e,  ble_conn_handle,  ble_attr_handle,  void *)' {aka 'void (*)(ble_server_attr_cb_type_e,  short unsigned int,  short unsigned int,  void *)'} [-Wincompatible-pointer-types]
+  366 |  .attr_handle = BLE_STATE_MANAGER_RMC_HANDLE_OTA_INDI_CCCD, .cb = utc_cb_desc_b_1, .arg = "desc_4"},
+      |                                                                   ^~~~~~~~~~~~~~~
+ble_tester_main.c:366:67: note: (near initialization for 'gatt_profile[10].cb')
+ble_tester_main.c:391:2: warning: initialization of 'void (*)(ble_conn_handle,  ble_server_connection_type_e,  uint8_t *, uint8_t)' {aka 'void (*)(short unsigned int,  ble_server_connection_type_e,  unsigned char *, unsigned char)'} from incompatible pointer type 'void (*)(ble_conn_handle,  ble_server_connection_type_e,  uint8_t *)' {aka 'void (*)(short unsigned int,  ble_server_connection_type_e,  unsigned char *)'} [-Wincompatible-pointer-types]
+  391 |  ble_server_connected_cb,
+      |  ^~~~~~~~~~~~~~~~~~~~~~~
+ble_tester_main.c:391:2: note: (near initialization for 'server_config.connected_cb')
+ble_rmc_main.c: In function 'ble_rmc_main':
+ble_rmc_main.c:996:30: warning: initialization of 'uint8_t *' {aka 'unsigned char *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  996 |   ble_data adv_data_1[1] = { 0x99, };
+      |                              ^~~~
+ble_rmc_main.c:996:30: note: (near initialization for 'adv_data_1[0].data')
+ble_rmc_main.c:996:28: warning: missing braces around initializer [-Wmissing-braces]
+  996 |   ble_data adv_data_1[1] = { 0x99, };
+      |                            ^
+      |                              {     }
+ble_rmc_main.c:997:35: warning: initialization of 'uint8_t *' {aka 'unsigned char *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  997 |   ble_data scan_rsp_data_1[1] = { 0x98, };
+      |                                   ^~~~
+ble_rmc_main.c:997:35: note: (near initialization for 'scan_rsp_data_1[0].data')
+ble_rmc_main.c:997:33: warning: missing braces around initializer [-Wmissing-braces]
+  997 |   ble_data scan_rsp_data_1[1] = { 0x98, };
+      |                                 ^
+      |                                   {     }
+ble_rmc_main.c:998:30: warning: initialization of 'uint8_t *' {aka 'unsigned char *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  998 |   ble_data adv_data_2[1] = { 0x99, };
+      |                              ^~~~
+ble_rmc_main.c:998:30: note: (near initialization for 'adv_data_2[0].data')
+ble_rmc_main.c:998:28: warning: missing braces around initializer [-Wmissing-braces]
+  998 |   ble_data adv_data_2[1] = { 0x99, };
+      |                            ^
+      |                              {     }
+ble_rmc_main.c:999:35: warning: initialization of 'uint8_t *' {aka 'unsigned char *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  999 |   ble_data scan_rsp_data_2[1] = { 0x98, };
+      |                                   ^~~~
+ble_rmc_main.c:999:35: note: (near initialization for 'scan_rsp_data_2[0].data')
+ble_rmc_main.c:999:33: warning: missing braces around initializer [-Wmissing-braces]
+  999 |   ble_data scan_rsp_data_2[1] = { 0x98, };
+      |                                 ^
+      |                                   {     }
+AR:    sysinfo.o
+make[2]: Entering directory '/root/tizenrt/apps/platform'
+AR:
+make[2]: Leaving directory '/root/tizenrt/apps/system/sysinfo'
+make[2]: Leaving directory '/root/tizenrt/apps/platform'
+CC:  iperf_error.c
+CC:  wm_test_stress_test2.c
+CC:  fscmd.c
+AR:   system_file.o
+CC:  tash_init.c
+make[2]: Leaving directory '/root/tizenrt/apps/system/system_file'
+CC:  iperf_server_api.c
+AR:     init.o
+AR:   readline_common.o readline.o
+CC:  wm_test_stress_test3.c
+make[2]: Leaving directory '/root/tizenrt/apps/system/init'
+CC:  tash_sleep.c
+make[2]: Leaving directory '/root/tizenrt/apps/system/readline'
+CC:  iperf_t_timer.c
+AR:   netdb_main.o
+CC:  netcmd.c
+make[2]: Leaving directory '/root/tizenrt/apps/system/netdb'
+CC:  wm_test_stress_test4.c
+CC:  tash_main.c
+AR:    ble_tester_main.o
+make[2]: Leaving directory '/root/tizenrt/apps/examples/ble_tester'
+CC:  iperf_client_api.c
+CC:  iperf_locale.c
+CC:  wm_test_daemon.c
+CC:  iperf_udp.c
+CC:  iperf_util.c
+AR:    ble_rmc_main.o
+AR:   tash_command.o tash_init.o tash_sleep.o tash_main.o
+make[2]: Leaving directory '/root/tizenrt/apps/examples/ble_rmc'
+CC:  wm_test_network.c
+CC:  wm_test_event_tc.c
+CC:  wm_test_connect_stable.c
+make[2]: Leaving directory '/root/tizenrt/apps/shell'
+CC:  netcmd_ping.c
+CC:  wm_test_dns.c
+CC:  iperf_timer.c
+CC:  iperf_tcp.c
+CC:  iperf_units.c
+CC:  netcmd_netmon.c
+CC:  iperf_net.c
+CC:  wm_test_connectbyrssi_test.c
+CC:  wm_test.c
+CC:  wm_test_on_off.c
+CC:  wm_test_utils.c
+CC:  wm_test_interop.c
+CC:  iperf_tcp_info.c
+wm_test_connectbyrssi_test.c:194:13: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+  194 | static void _wt_disconnect()
+      |             ^~~~~~~~~~~~~~
+CC:  netcmd_dhcpd.c
+CC:  utils_cpuload.c
+CC:  utils_date.c
+CC:  iperf_main.c
+CC:  utils_env.c
+CC:  utils_free.c
+CC:  utils_kill.c
+CC:  utils_uptime.c
+CC:  utils_proc.c
+AR:   wm_test_stress.o wm_test_stress_test1.o wm_test_stress_test2.o wm_test_stress_test3.o wm_test_stress_test4.o wm_test_daemon.o wm_test_network.o wm_test_event_tc.o wm_test_connect_stable.o wm_test_dns.o wm_test_connectbyrssi_test.o wm_test.o wm_test_on_off.o wm_test_utils.o wm_test_interop.o
+AR:   iperf_api.o iperf_error.o iperf_server_api.o iperf_t_timer.o iperf_client_api.o iperf_locale.o iperf_udp.o iperf_util.o iperf_timer.o iperf_tcp.o iperf_units.o iperf_net.o iperf_tcp_info.o iperf_main.o
+make[2]: Leaving directory '/root/tizenrt/apps/examples/wifi_manager/wm_test'
+AR:   fs_getpath.o systemcmd.o fscmd.o netcmd.o netcmd_ping.o netcmd_netmon.o netcmd_dhcpd.o utils_cpuload.o utils_date.o utils_env.o utils_free.o utils_kill.o utils_uptime.o utils_proc.o
+make[2]: Leaving directory '/root/tizenrt/apps/system/iperf'
+make[2]: Leaving directory '/root/tizenrt/apps/system/utils'
+make[1]: Leaving directory '/root/tizenrt/apps'
+make[1]: Entering directory '/root/tizenrt/os/net'
+CC:  blemgr/bledev_lwnl.c
+CC:  blemgr/bledev.c
+CC:  blemgr/bledev_mgr.c
+CC:  blemgr/bledev_mgr_client.c
+CC:  blemgr/bledev_mgr_server.c
+CC:  netmgr/netdev_mgr.c
+CC:  netmgr/netdev_mgr_internal.c
+CC:  netmgr/netmgr_ioctl_netdev.c
+CC:  netmgr/netdev_eth.c
+CC:  netmgr/netmgr_logger.c
+CC:  netmgr/netdev_stats.c
+CC:  netmgr/netmgr_ioctl_lwip.c
+blemgr/bledev.c: In function 'bledev_handle':
+blemgr/bledev.c:465:60: warning: passing argument 2 of 'dev->ops->get_write_read_queue_cnt' from incompatible pointer type [-Wincompatible-pointer-types]
+  465 |   TRBLE_DRV_CALL(ret, dev, get_write_read_queue_cnt, (dev, handle, count));
+      |                                                            ^~~~~~
+      |                                                            |
+      |                                                            trble_operation_handle *
+blemgr/bledev.c:34:28: note: in definition of macro 'TRBLE_DRV_CALL'
+   34 |    res = (dev->ops->method)param; \
+      |                            ^~~~~
+blemgr/bledev.c:465:60: note: expected 'trble_conn_handle *' {aka 'short unsigned int *'} but argument is of type 'trble_operation_handle *'
+  465 |   TRBLE_DRV_CALL(ret, dev, get_write_read_queue_cnt, (dev, handle, count));
+      |                                                            ^~~~~~
+blemgr/bledev.c:34:28: note: in definition of macro 'TRBLE_DRV_CALL'
+   34 |    res = (dev->ops->method)param; \
+      |                            ^~~~~
+blemgr/bledev.c:998:21: warning: initialization of 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint8_t *' {aka 'unsigned char *'} [-Wincompatible-pointer-types]
+  998 |   uint16_t *value = (uint8_t *)param.param[2];
+      |                     ^
+blemgr/bledev.c:1038:12: warning: declaration of 'data' shadows a parameter [-Wshadow]
+ 1038 |   uint8_t *data = (uint8_t *)param.param[2];
+      |            ^~~~
+blemgr/bledev.c:84:59: note: shadowed declaration is here
+   84 | int bledev_handle(struct bledev *dev, lwnl_req cmd, void *data, uint32_t data_len)
+      |                                                     ~~~~~~^~~~
+CC:  netmgr/netdev_lwip.c
+blemgr/bledev_mgr_server.c:78:2: warning: initialization of 'void (*)(trble_conn_handle,  trble_server_connection_type_e,  uint8_t *, uint8_t)' {aka 'void (*)(short unsigned int,  trble_server_connection_type_e,  unsigned char *, unsigned char)'} from incompatible pointer type 'void (*)(trble_conn_handle,  trble_server_connection_type_e,  uint8_t *)' {aka 'void (*)(short unsigned int,  trble_server_connection_type_e,  unsigned char *)'} [-Wincompatible-pointer-types]
+   78 |  ble_server_connected_null_cb,
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+blemgr/bledev_mgr_server.c:78:2: note: (near initialization for 'g_server_null_config.connected_cb')
+CC:  netmgr/netstack_lwip.c
+CC:  netmgr/netdev_lwnl.c
+CC:  netmgr/netdev_wifi.c
+CC:  netmgr/netstack_lwnl.c
+CC:  netmgr/netstack.c
+CC:  netmgr/net_vfs.c
+CC:  netmgr/bsd_socket_api.c
+CC:  net_initialize_netmgr.c
+CC:  lwip/src/core/def.c
+CC:  lwip/src/core/init.c
+CC:  lwip/src/core/mem.c
+CC:  lwip/src/core/memp.c
+CC:  lwip/src/core/netif.c
+CC:  lwip/src/core/ip.c
+CC:  lwip/src/core/dns.c
+CC:  lwip/src/core/timeouts.c
+CC:  lwip/src/core/pbuf.c
+CC:  lwip/src/core/raw.c
+CC:  lwip/src/core/stats.c
+CC:  lwip/src/core/sys.c
+CC:  lwip/src/core/tcp.c
+CC:  lwip/src/core/tcp_in.c
+CC:  lwip/src/core/tcp_out.c
+CC:  lwip/src/core/udp.c
+CC:  lwip/src/core/inet_chksum.c
+CC:  lwip/src/api/api_lib.c
+CC:  lwip/src/api/api_msg.c
+CC:  lwip/src/api/err.c
+CC:  lwip/src/api/netbuf.c
+CC:  lwip/src/api/netifapi.c
+CC:  lwip/src/api/sockets.c
+CC:  lwip/src/api/tcpip.c
+CC:  lwip/src/api/netdb.c
+CC:  lwip/src/netif/ethernet.c
+CC:  lwip/src/netif/slipif.c
+CC:  lwip/src/core/snmp/snmp_asn1.c
+CC:  lwip/src/core/snmp/snmp_core.c
+CC:  lwip/src/core/snmp/snmp_mib2.c
+CC:  lwip/src/core/snmp/snmp_mib2_icmp.c
+CC:  lwip/src/core/snmp/snmp_mib2_interfaces.c
+CC:  lwip/src/core/snmp/snmp_mib2_ip.c
+CC:  lwip/src/core/snmp/snmp_mib2_snmp.c
+CC:  lwip/src/core/snmp/snmp_mib2_system.c
+CC:  lwip/src/core/snmp/snmp_mib2_tcp.c
+CC:  lwip/src/core/snmp/snmp_mib2_udp.c
+CC:  lwip/src/core/snmp/snmp_msg.c
+CC:  lwip/src/core/snmp/snmp_netconn.c
+CC:  lwip/src/core/snmp/snmp_pbuf_stream.c
+CC:  lwip/src/core/snmp/snmp_raw.c
+CC:  lwip/src/core/snmp/snmp_scalar.c
+CC:  lwip/src/core/snmp/snmp_table.c
+CC:  lwip/src/core/snmp/snmp_threadsync.c
+CC:  lwip/src/core/snmp/snmp_traps.c
+CC:  lwip/src/core/ipv4/autoip.c
+CC:  lwip/src/core/ipv4/etharp.c
+CC:  lwip/src/core/ipv4/icmp.c
+CC:  lwip/src/core/ipv4/igmp.c
+CC:  lwip/src/core/ipv4/ip4.c
+CC:  lwip/src/core/ipv4/ip4_addr.c
+CC:  lwip/src/core/ipv4/ip4_frag.c
+CC:  lwip/src/core/ipv4/dhcp.c
+CC:  lwip/src/core/ipv4/dhcps.c
+CC:  lwip/src/core/ipv6/inet6.c
+CC:  lwip/src/core/ipv6/ip6.c
+CC:  lwip/src/core/ipv6/ip6_addr.c
+CC:  lwip/src/core/ipv6/ip6_frag.c
+CC:  lwip/src/core/ipv6/ethip6.c
+CC:  lwip/src/core/ipv6/nd6.c
+CC:  lwip/src/core/ipv6/icmp6.c
+CC:  lwip/src/core/ipv6/mld6.c
+CC:  lwip/src/netif/ppp/auth.c
+CC:  lwip/src/netif/ppp/chap.c
+CC:  lwip/src/netif/ppp/chpms.c
+CC:  lwip/src/netif/ppp/fsm.c
+CC:  lwip/src/netif/ppp/ipcp.c
+CC:  lwip/src/netif/ppp/lcp.c
+CC:  lwip/src/netif/ppp/magic.c
+CC:  lwip/src/netif/ppp/lwip_md5.c
+CC:  lwip/src/netif/ppp/pap.c
+CC:  lwip/src/netif/ppp/ppp.c
+CC:  lwip/src/netif/ppp/ppp_oe.c
+CC:  lwip/src/netif/ppp/randm.c
+CC:  lwip/src/netif/ppp/vj.c
+CC:  lwip/sys/arch/sys_arch.c
+AR:   bledev_lwnl.o bledev.o bledev_mgr.o bledev_mgr_client.o bledev_mgr_server.o netdev_mgr.o netdev_mgr_internal.o netmgr_ioctl_netdev.o netdev_eth.o netmgr_logger.o netdev_stats.o netmgr_ioctl_lwip.o netdev_lwip.o netstack_lwip.o netdev_lwnl.o netdev_wifi.o netstack_lwnl.o netstack.o net_vfs.o bsd_socket_api.o net_initialize_netmgr.o def.o init.o mem.o memp.o netif.o ip.o dns.o timeouts.o pbuf.o raw.o stats.o sys.o tcp.o tcp_in.o tcp_out.o udp.o inet_chksum.o api_lib.o api_msg.o err.o netbuf.o netifapi.o sockets.o tcpip.o netdb.o ethernet.o slipif.o snmp_asn1.o snmp_core.o snmp_mib2.o snmp_mib2_icmp.o snmp_mib2_interfaces.o snmp_mib2_ip.o snmp_mib2_snmp.o snmp_mib2_system.o snmp_mib2_tcp.o snmp_mib2_udp.o snmp_msg.o snmp_netconn.o snmp_pbuf_stream.o snmp_raw.o snmp_scalar.o snmp_table.o snmp_threadsync.o snmp_traps.o autoip.o etharp.o icmp.o igmp.o ip4.o ip4_addr.o ip4_frag.o dhcp.o dhcps.o inet6.o ip6.o ip6_addr.o ip6_frag.o ethip6.o nd6.o icmp6.o mld6.o auth.o chap.o chpms.o fsm.o ipcp.o lcp.o magic.o lwip_md5.o pap.o ppp.o ppp_oe.o randm.o vj.o sys_arch.o
+make[1]: Leaving directory '/root/tizenrt/os/net'
+make[1]: Entering directory '/root/tizenrt/os/fs'
+CC:  fs_initialize.c
+CC:  inode/fs_files.c
+CC:  inode/fs_foreachinode.c
+CC:  inode/fs_inode.c
+CC:  inode/fs_inodeaddref.c
+CC:  inode/fs_inodebasename.c
+CC:  inode/fs_inodefind.c
+CC:  inode/fs_inoderelease.c
+CC:  inode/fs_inoderemove.c
+CC:  inode/fs_inodereserve.c
+CC:  inode/fs_fileopen.c
+CC:  inode/fs_filedetach.c
+CC:  inode/fs_fileclose.c
+CC:  vfs/fs_close.c
+CC:  vfs/fs_dup.c
+CC:  vfs/fs_dup2.c
+CC:  vfs/fs_fcntl.c
+CC:  vfs/fs_dupfd.c
+CC:  vfs/fs_dupfd2.c
+CC:  vfs/fs_fstat.c
+CC:  vfs/fs_fstatfs.c
+CC:  vfs/fs_getfilep.c
+CC:  vfs/fs_ioctl.c
+CC:  vfs/fs_lseek.c
+CC:  vfs/fs_mkdir.c
+CC:  vfs/fs_open.c
+CC:  vfs/fs_poll.c
+CC:  vfs/fs_read.c
+CC:  vfs/fs_rename.c
+CC:  vfs/fs_rmdir.c
+CC:  vfs/fs_stat.c
+CC:  vfs/fs_statfs.c
+CC:  vfs/fs_select.c
+CC:  vfs/fs_unlink.c
+CC:  vfs/fs_write.c
+CC:  vfs/fs_fsync.c
+CC:  vfs/fs_truncate.c
+CC:  vfs/fs_pread.c
+CC:  vfs/fs_pwrite.c
+CC:  vfs/fs_fdopen.c
+CC:  driver/block/fs_registerdriver.c
+CC:  driver/block/fs_unregisterdriver.c
+CC:  driver/block/fs_registerblockdriver.c
+CC:  driver/block/fs_unregisterblockdriver.c
+CC:  driver/block/fs_findblockdriver.c
+CC:  driver/block/fs_openblockdriver.c
+CC:  driver/block/fs_closeblockdriver.c
+CC:  driver/block/ramdisk.c
+CC:  driver/mtd/mtd_config.c
+CC:  driver/mtd/fs_registermtddriver.c
+CC:  driver/mtd/fs_unregistermtddriver.c
+CC:  driver/mtd/ftl.c
+CC:  driver/mtd/smart.c
+CC:  driver/mtd/mtd_procfs.c
+CC:  driver/mtd/mtd_partition.c
+CC:  dirent/fs_closedir.c
+CC:  dirent/fs_opendir.c
+CC:  dirent/fs_readdir.c
+CC:  dirent/fs_rewinddir.c
+CC:  dirent/fs_seekdir.c
+CC:  mqueue/mq_open.c
+CC:  mqueue/mq_close.c
+CC:  mqueue/mq_unlink.c
+CC:  mount/fs_mount.c
+CC:  mount/fs_umount.c
+CC:  mount/fs_foreachmountpoint.c
+CC:  smartfs/smartfs_smart.c
+CC:  smartfs/smartfs_utils.c
+CC:  smartfs/smartfs_procfs.c
+CC:  smartfs/smartfs_mksmartfs.c
+CC:  procfs/fs_procfs.c
+CC:  procfs/fs_procfsutil.c
+CC:  procfs/fs_procfsproc.c
+CC:  procfs/fs_procfsuptime.c
+CC:  procfs/fs_procfsversion.c
+CC:  procfs/fs_procfsereport.c
+CC:  procfs/fs_procfscpuload.c
+AR:   fs_initialize.o fs_files.o fs_foreachinode.o fs_inode.o fs_inodeaddref.o fs_inodebasename.o fs_inodefind.o fs_inoderelease.o fs_inoderemove.o fs_inodereserve.o fs_fileopen.o fs_filedetach.o fs_fileclose.o fs_close.o fs_dup.o fs_dup2.o fs_fcntl.o fs_dupfd.o fs_dupfd2.o fs_fstat.o fs_fstatfs.o fs_getfilep.o fs_ioctl.o fs_lseek.o fs_mkdir.o fs_open.o fs_poll.o fs_read.o fs_rename.o fs_rmdir.o fs_stat.o fs_statfs.o fs_select.o fs_unlink.o fs_write.o fs_fsync.o fs_truncate.o fs_pread.o fs_pwrite.o fs_fdopen.o fs_registerdriver.o fs_unregisterdriver.o fs_registerblockdriver.o fs_unregisterblockdriver.o fs_findblockdriver.o fs_openblockdriver.o fs_closeblockdriver.o ramdisk.o mtd_config.o fs_registermtddriver.o fs_unregistermtddriver.o ftl.o smart.o mtd_procfs.o mtd_partition.o fs_closedir.o fs_opendir.o fs_readdir.o fs_rewinddir.o fs_seekdir.o mq_open.o mq_close.o mq_unlink.o fs_mount.o fs_umount.o fs_foreachmountpoint.o smartfs_smart.o smartfs_utils.o smartfs_procfs.o smartfs_mksmartfs.o fs_procfs.o fs_procfsutil.o fs_procfsproc.o fs_procfsuptime.o fs_procfsversion.o fs_procfsereport.o fs_procfscpuload.o
+make[1]: Leaving directory '/root/tizenrt/os/fs'
+make[1]: Entering directory '/root/tizenrt/os/drivers'
+CC:  cpuload/cpuload_driver.c
+CC:  gpio/gpio.c
+CC:  lwnl/lwnl.c
+CC:  lwnl/lwnl_evt_queue.c
+CC:  pipes/pipe.c
+CC:  pipes/fifo.c
+CC:  pipes/pipe_common.c
+CC:  pm/pm.c
+CC:  serial/serial.c
+CC:  serial/serialirq.c
+CC:  serial/lowconsole.c
+CC:  spi/spi_uio.c
+CC:  dev_null.c
+CC:  dev_zero.c
+CC:  loop.c
+CC:  dev_urandom.c
+CC:  timer.c
+AR:   cpuload_driver.o gpio.o lwnl.o lwnl_evt_queue.o pipe.o fifo.o pipe_common.o pm.o serial.o serialirq.o lowconsole.o spi_uio.o dev_null.o dev_zero.o loop.o dev_urandom.o timer.o
+make[1]: Leaving directory '/root/tizenrt/os/drivers'
+make[1]: Entering directory '/root/tizenrt/framework'
+CC:  src/wifi_manager/wifi_manager_api.c
+CC:  src/wifi_manager/wifi_manager_cb.c
+CC:  src/wifi_manager/wifi_manager_message.c
+CC:  src/wifi_manager/wifi_manager_state.c
+CC:  src/wifi_manager/wifi_manager_stats.c
+CC:  src/wifi_manager/wifi_manager_msghandler.c
+CC:  src/wifi_manager/wifi_manager_event.c
+CC:  src/wifi_manager/wifi_manager_info.c
+CC:  src/wifi_manager/wifi_manager_utils.c
+CC:  src/wifi_manager/wifi_manager_dhcpc.c
+CC:  src/wifi_manager/wifi_manager_dhcps.c
+CC:  src/wifi_manager/wifi_manager_lwnl.c
+CC:  src/wifi_manager/wifi_manager_lwnl_listener.c
+CC:  src/ble_manager/ble_manager_api.c
+CC:  src/ble_manager/ble_manager_lwnl.c
+CC:  src/ble_manager/ble_manager_lwnl_listener.c
+CC:  src/ble_manager/ble_manager_state.c
+CC:  src/ble_manager/ble_manager_message.c
+CC:  src/ble_manager/ble_manager_msghandler.c
+CC:  src/ble_manager/ble_manager_autoconnect.c
+CC:  src/ble_manager/ble_queue.c
+CC:  src/iotbus/iotapi_evt_handler.c
+CC:  src/iotbus/iotbus_gpio.c
+CC:  src/iotbus/iotbus_uart.c
+src/ble_manager/ble_manager_state.c: In function '_event_caller':
+src/ble_manager/ble_manager_state.c:130:22: warning: unused variable 'conn' [-Wunused-variable]
+  130 |    trble_conn_handle conn = *(trble_conn_handle *)(msg->param[2]);
+      |                      ^~~~
+AR:   wifi_manager_api.o wifi_manager_cb.o wifi_manager_message.o wifi_manager_state.o wifi_manager_stats.o wifi_manager_msghandler.o wifi_manager_event.o wifi_manager_utils.o wifi_manager_info.o wifi_manager_dhcpc.o wifi_manager_dhcps.o wifi_manager_lwnl.o wifi_manager_lwnl_listener.o ble_manager_api.o ble_manager_lwnl.o ble_manager_lwnl_listener.o ble_manager_state.o ble_manager_message.o ble_manager_msghandler.o ble_manager_autoconnect.o ble_queue.o iotapi_evt_handler.o iotbus_gpio.o iotbus_uart.o
+make[1]: Leaving directory '/root/tizenrt/framework'
+make[1]: Entering directory '/root/tizenrt/os/arch/arm/src'
+make[2]: Entering directory '/root/tizenrt/os/board/rtl8721csm/src'
+CC:  /root/tizenrt/os/board/common/partitions.c
+CC:  /root/tizenrt/os/arch/boardctl.c
+CC:  rtl8721csm_boot.c
+CC:  rtl8721csm_i2schar.c
+CC:  component/soc/realtek/amebad/app/monitor/ram/monitor_hp.c
+CC:  component/soc/realtek/amebad/app/monitor/rom/monitor_rom.c
+CC:  component/soc/realtek/amebad/app/monitor/rom/shell_rom.c
+CC:  component/soc/realtek/amebad/fwlib/crypto/rtl8721dhp_sha.c
+CC:  component/soc/realtek/amebad/fwlib/crypto/rtl8721dhp_md5.c
+CC:  component/soc/realtek/amebad/fwlib/crypto/rtl8721dhp_chacha_poly1305.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_startup.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_app_start.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_clk.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_pmc.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_cpft.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_ota_ram.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_system.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_pmc_ram.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_i2s.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_sdio.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_ssi.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_lcdc.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_usi_uart.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_usi_ssi.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_usi_i2c.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_audio.c
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_sdio_host.c
+component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_ota_ram.c: In function 'OTA_Image2SignatureCheck':
+component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_ota_ram.c:170:45: warning: 'SBAddr' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  170 |  SB_HEADER *SbHeader = (SB_HEADER *)(SBAddr - xip_AddrSrt + image2_addr);
+      |                                      ~~~~~~~^~~~~~~~~~~~~
+CC:  component/soc/realtek/amebad/fwlib/ram_hp/rtl8721dhp_psram.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_i2c.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_rtc.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_uart.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_tim.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_adc.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_comparator.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_wdg.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_flash_ram.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_pll.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_ir.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_ipc_api.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_sgpio.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_keyscan.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_captouch.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_rand2.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_gdma_memcpy.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_bor.c
+CC:  component/soc/realtek/amebad/fwlib/ram_common/rtl8721d_ram_libc.c
+CC:  component/soc/realtek/amebad/fwlib/usrcfg/rtl8721dlp_intfcfg.c
+CC:  component/soc/realtek/amebad/fwlib/usrcfg/rtl8721dhp_intfcfg.c
+CC:  component/soc/realtek/amebad/fwlib/usrcfg/rtl8721d_ipccfg.c
+CC:  component/soc/realtek/amebad/fwlib/usrcfg/rtl8721d_wificfg.c
+CC:  component/common/drivers/wlan/realtek/src/core/option/rtw_opt_rf_para_rtl8721d.c
+CC:  component/common/file_system/ftl/ftl.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/platform_utils.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/rtk_coex.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/trace_uart.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/data_uart/data_uart.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_uart.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_board.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/bt_fwconfig.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/bt_normal_patch.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/bt_mp_patch.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/hci/ble_tizenrt_adapter.c
+CC:  component/common/bluetooth/realtek/sdk/board/amebad/src/vendor_cmd/vendor_cmd.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/os/tizenrt/osif_tizenrt.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/src/cycle_queue.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/src/trace_task.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/src/hci_process.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/src/hci_adapter.c
+CC:  component/common/bluetooth/realtek/sdk/board/common/src/bt_uart_bridge.c
+CC:  component/common/bluetooth/realtek/sdk/src/ble/profile/client/gcs_client.c
+CC:  component/common/bluetooth/realtek/sdk/src/ble/profile/server/bas.c
+CC:  component/common/bluetooth/realtek/sdk/src/ble/profile/server/simple_ble_service.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_peripheral/ble_tizenrt_app_main.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_peripheral/ble_tizenrt_app_task.c
+component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_uart.c:52: warning: "hci_board_debug" redefined
+   52 | #define hci_board_debug printf
+      |
+In file included from component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_uart.c:19:
+/root/tizenrt/os/board/rtl8721csm/src/component/common/bluetooth/realtek/sdk/inc/bt_board.h:50: note: this is the location of the previous definition
+   50 | #define hci_board_debug(...)     do {\
+      |
+component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_uart.c:53: warning: "hci_board_debug" redefined
+   53 | #define hci_board_debug(...)     do {\
+      |
+component/common/bluetooth/realtek/sdk/board/amebad/src/hci/hci_uart.c:52: note: this is the location of the previous definition
+   52 | #define hci_board_debug printf
+      |
+CC:  component/common/bluetooth/realtek/sdk/example/ble_peripheral/ble_tizenrt_app.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_peripheral/ble_tizenrt_service.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_peripheral/ble_tizenrt_server.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_central/ble_tizenrt_central_app_main.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_central/ble_tizenrt_central_app_task.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_central/ble_tizenrt_central_client_app.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_central/ble_tizenrt_central_link_mgr.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_central/ble_tizenrt_client.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_scatternet/ble_tizenrt_scatternet_app_main.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_scatternet/ble_tizenrt_scatternet_app_task.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_scatternet/ble_tizenrt_scatternet_app.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_scatternet/ble_tizenrt_scatternet_link_mgr.c
+CC:  component/common/bluetooth/realtek/sdk/example/ble_scatternet/ble_tizenrt_combo.c
+CC:  component/common/api/wifi/wifi_conf.c
+CC:  component/common/api/wifi/wifi_ind.c
+CC:  component/common/api/wifi/wifi_util.c
+CC:  component/common/api/wifi/wifi_promisc.c
+CC:  component/common/api/wifi/rtw_wpa_supplicant/wpa_supplicant/wifi_eap_config.c
+CC:  component/common/api/wifi_interactive_mode.c
+CC:  component/common/api/network/src/wlan_network.c
+CC:  component/os/os_dep/osdep_service.c
+CC:  component/os/os_dep/device_lock.c
+CC:  component/os/tizenrt/tizenrt_service.c
+CC:  component/os/tizenrt/lwip_intf_tizenrt.c
+CC:  component/os/tizenrt/ethernetif_tizenrt.c
+CC:  component/os/tizenrt/rtk_netmgr.c
+CC:  component/os/tizenrt/rtk_blemgr.c
+CC:  component/soc/realtek/amebad/misc/rtl8721d_freertos_pmu.c
+CC:  component/common/mbed/targets/hal/rtl8721d/serial_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/pinmap_common.c
+CC:  component/common/mbed/targets/hal/rtl8721d/sys_api.c
+component/common/api/wifi_interactive_mode.c: In function 'cmd_wifi_info':
+component/common/api/wifi_interactive_mode.c:678:13: warning: unused variable 'min_free_heap_size' [-Wunused-variable]
+  678 |  extern int min_free_heap_size;
+      |             ^~~~~~~~~~~~~~~~~~
+CC:  component/common/mbed/targets/hal/rtl8721d/us_ticker.c
+CC:  component/common/mbed/targets/hal/rtl8721d/timer_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/dma_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/gpio_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/gpio_irq_api.c
+component/os/tizenrt/tizenrt_service.c: In function '_tizenrt_timerCreate':
+component/os/tizenrt/tizenrt_service.c:931:14: warning: assignment to 'struct _tizenrt_timer_entry *' from incompatible pointer type 'uint8_t *' {aka 'unsigned char *'} [-Wincompatible-pointer-types]
+  931 |  timer_entry = _tizenrt_zmalloc(sizeof(struct _tizenrt_timer_entry));
+      |              ^
+component/os/tizenrt/tizenrt_service.c: In function 'rtw_printf':
+component/os/tizenrt/tizenrt_service.c:1226:10: warning: unused variable 'ap' [-Wunused-variable]
+ 1226 |  va_list ap;
+      |          ^~
+At top level:
+component/os/tizenrt/tizenrt_service.c:46:11: warning: '_tizenrt_timer_table_init' defined but not used [-Wunused-variable]
+   46 | static u8 _tizenrt_timer_table_init = 0;
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~
+CC:  component/common/mbed/targets/hal/rtl8721d/pinmap.c
+CC:  component/common/mbed/targets/hal/rtl8721d/port_api.c
+In file included from component/os/tizenrt/lwip_intf_tizenrt.c:25:
+/root/tizenrt/os/net/netmgr/netdev_mgr_internal.h:60:48: warning: 'struct ifaddrs' declared inside parameter list will not be visible outside of this definition or declaration
+   60 |  int (*get_ifaddrs)(struct netdev *dev, struct ifaddrs **addrs);
+      |                                                ^~~~~~~
+CC:  component/common/mbed/targets/hal/rtl8721d/spi_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/i2c_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/i2s_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/pwmout_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/analogin_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/efuse_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/sleep.c
+CC:  component/common/mbed/targets/hal/rtl8721d/wdt_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/us_ticker_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/captouch_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/keyscan_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/lcdc_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/flash_api.c
+CC:  component/common/mbed/targets/hal/rtl8721d/rtc_api.c
+AR:   partitions.o boardctl.o rtl8721csm_boot.o rtl8721csm_i2schar.o monitor_hp.o monitor_rom.o shell_rom.o rtl8721dhp_sha.o rtl8721dhp_md5.o rtl8721dhp_chacha_poly1305.o rtl8721dhp_startup.o rtl8721dhp_app_start.o rtl8721dhp_clk.o rtl8721dhp_pmc.o rtl8721dhp_cpft.o rtl8721dhp_ota_ram.o rtl8721dhp_system.o rtl8721dhp_pmc_ram.o rtl8721dhp_i2s.o rtl8721dhp_sdio.o rtl8721dhp_ssi.o rtl8721dhp_lcdc.o rtl8721dhp_usi_uart.o rtl8721dhp_usi_ssi.o rtl8721dhp_usi_i2c.o rtl8721dhp_audio.o rtl8721dhp_sdio_host.o rtl8721dhp_psram.o rtl8721d_i2c.o rtl8721d_rtc.o rtl8721d_uart.o rtl8721d_tim.o rtl8721d_adc.o rtl8721d_comparator.o rtl8721d_wdg.o rtl8721d_flash_ram.o rtl8721d_pll.o rtl8721d_ir.o rtl8721d_ipc_api.o rtl8721d_sgpio.o rtl8721d_keyscan.o rtl8721d_captouch.o rtl8721d_rand2.o rtl8721d_gdma_memcpy.o rtl8721d_bor.o rtl8721d_ram_libc.o rtl8721dlp_intfcfg.o rtl8721dhp_intfcfg.o rtl8721d_ipccfg.o rtl8721d_wificfg.o rtw_opt_rf_para_rtl8721d.o ftl.o platform_utils.o rtk_coex.o trace_uart.o data_uart.o hci_uart.o hci_board.o bt_fwconfig.o bt_normal_patch.o bt_mp_patch.o ble_tizenrt_adapter.o vendor_cmd.o osif_tizenrt.o cycle_queue.o trace_task.o hci_process.o hci_adapter.o bt_uart_bridge.o gcs_client.o bas.o simple_ble_service.o ble_tizenrt_app_main.o ble_tizenrt_app_task.o ble_tizenrt_app.o ble_tizenrt_service.o ble_tizenrt_server.o ble_tizenrt_central_app_main.o ble_tizenrt_central_app_task.o ble_tizenrt_central_client_app.o ble_tizenrt_central_link_mgr.o ble_tizenrt_client.o ble_tizenrt_scatternet_app_main.o ble_tizenrt_scatternet_app_task.o ble_tizenrt_scatternet_app.o ble_tizenrt_scatternet_link_mgr.o ble_tizenrt_combo.o wifi_conf.o wifi_ind.o wifi_util.o wifi_promisc.o wifi_eap_config.o wifi_interactive_mode.o wlan_network.o osdep_service.o device_lock.o tizenrt_service.o lwip_intf_tizenrt.o ethernetif_tizenrt.o rtk_netmgr.o rtk_blemgr.o rtl8721d_freertos_pmu.o serial_api.o pinmap_common.o sys_api.o us_ticker.o timer_api.o dma_api.o gpio_api.o gpio_irq_api.o pinmap.o port_api.o spi_api.o i2c_api.o i2s_api.o pwmout_api.o analogin_api.o efuse_api.o sleep.o wdt_api.o us_ticker_api.o captouch_api.o keyscan_api.o lcdc_api.o flash_api.o rtc_api.o
+make[2]: Leaving directory '/root/tizenrt/os/board/rtl8721csm/src'
+LD: tinyara
+make[1]: Leaving directory '/root/tizenrt/os/arch/arm/src'
+CP: tinyara.axf.bin
+Start the Board Specific Work for Binary
+Realtek Postbuild Actions
+arm-none-eabi-nm: /root/tizenrt/build/configs/rtl8721csm/../../../build/output/bin/target_pure_img2.axf: no symbols
+/root/tizenrt/build/configs/rtl8721csm/../../../build/output/bin/target_img2.axf  :
+section                        size         addr
+.ram_image2.entry              0x20   0x10005000
+.ram_image2.text            0x20638   0x10005020
+.ram_image2.data             0x11b8   0x10025658
+.xiplab_record                 0x2c   0x10026820
+.ram_image2.bss             0x1c628   0x10026a00
+.ram_image2.nocache.data    0x15798   0x10043028
+.ram_heap.data                  0x0   0x100587c0
+.xip_image2.text            0xc05c0    0xe000020
+.ARM.exidx                      0x8    0xe0c05e0
+.bluetooth_trace.text        0x9b34     0x800000
+.psram_image2.data              0x0    0x2000000
+.psram_image2.bss               0x0    0x2000000
+.psram_heap.data                0x0    0x2000000
+.debug_info                0x761a02          0x0
+.debug_abbrev               0x7b1a5          0x0
+.debug_aranges               0xec78          0x0
+.debug_ranges               0x1c840          0x0
+.debug_line                0x16e363          0x0
+.debug_str                  0x5dfbb          0x0
+.comment                       0xe7          0x0
+.ARM.attributes                0x36          0x0
+.debug_frame                0x2cf54          0x0
+.debug_loc                 0x159e41          0x0
+Total                      0xc78927
+
+
+   text	   data	    bss	    dec	    hex	filename
+0xea734	0x16970	0x1c654	1169144	 11d6f8	/root/tizenrt/build/configs/rtl8721csm/../../../build/output/bin/target_img2.axf
+0xea734	0x16970	0x1c654	1169144	 11d6f8	(TOTALS)
+========== Image manipulating start ==========
+========== Copy_bootloader for TZ disabled ==========
+========== Concatenate_binary for TZ disabled ==========
+CP: km0_km4_image2.hex
+========== Start to make boot parameters ==========
+
+========== Verification of partition settings ==========
+=> Partition verification SUCCESS!! The setting of all partitions is OK.
+
+========== Size Verification of built Binaries ==========
+Type        Binary Size     Partition Size      used(%)
+ KERNEL      1,003,064 bytes    1,835,008 bytes     54.66%    PASS
+=> Size verification SUCCESS!! The size of all binaries are OK.
+
+=== Kernel Package Header Information ===
+< Cannot check the signing >
+	Header Size        : 12
+	Package Version    : 200204
+	File Size          : 1003048
+	Secure Header Size : 32
+	* Checksum verification Done.
+	* Version Matched between filename and header.
+=> Header verification SUCCESS!!
+
+######################################
+##          Library Sizes           ##
+######################################
+	.data 	.bss 	.text 	 Total
+	88212 	2424 	300626 	391262 	lib_wlan.a
+	448 	86892 	84140 	171480 	libnet.a
+	328 	1312 	151788 	153428 	lib_btgap.a
+	1296 	6624 	137505 	145425 	libapps.a
+	780 	7476 	113113 	121369 	libboard.a
+	0 	32 	33312 	33344 	libfs.a
+	252 	496 	29968 	30716 	libframework.a
+	724 	8216 	15652 	24592 	libarch.a
+	4 	1736 	19714 	21454 	libkernel.a
+	40 	372 	19475 	19887 	libc.a
+	20 	12 	13766 	13798 	libexternal.a
+	0 	0 	11424 	11424 	NOLIB
+	16 	368 	8707 	9091 	libmm.a
+	0 	268 	8618 	8886 	libdrivers.a
+	352 	0 	8148 	8500 	lib_wps.a
+	0 	0 	5168 	5168 	libgcc.a
+	0 	36 	1134 	1170 	libwque.a

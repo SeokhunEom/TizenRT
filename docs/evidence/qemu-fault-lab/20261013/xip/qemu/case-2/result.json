@@ -1,0 +1,33 @@
+{
+  "case": 2,
+  "passed": true,
+  "model": "mpu-permission-fault",
+  "events": [],
+  "started_at": "2026-10-13T04:52:40.206423+00:00",
+  "command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-nic",
+    "none",
+    "-qmp",
+    "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-npg2y1t8/qmp,server=on,wait=off",
+    "-d",
+    "int,guest_errors",
+    "-D",
+    "build/qemu-fault-lab/xip-final/2-1/exceptions.log"
+  ],
+  "violation": "DACCVIOL",
+  "fault_pc": "800001de",
+  "fault_address": "1007e2a0",
+  "outcome": "architectural-lockup",
+  "qemu_returncode_before_cleanup": -6
+}

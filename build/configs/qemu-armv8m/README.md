@@ -149,3 +149,12 @@ also contains `xip-layout-report.json` and the program/section readelf output.
   addresses or raw QEMU loader commands into this guide.
 - The timer testcase allows one scheduler tick because remaining timer time is
   tick-granular on this target.
+
+## XIP fault dependency experiment
+
+The opt-in `xip_fault_lab` recipe adds `xiplab 0..3` to compare flash and RAM
+fault paths with MPU permission denial. It models access errors, not Realtek
+SPIC user mode, flash bus stalls or T32 attachment. Cases 1/2 intentionally
+lock up; 0/3 capture a record and reset. See the [QEMU and RTL8721CSM test
+guide](../../../docs/Human/XIP_Fault_Dependency_Lab.md) for build instructions,
+board observations and the strict `tools/qemu-fault-lab/xip.py` runner.

@@ -295,6 +295,10 @@ static void app_ftl_init(void)
 #ifdef CONFIG_BOARD_INITIALIZE
 void board_initialize(void)
 {
+#ifdef CONFIG_ARMV8M_XIP_FAULT_LAB
+	extern void arm_xip_lab_initialize(void);
+	arm_xip_lab_initialize();
+#endif
 	SOCPS_InitSYSIRQ_HP();
 	memcpy_gdma_init();
 	if (wifi_config.wifi_ultra_low_power &&
@@ -350,3 +354,10 @@ int board_app_initialize(void)
 {
 	return OK;
 }
+
+#ifdef CONFIG_ARMV8M_XIP_FAULT_LAB
+void arm_xip_lab_cache_disable(void)
+{
+	Cache_Enable(DISABLE);
+}
+#endif

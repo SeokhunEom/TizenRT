@@ -1,0 +1,4202 @@
+[
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867160,
+          "microseconds": 62645
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:40.007714+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-_ga5sule/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-1/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:40.093953+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-30vsjfe8/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-1/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:40.206423+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-npg2y1t8/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-1/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867160,
+          "microseconds": 381380
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:40.323823+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-00erbdcv/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-1/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867160,
+          "microseconds": 472021
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:40.415443+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-99rf4jkw/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-2/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:40.503981+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-jaw4v50i/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-2/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:40.617174+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-dv75bydy/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-2/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867160,
+          "microseconds": 786070
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:40.731640+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-kc3wl6j4/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-2/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867160,
+          "microseconds": 872781
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:40.817151+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-vkeds6qy/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-3/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:40.906049+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-n6vje2cf/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-3/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:41.018022+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-wus3ddoj/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-3/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867161,
+          "microseconds": 193184
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:41.136315+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-u62q6yy1/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-3/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867161,
+          "microseconds": 278799
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:41.224346+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-gbe42s53/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-4/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:41.313527+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-zpi66t21/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-4/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:41.425651+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-t30tusr0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-4/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867161,
+          "microseconds": 593140
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:41.538445+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-daio9j5f/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-4/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867161,
+          "microseconds": 678916
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:41.625004+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-m2xe0eg2/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-5/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:41.713149+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ls1vo84e/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-5/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:41.825467+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-iell2zl4/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-5/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867161,
+          "microseconds": 992516
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:41.937601+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-9etqpeog/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-5/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867162,
+          "microseconds": 78761
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:42.024108+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-bydrdkis/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-6/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:42.111987+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-r4b49t6y/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-6/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:42.223694+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-dl3sz0qw/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-6/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867162,
+          "microseconds": 390939
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:42.336012+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-rrszihzr/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-6/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867162,
+          "microseconds": 477868
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:42.422330+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-qqe5vc2j/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-7/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:42.511288+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-xw8ebbeh/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-7/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:42.622276+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-8fq9x0wl/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-7/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867162,
+          "microseconds": 791775
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:42.734872+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-qd6afs4k/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-7/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867162,
+          "microseconds": 880137
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:42.825362+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-syi79agl/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-8/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:42.914854+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-27bseab3/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-8/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:43.026999+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-x69cveu0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-8/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867163,
+          "microseconds": 194491
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:43.138055+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-dxj_wpw0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-8/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867163,
+          "microseconds": 281080
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:43.226180+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-_y_8bx3j/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-9/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:43.311880+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-i19v21ty/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-9/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:43.425164+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-vis7wxly/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-9/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867163,
+          "microseconds": 591345
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:43.536839+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-mt0hk5rj/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-9/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867163,
+          "microseconds": 677947
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:43.622808+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ruhfida1/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-10/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:43.710720+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ajxisgd5/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-10/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:43.825015+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ysm3mp4_/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-10/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867163,
+          "microseconds": 993157
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:43.937648+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-wd2h_tyy/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-10/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867164,
+          "microseconds": 79084
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:44.024901+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-w_j454af/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-11/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:44.111759+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-lwr22_iz/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-11/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:44.224102+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-nbaaf0_c/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-11/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867164,
+          "microseconds": 393822
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:44.338917+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-v2oslcpo/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-11/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867164,
+          "microseconds": 481852
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:44.425994+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-pkjo1o_3/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-12/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:44.515259+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ob3slzat/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-12/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:44.627899+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-gepvb824/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-12/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867164,
+          "microseconds": 796160
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:44.740959+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-6tbf6bez/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-12/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867164,
+          "microseconds": 886146
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:44.830215+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-vcvjq9x8/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-13/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:44.919781+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-0o7zgirc/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-13/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:45.031581+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-l6lgt93i/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-13/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867165,
+          "microseconds": 201779
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:45.146655+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-s3psh603/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-13/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867165,
+          "microseconds": 288951
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:45.233816+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-gta_d6e0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-14/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:45.322943+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-5ktdkrkf/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-14/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:45.434790+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-vpt1e5gz/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-14/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867165,
+          "microseconds": 603065
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:45.548450+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-q13g_qdy/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-14/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867165,
+          "microseconds": 690219
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:45.635908+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-04wb8nfo/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-15/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:45.720712+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-mxbv9uy2/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-15/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:45.833152+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-f4pppxca/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-15/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867165,
+          "microseconds": 999802
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:45.944960+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-r588c5v0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-15/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867166,
+          "microseconds": 86685
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:46.031464+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-n75hjm1p/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-16/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:46.120965+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-7q6jzdds/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-16/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:46.233089+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-6ynfmcgl/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-16/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867166,
+          "microseconds": 399294
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:46.344515+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-3k3b8csi/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-16/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867166,
+          "microseconds": 487276
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:46.430557+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-wbasxsym/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-17/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:46.520485+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-9nap_lrz/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-17/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:46.632233+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-b9nu2goo/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-17/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867166,
+          "microseconds": 805032
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:46.748513+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-rvhp9jfx/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-17/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867166,
+          "microseconds": 891580
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:46.836063+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-xt4qbbtv/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-18/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:46.923413+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-dy00_kxr/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-18/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:47.036133+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-sgytvwpi/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-18/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867167,
+          "microseconds": 205985
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:47.150444+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-i1t8dmc2/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-18/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867167,
+          "microseconds": 295424
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:47.240200+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-j3kqlw6t/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-19/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:47.326136+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-dx851yfh/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-19/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:47.437560+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-qb8lzxi0/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-19/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867167,
+          "microseconds": 604631
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:47.549656+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-9kmjnv8r/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-19/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867167,
+          "microseconds": 691504
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:47.636365+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ilj8s2_3/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-20/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:47.724125+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-sermy7zx/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-20/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:47.836071+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-rvkb3o9y/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-20/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 2740
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:47.948022+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-0rfy00sz/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-20/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 92850
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:48.037053+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-8lpz91ld/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-21/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:48.126558+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-i1y4wcax/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-21/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:48.238055+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-6tc_7j56/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-21/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 405643
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:48.349881+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-sscuao5k/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-21/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 495971
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:48.439992+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-9f2j4qf4/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-22/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:48.529604+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-6zmuidi6/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-22/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:48.640349+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ishu7k6m/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-22/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 813877
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:48.757319+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-lkk3u8df/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-22/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867168,
+          "microseconds": 902875
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:48.848159+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ay0ryr5_/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-23/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:48.936451+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-17l3d1oc/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-23/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:49.048337+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-4g2sjef3/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-23/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867169,
+          "microseconds": 214850
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:49.159706+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-ridw9zik/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-23/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867169,
+          "microseconds": 299789
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:49.245729+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-oslcrr_z/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-24/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:49.333105+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-kqyont9q/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-24/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:49.445369+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-07d31vvc/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-24/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867169,
+          "microseconds": 615003
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:49.559735+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-qcubes6z/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-24/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 0,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867169,
+          "microseconds": 702073
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:49.646605+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-e79e57s1/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/0-25/exceptions.log"
+    ],
+    "record": {
+      "case": "0",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:49.735855+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-836mgxtl/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/1-25/exceptions.log"
+    ],
+    "violation": "IACCVIOL",
+    "fault_pc": "10062abc",
+    "fault_address": "10062abc",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [],
+    "started_at": "2026-10-13T04:52:49.847010+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-k9h6z6aj/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/2-25/exceptions.log"
+    ],
+    "violation": "DACCVIOL",
+    "fault_pc": "800001de",
+    "fault_address": "1007e2a0",
+    "outcome": "architectural-lockup",
+    "qemu_returncode_before_cleanup": -6
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "model": "mpu-permission-fault",
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 14048
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:49.959438+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-y0xucvm8/qmp,server=on,wait=off",
+      "-d",
+      "int,guest_errors",
+      "-D",
+      "build/qemu-fault-lab/xip-final/3-25/exceptions.log"
+    ],
+    "record": {
+      "case": "3",
+      "stage": "30",
+      "exception": "3",
+      "pc": "800001d8",
+      "cfsr": "00010000",
+      "hfsr": "40000000",
+      "mpu": "00000003"
+    },
+    "outcome": "retained-record-guest-reset-tash",
+    "qemu_returncode_before_cleanup": null
+  }
+]

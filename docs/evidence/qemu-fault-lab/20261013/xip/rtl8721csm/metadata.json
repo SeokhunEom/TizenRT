@@ -1,0 +1,12 @@
+{
+  "elf_sha256": "d7dd1cf9aff9958b60a5fcf981084444f5ee752433640240dce11803872e9426",
+  "runtime": "not tested on hardware",
+  "working_source_sha256": {
+    "os/arch/arm/src/armv8-m/up_xip_lab.c": "43b2a752e79ac89f51504399e23bd2a9488e72da81002c48615b7ef54ce03d25",
+    "os/arch/arm/src/armv8-m/up_xip_lab.h": "d6278748e00651e8e055aa54b5db149ba1b46f6bd84a290f2a15a5301749c984",
+    "os/arch/arm/src/armv8-m/up_xip_lab_entry.S": "2fe7712d8592ccc2a8575f55e8ab44e49abd4f87220cbe7c50e07efb066d487c",
+    "os/board/rtl8721csm/src/rtl8721csm_boot.c": "cea78deed5b4e3e65b19713671cc9d3ce519f8e5ac5479727ab843cfd121d99f",
+    "build/configs/rtl8721csm/scripts/rlx8721d_img2_is.ld": "735a33935d8e6f097cc55c2d2c5c0330201435f366427655cb62a548d6885395",
+    "build/configs/rtl8721csm/xip_fault_lab/defconfig": "503f7cea8c431f824328825099abfbae7d5629fdc175c303d66da2f43ac9089d"
+  }
+}

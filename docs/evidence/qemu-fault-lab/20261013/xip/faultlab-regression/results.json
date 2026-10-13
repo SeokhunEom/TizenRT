@@ -1,0 +1,695 @@
+[
+  {
+    "case": 1,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.114470+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-5v86pew2/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0026819580234587193,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.171115+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-p4m1_b2b/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0028764590388163924,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.225019+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-7gw0hrze/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0027314579347148538,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 4,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 330625
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.278243+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-fxj6kbky/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "0",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.030488208052702248,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 5,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 415212
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.362899+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-lsi_85t_/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "3",
+      "injection": "5",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "5fffffe0",
+      "secondary_cfsr": "00011000"
+    },
+    "recovery_seconds": 0.030428458005189896,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 6,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 497202
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.444416+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-dey9bhlg/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "6",
+      "uart_timeout": "1",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.03095945797394961,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.529204+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-emhk8a8e/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0027965829940512776,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.582619+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-61p3k0q1/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.002830833080224693,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.636413+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-bwe06gi1/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0028678340604528785,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 4,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 741947
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.689927+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-essvpatd/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "0",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.03008187492378056,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 5,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 826222
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.774095+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-mare8j_l/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "3",
+      "injection": "5",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "5fffffe0",
+      "secondary_cfsr": "00011000"
+    },
+    "recovery_seconds": 0.03012154099997133,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 6,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867170,
+          "microseconds": 909796
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:50.856698+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-4tly4idt/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "6",
+      "uart_timeout": "1",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.03087870799936354,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 1,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.941362+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-uzr7p2m5/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.0028173340251669288,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 2,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:50.995223+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-4hza2352/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.002787292003631592,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 3,
+    "passed": true,
+    "events": [],
+    "started_at": "2026-10-13T04:52:51.048968+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-hyqqr082/qmp,server=on,wait=off"
+    ],
+    "recovery_seconds": 0.002804166986607015,
+    "reset_observed": false,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 4,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867171,
+          "microseconds": 156704
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:51.104884+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-fl8gzscw/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "0",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.03020775003824383,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 5,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867171,
+          "microseconds": 238618
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:51.186213+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-77lq7aoj/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "3",
+      "injection": "5",
+      "uart_timeout": "0",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "5fffffe0",
+      "secondary_cfsr": "00011000"
+    },
+    "recovery_seconds": 0.030240499996580184,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  },
+  {
+    "case": 6,
+    "passed": true,
+    "events": [
+      {
+        "timestamp": {
+          "seconds": 1791867171,
+          "microseconds": 320615
+        },
+        "event": "RESET",
+        "data": {
+          "guest": true,
+          "reason": "guest-reset"
+        }
+      }
+    ],
+    "started_at": "2026-10-13T04:52:51.267734+00:00",
+    "command": [
+      "qemu-system-arm",
+      "-M",
+      "mps2-an505",
+      "-kernel",
+      "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-qmp",
+      "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/fault-recover-1hwj06vj/qmp,server=on,wait=off"
+    ],
+    "record": {
+      "seq": "1",
+      "first": "6",
+      "secondary": "0",
+      "injection": "6",
+      "uart_timeout": "1",
+      "frame_valid": "1",
+      "pc": "1000229c",
+      "cfsr": "00010000",
+      "secondary_frame_valid": "0",
+      "secondary_msp": "00000000",
+      "secondary_cfsr": "00000000"
+    },
+    "recovery_seconds": 0.03104783408343792,
+    "reset_observed": true,
+    "qemu_returncode_before_cleanup": null
+  }
+]

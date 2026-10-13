@@ -1,0 +1,51 @@
+{
+  "case": 3,
+  "passed": true,
+  "model": "mpu-permission-fault",
+  "events": [
+    {
+      "timestamp": {
+        "seconds": 1791867160,
+        "microseconds": 381380
+      },
+      "event": "RESET",
+      "data": {
+        "guest": true,
+        "reason": "guest-reset"
+      }
+    }
+  ],
+  "started_at": "2026-10-13T04:52:40.323823+00:00",
+  "command": [
+    "qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/qemu-armv8m-fault-tests/build/output/bin/tinyara",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-nic",
+    "none",
+    "-qmp",
+    "unix:/var/folders/tn/08lvzfzd771ccck6pxj9jwbr0000gn/T/xiplab-00erbdcv/qmp,server=on,wait=off",
+    "-d",
+    "int,guest_errors",
+    "-D",
+    "build/qemu-fault-lab/xip-final/3-1/exceptions.log"
+  ],
+  "record": {
+    "case": "3",
+    "stage": "30",
+    "exception": "3",
+    "pc": "800001d8",
+    "cfsr": "00010000",
+    "hfsr": "40000000",
+    "mpu": "00000003"
+  },
+  "outcome": "retained-record-guest-reset-tash",
+  "qemu_returncode_before_cleanup": null
+}

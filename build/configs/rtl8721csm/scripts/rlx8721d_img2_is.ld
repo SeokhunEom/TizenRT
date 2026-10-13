@@ -208,6 +208,12 @@ SECTIONS
 		. = ALIGN(16);	
 	} > BD_RAM_NS
 
+	/* Lab diagnostics: excluded from image data and startup BSS clearing. */
+	.xiplab_record (NOLOAD) : ALIGN(32)
+	{
+		KEEP(*(.xiplab_record))
+	} > BD_RAM_NS
+
 	.ram_image2.bss :
 	{
 		_sbss = ABSOLUTE(.);

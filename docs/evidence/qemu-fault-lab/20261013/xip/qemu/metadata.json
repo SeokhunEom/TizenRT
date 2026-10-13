@@ -1,0 +1,28 @@
+{
+  "elf_sha256": "17878a96d7b900c411ed5580f0fe026d6a5033790147732e0b9ecf4a0b1a0a72",
+  "config_sha256": "143fb1827fa442943c28ec7d1ab56a8dbd1d0a71d28779abe8e84058e1be7cb0",
+  "qemu": "QEMU emulator version 11.1.2",
+  "head": "028e84ed2944eb23988b3d464b21e18f6fba12e2",
+  "layout": {
+    "xiplab_ram_entry": "80000194",
+    "xiplab_capture": "80000042",
+    "xiplab_checksum": "80000000",
+    "xiplab_arm": "800000d8",
+    "xiplab_region": "80000020",
+    "xiplab_trigger": "800001d8",
+    "xiplab_read_dependency": "800001dc",
+    "g_xiplab_record": "800004e0",
+    "g_xiplab_vectors": "8002c800",
+    "g_xiplab_stack": "8002c840",
+    "xiplab_flash_entry": "10062abc",
+    "g_xiplab_flash_word": "1007e2a0"
+  },
+  "working_source_sha256": {
+    "os/arch/arm/src/armv8-m/up_xip_lab.c": "43b2a752e79ac89f51504399e23bd2a9488e72da81002c48615b7ef54ce03d25",
+    "os/arch/arm/src/armv8-m/up_xip_lab.h": "d6278748e00651e8e055aa54b5db149ba1b46f6bd84a290f2a15a5301749c984",
+    "os/arch/arm/src/armv8-m/up_xip_lab_entry.S": "2fe7712d8592ccc2a8575f55e8ab44e49abd4f87220cbe7c50e07efb066d487c",
+    "build/configs/qemu-armv8m/scripts/mps2-an505.ld": "e760af2a1a40fd453918e9157b2ab23b75389a48f02e4947d1b22460b4cf2cf7",
+    "tools/qemu-fault-lab/xip.py": "d2f803a27328c6be18822989518760177d8f8966c29369a63082348622d0ede9"
+  },
+  "limitation": "MPU permission faults; not SPIC, bus wait-state or T32 emulation"
+}

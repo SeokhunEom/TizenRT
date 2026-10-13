@@ -219,3 +219,16 @@ config ARMV8M_ITMSYSLOG_SWODIV
 
 endif # ARMV8M_ITMSYSLOG
 
+
+config ARMV8M_XIP_FAULT_LAB
+	bool "Enable destructive XIP dependency lab (MPU model)"
+	default n
+	depends on BUILD_FLAT && TASH && BOARD_INITIALIZE && ARM_MPU && !ARCH_FPU && !SMP
+	depends on ARCH_CHIP_QEMU_ARMV8M || (ARCH_CHIP_RTL8721CSM && !AMEBAD_TRUSTZONE)
+	---help---
+		Register xiplab 0..3 to compare a flash fault entry, a RAM entry
+		with a flash data dependency, and a complete RAM capture/reset path.
+		Temporarily replace VTOR and MPU permissions; cases 1/2 intentionally
+		lock up and need external reset. This does not issue flash commands
+		or reproduce SPIC user-mode timing, bus stalls or T32 attach failures.
+		Test firmware only. Real-board reset retention must be verified.

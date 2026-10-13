@@ -344,6 +344,10 @@ static int qemu_armv8m_load_app1(void)
 #ifdef CONFIG_BOARD_INITIALIZE
 void board_initialize(void)
 {
+#ifdef CONFIG_ARMV8M_XIP_FAULT_LAB
+	extern void arm_xip_lab_initialize(void);
+	arm_xip_lab_initialize();
+#endif
 #ifdef CONFIG_ARMV8M_FAULT_RECOVERY
 	extern void arm_fault_boot_report(void);
 	arm_fault_boot_report();

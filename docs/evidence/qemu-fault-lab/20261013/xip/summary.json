@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-13",
+  "model": "MPU permission errors; not SPIC user mode, bus stall or T32 emulation",
+  "qemu_elf_sha256": "17878a96d7b900c411ed5580f0fe026d6a5033790147732e0b9ecf4a0b1a0a72",
+  "xip_cases": {
+    "0": {
+      "passed": 25,
+      "runs": 25,
+      "expected": "retained-record-guest-reset-tash"
+    },
+    "1": {
+      "passed": 25,
+      "runs": 25,
+      "expected": "architectural-lockup"
+    },
+    "2": {
+      "passed": 25,
+      "runs": 25,
+      "expected": "architectural-lockup"
+    },
+    "3": {
+      "passed": 25,
+      "runs": 25,
+      "expected": "retained-record-guest-reset-tash"
+    }
+  },
+  "existing_faultlab": {
+    "passed": 18,
+    "runs": 18
+  },
+  "network_tc": {
+    "passed": 161,
+    "failed": 0
+  },
+  "kernel_tc": {
+    "passed": 459,
+    "failed": 0
+  },
+  "rtl8721csm": {
+    "build": "passed; partition, image-size and header checks passed",
+    "elf_sha256": "d7dd1cf9aff9958b60a5fcf981084444f5ee752433640240dce11803872e9426",
+    "layout": "RAM functions and noinit record placement checked; RAM direct branch targets audited",
+    "runtime": "NOT TESTED",
+    "t32": "NOT TESTED"
+  }
+}
