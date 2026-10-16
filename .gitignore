@@ -29,4 +29,5 @@ tags
 *.tmp
 *.tmp.*
 *.log
+/build/tizenrt-debug/
 *.log.old
