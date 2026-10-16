@@ -1,0 +1,1420 @@
+{
+  "schema_version": 1,
+  "source_revision": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "scope": "Curated source-verified diagnostic families; lexical inventory is broader than structured parser support.",
+  "runtime_status_policy": "source_only means this catalog entry documents source behavior. Runtime evidence is separately recorded in the crash corpus manifest; neither catalog inclusion nor source candidates claim runtime or parser coverage.",
+  "inventory": "../../tools/crash-corpus/source-inventory.json.gz",
+  "families": [
+    {
+      "id": "assertion",
+      "title": "Assertion / panic",
+      "description": "File, line, task, assertion PC and execution context.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 536,
+          "source_excerpt": "lldbg(\"Assertion failed at file:%s line: %d task: %s\\n\", filename, lineno, fault_tcb->name);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-m/up_assert.c",
+          "line": 410,
+          "source_excerpt": "lldbg(\"Assertion failed at file:%s line: %d task: %s\\n\", filename, lineno, fault_tcb->name);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_assert.c",
+          "line": 537,
+          "source_excerpt": "lldbg_noarg(\"Assertion failed CPU%d at file: %s line %d\", cpu, filename, lineno);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_assert.c",
+          "line": 913,
+          "source_excerpt": "lldbg(\"Assertion failed at file:%s line: %d task: %s\\n\", filename, lineno, fault_tcb->name);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARCH_STACKDUMP",
+        "CONFIG_TASK_NAME_SIZE",
+        "CONFIG_BOARD_ASSERT_AUTORESET"
+      ],
+      "recognition": [
+        "Assertion failed at file:",
+        "Assertion failed CPU",
+        "Assert location (PC)",
+        "Assertion details"
+      ],
+      "analysis_guidance": [
+        "Preserve the earliest failure and the file/line/task together. A fault-handler PANIC assertion is downstream of the preceding fault, not automatically the originating defect.",
+        "Map addresses only with the exact image and binary load map."
+      ],
+      "limitations": [
+        "Serial prefixes and file names can be truncated; absence of a complete assertion is not absence of a crash."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "cortex_m_hardfault",
+      "title": "Cortex-M HardFault",
+      "description": "Escalated/configurable fault details and saved registers.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_hardfault.c",
+          "line": 110,
+          "source_excerpt": "lldbg(\"PANIC!!! Hard fault: %08x\\n\", getreg32(NVIC_HFAULTS));"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-m/up_hardfault.c",
+          "line": 105,
+          "source_excerpt": "lldbg(\"PANIC!!! Hard fault: %08x\\n\", getreg32(NVIC_HFAULTS));"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARMV8M_USEBASEPRI",
+        "CONFIG_ARMV7M_USEBASEPRI",
+        "CONFIG_DEBUG_ERROR"
+      ],
+      "recognition": [
+        "PANIC!!! Hard fault:",
+        "CFAULTS:",
+        "HFAULTS:",
+        "BFAULTADDR:"
+      ],
+      "analysis_guidance": [
+        "CFAULTS is the firmware label for CFSR; HFAULTS is HFSR. Decode architecture-specific bits and preserve raw words.",
+        "A forced HardFault requires the underlying CFSR evidence. Do not interpret every BFAULTADDR value as valid."
+      ],
+      "limitations": [
+        "Fault output may be suppressed by debug routing, or fail during a nested fault."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "cortex_m_memfault",
+      "title": "Cortex-M MPU / memory-management fault",
+      "description": "Instruction/data access violation, stacking failure, MMFAR.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_memfault.c",
+          "line": 110,
+          "source_excerpt": "lldbg(\"PANIC!!! Memory Management Fault at instruction : 0x%08x\\n\", regs[REG_R15]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-m/up_memfault.c",
+          "line": 110,
+          "source_excerpt": "lldbg(\"PANIC!!! Memory Management Fault at instruction : 0x%08x\\n\", regs[REG_R15]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARMV8M_MPU",
+        "CONFIG_ARMV7M_MPU"
+      ],
+      "recognition": [
+        "Memory Management Fault",
+        "FAULT TYPE: DACCVIOL",
+        "FAULT TYPE: IACCVIOL",
+        "FAULT REGS: CFAULTS:"
+      ],
+      "analysis_guidance": [
+        "Check MMARVALID before treating MMFAR as faulting address.",
+        "Distinguish MPU XN instruction access from data RW permissions and exception stacking failures."
+      ],
+      "limitations": [
+        "An MPU violation alone does not establish a physical flash-bus/XIP stall."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "cortex_m_busfault",
+      "title": "Cortex-M BusFault",
+      "description": "Precise/imprecise bus fault, BFAR, exception entry/return faults.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_busfault.c",
+          "line": 80,
+          "source_excerpt": "lldbg(\"PANIC!!! Bus fault at instruction: 0x%08x\\n\", regs[REG_R15]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-m/up_busfault.c",
+          "line": 81,
+          "source_excerpt": "lldbg(\"PANIC!!! Bus fault at instruction: 0x%08x\\n\", regs[REG_R15]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_ERROR"
+      ],
+      "recognition": [
+        "PANIC!!! Bus fault",
+        "FAULT TYPE: PRECISERR",
+        "FAULT TYPE: IMPRECISERR",
+        "BFAR:"
+      ],
+      "analysis_guidance": [
+        "Require BFARVALID for a trusted BFAR.",
+        "For IMPRECISERR the saved PC can be later than the initiating store; investigate bus/peripheral accesses before the exception."
+      ],
+      "limitations": [
+        "QEMU bus responses do not reproduce every board peripheral or physical timing failure."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "cortex_m_usagefault",
+      "title": "Cortex-M UsageFault",
+      "description": "Undefined instruction, invalid state/return, coprocessor, alignment, divide-by-zero and v8-M STKOF.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_usagefault.c",
+          "line": 80,
+          "source_excerpt": "lldbg(\"PANIC!!! Usagefault at instruction: 0x%08x\\n\", regs[REG_R15]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-m/up_usagefault.c",
+          "line": 79,
+          "source_excerpt": "lldbg(\"PANIC!!! Usagefault at instruction: 0x%08x\\n\", regs[REG_R15]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_ERROR"
+      ],
+      "recognition": [
+        "PANIC!!! Usagefault",
+        "FAULT TYPE: DIVBYZERO",
+        "FAULT TYPE: UNALIGNED",
+        "FAULT TYPE: UNDEFINSTR",
+        "FAULT TYPE: STKOF"
+      ],
+      "analysis_guidance": [
+        "Use architecture/config to interpret status bits; STKOF is v8-M-specific in this source.",
+        "Correlate invalid state/return with xPSR, EXC_RETURN, stack frame and exact disassembly."
+      ],
+      "limitations": [
+        "The handler prints a priority-ordered fault-type branch; raw CFSR may contain multiple bits."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "arm_abort",
+      "title": "ARMv7-A/R aborts",
+      "description": "Data/prefetch abort and undefined-instruction state distinct from Cortex-M fault registers.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_dataabort.c",
+          "line": 84,
+          "source_excerpt": "_alert(\"PANIC!!! Data Abort at instruction : 0x%08x\\n\",  regs[REG_PC]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_prefetchabort.c",
+          "line": 82,
+          "source_excerpt": "_alert(\"PANIC!!! Prefetch Abort at instruction : 0x%08x\\n\",  regs[REG_PC]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_dataabort.c",
+          "line": 111,
+          "source_excerpt": "lldbg(\"\\nData abort. PC: %08x DFAR: %08x DFSR: %08x\\n\", regs[REG_PC], dfar, dfsr);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_prefetchabort.c",
+          "line": 108,
+          "source_excerpt": "lldbg(\"\\nPrefetch abort. PC: %08x IFAR: %08x IFSR: %08x\\n\", regs[REG_PC], ifar, ifsr);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_undefinedinsn.c",
+          "line": 75,
+          "source_excerpt": "_alert(\"PANIC!!! Undefined instruction at 0x%x\\n\", regs[REG_PC]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARCH_STACKDUMP",
+        "CONFIG_SYSTEM_REBOOT_REASON"
+      ],
+      "recognition": [
+        "Data Abort",
+        "Data abort. PC:",
+        "Prefetch Abort",
+        "Prefetch abort. PC:",
+        "DFSR:",
+        "IFSR:",
+        "Undefined instruction"
+      ],
+      "analysis_guidance": [
+        "Decode DFSR/IFSR using the appropriate A/R architecture; never apply Cortex-M CFSR masks to them.",
+        "Keep PC, DFAR/IFAR and status together and account for MMU mappings."
+      ],
+      "limitations": [
+        "No QEMU ARMv8-M execution can validate ARMv7-A/R handlers."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "register_dump",
+      "title": "Saved CPU registers",
+      "description": "R0/R8 groups, status/control registers and banked A/R registers.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 215,
+          "source_excerpt": "lldbg_noarg(\"Asserted task's register dump\\n\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 217,
+          "source_excerpt": "lldbg(\"R0: %08x %08x %08x %08x %08x %08x %08x %08x\\n\","
+        },
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_assert.c",
+          "line": 224,
+          "source_excerpt": "lldbg(\"CPSR: %08x\\n\", regs[REG_CPSR]);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_assert.c",
+          "line": 659,
+          "source_excerpt": "lldbg(\"SPSR_SVC: %08x\\t CPSR : %08x\\t\\n\", cpu_ctxt_regs.spsr_svc, cpu_ctxt_regs.cpsr);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARCH_STACKDUMP",
+        "CONFIG_ARMV8M_USEBASEPRI"
+      ],
+      "recognition": [
+        "R0:",
+        "R8:",
+        "xPSR:",
+        "CPSR:",
+        "EXC_RETURN:",
+        "SP_ABT:"
+      ],
+      "analysis_guidance": [
+        "Associate register sets with each crash/context instead of merging repeated keys across reboots.",
+        "Respect split print calls on A-profile: one physical line can be assembled by several emitters."
+      ],
+      "limitations": [
+        "Task snapshots and live handler registers are different contexts; annotate saved/current labels."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "stack_dump",
+      "title": "Stack region and raw words",
+      "description": "Task/IRQ/nested-IRQ bounds, usage, invalid SP and hexadecimal memory rows.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 339,
+          "source_excerpt": "lldbg(\"Current SP is User Thread SP: %08x\\n\", sp);"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 360,
+          "source_excerpt": "lldbg(\"ERROR: Stack pointer is not within any of the allocated stack\\n\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 196,
+          "source_excerpt": "lldbg(\"%08x: %08x %08x %08x %08x %08x %08x %08x %08x\\n\","
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_assert.c",
+          "line": 762,
+          "source_excerpt": "lldbg(\"Data abort stack:\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARCH_STACKDUMP",
+        "CONFIG_STACK_COLORATION",
+        "CONFIG_ARCH_INTERRUPTSTACK",
+        "CONFIG_ARCH_NESTED_IRQ_STACK_SIZE"
+      ],
+      "recognition": [
+        "User stack:",
+        "IRQ stack:",
+        "Nested IRQ stack:",
+        "Wrong Stack pointer",
+        "base:",
+        "size:",
+        "used:"
+      ],
+      "analysis_guidance": [
+        "Compare SP to the correct active stack region and architecture growth direction.",
+        "Memory words resembling code addresses are candidates, not a proven unwind."
+      ],
+      "limitations": [
+        "Stack coloration gives historical high-water usage; corruption can invalidate it."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "backtrace",
+      "title": "Call stack and symbol hints",
+      "description": "Frame-pointer or architecture-specific call-chain output.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_assert.c",
+          "line": 418,
+          "source_excerpt": "lldbg(\"Call Stack:\\n\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-r/arm_assert.c",
+          "line": 426,
+          "source_excerpt": "lldbg(\"[<0x%p>] %s\\n\", (void *)current_addr, buffer);"
+        },
+        {
+          "path": "os/arch/arm/src/armv7-a/arm_backtrace_fp.c",
+          "line": 122,
+          "source_excerpt": "int up_backtrace(struct tcb_s *tcb, void **buffer, int size, int skip)"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_FRAME_POINTER",
+        "CONFIG_ARCH_STACKDUMP"
+      ],
+      "recognition": [
+        "Call Stack:",
+        "Call stack of aborted task:",
+        "[<0x",
+        "End of Callstack",
+        "symbol is not found in system map"
+      ],
+      "analysis_guidance": [
+        "Use the exact ELF/System.map and app text base to symbolize. Preserve unresolved frames.",
+        "Check whether output came from a true unwinder versus raw stack scanning."
+      ],
+      "limitations": [
+        "Inlining, omitted frame pointers, optimized code and corrupted frames can truncate/untrust the chain."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "stack_overflow",
+      "title": "Stack overflow / pressure",
+      "description": "Explicit overflow notices and task stack summary.",
+      "source_refs": [
+        {
+          "path": "os/kernel/task/task_dumptasks.c",
+          "line": 140,
+          "source_excerpt": "lldbg_noarg(\"  !!! PID (%d) STACK OVERFLOW !!! \\n\", tcb->pid);"
+        },
+        {
+          "path": "os/kernel/sched/sched_checkstackoverflow.c",
+          "line": 59,
+          "source_excerpt": "* Name: sched_checkstackoverflow"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_STACK_COLORATION",
+        "CONFIG_ARCH_STACKDUMP"
+      ],
+      "recognition": [
+        "STACK OVERFLOW",
+        "StackUsed:",
+        "StackSize:"
+      ],
+      "analysis_guidance": [
+        "Treat explicit overflow as evidence, high usage as a risk signal. Compare per-task used/total and MPU/stack-limit status."
+      ],
+      "limitations": [
+        "A high-water mark alone cannot locate the overwriting instruction."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "task_dump",
+      "title": "Task table and TCB",
+      "description": "PID, priority, stack, TCB, state, lockcount and wait objects.",
+      "source_refs": [
+        {
+          "path": "os/kernel/task/task_dumptasks.c",
+          "line": 39,
+          "source_excerpt": "#define TASKDUMP_ARGS_FORMAT \"%*s | %5s | %4s | %7s / %7s | %16s | %8s | %10s \\n\""
+        },
+        {
+          "path": "os/kernel/task/task_dumptasks.c",
+          "line": 98,
+          "source_excerpt": "lldbg_noarg(\"Asserted task's TCB info \\n\");"
+        },
+        {
+          "path": "os/kernel/task/task_dumptasks.c",
+          "line": 154,
+          "source_excerpt": "lldbg_noarg(\"List of all tasks in the system\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_TASK_NAME_SIZE",
+        "CONFIG_STACK_COLORATION",
+        "CONFIG_RR_INTERVAL"
+      ],
+      "recognition": [
+        "List of all tasks in the system",
+        "Asserted task's TCB info",
+        "Lock count",
+        "WaitSem",
+        "STACK ALLOC ADDR"
+      ],
+      "analysis_guidance": [
+        "Parse header-driven columns because NAME/USED columns depend on config.",
+        "Map numeric task states with the exact revision; correlate wait object addresses across tasks."
+      ],
+      "limitations": [
+        "A single blocked task snapshot is not proof of deadlock."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "scheduler_history",
+      "title": "Task scheduling history",
+      "description": "Ring-buffer samples with time, optional task name, PID, priority and TCB.",
+      "source_refs": [
+        {
+          "path": "os/kernel/debug/sysdbg.c",
+          "line": 319,
+          "source_excerpt": "lldbg(\"Displaying the TASK SCHEDULING HISTORY for %d count\\n\", max_task_count);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_SYSTEM",
+        "CONFIG_TASK_SCHED_HISTORY",
+        "CONFIG_TASK_NAME_SIZE"
+      ],
+      "recognition": [
+        "TASK SCHEDULING HISTORY",
+        "TASK_SCHEDTIME"
+      ],
+      "analysis_guidance": [
+        "Respect ring order, finite capacity and timestamp units; identify missed wakeups/starvation only with corroborating time and state."
+      ],
+      "limitations": [
+        "CONFIG not enabled / monitoring not enabled must be reported as unavailable evidence."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "irq_history",
+      "title": "Interrupt scheduling history",
+      "description": "IRQ time, number and ISR address plus interrupt counters.",
+      "source_refs": [
+        {
+          "path": "os/kernel/debug/sysdbg.c",
+          "line": 348,
+          "source_excerpt": "lldbg(\"Displaying the IRQ SCHEDULING HISTORY for %d count\\n\", max_irq_count);"
+        },
+        {
+          "path": "os/kernel/irq/irq_procfs.c",
+          "line": 90,
+          "source_excerpt": "#define IRQS_INFO_TITLE_FMT \" %8s | %9s | %3s \\n\""
+        }
+      ],
+      "config_gates": [
+        "CONFIG_IRQ_SCHED_HISTORY",
+        "CONFIG_DEBUG_IRQ_INFO",
+        "CONFIG_FS_PROCFS"
+      ],
+      "recognition": [
+        "IRQ SCHEDULING HISTORY",
+        "IRQ_TIME",
+        "IRQ_NUM",
+        "INT_COUNT",
+        "ISR_NAME"
+      ],
+      "analysis_guidance": [
+        "Relate IRQ frequency and last handlers to the fault timestamp and board vector table."
+      ],
+      "limitations": [
+        "Counters need a time interval before claiming an interrupt storm."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "semaphore_history",
+      "title": "Semaphore events and holders",
+      "description": "Ring states IN/AQ/RL/WT/DR/UN, semaphore/TCB/PID, holder failures.",
+      "source_refs": [
+        {
+          "path": "os/kernel/debug/sysdbg.c",
+          "line": 365,
+          "source_excerpt": "lldbg(\"Displaying the SEMAPHORE HISTORY for %d count\\n\", max_sem_count);"
+        },
+        {
+          "path": "os/kernel/debug/sysdbg.c",
+          "line": 366,
+          "source_excerpt": "lldbg(\"IN:INIT AQ:AQUIRED RL:RELEASED WT:WAITING DR: DESTROY UN:UNKNOWN\\n\");"
+        },
+        {
+          "path": "os/kernel/semaphore/sem_holder.c",
+          "line": 134,
+          "source_excerpt": "sdbg(\"Insufficient pre-allocated holders\\n\");"
+        },
+        {
+          "path": "os/kernel/semaphore/sem_holder.c",
+          "line": 656,
+          "source_excerpt": "sdbg(\"Semaphore destroyed with holders\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_SEMAPHORE_HISTORY",
+        "CONFIG_PRIORITY_INHERITANCE",
+        "CONFIG_DEBUG_SCHED_ERROR"
+      ],
+      "recognition": [
+        "SEMAPHORE HISTORY",
+        "SEMAPHORE_TIME",
+        "Semaphore destroyed with holder",
+        "Insufficient pre-allocated holders"
+      ],
+      "analysis_guidance": [
+        "PID -1 means ISR and TCB field references ISR per the source legend.",
+        "Construct only observed wait/ownership edges; truncated history cannot prove a complete deadlock cycle."
+      ],
+      "limitations": [
+        "AQ label is spelled AQUIRED in source; ordering/ownership can be incomplete after ring wrap."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "workqueue_context",
+      "title": "Workqueue crash context",
+      "description": "Assertion identifies currently executing work callback.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 550,
+          "source_excerpt": "lldbg(\"Code asserted in workqueue!\\n\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 551,
+          "source_excerpt": "lldbg(\"Running work function is %x.\\n\", work_get_current());"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_WORKQUEUE",
+        "CONFIG_BUILD_FLAT",
+        "CONFIG_BUILD_PROTECTED"
+      ],
+      "recognition": [
+        "Code asserted in workqueue!",
+        "Running work function is"
+      ],
+      "analysis_guidance": [
+        "Symbolize the work callback and inspect its queue/lock dependencies; distinguish callback from worker thread entry."
+      ],
+      "limitations": [
+        "No ordinary queue event trace is guaranteed by this assertion-only output."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "heap_corruption",
+      "title": "Heap metadata corruption",
+      "description": "Forward/backward traversal, guard nodes and corrupted-range dump.",
+      "source_refs": [
+        {
+          "path": "os/mm/mm_heap/mm_check_heap_corruption.c",
+          "line": 184,
+          "source_excerpt": "mfdbg(\"ERROR: Heap corruption detected. Check below nodes for possible corruption.\\n\");"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_check_heap_corruption.c",
+          "line": 334,
+          "source_excerpt": "mfdbg(\"No heap corruption detected\\n\");"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_check_heap_corruption.c",
+          "line": 328,
+          "source_excerpt": "mfdbg(\"Dumping the corrupted heap area\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_MM_DUMP_CORRPUTED_HEAP",
+        "CONFIG_DEBUG_MM_HEAPINFO"
+      ],
+      "recognition": [
+        "ERROR: Heap corruption detected",
+        "CORRUPT NODE",
+        "Forward traversal of heap",
+        "Backward traversal of heap",
+        "No heap corruption detected"
+      ],
+      "analysis_guidance": [
+        "Do not classify the explicit negative No heap corruption detected as corruption.",
+        "Keep neighbors, sizes, owner allocation PC and dump boundaries; the detected node is not necessarily the writer."
+      ],
+      "limitations": [
+        "The source config intentionally spells CORRPUTED; traversal diagnostics can be interrupted by further faults."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "double_free",
+      "title": "Double free / unallocated free",
+      "description": "Free/alloc ownership PCs and PIDs when tracking enabled.",
+      "source_refs": [
+        {
+          "path": "os/mm/mm_heap/mm_free.c",
+          "line": 174,
+          "source_excerpt": "mdbg(\"WARNING!! Attempt for double freeing a pointer or releasing an unallocated pointer\\n\");"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_free.c",
+          "line": 177,
+          "source_excerpt": "mdbg(\"1st free: released by %s (%d) at addr 0x%08x\\n\", task_name, node->free_call_pid, node->free_call_addr);"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_free.c",
+          "line": 180,
+          "source_excerpt": "mdbg(\"2nd free (double free): now try to release by %s (%d) at addr 0x%08x\\n\", task_name, free_call_pid, free_call_addr);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_MM_HEAPINFO"
+      ],
+      "recognition": [
+        "Attempt for double freeing",
+        "1st free:",
+        "2nd free (double free):",
+        "The node was allocated by"
+      ],
+      "analysis_guidance": [
+        "Correlate allocator and both free callsites with thread lifetimes and ownership transfer."
+      ],
+      "limitations": [
+        "A corrupted allocation flag may mimic a double free; preserve the source warning qualification."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "allocation_failure",
+      "title": "OOM / fragmentation / alignment",
+      "description": "Requested size, heap, caller, maximum contiguous block and total free size.",
+      "source_refs": [
+        {
+          "path": "os/mm/mm_heap/mm_manage_allocfail.c",
+          "line": 117,
+          "source_excerpt": "mfdbg(\"Allocation failed from %s heap.\\n\", (heap_type == KERNEL_HEAP) ? KERNEL_STR : USER_STR);"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_manage_allocfail.c",
+          "line": 138,
+          "source_excerpt": "mfdbg(\" - largest algined free size : %d\\n\", info.mxordblk);"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_malloc.c",
+          "line": 297,
+          "source_excerpt": "mdbg(\"Allocation failed!!! We dont have enough memory. Try to free dead task stack areas\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_MM_ASSERT_ON_FAIL",
+        "CONFIG_DEBUG_MM_HEAPINFO",
+        "CONFIG_KMM_NHEAPS",
+        "CONFIG_APP_BINARY_SEPARATION"
+      ],
+      "recognition": [
+        "Allocation failed from",
+        "requested size",
+        "requested alignment",
+        "largest free size",
+        "largest algined free size",
+        "total free size"
+      ],
+      "analysis_guidance": [
+        "Compare request including alignment/metadata against contiguous free size and correct heap.",
+        "Total free exceeding request with insufficient maximum block suggests fragmentation/alignment, not necessarily memory exhaustion."
+      ],
+      "limitations": [
+        "GC may recover allocation after the warning; inspect subsequent return/retry evidence."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "heap_usage",
+      "title": "Heap usage, allocation ownership and fragmentation",
+      "description": "Region nodes, total/current/peak/free, dead-thread allocation and bins.",
+      "source_refs": [
+        {
+          "path": "os/mm/mm_heap/mm_heapinfo_parse_heap.c",
+          "line": 180,
+          "source_excerpt": "heap_dbg(\"REGION #%d Start=0x%p, End=0x%p, Size=%d\\n\","
+        },
+        {
+          "path": "os/mm/mm_heap/mm_heapinfo_parse_heap.c",
+          "line": 258,
+          "source_excerpt": "heap_dbg(\"     Summary of Heap Usages (Size in Bytes)\\n\");"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_heapinfo_parse_heap.c",
+          "line": 283,
+          "source_excerpt": "heap_dbg(\"(*)  Alive allocation by dead threads might be used by others or might be a leakage.\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_MM_HEAPINFO",
+        "CONFIG_HEAPINFO_USER_GROUP",
+        "CONFIG_KMM_NHEAPS"
+      ],
+      "recognition": [
+        "Summary of Heap Usages",
+        "MemAddr |",
+        "Allocated (Current / Peak)",
+        "Largest Free Node Size",
+        "Nodelist[",
+        "by Dead Threads"
+      ],
+      "analysis_guidance": [
+        "Do not equate allocation owned by a dead thread with a confirmed leak; source allows ownership transfer.",
+        "Use repeated snapshots and allocation PCs to establish growth."
+      ],
+      "limitations": [
+        "Heap dumps may be deliberately stopped to avoid watchdog expiry."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "procfs_snapshot",
+      "title": "Procfs task / CPU / stack snapshots",
+      "description": "Human-readable task status and stack metrics from procfs.",
+      "source_refs": [
+        {
+          "path": "os/fs/procfs/fs_procfsproc.c",
+          "line": 604,
+          "source_excerpt": "linesize = snprintf(procfile->line, STATUS_LINELEN, \"%-12s%s\\n\", \"Name:\", name);"
+        },
+        {
+          "path": "os/fs/procfs/fs_procfsproc.c",
+          "line": 630,
+          "source_excerpt": "linesize = snprintf(procfile->line, STATUS_LINELEN, \"%-12s%s\\n\", \"State:\", g_statenames[tcb->task_state]);"
+        },
+        {
+          "path": "os/fs/procfs/fs_procfsproc.c",
+          "line": 829,
+          "source_excerpt": "linesize = snprintf(procfile->line, STATUS_LINELEN, \"%-12s0x%p\\n\", \"StackBase:\", tcb->adj_stack_ptr);"
+        },
+        {
+          "path": "os/fs/procfs/fs_procfscpuload.c",
+          "line": 80,
+          "source_excerpt": "#if defined(CONFIG_SCHED_CPULOAD) && !defined(CONFIG_FS_PROCFS_EXCLUDE_CPULOAD)"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_FS_PROCFS",
+        "CONFIG_SCHED_CPULOAD",
+        "CONFIG_STACK_COLORATION"
+      ],
+      "recognition": [
+        "Name:",
+        "Type:",
+        "State:",
+        "Priority:",
+        "Scheduler:",
+        "StackBase:",
+        "StackSize:",
+        "StackUsed:"
+      ],
+      "analysis_guidance": [
+        "Record acquisition command/time; these are observations while reading, not an atomic global snapshot.",
+        "Interpret priority inheritance base/current pair only when available."
+      ],
+      "limitations": [
+        "Most procfs output is assembled by snprintf, intentionally outside the direct-output inventory."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "task_monitor",
+      "title": "Task liveness monitor",
+      "description": "Registration errors and reset path on missing heartbeat.",
+      "source_refs": [
+        {
+          "path": "os/kernel/task_monitor/task_monitor.c",
+          "line": 51,
+          "source_excerpt": "dbg(\"Already registered.\\n\");"
+        },
+        {
+          "path": "os/kernel/task_monitor/task_monitor.c",
+          "line": 157,
+          "source_excerpt": "if (tcb == NULL || tcb->is_active == false) {"
+        },
+        {
+          "path": "os/kernel/task_monitor/task_monitor.c",
+          "line": 163,
+          "source_excerpt": "up_reboot_reason_write(REBOOT_SYSTEM_WATCHDOG);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_TASK_MONITOR",
+        "CONFIG_TASK_MONITOR_INTERVAL",
+        "CONFIG_SYSTEM_REBOOT_REASON"
+      ],
+      "recognition": [
+        "Already registered.",
+        "Must be greater than"
+      ],
+      "analysis_guidance": [
+        "The missed-heartbeat reset path has no guaranteed unique log banner. Ask for monitor registration/status and reboot reason evidence."
+      ],
+      "limitations": [
+        "Cannot identify monitor-induced reset merely from log silence or generic registration text."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "watchdog_reboot",
+      "title": "Watchdog / reset / silent reboot",
+      "description": "Watchdog driver control errors, silent reboot scheduling and reason recording.",
+      "source_refs": [
+        {
+          "path": "os/drivers/watchdog.c",
+          "line": 481,
+          "source_excerpt": "wddbg(\"Upper half allocation failed\\n\");"
+        },
+        {
+          "path": "os/kernel/silent_reboot/silent_reboot.c",
+          "line": 76,
+          "source_excerpt": "lldbg(\"Perform SILENT REBOOT expired by periodic timer!!\\n\");"
+        },
+        {
+          "path": "os/kernel/silent_reboot/silent_reboot.c",
+          "line": 337,
+          "source_excerpt": "dbg(\"Reboot watchdog will be expired after %d seconds\\n\", timeout);"
+        },
+        {
+          "path": "os/arch/arm/src/common/up_reboot_reason.c",
+          "line": 31,
+          "source_excerpt": "void reboot_reason_try_write_assert(void)"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_WATCHDOG",
+        "CONFIG_SYSTEM_REBOOT_REASON"
+      ],
+      "recognition": [
+        "Perform SILENT REBOOT",
+        "board boot with SILENT MODE",
+        "Reboot watchdog will be expired",
+        "Failed to start watchdog"
+      ],
+      "analysis_guidance": [
+        "Separate requested reset, reset cause saved in hardware, and successful post-reset boot.",
+        "Driver-control logs alone are not evidence that a hardware watchdog fired."
+      ],
+      "limitations": [
+        "Reason register format and retention differ by board; missing logs cannot prove a reboot cause."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "binary_recovery",
+      "title": "Binary-manager fault recovery",
+      "description": "Fault notification, deactivation, reload request, failure/reset.",
+      "source_refs": [
+        {
+          "path": "os/kernel/binary_manager/binary_manager_recovery.c",
+          "line": 322,
+          "source_excerpt": "bmllvdbg(\"Try to recover fault with binid %d\\n\", bin_idx);"
+        },
+        {
+          "path": "os/kernel/binary_manager/binary_manager_recovery.c",
+          "line": 353,
+          "source_excerpt": "bmllvdbg(\"Loading thread with pid %d will reload binaries!\\n\", ret);"
+        },
+        {
+          "path": "os/kernel/binary_manager/binary_manager_recovery.c",
+          "line": 359,
+          "source_excerpt": "bmlldbg(\"RECOVERY FAIL, BOARD RESET!!\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_BINARY_MANAGER",
+        "CONFIG_BINMGR_RECOVERY",
+        "CONFIG_APP_BINARY_SEPARATION",
+        "CONFIG_DEBUG_BINMGR_INFO"
+      ],
+      "recognition": [
+        "Try to recover fault with binid",
+        "will reload binaries!",
+        "RECOVERY FAIL, BOARD RESET!!"
+      ],
+      "analysis_guidance": [
+        "Track binary ID and request through reload completion and resumed application activity.",
+        "A reload request is not proof of recovery."
+      ],
+      "limitations": [
+        "ARMv8-M flat recipe cannot exercise every loadable recovery path."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "binary_bootparam",
+      "title": "Boot parameter / A-B slot validation",
+      "description": "CRC, versions, active slot and kernel/app/resource set consistency.",
+      "source_refs": [
+        {
+          "path": "os/kernel/binary_manager/binary_manager_bootparam.c",
+          "line": 440,
+          "source_excerpt": "bmdbg(\"BP set mismatch: kernel %u, app[%u:%s] %u\\n\", active_idx, bp_app_idx, bp_data->head.app_data[bp_app_idx].name, app_idx);"
+        },
+        {
+          "path": "os/kernel/binary_manager/binary_manager_bootparam.c",
+          "line": 634,
+          "source_excerpt": "bmdbg(\"Set %s validation PASS, highest version %u\\n\", GET_PARTNAME(set_idx), highest_version);"
+        },
+        {
+          "path": "os/kernel/binary_manager/binary_manager_verify.c",
+          "line": 248,
+          "source_excerpt": "bmdbg(\"Fail to crc check : %u != %u\\n\", calculate_crc, crc_hash);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_BINARY_MANAGER",
+        "CONFIG_DEBUG_BINMGR_ERROR",
+        "CONFIG_DEBUG_BINMGR_INFO"
+      ],
+      "recognition": [
+        "BP set mismatch",
+        "validation FAIL",
+        "validation PASS",
+        "Fail to crc check",
+        "BP USE index"
+      ],
+      "analysis_guidance": [
+        "Distinguish CRC/format validation from successful execution; associate app and resource slots with chosen kernel set."
+      ],
+      "limitations": [
+        "Generic PASS/FAIL here are not kernel_tc results."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "loadable_mapping",
+      "title": "Loadable module addresses",
+      "description": "Module entry/text/ro/data/stack/constructors for address attribution.",
+      "source_refs": [
+        {
+          "path": "os/binfmt/binfmt_dumpmodule.c",
+          "line": 89,
+          "source_excerpt": "berr(\"Module:\\n\");"
+        },
+        {
+          "path": "os/binfmt/binfmt_dumpmodule.c",
+          "line": 94,
+          "source_excerpt": "berr(\"  text alloc:     %p\\n\", bin->sections[BIN_TEXT]);"
+        },
+        {
+          "path": "os/binfmt/binfmt_dumpmodule.c",
+          "line": 98,
+          "source_excerpt": "berr(\"  start of alloc:     %p\\n\", bin->sections[0]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_BINFMT_LOADABLE",
+        "CONFIG_DEBUG_BINFMT",
+        "CONFIG_DEBUG_BINFMT_ERROR",
+        "CONFIG_OPTIMIZE_APP_RELOAD_TIME"
+      ],
+      "recognition": [
+        "Module:",
+        "filename:",
+        "entrypt:",
+        "text alloc:",
+        "start of alloc:",
+        "stacksize:"
+      ],
+      "analysis_guidance": [
+        "Use the exact app ELF and actual relocated section bases; kernel ELF alone cannot symbolize all app PCs."
+      ],
+      "limitations": [
+        "Addresses can change after binary reload; identify the mapping valid at crash time."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "filesystem",
+      "title": "Filesystem and storage errors",
+      "description": "Mount/bind/block-driver/path diagnostics and negative errno.",
+      "source_refs": [
+        {
+          "path": "os/fs/mount/fs_mount.c",
+          "line": 267,
+          "source_excerpt": "fdbg(\"ERROR: Failed to find block driver %s\\n\", source);"
+        },
+        {
+          "path": "os/fs/mount/fs_mount.c",
+          "line": 340,
+          "source_excerpt": "fdbg(\"ERROR: Bind method failed: %d\\n\", ret);"
+        },
+        {
+          "path": "os/fs/procfs/fs_procfsproc.c",
+          "line": 1130,
+          "source_excerpt": "fdbg(\"ERROR: PID %d is no longer valid\\n\", (int)pid);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_FS",
+        "CONFIG_DEBUG_FS_ERROR"
+      ],
+      "recognition": [
+        "Failed to find block driver",
+        "Failed to find file system",
+        "Bind method failed",
+        "ERROR: No filesystems enabled"
+      ],
+      "analysis_guidance": [
+        "Correlate filesystem, device, path, operation and errno; distinguish a disappearing procfs PID from storage corruption."
+      ],
+      "limitations": [
+        "Filesystem-specific and board storage protocols need additional source and runtime coverage."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "network_driver",
+      "title": "Network and driver diagnostic candidates",
+      "description": "Network manager/socket/WLAN and peripheral output discovered by source inventory.",
+      "source_refs": [
+        {
+          "path": "os/include/debug.h",
+          "line": 542,
+          "source_excerpt": "#ifdef CONFIG_DEBUG_NET_ERROR"
+        },
+        {
+          "path": "os/include/debug.h",
+          "line": 944,
+          "source_excerpt": "#ifdef CONFIG_DEBUG_I2C_ERROR"
+        },
+        {
+          "path": "os/include/debug.h",
+          "line": 838,
+          "source_excerpt": "#ifdef CONFIG_DEBUG_DMA_ERROR"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG_NET_ERROR",
+        "CONFIG_DEBUG_NET_WARN",
+        "CONFIG_DEBUG_NET_INFO",
+        "CONFIG_DEBUG_I2C_ERROR",
+        "CONFIG_DEBUG_DMA_ERROR"
+      ],
+      "recognition": [
+        "ndbg",
+        "nvdbg",
+        "i2cerr",
+        "dmadbg"
+      ],
+      "analysis_guidance": [
+        "Emitter names here identify source routes, not guaranteed serial prefixes. Locate the matching literal and source subsystem through the inventory.",
+        "Correlate errno/status with connection and driver lifecycle; do not infer a kernel crash from an ordinary recoverable network error."
+      ],
+      "limitations": [
+        "Generic discovery/manual AI review only; no claim of universal vendor-protocol decoding.",
+        "QEMU does not validate physical WLAN, DMA or peripheral timing."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "log_capture",
+      "title": "Log transport, compression and truncation",
+      "description": "Log dump failures, buffer/compression state and watchdog-limited capture.",
+      "source_refs": [
+        {
+          "path": "os/kernel/log_dump/log_dump.c",
+          "line": 211,
+          "source_excerpt": "ldplldbg(\"Compression failed for %d seconds, The device hang is suspected.\\n\", CONFIG_LOG_DUMP_HANG_CHECK_SEC);"
+        },
+        {
+          "path": "os/kernel/log_dump/log_dump.c",
+          "line": 462,
+          "source_excerpt": "snprintf(fsz_array, sizeof(size_t), \"<fsz:%08d>\", free_size);"
+        },
+        {
+          "path": "os/mm/mm_heap/mm_heapinfo_parse_heap.c",
+          "line": 240,
+          "source_excerpt": "mfdbg(\"It stops printing heap usage, to prevent watchdog reboot.\\n\");"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_LOG_DUMP",
+        "CONFIG_LOG_DUMP_HANG_CHECK_SEC",
+        "CONFIG_LOGM"
+      ],
+      "recognition": [
+        "Compression failed for",
+        "The device hang is suspected",
+        "<fsz:",
+        "It stops printing heap usage",
+        "Fail to compress"
+      ],
+      "analysis_guidance": [
+        "Treat suspected hang as source heuristic, not proof. Preserve raw bytes and decode compressed/binary dumps using the matching format before text parsing.",
+        "Flag truncated/dropped output and do not fill missing register values."
+      ],
+      "limitations": [
+        "Plain text parser does not decompress every board log-dump or binary crash format."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "debug_routing",
+      "title": "Debug level / prefix routing",
+      "description": "Compile-time subsystem gates and logm/syslog/low-level output routes.",
+      "source_refs": [
+        {
+          "path": "os/include/debug.h",
+          "line": 146,
+          "source_excerpt": "/* Temporary LOGM macros to route all dbg messages."
+        },
+        {
+          "path": "os/include/debug.h",
+          "line": 159,
+          "source_excerpt": "#define lldbg(format, ...) \\"
+        },
+        {
+          "path": "os/include/debug.h",
+          "line": 385,
+          "source_excerpt": "#ifdef CONFIG_DEBUG_BINMGR_ERROR"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_DEBUG",
+        "CONFIG_DEBUG_ERROR",
+        "CONFIG_DEBUG_WARN",
+        "CONFIG_DEBUG_VERBOSE",
+        "CONFIG_LOGM",
+        "CONFIG_ARCH_LOWPUTC"
+      ],
+      "recognition": [
+        "function prefixes",
+        "subsystem debug macros"
+      ],
+      "analysis_guidance": [
+        "Capture .config and source revision; an unavailable gate means missing observability, not a healthy subsystem.",
+        "Retain original prefixes and line numbers while allowing ANSI/CR cleanup in normalized matching."
+      ],
+      "limitations": [
+        "Local #undef/#define can override normal debug config; inventory conditions are not evaluated build eligibility."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "kernel_test_result",
+      "title": "Kernel test harness result",
+      "description": "Explicit suite start/end counters and individual test assertions.",
+      "source_refs": [
+        {
+          "path": "apps/examples/testcase/tc_main.c",
+          "line": 250,
+          "source_excerpt": "printf(\"\\n########## %s End [PASS : %d, FAIL : %d] ##########\\n\", tc_name, total_pass, total_fail);"
+        },
+        {
+          "path": "apps/examples/testcase/tc_common.h",
+          "line": 39,
+          "source_excerpt": "total_fail++; \\"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_EXAMPLES_TESTCASE_KERNEL"
+      ],
+      "recognition": [
+        "End [PASS :",
+        "FAIL :"
+      ],
+      "analysis_guidance": [
+        "Require the complete intended suite footer and zero failures; separate expected negative test diagnostics from actual assertion crashes.",
+        "A timeout, incomplete suite or crash before footer remains incomplete even if some tests passed."
+      ],
+      "limitations": [
+        "A passing QEMU suite proves only that tested image/config/emulator run, not hardware equivalence."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "memory_leak_checker",
+      "title": "Memory leak checker results",
+      "description": "LEAK/BROKEN allocation rows, totals, buffer limits and app text mappings.",
+      "source_refs": [
+        {
+          "path": "os/kernel/debug/mem_leak_checker.c",
+          "line": 380,
+          "source_excerpt": "printf(\"LEAK   | %10p |  %8d  | %10p | %d\\n\", (void *)((char *)node + SIZEOF_MM_ALLOCNODE), node->size - SIZEOF_MM_ALLOCNODE, owner_addr, pid);"
+        },
+        {
+          "path": "os/kernel/debug/mem_leak_checker.c",
+          "line": 390,
+          "source_excerpt": "printf(\"*** %d LEAKS, %d BROKENS.\\n\", leak_cnt, broken_cnt);"
+        },
+        {
+          "path": "os/kernel/debug/mem_leak_checker.c",
+          "line": 392,
+          "source_excerpt": "printf(\"*** NO MEMORY LEAK.\\n\");"
+        },
+        {
+          "path": "os/kernel/debug/mem_leak_checker.c",
+          "line": 419,
+          "source_excerpt": "printf(\"Available buffer size (%d) is small.\\nPlease increase CONFIG_MEM_LEAK_CHECKER_MAX_ALLOC_COUNT value more than %d.\\n\", MAX_ALLOC_COUNT, node_cnt);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_MEM_LEAK_CHECKER",
+        "CONFIG_MEM_LEAK_CHECKER_MAX_ALLOC_COUNT",
+        "CONFIG_DEBUG_MM_HEAPINFO"
+      ],
+      "recognition": [
+        "LEAK   |",
+        "BROKEN |",
+        "LEAKS,",
+        "BROKENS.",
+        "NO MEMORY LEAK.",
+        "Text Addr :"
+      ],
+      "analysis_guidance": [
+        "Preserve explicit negative NO MEMORY LEAK and partial/failed scanner state.",
+        "Map owner PC to kernel/app/common binary using captured text ranges; a LEAK row is a checker finding that needs lifetime/ownership investigation."
+      ],
+      "limitations": [
+        "Pointer-reachability scanning has coverage and allocation-count limits; do not equate zero findings with proof of no lifetime leaks."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "stack_monitor",
+      "title": "Periodic live/terminated thread stack monitor",
+      "description": "PID, active/inactive status, stack size, peak stack/heap and time.",
+      "source_refs": [
+        {
+          "path": "apps/system/utils/utils_stackmonitor.c",
+          "line": 121,
+          "source_excerpt": "printf(\" | %10s\", \"PEAK_STACK\");"
+        },
+        {
+          "path": "apps/system/utils/utils_stackmonitor.c",
+          "line": 154,
+          "source_excerpt": "printf(\"%5d | %8s | %8d\", terminated_infos[inactive_idx].chk_pid, \"INACTIVE\", terminated_infos[inactive_idx].chk_stksize);"
+        },
+        {
+          "path": "apps/system/utils/utils_stackmonitor.c",
+          "line": 187,
+          "source_excerpt": "printf(\"%5s | %8s | %8s\", stat_info[PROC_STAT_PID], \"ACTIVE\", stat_info[PROC_STAT_TOTALSTACK]);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ENABLE_STACKMONITOR",
+        "CONFIG_STACK_COLORATION",
+        "CONFIG_DEBUG_MM_HEAPINFO",
+        "CONFIG_STACKMONITOR_DISABLE_DEAD_THREAD"
+      ],
+      "recognition": [
+        "PEAK_STACK",
+        "PEAK_HEAP",
+        "THREAD NAME",
+        "INACTIVE",
+        "ACTIVE"
+      ],
+      "analysis_guidance": [
+        "Use header-dependent columns and separate inactive thread historical records from current task state.",
+        "Compare repeated per-task peaks against allocation size; preserve timestamp units."
+      ],
+      "limitations": [
+        "A high-water snapshot does not identify exact stack frames at the peak."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "mpu_regions",
+      "title": "MPU region and permission table",
+      "description": "Region base/size/enabled state, privileged/user access and execute-never.",
+      "source_refs": [
+        {
+          "path": "os/arch/arm/src/armv8-m/mpu.h",
+          "line": 330,
+          "source_excerpt": "lldbg_noarg(\"List of MPU regions and permissions\\n\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/mpu.h",
+          "line": 333,
+          "source_excerpt": "lldbg(\"%-12s\\t%-12s\\t%-12s\\t%-12s\\t%-12s\\t%-12s\\n\", \"REGION_NO.\", \"BASE_ADDRESS\", \"SIZE\", \"STATUS\", \"ACCESS (P/U)\", \"EXECUTE\");"
+        },
+        {
+          "path": "os/arch/arm/src/armv8-m/up_assert.c",
+          "line": 454,
+          "source_excerpt": "mpu_show_regioninfo();"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_ARMV8M_MPU",
+        "CONFIG_ARMV8M_MPU_NREGIONS",
+        "CONFIG_DEBUG"
+      ],
+      "recognition": [
+        "List of MPU regions and permissions",
+        "REGION_NO.",
+        "BASE_ADDRESS",
+        "ACCESS (P/U)",
+        "EXECUTE"
+      ],
+      "analysis_guidance": [
+        "Match fault address and instruction PC to enabled region bounds, privilege mode and X/XN permission.",
+        "Keep v8-M base/limit semantics separate from v7-M size/subregion attributes."
+      ],
+      "limitations": [
+        "Disabled region rows can show meaningless derived size; do not treat them as active memory regions."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    },
+    {
+      "id": "error_report",
+      "title": "Procfs error-report marker",
+      "description": "Task identity retained in the error-report procfs surface.",
+      "source_refs": [
+        {
+          "path": "os/fs/procfs/fs_procfsereport.c",
+          "line": 216,
+          "source_excerpt": "linesize = snprintf(efile->line, EREPORT_LINELEN, \"Error_Report pid:%d, taskaddr:%lu\", pid, taskaddr);"
+        }
+      ],
+      "config_gates": [
+        "CONFIG_FS_PROCFS"
+      ],
+      "recognition": [
+        "Error_Report pid:",
+        "taskaddr:"
+      ],
+      "analysis_guidance": [
+        "Treat this as an identity/context marker and request accompanying fault registers, assertion and payload."
+      ],
+      "limitations": [
+        "Marker alone does not explain cause; task address is printed decimal by this emitter."
+      ],
+      "runtime_status": "source_only",
+      "evidence_level": "source_verified"
+    }
+  ]
+}

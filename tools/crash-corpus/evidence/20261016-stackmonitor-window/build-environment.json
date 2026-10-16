@@ -1,0 +1,21 @@
+{
+  "inspection_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--platform",
+    "linux/arm64",
+    "tizenrt/tizenrt:2.0.1-arm64-local",
+    "bash",
+    "-c",
+    "arm-none-eabi-gcc --version; arm-none-eabi-addr2line --version"
+  ],
+  "compiler_and_binutils_versions": "arm-none-eabi-gcc (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)\nCopyright (C) 2020 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU addr2line (GNU Arm Embedded Toolchain 10.3-2021.10) 2.36.1.20210621\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) any later version.\nThis program has absolutely no warranty.\n",
+  "build_console": "build.log",
+  "build_selection": [
+    "qemu-armv8m",
+    "log_analyzer",
+    "1"
+  ],
+  "host_bash": "/opt/homebrew/bin/bash"
+}

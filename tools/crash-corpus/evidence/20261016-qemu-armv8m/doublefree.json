@@ -1,0 +1,48 @@
+{
+  "case": "doublefree",
+  "evidence_kind": "actual-qemu-runtime",
+  "machine": "mps2-an505",
+  "started_at_utc": "2026-10-16T13:46:45.458426+00:00",
+  "elapsed_seconds": 1.226,
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer/build/output/bin/tinyara",
+    "-nic",
+    "user,model=lan9118",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "serial_commands": [
+    {
+      "command": "help",
+      "elapsed_seconds": 0.556
+    },
+    {
+      "command": "crashprobe doublefree",
+      "elapsed_seconds": 0.71
+    }
+  ],
+  "expected_pattern": "WARNING!! Attempt for double freeing",
+  "expected_observed": true,
+  "boot_prompt_observed": true,
+  "termination_reason": "diagnostic-complete",
+  "observation_timed_out": false,
+  "qemu_returncode_before_collector_stop": null,
+  "collector_stopped_qemu": true,
+  "qemu_final_returncode": 0,
+  "assertion_observed": false,
+  "architectural_lockup_observed": false,
+  "guest_reboot_requested": false,
+  "guest_prompt_after_fault": false,
+  "log": "raw/doublefree.log",
+  "log_sha256": "1af9d95223a4f8863cda6b565b4508c7f6c2700d0cef08f873accbb3d85515a4",
+  "log_bytes": 2171,
+  "hardware_validated": false
+}

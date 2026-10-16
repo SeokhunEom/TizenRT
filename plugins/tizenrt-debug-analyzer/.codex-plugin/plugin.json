@@ -1,0 +1,26 @@
+{
+  "name": "tizenrt-debug-analyzer",
+  "version": "0.1.0",
+  "description": "Local TizenRT kernel log parsing and evidence-based GPT debugging.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "tizenrt",
+    "debugging",
+    "qemu",
+    "crash",
+    "kernel"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "TizenRT Debug Analyzer",
+    "shortDescription": "Kernel logs to crash insights",
+    "longDescription": "Analyze TizenRT fault registers, assertions, heap and task diagnostics with source-linked evidence and guided GPT debugging. Local Python MCP tools and a reusable analysis skill.",
+    "developerName": "TizenRT Debug Analyzer contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": "이 TizenRT 로그의 첫 장애와 근거 줄을 확인하고 원인 후보와 다음 디버깅 절차를 알려줘."
+  }
+}

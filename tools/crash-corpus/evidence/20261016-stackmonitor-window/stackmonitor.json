@@ -1,0 +1,48 @@
+{
+  "case": "stackmonitor",
+  "evidence_kind": "actual-qemu-runtime",
+  "machine": "mps2-an505",
+  "started_at_utc": "2026-10-16T13:51:52.324113+00:00",
+  "elapsed_seconds": 3.287,
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer/build/output/bin/tinyara",
+    "-nic",
+    "user,model=lan9118",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "serial_commands": [
+    {
+      "command": "help",
+      "elapsed_seconds": 0.614
+    },
+    {
+      "command": "stkmon",
+      "elapsed_seconds": 0.769
+    }
+  ],
+  "expected_pattern": "Stack Monitor:",
+  "expected_observed": true,
+  "boot_prompt_observed": true,
+  "termination_reason": "diagnostic-observation-window",
+  "observation_timed_out": false,
+  "qemu_returncode_before_collector_stop": null,
+  "collector_stopped_qemu": true,
+  "qemu_final_returncode": 0,
+  "assertion_observed": false,
+  "architectural_lockup_observed": false,
+  "guest_reboot_requested": false,
+  "guest_prompt_after_fault": false,
+  "log": "raw/stackmonitor.log",
+  "log_sha256": "25a82136cbea0e28fe00f12ab828d9131e344d2f2a85e62f0159a84d33921b7c",
+  "log_bytes": 4301,
+  "hardware_validated": false
+}

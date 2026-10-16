@@ -1,0 +1,20 @@
+{
+  "name": "tizenrt-local",
+  "interface": {
+    "displayName": "TizenRT Debugging"
+  },
+  "plugins": [
+    {
+      "name": "tizenrt-debug-analyzer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/tizenrt-debug-analyzer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

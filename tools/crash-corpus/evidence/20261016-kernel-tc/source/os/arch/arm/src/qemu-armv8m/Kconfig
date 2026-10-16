@@ -1,0 +1,25 @@
+#
+# For a description of the syntax of this configuration file,
+# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+#
+
+comment "QEMU ARMv8-M Configuration Options"
+
+config ARCH_CHIP_MPS2_AN505
+	bool "MPS2-AN505"
+	default y
+	depends on ARCH_CHIP_QEMU_ARMV8M
+	select ARCH_CORTEXM33
+	select ARCH_HAVE_UART0
+	select ARCH_HAVE_SERIAL_TERMIOS
+	---help---
+		QEMU MPS2-AN505 Cortex-M33 machine.
+
+config QEMU_LOG_ANALYZER_PROBES
+	bool "Destructive QEMU diagnostic log collection probes"
+	default n
+	depends on ARCH_CHIP_QEMU_ARMV8M && TASH && !APP_BINARY_SEPARATION
+	---help---
+		Register crashprobe in TASH for tools/crash-corpus. The command
+		intentionally crashes only the emulated guest. Never enable in a
+		production recipe. Each destructive probe needs a fresh QEMU boot.

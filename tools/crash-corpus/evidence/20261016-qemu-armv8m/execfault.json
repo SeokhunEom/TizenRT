@@ -1,0 +1,48 @@
+{
+  "case": "execfault",
+  "evidence_kind": "actual-qemu-runtime",
+  "machine": "mps2-an505",
+  "started_at_utc": "2026-10-16T13:46:41.010604+00:00",
+  "elapsed_seconds": 1.478,
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer/build/output/bin/tinyara",
+    "-nic",
+    "user,model=lan9118",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "serial_commands": [
+    {
+      "command": "help",
+      "elapsed_seconds": 0.562
+    },
+    {
+      "command": "crashprobe execfault",
+      "elapsed_seconds": 0.716
+    }
+  ],
+  "expected_pattern": "FAULT TYPE: IACCVIOL",
+  "expected_observed": true,
+  "boot_prompt_observed": true,
+  "termination_reason": "fault-observed-output-quiescent",
+  "observation_timed_out": false,
+  "qemu_returncode_before_collector_stop": null,
+  "collector_stopped_qemu": true,
+  "qemu_final_returncode": 0,
+  "assertion_observed": true,
+  "architectural_lockup_observed": false,
+  "guest_reboot_requested": true,
+  "guest_prompt_after_fault": true,
+  "log": "raw/execfault.log",
+  "log_sha256": "55f261e118bd3473d557b5fdf190119ea2167877ec1c601bbb2e977e9bc1728e",
+  "log_bytes": 9599,
+  "hardware_validated": false
+}

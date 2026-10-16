@@ -14,3 +14,12 @@ config ARCH_CHIP_MPS2_AN505
 	select ARCH_HAVE_SERIAL_TERMIOS
 	---help---
 		QEMU MPS2-AN505 Cortex-M33 machine.
+
+config QEMU_LOG_ANALYZER_PROBES
+	bool "Destructive QEMU diagnostic log collection probes"
+	default n
+	depends on ARCH_CHIP_QEMU_ARMV8M && TASH && !APP_BINARY_SEPARATION
+	---help---
+		Register crashprobe in TASH for tools/crash-corpus. The command
+		intentionally crashes only the emulated guest. Never enable in a
+		production recipe. Each destructive probe needs a fresh QEMU boot.

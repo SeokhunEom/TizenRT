@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "tizenrt-debug": {
+      "command": "python3",
+      "args": [
+        "./server.py"
+      ],
+      "cwd": ".",
+      "env_vars": [
+        "TIZENRT_LOG_ROOTS"
+      ]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+diff --git a/os/arch/arm/src/qemu-armv8m/Kconfig b/os/arch/arm/src/qemu-armv8m/Kconfig
+index 0a469cc2e..3c2fdf2fd 100644
+--- a/os/arch/arm/src/qemu-armv8m/Kconfig
++++ b/os/arch/arm/src/qemu-armv8m/Kconfig
+@@ -14,3 +14,12 @@ config ARCH_CHIP_MPS2_AN505
+ 	select ARCH_HAVE_SERIAL_TERMIOS
+ 	---help---
+ 		QEMU MPS2-AN505 Cortex-M33 machine.
++
++config QEMU_LOG_ANALYZER_PROBES
++	bool "Destructive QEMU diagnostic log collection probes"
++	default n
++	depends on ARCH_CHIP_QEMU_ARMV8M && TASH && !APP_BINARY_SEPARATION
++	---help---
++		Register crashprobe in TASH for tools/crash-corpus. The command
++		intentionally crashes only the emulated guest. Never enable in a
++		production recipe. Each destructive probe needs a fresh QEMU boot.
+diff --git a/os/board/qemu-armv8m/src/Makefile b/os/board/qemu-armv8m/src/Makefile
+index 6ee6b6e85..a753f4b17 100644
+--- a/os/board/qemu-armv8m/src/Makefile
++++ b/os/board/qemu-armv8m/src/Makefile
+@@ -38,6 +38,9 @@ CSRCS += boardctl.c
+ endif
+ 
+ CSRCS += qemu_armv8m_boot.c qemu_armv8m_flash.c
++ifeq ($(CONFIG_QEMU_LOG_ANALYZER_PROBES),y)
++CSRCS += qemu_armv8m_crashprobe.c
++endif
+ ifeq ($(CONFIG_NET),y)
+ ifeq ($(CONFIG_NET_NETMGR),y)
+ CSRCS += qemu_armv8m_lan9118.c
+diff --git a/os/board/qemu-armv8m/src/qemu_armv8m_boot.c b/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
+index 4a85d6cca..ee6b99a97 100644
+--- a/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
++++ b/os/board/qemu-armv8m/src/qemu_armv8m_boot.c
+@@ -54,6 +54,10 @@
+ #include <apps/builtin.h>
+ #endif
+ 
++#ifdef CONFIG_QEMU_LOG_ANALYZER_PROBES
++extern void qemu_armv8m_register_crashprobe(void);
++#endif
++
+ /****************************************************************************
+  * Pre-processor Definitions
+  ****************************************************************************/
+@@ -376,6 +380,9 @@ void board_initialize(void)
+ #if defined(CONFIG_BUILTIN_APPS) && !defined(CONFIG_APP_BINARY_SEPARATION)
+ 	register_examples_cmds();
+ #endif
++#ifdef CONFIG_QEMU_LOG_ANALYZER_PROBES
++	qemu_armv8m_register_crashprobe();
++#endif
+ #if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
+ #ifdef CONFIG_SUPPORT_COMMON_BINARY
+ 	if (qemu_armv8m_load_common() < 0) {

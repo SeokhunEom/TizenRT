@@ -1,0 +1,4 @@
+# Only curated evidence under evidence/ is versioned. Ad hoc runs belong elsewhere.
+*.log
+!evidence/**/*.log
+__pycache__/

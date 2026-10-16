@@ -1,0 +1,48 @@
+{
+  "case": "hardfault",
+  "evidence_kind": "actual-qemu-runtime",
+  "machine": "mps2-an505",
+  "started_at_utc": "2026-10-16T13:46:36.591547+00:00",
+  "elapsed_seconds": 1.479,
+  "qemu_command": [
+    "/opt/homebrew/bin/qemu-system-arm",
+    "-M",
+    "mps2-an505",
+    "-kernel",
+    "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer/build/output/bin/tinyara",
+    "-nic",
+    "user,model=lan9118",
+    "-display",
+    "none",
+    "-serial",
+    "stdio",
+    "-monitor",
+    "none"
+  ],
+  "serial_commands": [
+    {
+      "command": "help",
+      "elapsed_seconds": 0.559
+    },
+    {
+      "command": "crashprobe hardfault",
+      "elapsed_seconds": 0.713
+    }
+  ],
+  "expected_pattern": "PANIC!!! Hard fault",
+  "expected_observed": true,
+  "boot_prompt_observed": true,
+  "termination_reason": "fault-observed-output-quiescent",
+  "observation_timed_out": false,
+  "qemu_returncode_before_collector_stop": null,
+  "collector_stopped_qemu": true,
+  "qemu_final_returncode": 0,
+  "assertion_observed": true,
+  "architectural_lockup_observed": false,
+  "guest_reboot_requested": true,
+  "guest_prompt_after_fault": true,
+  "log": "raw/hardfault.log",
+  "log_sha256": "fd7eb4b8a2aaed2a160ef9a2974f5024e90840f5069b43ca8a3e2b820be5b28b",
+  "log_bytes": 9676,
+  "hardware_validated": false
+}

@@ -1,0 +1,4 @@
+# Captured bytes and patch context must survive checkout unchanged.
+evidence/**/raw/*.log -text -whitespace
+evidence/**/build.log -text -whitespace
+evidence/**/source.patch -text -whitespace

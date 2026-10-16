@@ -1,0 +1,6 @@
+interface:
+  display_name: "TizenRT Log Debugging"
+  short_description: "Explain kernel faults using exact log evidence"
+  default_prompt: "Analyze this TizenRT log and explain the first failure, likely causes, and next debugging steps."
+policy:
+  allow_implicit_invocation: true

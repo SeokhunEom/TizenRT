@@ -54,6 +54,10 @@
 #include <apps/builtin.h>
 #endif
 
+#ifdef CONFIG_QEMU_LOG_ANALYZER_PROBES
+extern void qemu_armv8m_register_crashprobe(void);
+#endif
+
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -375,6 +379,9 @@ void board_initialize(void)
 #endif
 #if defined(CONFIG_BUILTIN_APPS) && !defined(CONFIG_APP_BINARY_SEPARATION)
 	register_examples_cmds();
+#endif
+#ifdef CONFIG_QEMU_LOG_ANALYZER_PROBES
+	qemu_armv8m_register_crashprobe();
 #endif
 #if defined(CONFIG_APP_BINARY_SEPARATION) && !defined(CONFIG_BINARY_MANAGER)
 #ifdef CONFIG_SUPPORT_COMMON_BINARY

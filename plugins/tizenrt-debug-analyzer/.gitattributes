@@ -1,0 +1,2 @@
+# Keep UART CR/CR/LF and control bytes identical to the captured manifest.
+examples/**/raw/*.log -text -whitespace

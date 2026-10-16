@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "actual-qemu-runtime",
+  "source_root": "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer",
+  "git_head": "5c0120f685ff47ab17f7ec26c0554965e312bc27",
+  "git_branch": "codex/tizenrt-log-analyzer",
+  "git_dirty_paths": "M os/arch/arm/src/qemu-armv8m/Kconfig\n M os/board/qemu-armv8m/src/Makefile\n M os/board/qemu-armv8m/src/qemu_armv8m_boot.c\n?? .agents/\n?? build/configs/qemu-armv8m/log_analyzer/\n?? os/board/qemu-armv8m/src/qemu_armv8m_crashprobe.c\n?? plugins/\n?? tools/crash-corpus/",
+  "source_sha256": {
+    "os/arch/arm/src/qemu-armv8m/Kconfig": "e354b8534efd072abe44f52e368d9ee9afbfc8c740f2c1df26528777fa20ea1c",
+    "os/board/qemu-armv8m/src/Makefile": "b453973a7522d7236acb1571076a92c1fb704a5cda78b9e1cf19f2bde755312a",
+    "os/board/qemu-armv8m/src/qemu_armv8m_boot.c": "bb9b934e6f58b27d43ef516e5b074b49634d6e97e51e40095342588469646e57",
+    "os/board/qemu-armv8m/src/qemu_armv8m_crashprobe.c": "95a5bbb908da8bd2afb537640846076823cfc2003e08485190c46bef78169cda",
+    "build/configs/qemu-armv8m/log_analyzer/defconfig": "b3cf0a4c82e4c0355581c916f86a13ca58b427d3f7aba14b1c6361cf7ade4518",
+    "tools/crash-corpus/collect.py": "234abf815833b45d44c1c0d35765ecb754a494ad7fdb0202b2ef301d607f477e"
+  },
+  "elf": "/Users/seokhun/Dev/TizenRT/codex/tizenrt-log-analyzer/build/output/bin/tinyara",
+  "elf_sha256": "934b21f89cf5cd3bb266d33eb23d4468a2867d01f3e24e7d827fbff420956c3b",
+  "elf_size_bytes": 5056016,
+  "config_sha256": "b3cf0a4c82e4c0355581c916f86a13ca58b427d3f7aba14b1c6361cf7ade4518",
+  "qemu_version": "QEMU emulator version 11.1.2\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers",
+  "symbols_sha256": "153df5e441c21bc68475252bb03f5ef7094a63b1c6cacabe7d60bc3af5d04839",
+  "docker_image": "tizenrt/tizenrt:2.0.1-arm64-local",
+  "docker_image_id": "sha256:7b5b372b92979945840daadc101313552a5bfca2e4777d78d0edca6e81690d0c",
+  "build_method": "Homebrew Bash os/dbuild.sh menu; qemu-armv8m -> log_analyzer -> 1",
+  "hardware_validated": false,
+  "synthetic_log": false
+}
