@@ -87,7 +87,7 @@
 
 static void pthread_mutex_add(FAR struct pthread_mutex_s *mutex)
 {
-	FAR struct pthread_tcb_s *rtcb = (FAR struct pthread_tcb_s *)this_task();
+	FAR struct tcb_s *rtcb = this_task();
 	irqstate_t flags;
 
 	DEBUGASSERT(mutex->flink == NULL);
@@ -240,7 +240,7 @@ int pthread_mutex_give(FAR struct pthread_mutex_s *mutex)
 
 	DEBUGASSERT(mutex != NULL);
 	if (mutex != NULL) {
-		FAR struct pthread_tcb_s *rtcb = (FAR struct pthread_tcb_s *)this_task();
+		FAR struct tcb_s *rtcb = this_task();
 		irqstate_t flags;
 
 		flags = enter_critical_section();

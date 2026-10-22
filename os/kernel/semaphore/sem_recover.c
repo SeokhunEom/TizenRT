@@ -94,14 +94,13 @@
  ****************************************************************************/
 
 /****************************************************************************
- * Name: sem_recover
+ * Name: sem_recover_wait
  *
  * Description:
  *   This function is called from task_recover() when a task is deleted via
  *   task_delete() or via pthread_cancel().  It handles the case where a task
- *   is waiting for a semaphore at the time that it was killed, and it also
- *   releases all of the semaphore holders that the task still holds, using
- *   the task's list of held semaphores (tcb->holdsem).
+ *   is waiting for a semaphore at the time that it was killed. Holder
+ *   release is left to task_recover() after mutex recovery.
  *
  * Inputs:
  *   tcb - The TCB of the terminated task or thread
@@ -114,7 +113,7 @@
  *
  ****************************************************************************/
 
-void sem_recover(FAR struct tcb_s *tcb)
+void sem_recover_wait(FAR struct tcb_s *tcb)
 {
 	irqstate_t flags;
 
@@ -168,9 +167,6 @@ void sem_recover(FAR struct tcb_s *tcb)
 
 	}
 
-	/* Release all semaphore holders for the task */
-
-	sem_release_all(tcb);
 
 	leave_critical_section(flags);
 }

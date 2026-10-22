@@ -64,6 +64,9 @@
 #include "wdog/wdog.h"
 #include "mqueue/mqueue.h"
 #include "task/task.h"
+#if !defined(CONFIG_DISABLE_PTHREAD) && !defined(CONFIG_PTHREAD_MUTEX_UNSAFE)
+#include "pthread/pthread.h"
+#endif
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -114,15 +117,32 @@
 
 void task_recover(FAR struct tcb_s *tcb)
 {
+	irqstate_t flags;
+
 	/* The task is being deleted.  Cancel in pending timeout events. */
 
 	wd_recover(tcb);
 
-	/* If the thread holds semaphore counts or is waiting for a semaphore count,
-	 * then release the counts.
+	/* Cancel the wait before posting owned mutexes: a NORMAL mutex owner
+	 * may itself be waiting to lock that mutex again. Keep holder updates
+	 * protected through the final release, as in semaphore recovery.
 	 */
 
-	sem_recover(tcb);
+	flags = enter_critical_section();
+	sem_recover_wait(tcb);
+
+#if !defined(CONFIG_DISABLE_PTHREAD) && !defined(CONFIG_PTHREAD_MUTEX_UNSAFE)
+	/* Mark owned mutexes before releasing any remaining semaphore holders.
+	 * pthread exit/cancel may already have drained this list.
+	 */
+
+	pthread_mutex_inconsistent(tcb);
+#endif
+
+	/* Release any remaining semaphore holders. */
+
+	sem_release_all(tcb);
+	leave_critical_section(flags);
 
 #ifndef CONFIG_DISABLE_MQUEUE
 	/* Handle cases where the thread was waiting for a message queue event */
