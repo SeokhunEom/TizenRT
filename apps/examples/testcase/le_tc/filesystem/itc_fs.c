@@ -58,7 +58,7 @@ static char *TMP_MOUNT_DEV_DIR;
 #endif
 
 #define BUFFER_LEN 30
-#define MOUNT_DIR CONFIG_MOUNT_POINT
+#define MOUNT_DIR FS_TC_MOUNT_DIR
 #define VFS_FILE_PATH MOUNT_DIR"vfs"
 #define VFS_FOLDER_PATH MOUNT_DIR"folder"
 #define VFS_LOOP_COUNT 5
@@ -1319,9 +1319,15 @@ static void itc_libc_stdio_fwrite_fread_p(void)
 
 void itc_fs_main(void)
 {
+	int ret;
+
 #ifdef CONFIG_AUTOMOUNT_USERFS
 	TMP_MOUNT_DEV_DIR = get_fs_mount_devname();
 #endif
+	/* Supply the first unmount test with its own mounted fixture. */
+	ret = mount(MOUNT_DEV_DIR, MOUNT_DIR, FS_TYPE, 0, NULL);
+	TC_ASSERT_EQ("mount", ret, OK);
+
 	itc_fs_vfs_umount_n_twice();
 	itc_fs_vfs_mount_p_read_mode();
 	itc_fs_vfs_mount_n_twice();
@@ -1356,6 +1362,9 @@ void itc_fs_main(void)
 	itc_libc_stdio_ftell_n();
 	itc_libc_stdio_fseek_ftell_p();
 	itc_libc_stdio_fwrite_fread_p();
+
+	ret = umount(MOUNT_DIR);
+	TC_ASSERT_EQ("umount", ret, OK);
 
 	return;
 }

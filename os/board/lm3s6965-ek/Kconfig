@@ -24,4 +24,20 @@ config QEMU_NONE
 	---help---
 		Dont build for Qemu Hardware.
 endchoice
+
+config QEMU_TEST_STORAGE
+	bool "Initialize RAM storage for QEMU testcases"
+	default n
+	depends on QEMU_SRAM || QEMU_SDRAM
+	depends on RAMMTD && MTD_SMART && FS_SMARTFS
+	depends on !SMARTFS_MULTI_ROOT_DIRS
+	select BOARD_INITIALIZE
+	select MTD_FTL
+	---help---
+		Create separate volatile RAM MTD devices for the SmartFS examples
+		(/dev/smart0 mounted at /mnt), filesystem tests (/dev/smart1,
+		formatted but not mounted), and raw BCH tests (/dev/mtdblock1).
+		Each SMART device uses 256 erase blocks and the BCH device uses
+		16 erase blocks. All contents are reset on each boot.
+
 endif

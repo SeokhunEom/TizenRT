@@ -67,7 +67,7 @@
 #define VFS_CONTENTS_LEN	20
 #define SEEK_DEF		3
 #define SEEK_OFFSET		6
-#define MOUNT_DIR "/fsmnt/"
+#define MOUNT_DIR FS_TC_MOUNT_DIR
 #define FS_PATH_MAX 15
 
 #ifdef CONFIG_AUTOMOUNT_USERFS

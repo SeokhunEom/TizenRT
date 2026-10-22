@@ -22,6 +22,9 @@
 #ifndef __EXAMPLES_TESTCASE_FILESYSTEM_TC_INTERNAL_H
 #define __EXAMPLES_TESTCASE_FILESYSTEM_TC_INTERNAL_H
 
+/* Keep destructive filesystem tests away from the application mount. */
+#define FS_TC_MOUNT_DIR "/fsmnt/"
+
 /**********************************************************
 * TC Function Declarations
 **********************************************************/
