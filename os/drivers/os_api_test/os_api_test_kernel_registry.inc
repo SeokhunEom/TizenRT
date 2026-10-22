@@ -105,7 +105,7 @@ OS_API_TEST_KERNEL_DESCRIPTOR(TESTIOC_LOG_DUMP_TEST, 42, test_log_dump, test_log
 OS_API_TEST_KERNEL_DESCRIPTOR(TESTIOC_BINARY_MANAGER_TEST, 43, test_binary_manager, test_binary_manager.c, binary_manager_main, tc_binary_manager.c, CONFIG_TC_KERNEL_BINARY_MANAGER)
 #endif
 #if defined(CONFIG_TC_KERNEL_MEM_LEAK_CHECKER) && defined(CONFIG_MEM_LEAK_CHECKER)
-OS_API_TEST_KERNEL_DESCRIPTOR(TESTIOC_MEM_LEAK_CHECKER_TEST, 44, test_mem_leak_checker, test_mem_leak_checker.c, mem_leak_checker_main, tc_mem_leak_checker.c, CONFIG_TC_KERNEL_MEM_LEAK_CHECKER)
+OS_API_TEST_KERNEL_DESCRIPTOR(TESTIOC_MEM_LEAK_CHECKER_TEST, 44, test_mem_leak_checker, test_mem_leak_checker.c, tc_mem_leak_checker_main, tc_mem_leak_checker.c, CONFIG_TC_KERNEL_MEM_LEAK_CHECKER)
 #endif
 #if defined(CONFIG_TC_KERNEL_REBOOT_REASON) && defined(CONFIG_SYSTEM_REBOOT_REASON)
 OS_API_TEST_KERNEL_DESCRIPTOR(TESTIOC_REBOOT_REASON_TEST, 45, test_reboot_reason, test_reboot_reason.c, reboot_reason_main, tc_reboot_reason.c, CONFIG_TC_KERNEL_REBOOT_REASON)

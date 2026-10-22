@@ -119,7 +119,7 @@ int wqueue_main(void);
 int memory_safety_main(void);
 int irq_main(void);
 void irq_kernel_main(void);
-int mem_leak_checker_main(void);
+int tc_mem_leak_checker_main(void);
 int reboot_reason_main(void);
 int itc_environ_main(void);
 int itc_libc_pthread_main(void);

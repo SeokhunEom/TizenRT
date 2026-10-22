@@ -1,0 +1,10 @@
+config EXAMPLES_NUTTX_MM_TEST
+	bool "NuttX 12.13.0 allocator integration verification"
+	default n
+	depends on MM_NUTTX && BUILD_FLAT && !DISABLE_PTHREAD && BUILTIN_APPS
+	depends on KMM_NHEAPS > 1
+	---help---
+		Register nuttx_mm_test in TASH. Verify the selected NuttX backend,
+		public allocation, alignment/reallocation, per-heap ownership,
+		failure preservation and bounded concurrent fragmentation.
+		This is a verification example, not a product startup task.

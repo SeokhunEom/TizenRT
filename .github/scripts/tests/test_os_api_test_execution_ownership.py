@@ -62,7 +62,7 @@ OWNERS: Final = {
         ExecutionOwner("wdog_main", "wdog_main"),
         ExecutionOwner("log_dump_main", "log_dump_main"),
         ExecutionOwner("binary_manager_main", "binary_manager_main"),
-        ExecutionOwner("mem_leak_checker_main", "mem_leak_checker_main"),
+        ExecutionOwner("tc_mem_leak_checker_main", "tc_mem_leak_checker_main"),
         ExecutionOwner("reboot_reason_main", "reboot_reason_main"),
         ExecutionOwner("pm_tc_main", "pm_tc_main"),
         ExecutionOwner("rtc_main", "rtc_main"),

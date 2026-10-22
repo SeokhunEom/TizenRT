@@ -82,20 +82,19 @@ static void *heapinfo_thread(void *arg)
 #ifdef CONFIG_HEAPINFO_USER_GROUP
 static void calc_group_size(int *mem, int info[4], int type)
 {
-	struct mm_allocnode_s *node;
-	node = (struct mm_allocnode_s *)((char *)mem - SIZEOF_MM_ALLOCNODE);
+	size_t charge = mm_allocation_charge(mem);
 	if (type == HEAPINFO_ALLOC) {
-		info[0] += node->size;
+		info[0] += charge;
 		if (info[0] > info[1]) {
 			info[1] = info[0];
 		}
-		info[2] += node->size;
+		info[2] += charge;
 		if (info[2] > info[3]) {
 			info[3] = info[2];
 		}
 	} else {
-		info[0] -= node->size;
-		info[2] -= node->size;
+		info[0] -= charge;
+		info[2] -= charge;
 	}
 }
 static void *heapinfo_malloc(size_t size, int info[4])
@@ -235,7 +234,8 @@ static int tc_tash_heapinfo(int argc, char **args)
 		printf("Test with stacksize: %d, malloc-num: %d\n", tc_thread_attr.stacksize, malloc_num);
 	}
 
-	printf("Expected Allocated Heap Size for tc_heapinfo thread : %d\n", MM_ALIGN_UP(sizeof(int) * malloc_num + SIZEOF_MM_ALLOCNODE));
+	printf("Requested payload for tc_heapinfo thread : %u bytes (heapinfo also accounts for allocator metadata)\n",
+		(unsigned int)(sizeof(int) * malloc_num));
 	tc_thread_attr.priority = TC_HEAPINFO_PRIO;
 
 	ret = pthread_create(&tc_thread, &tc_thread_attr, heapinfo_thread, NULL);

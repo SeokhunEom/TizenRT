@@ -47,7 +47,7 @@ static void tc_mem_leak_checker_kernel(void)
  * Public Functions
  ****************************************************************************/
 
-int mem_leak_checker_main(void)
+int tc_mem_leak_checker_main(void)
 {
 	tc_mem_leak_checker_kernel();
 

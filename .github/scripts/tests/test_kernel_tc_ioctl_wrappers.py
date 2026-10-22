@@ -48,7 +48,7 @@ CONTRACTS: Final = (
     WrapperContract("tc_wdog.c", "tc_wdog_kernel", "wdog_main", "TESTIOC_WDOG_TEST", 35, "wdog"),
     WrapperContract("tc_log_dump.c", "tc_log_dump_kernel", "log_dump_main", "TESTIOC_LOG_DUMP_TEST", 42, "log_dump"),
     WrapperContract("tc_binary_manager.c", "tc_binary_manager_kernel", "binary_manager_main", "TESTIOC_BINARY_MANAGER_TEST", 43, "binary_manager"),
-    WrapperContract("tc_mem_leak_checker.c", "tc_mem_leak_checker_kernel", "mem_leak_checker_main", "TESTIOC_MEM_LEAK_CHECKER_TEST", 44, "mem_leak_checker"),
+    WrapperContract("tc_mem_leak_checker.c", "tc_mem_leak_checker_kernel", "tc_mem_leak_checker_main", "TESTIOC_MEM_LEAK_CHECKER_TEST", 44, "mem_leak_checker"),
     WrapperContract("tc_reboot_reason.c", "tc_reboot_reason_kernel", "reboot_reason_main", "TESTIOC_REBOOT_REASON_TEST", 45, "reboot_reason"),
     WrapperContract("tc_pm.c", "tc_pm_kernel", "pm_tc_main", "TESTIOC_PM_TEST", 46, "pm"),
     WrapperContract("tc_rtc.c", "tc_rtc_kernel", "rtc_main", "TESTIOC_RTC_TEST", 48, "rtc"),
