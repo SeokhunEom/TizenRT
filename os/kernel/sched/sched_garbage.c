@@ -56,6 +56,9 @@
 
 #include <tinyara/config.h>
 #include <tinyara/kmalloc.h>
+#ifdef CONFIG_BINFMT_LOADABLE
+#include <tinyara/binfmt/binfmt.h>
+#endif
 
 #include "sched/sched.h"
 
@@ -206,4 +209,9 @@ void sched_garbagecollection(void)
 	/* Handle deferred dealloctions for the user heap */
 
 	sched_kucleanup();
+
+#ifdef CONFIG_BINFMT_LOADABLE
+	/* App stacks and both heap mutexes outlive the final exiting task. */
+	binfmt_exit_cleanup();
+#endif
 }

@@ -689,6 +689,7 @@ void mm_initialize_app_heap_q(void);
 void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name);
 void mm_remove_app_heap_list(struct mm_heap_s *heap);
 void mm_disable_app_heap_list(struct mm_heap_s *heap);
+bool mm_app_heap_registered(struct mm_heap_s *heap);
 struct mm_heap_s *mm_get_app_heap_with_name(char *app_name);
 char *mm_get_app_heap_name(void *address);
 #endif
@@ -702,6 +703,15 @@ size_t umm_get_largest_freenode_size(void);
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 size_t kmm_get_heap_free_size(void);
 size_t umm_get_heap_free_size(void);
+#endif
+
+#if defined(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE) && defined(__KERNEL__)
+struct mm_lifecycle_stats_s {
+	unsigned int initialized;
+	unsigned int uninitialized;
+	void *last_uninitialized;
+};
+void mm_lifecycle_snapshot(struct mm_lifecycle_stats_s *stats);
 #endif
 
 /* Function to check heap corruption */

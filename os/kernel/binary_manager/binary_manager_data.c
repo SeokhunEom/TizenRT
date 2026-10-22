@@ -878,21 +878,18 @@ void binary_manager_clear_bindata(int bin_idx)
 	}
 
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
-	struct tcb_s *tcb;
-
-	tcb = sched_gettcb(BIN_ID(bin_idx));
-	/* If 'reload' flag is true, a binary manager uses loading data 'bininfo' when loading the binary later.
-	 * So clear BIN_LOADINFO which points loading data if flag is false.
-	 */
-	if (tcb && ((struct task_tcb_s *)tcb)->bininfo && !((struct task_tcb_s *)tcb)->bininfo->reload) {
+	/* The final task may already be gone when deferred image teardown
+	 * completes. Retained loading data is the authoritative reload state. */
+	if (BIN_LOADINFO(bin_idx) && !BIN_LOADINFO(bin_idx)->reload) {
 		BIN_LOADINFO(bin_idx) = NULL;
 	}
 #endif /* CONFIG_OPTIMIZE_APP_RELOAD_TIME */
-	BIN_STATE(bin_idx) = BINARY_INACTIVE;
 	BIN_ID(bin_idx) = -1;
 	BIN_RTLIST(bin_idx) = NULL;
 	BIN_NRTLIST(bin_idx) = NULL;
 	/* Clear registered callbacks of binary */
 	binary_manager_clear_bin_statecb(bin_idx);
+	/* Reload admission is the final publication after all old state is gone. */
+	BIN_STATE(bin_idx) = BINARY_INACTIVE;
 }
 #endif

@@ -19,3 +19,6 @@ done
 "$cc" $flags -c "$mm_dir/compat/tests/test_heap.c" -o "$build_dir/test_heap.o"
 "$cc" -fsanitize=address,undefined -pthread "$build_dir"/*.o -o "$build_dir/test_heap"
 "$build_dir/test_heap"
+"$cc" -std=gnu11 -g -O1 -fsanitize=address,undefined -pthread \
+  "$mm_dir/compat/tests/test_pending.c" -o "$build_dir/test_pending"
+"$build_dir/test_pending"

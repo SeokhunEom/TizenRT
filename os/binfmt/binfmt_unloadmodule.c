@@ -163,6 +163,12 @@ int unload_module(FAR struct binary_s *binp)
 
 		binfmt_freeargv(binp);
 
+#ifdef CONFIG_BINFMT_LOADABLE
+		/* The allocator's mutexes and delayed references live inside the
+		 * section allocation and must be retired before its RAM is freed. */
+		binfmt_release_appheap(binp);
+#endif
+
 		/* Free allocated address spaces */
 
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
@@ -184,8 +190,10 @@ int unload_module(FAR struct binary_s *binp)
 			 * They need to be freed each.
 			 */
 			
-			for (section_idx = 0; section_idx < BIN_MAX; section_idx++) {
-				if (binp->sections[section_idx]) {
+			/* allocateregions allocates TEXT, RO and DATA independently.
+			 * BSS and HEAP are interior addresses within DATA. */
+			for (section_idx = BIN_TEXT; section_idx <= BIN_DATA; section_idx++) {
+				if ((section_idx == BIN_TEXT || section_idx == BIN_RO || section_idx == BIN_DATA) && binp->sections[section_idx]) {
 					binfo("Freeing sections[%d]: %p\n", section_idx, binp->sections[section_idx]);
 					kmm_free((FAR void *)binp->sections[section_idx]);
 				}

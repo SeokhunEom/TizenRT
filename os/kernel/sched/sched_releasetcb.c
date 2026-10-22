@@ -62,6 +62,9 @@
 
 #include <tinyara/arch.h>
 #include <tinyara/sched.h>
+#ifdef CONFIG_BINFMT_LOADABLE
+#include <tinyara/binfmt/binfmt.h>
+#endif
 
 #include "sched/sched.h"
 #include "group/group.h"
@@ -91,6 +94,9 @@ static void sched_releasepid(pid_t pid)
 	 */
 	g_pidhash[hash_ndx].tcb = NULL;
 	g_pidhash[hash_ndx].pid = INVALID_PROCESS_ID;
+#ifdef CONFIG_BINFMT_LOADABLE
+	binfmt_exit_releasepid(pid);
+#endif
 
 #ifdef CONFIG_SCHED_CPULOAD
 	/* Decrement the total CPU load count held by this thread from total

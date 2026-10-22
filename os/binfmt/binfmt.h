@@ -148,6 +148,10 @@ void binfmt_freeargv(FAR struct binary_s *bin);
 #define binfmt_freeargv(bin)
 #endif
 
+#ifdef CONFIG_BINFMT_LOADABLE
+void binfmt_release_appheap(FAR struct binary_s *bin);
+#endif
+
 #undef EXTERN
 #if defined(__cplusplus)
 }

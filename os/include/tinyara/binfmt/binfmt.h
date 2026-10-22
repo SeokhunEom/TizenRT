@@ -180,6 +180,10 @@ struct binary_s {
 	/* Unload module callback */
 
 	CODE int (*unload)(FAR struct binary_s *bin);
+#ifdef CONFIG_BINFMT_LOADABLE
+	struct binary_s *exit_next; /* Deferred until exit_pid has left the scheduler */
+	pid_t exit_pid;
+#endif
 };
 
 /* This describes one binary format handler */
@@ -391,6 +395,9 @@ int exec(FAR const char *filename, FAR char *const *argv, FAR const struct symta
 
 #ifdef CONFIG_BINFMT_LOADABLE
 int binfmt_exit(FAR struct binary_s *bin);
+void binfmt_exit_deferred(FAR struct binary_s *bin, pid_t pid);
+void binfmt_exit_cleanup(void);
+void binfmt_exit_releasepid(pid_t pid);
 #endif
 /****************************************************************************
  * Name: load_binary

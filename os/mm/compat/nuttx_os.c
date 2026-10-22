@@ -34,6 +34,8 @@ int trmm_mutex_init(mutex_t *mutex)
 {
   int saved_errno = get_errno();
   int ret = sem_init(&mutex->sem, 0, 1);
+  /* Upstream initialization ignores nxmutex_init's return value. */
+  trmm_require(ret == 0);
   if (ret == 0)
     {
       mutex->sem.flags |= FLAGS_SEM_MUTEX;
@@ -47,8 +49,13 @@ int trmm_mutex_init(mutex_t *mutex)
 int trmm_mutex_destroy(mutex_t *mutex)
 {
   int saved_errno = get_errno();
+  int ret;
   trmm_require(mutex->depth == 0);
-  return trmm_sem_result(sem_destroy(&mutex->sem), saved_errno);
+  ret = sem_destroy(&mutex->sem);
+  /* Upstream teardown ignores nxmutex_destroy's return value. Never allow
+   * its caller to release the heap backing RAM after a failed destruction. */
+  trmm_require(ret == 0);
+  return trmm_sem_result(ret, saved_errno);
 }
 
 pid_t trmm_gettid(void)

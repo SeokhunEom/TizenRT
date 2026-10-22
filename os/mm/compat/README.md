@@ -49,6 +49,10 @@ NuttX 12.13.0 `mm_lock` discards the return value of `nxmutex_lock` and returns
 success. The temporary mutex therefore retries EINTR and panics on an unexpected
 blocking acquisition failure; it must never let the allocator mutate an
 unlocked heap. Trylock still returns a negative error when unavailable.
+Upstream heap initialization/destruction also ignores mutex return values.
+The provider requires successful semaphore initialization/destruction before
+returning, so a failed teardown cannot be counted as complete or release the
+heap's backing RAM while its synchronization object remains live.
 
 Restoring cancellation immediately after `sem_wait` would allow pending
 cancellation to kill the owner before the allocator releases its mutex.
@@ -79,6 +83,15 @@ NuttX's `mm_memdump.c` is imported but not linked because Tizen diagnostic outpu
 uses the bridge; NuttX `execinfo` and task-name APIs are not yet ported.
 Protected userspace has no IRQ producer for the upstream delayed-free list;
 that list's operations are compiled out there, matching upstream conditions.
+The Tizen wrapper's pending-free list is shared with the kernel, which can
+publish an app-heap free from IRQ/exit context. Protected kernel and user builds
+therefore use the same lock-free pointer publication/detachment operations in
+`pending_free.h`; plain user load/clear could discard a kernel enqueue between
+those operations. Unsupported pointer-atomic targets fail a static assertion
+rather than depending on an interrupt-unsafe `libatomic` lock. Flat builds
+retain IRQ critical sections. The host regression exercises the exact shared
+header with concurrent publishers and a single draining consumer; native IRQ
+and protected syscall behavior still require target verification.
 
 Run the independent host core test with:
 

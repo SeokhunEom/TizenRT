@@ -205,6 +205,10 @@ int exec_module(FAR struct binary_s *binp)
 		return ret;
 	}
 	mm_add_app_heap_list(binp->uheap, binp->bin_name);
+	if (!mm_app_heap_registered(binp->uheap)) {
+		mm_uninitialize(binp->uheap);
+		return -ENOMEM;
+	}
 
 	binfo("------------------------%s Binary Heap Information------------------------\n", binp->bin_name);
 	binfo("Start addr = 0x%x, size = %u \n", (void *)binp->sections[BIN_HEAP] + sizeof(struct mm_heap_s), binp->sizes[BIN_HEAP]);
@@ -342,6 +346,9 @@ int exec_module(FAR struct binary_s *binp)
 	/* Set up to unload the module when the task exists. */
 
 	newtcb->bininfo = binp;
+#ifdef CONFIG_BINFMT_LOADABLE
+	newtcb->cmn.group->tg_bininfo = binp;
+#endif
 
 	/* Then activate the task at the provided priority */
 
@@ -369,6 +376,9 @@ errout_with_tcbinit:
 		/* The load caller owns binp on failure; prevent group_leave from
 		 * unloading it before the heap mutexes have been destroyed here. */
 		newtcb->bininfo = NULL;
+#ifdef CONFIG_BINFMT_LOADABLE
+		if (newtcb->cmn.group) { newtcb->cmn.group->tg_bininfo = NULL; }
+#endif
 		sched_releasetcb(&newtcb->cmn, TCB_FLAG_TTYPE_TASK);
 	}
 	goto errout_heap_cleanup;

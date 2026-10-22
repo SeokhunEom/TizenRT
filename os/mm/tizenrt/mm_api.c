@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include "bridge/nuttx_heap_bridge.h"
+#include "../compat/pending_free.h"
 
 /* Imported optional sources are retained, but these providers are not yet
  * integrated. Fail visibly instead of silently changing an enabled feature. */
@@ -49,6 +50,12 @@ struct mm_tizen_record_s {
 };
 
 static_assert(offsetof(struct mm_tizen_record_s, node) + sizeof(struct mm_allocnode_s) == sizeof(struct mm_tizen_record_s), "Tizen diagnostic header must immediately precede payload");
+#ifdef CONFIG_BUILD_PROTECTED
+/* User space cannot mask the IRQ producer of a shared app-heap free list.
+ * Both images must use lock-free pointer atomics; a libatomic lock would be
+ * unsafe if an interrupt preempted its owner. */
+static_assert(__atomic_always_lock_free(sizeof(void *), 0), "Protected MM requires lock-free pointer atomics");
+#endif
 
 static struct mm_tizen_record_s *record_of(void *mem)
 {
@@ -96,6 +103,16 @@ static void refresh_regions(struct mm_heap_s *heap)
 	heap->mm_heapsize = info.arena;
 }
 
+#if defined(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE) && defined(__KERNEL__)
+static struct mm_lifecycle_stats_s g_mm_lifecycle;
+void mm_lifecycle_snapshot(struct mm_lifecycle_stats_s *stats)
+{
+	irqstate_t flags = irqsave();
+	*stats = g_mm_lifecycle;
+	irqrestore(flags);
+}
+#endif
+
 int mm_initialize(struct mm_heap_s *heap, void *start, size_t size)
 {
 	unsigned int i;
@@ -118,6 +135,9 @@ int mm_initialize(struct mm_heap_s *heap, void *start, size_t size)
         heap->total_alloc_size = info.uordblks;
         if (heap->peak_alloc_size < info.uordblks) { heap->peak_alloc_size = info.uordblks; }
     }
+#endif
+#if defined(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE) && defined(__KERNEL__)
+	__atomic_add_fetch(&g_mm_lifecycle.initialized, 1, __ATOMIC_RELAXED);
 #endif
 	return OK;
 }
@@ -155,12 +175,14 @@ static void release_record(struct mm_heap_s *heap, struct mm_tizen_record_s *rec
 static void drain_pending(struct mm_heap_s *heap)
 {
 	struct mm_tizen_record_s *record;
-#if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
+#ifdef CONFIG_BUILD_PROTECTED
+	/* An IRQ may enqueue while user space holds the metadata semaphore.
+	 * A plain load followed by NULL would lose that intervening enqueue. */
+	record = trmm_pending_take(&heap->pending_free);
+#else
 	irqstate_t flags = irqsave();
-#endif
 	record = heap->pending_free;
 	heap->pending_free = NULL;
-#if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
 	irqrestore(flags);
 #endif
 	while (record) {
@@ -188,6 +210,12 @@ void mm_uninitialize(struct mm_heap_s *heap)
     heap->mm_holder = -1;
     heap->mm_counts_held = 0;
     if (sem_destroy(&heap->mm_semaphore) != OK) { PANIC(); for (;;) {} }
+#if defined(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE) && defined(__KERNEL__)
+    irqstate_t flags = irqsave();
+    g_mm_lifecycle.uninitialized++;
+    g_mm_lifecycle.last_uninitialized = heap;
+    irqrestore(flags);
+#endif
     if (task_setcancelstate(cancel_state, NULL) != OK) { PANIC(); for (;;) {} }
 }
 
@@ -252,11 +280,15 @@ void mm_free(struct mm_heap_s *heap, void *mem)
 	DEBUGASSERT(record->magic == RECORD_MAGIC);
 	if (!mm_takesemaphore(heap)) {
 #if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
-		irqstate_t flags = irqsave();
 		record->magic = RECORD_PENDING;
+#ifdef CONFIG_BUILD_PROTECTED
+		trmm_pending_push(&heap->pending_free, record, pending);
+#else
+		irqstate_t flags = irqsave();
 		record->pending = heap->pending_free;
 		heap->pending_free = record;
 		irqrestore(flags);
+#endif
 		return;
 #else
         PANIC(); for (;;) {}

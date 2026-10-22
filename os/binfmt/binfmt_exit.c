@@ -60,6 +60,11 @@
 #include <assert.h>
 #include <debug.h>
 #include <queue.h>
+#include <tinyara/sched.h>
+#include <tinyara/wqueue.h>
+#ifdef CONFIG_BINARY_MANAGER
+#include "binary_manager/binary_manager_internal.h"
+#endif
 #ifdef CONFIG_SAVE_BIN_SECTION_ADDR
 #include "libelf/libelf.h"
 #endif
@@ -69,6 +74,10 @@
 #include <tinyara/binfmt/binfmt.h>
 
 #include "binfmt.h"
+
+#if defined(CONFIG_BINFMT_LOADABLE) && defined(CONFIG_BINFMT_CONSTRUCTORS)
+#error "Deferred app unload requires an app-context destructor provider before BINFMT_CONSTRUCTORS"
+#endif
 
 #ifdef CONFIG_BINFMT_LOADABLE
 extern volatile sq_queue_t g_delayed_kufree;
@@ -96,58 +105,181 @@ extern volatile sq_queue_t g_delayed_kufree;
  *
  ****************************************************************************/
 
+/* The queue owns each binary until its final group member no longer exists.
+ * It is also safe when group_leave runs from task_exit's invalid-current-TCB
+ * transition: enqueueing does not take an allocator or cancellation lock.
+ */
+static struct binary_s *g_exiting_bins;
+
+void binfmt_exit_deferred(FAR struct binary_s *bin, pid_t pid)
+{
+	irqstate_t flags = enter_critical_section();
+	struct binary_s *queued;
+	for (queued = g_exiting_bins; queued; queued = queued->exit_next) {
+		if (queued == bin) {
+			leave_critical_section(flags);
+			return;
+		}
+	}
+	bin->exit_pid = sched_gettcb(pid) ? pid : -1;
+	bin->exit_next = g_exiting_bins;
+	g_exiting_bins = bin;
+#ifdef CONFIG_SCHED_WORKQUEUE
+	work_signal(LPWORK);
+#endif
+	leave_critical_section(flags);
+}
+
+/* Called with interrupts disabled before this PID can be assigned again. */
+void binfmt_exit_releasepid(pid_t pid)
+{
+	struct binary_s *bin;
+	for (bin = g_exiting_bins; bin; bin = bin->exit_next) {
+		if (bin->exit_pid == pid) { bin->exit_pid = -1; }
+	}
+#ifdef CONFIG_SCHED_WORKQUEUE
+	/* The last reference may belong to a different task group than the
+	 * group that enqueued the binary. Wake after every PID release. */
+	if (g_exiting_bins) { work_signal(LPWORK); }
+#endif
+}
+
+struct binfmt_live_s {
+	struct binary_s *bin;
+	bool live;
+};
+
+static void binfmt_check_live(FAR struct tcb_s *tcb, FAR void *arg)
+{
+	struct binfmt_live_s *check = arg;
+	if ((uintptr_t)tcb->uheap == (uintptr_t)check->bin->uheap) {
+		check->live = true;
+	}
+#ifdef CONFIG_BINARY_MANAGER
+	if (check->bin->binary_idx > 0 && tcb->app_id == check->bin->binary_idx) {
+		check->live = true;
+	}
+#endif
+}
+
+static bool binfmt_still_live(struct binary_s *bin)
+{
+	struct binfmt_live_s check = { bin, false };
+	if (bin->exit_pid >= 0) { return true; }
+#ifdef CONFIG_BINARY_MANAGER
+	if (BIN_RTLIST(bin->binary_idx) || BIN_NRTLIST(bin->binary_idx)) {
+		return true;
+	}
+#endif
+	/* Binary-list unlink happens in exithook, before the CPU stops using
+	 * that task's stack. Include unlinked/exiting TCBs and separate task
+	 * groups that inherited the same app heap until their PID is released. */
+	sched_foreach(binfmt_check_live, &check);
+	return check.live;
+}
+
+void binfmt_exit_cleanup(void)
+{
+	struct binary_s *bin;
+	struct binary_s **link;
+	irqstate_t flags;
+
+	for (;;) {
+		flags = enter_critical_section();
+		link = &g_exiting_bins;
+		while (*link && binfmt_still_live(*link)) {
+			link = &(*link)->exit_next;
+		}
+		bin = *link;
+		if (bin) {
+			*link = bin->exit_next;
+			bin->exit_next = NULL;
+		}
+		leave_critical_section(flags);
+		if (!bin) { return; }
+		int ret = binfmt_exit(bin);
+		if (ret < 0) {
+			/* Keep the image unavailable for reload if its unload hook failed. */
+			berr("ERROR: deferred module unload failed: %d\n", ret);
+		}
+	}
+}
+
+/* Called by unload_module after module callbacks but before section RAM is
+ * released. This ordering also covers exec_module error cleanup.
+ */
+void binfmt_release_appheap(FAR struct binary_s *bin)
+{
+	irqstate_t flags;
+	sq_entry_t *address;
+	sq_entry_t *next;
+	uintptr_t start;
+	uintptr_t end;
+
+#ifdef CONFIG_SUPPORT_COMMON_BINARY
+	if (!bin->islibrary && g_lib_binp) {
+		uint32_t *table = (uint32_t *)(g_lib_binp->sections[BIN_DATA] + 8);
+		if (table[bin->binary_idx] == bin->sections[BIN_HEAP]) {
+			table[bin->binary_idx] = 0;
+		}
+	}
+#endif
+	if (!bin->uheap) { return; }
+	start = (uintptr_t)bin->uheap;
+	end = start + sizeof(struct mm_heap_s) + bin->sizes[BIN_HEAP];
+
+	/* Save next before removing an entry. Cover the full descriptor + arena
+	 * with an exclusive end, and serialize the entire walk with producers.
+	 */
+	flags = enter_critical_section();
+	address = sq_peek(&g_delayed_kufree);
+	while (address) {
+		next = sq_next(address);
+		if (start <= (uintptr_t)address && (uintptr_t)address < end) {
+			sq_rem(address, (sq_queue_t *)&g_delayed_kufree);
+		}
+		address = next;
+	}
+	leave_critical_section(flags);
+	mm_disable_app_heap_list(bin->uheap);
+	mm_uninitialize(bin->uheap);
+#ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
+	if (!bin->reload)
+#endif
+	{
+		mm_remove_app_heap_list(bin->uheap);
+	}
+}
+
 int binfmt_exit(FAR struct binary_s *bin)
 {
 	int ret;
-	irqstate_t flags;
-	FAR void *address;
-	uint32_t uheap_start;
-	uint32_t uheap_end;
-
+#ifdef CONFIG_BINARY_MANAGER
+	int binary_idx = bin->binary_idx;
+#endif
 	DEBUGASSERT(bin != NULL);
 
-	/* Unload the module */
-
+	/* unload_module owns section RAM and destroys the heap before returning
+	 * that RAM. Freeing ramstart again here would be a double free for ELF;
+	 * XIP RAM is a fixed linker region and must not be passed to kmm_free.
+	 */
 	ret = unload_module(bin);
-	if (ret < 0) {
-		berr("ERROR: unload_module() failed: %d\n", ret);
-	}
-
+	if (ret < 0) { return ret; }
 	elf_delete_bin_section_addr(bin->binary_idx);
-
-	uheap_start = (uint32_t)bin->uheap;
-	uheap_end = uheap_start + bin->sizes[BIN_HEAP];
-
-	/* Remove resources which in binary to be unloaded from delayed deallocation. */
-	address = sq_peek(&g_delayed_kufree);
-	while (address) {
-		mllvdbg("Remove addr %p from deplaed kufree, uheap (%p, %p)\n", address, uheap_start, uheap_end);
-		if (uheap_start <= (uint32_t)address && (uint32_t)address <= uheap_end) {
-			flags = enter_critical_section();
-			sq_rem((FAR sq_entry_t *)address, (FAR sq_queue_t *)&g_delayed_kufree);
-			leave_critical_section(flags);
-		}
-		address = (FAR void *)sq_next((FAR sq_entry_t *)address);
-	}
-	mm_disable_app_heap_list(bin->uheap);
-	/* Both allocator mutexes must leave the semaphore registry before RAM reuse. */
-	mm_uninitialize(bin->uheap);
-
-	/* Free the load structure */
-
 #ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
-	if (!bin->reload) {
+	if (!bin->reload)
 #endif
-		mm_remove_app_heap_list(bin->uheap);
-		/* Free the RAM partition into which this app was loaded */
-		kmm_free((void *)bin->ramstart);
-		bin->ramstart = 0;
+	{
+#ifdef CONFIG_BINARY_MANAGER
+		BIN_LOADINFO(binary_idx) = NULL;
+#endif
 		kmm_free(bin);
-#ifdef CONFIG_OPTIMIZE_APP_RELOAD_TIME
 	}
+#ifdef CONFIG_BINARY_MANAGER
+	/* Publish completion only after the heap, registry and image are gone. */
+	binary_manager_clear_bindata(binary_idx);
 #endif
-
-	return ret;
+	return OK;
 }
 
 #endif							/* CONFIG_BINFMT_LOADABLE */

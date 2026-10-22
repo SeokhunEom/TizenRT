@@ -15,9 +15,15 @@ int trmm_mutex_init(mutex_t *m)
   m->depth = 0;
   int ret = pthread_mutex_init(&m->native, &attr);
   pthread_mutexattr_destroy(&attr);
+  assert(ret == 0);
   return -ret;
 }
-int trmm_mutex_destroy(mutex_t *m) { return -pthread_mutex_destroy(&m->native); }
+int trmm_mutex_destroy(mutex_t *m)
+{
+  int ret = pthread_mutex_destroy(&m->native);
+  assert(ret == 0);
+  return -ret;
+}
 int trmm_mutex_lock(mutex_t *m)
 {
   int ret = pthread_mutex_lock(&m->native);

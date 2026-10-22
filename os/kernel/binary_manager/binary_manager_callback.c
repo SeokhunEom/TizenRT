@@ -48,12 +48,9 @@ void binary_manager_clear_bin_statecb(int bin_idx)
 {
 	statecb_node_t *cb_node;
 
-	cb_node = (statecb_node_t *)sq_peek(&BIN_CBLIST(bin_idx));
-	while (cb_node != NULL) {
+	while ((cb_node = (statecb_node_t *)sq_remfirst(&BIN_CBLIST(bin_idx))) != NULL) {
 		bmvdbg("Clear callback info, bin idx %d\n", bin_idx);
-		sq_rem((FAR sq_entry_t *)cb_node, &BIN_CBLIST(bin_idx));
 		kmm_free(cb_node);
-		cb_node = (statecb_node_t *)sq_next(cb_node);
 	}
 }
 

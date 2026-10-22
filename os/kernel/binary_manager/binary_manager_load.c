@@ -368,12 +368,6 @@ static int binary_manager_terminate_binary(int bin_idx)
 
 	need_recovery = false;
 
-	binid = BIN_ID(bin_idx);
-	btcb = (struct tcb_s *)sched_gettcb(binid);
-	if (btcb == NULL) {
-		bmdbg("Fail to get main task of binary %d\n", binid);
-		return BINMGR_OPERATION_FAIL;
-	}
 
 	/* Save a current state and change a state to BINARY_UNLOADING to avoid duplicated function call */
 	state = BIN_STATE(bin_idx);
@@ -392,6 +386,23 @@ static int binary_manager_terminate_binary(int bin_idx)
 		/* Release all kernel semaphores held by the threads in binary */
 		binary_manager_release_binary_sem(bin_idx);
 	}
+
+	/* The main task may have exited while a pthread still owns the app.
+	 * Select a current member from this binary's lists, never an unrelated
+	 * task that has since reused BIN_ID. Keep selection and termination in
+	 * one scheduling exclusion interval after blocking callbacks complete.
+	 */
+	sched_lock();
+	btcb = BIN_RTLIST(bin_idx);
+	if (!btcb) { btcb = BIN_NRTLIST(bin_idx); }
+	if (!btcb || !btcb->group || btcb->group->tg_binidx != bin_idx) {
+		sched_unlock();
+		binfmt_exit_cleanup();
+		if (BIN_STATE(bin_idx) == BINARY_INACTIVE) { return OK; }
+		BIN_STATE(bin_idx) = state;
+		return BINMGR_OPERATION_FAIL;
+	}
+	binid = btcb->pid;
 
 	/* Terminate all children created by a binary */
 	ntcb = tcb = BIN_RTLIST(bin_idx);
@@ -437,13 +448,19 @@ static int binary_manager_terminate_binary(int bin_idx)
 		bmdbg("Fail to unload binary %s\n", BIN_NAME(bin_idx));
 		/* Recover binary state on failure */
 		BIN_STATE(bin_idx) = state;
+		sched_unlock();
 		return ERROR;
 	}
 	bmvdbg("Unload binary %s\n", BIN_NAME(bin_idx));
 
-	BIN_STATE(bin_idx) = BINARY_INACTIVE;
-	BIN_RTLIST(bin_idx) = NULL;
-	BIN_NRTLIST(bin_idx) = NULL;
+	/* All members have been removed. Complete deferred heap/image teardown
+	 * before publishing Unloaded or permitting another loader to run. */
+	binfmt_exit_cleanup();
+	sched_unlock();
+	if (BIN_STATE(bin_idx) != BINARY_INACTIVE) {
+		bmdbg("Binary %s teardown is not complete\n", BIN_NAME(bin_idx));
+		return ERROR;
+	}
 
 	/* Notify 'Unloaded' state to other binaries */
 	binary_manager_notify_state_changed(bin_idx, BINARY_UNLOADED);

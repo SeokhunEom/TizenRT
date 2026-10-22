@@ -223,10 +223,10 @@ int load_binary(int binary_idx, FAR const char *filename, load_attr_t *load_attr
 errout_with_unload:
 	(void)unload_module(bin);
 errout_with_bin:
-	kmm_free(bin);
 #ifdef CONFIG_SUPPORT_COMMON_BINARY
-	g_lib_binp = NULL;
+	if (g_lib_binp == bin) { g_lib_binp = NULL; }
 #endif
+	kmm_free(bin);
 errout:
 	set_errno(errcode);
 	return ERROR;

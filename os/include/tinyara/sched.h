@@ -384,6 +384,9 @@ struct task_group_s {
 #if defined(CONFIG_BINARY_MANAGER)
 	int tg_binidx;				/* The Index of binary in binary table      */
 #endif
+#ifdef CONFIG_BINFMT_LOADABLE
+	struct binary_s *tg_bininfo; /* Owned until the last group member exits */
+#endif
 
 	uint8_t tg_flags;			/* See GROUP_FLAG_* definitions             */
 

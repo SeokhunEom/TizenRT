@@ -12,6 +12,7 @@
 
 static struct task_tcb_s *g_launched;
 static struct tcb_s g_parent;
+static struct task_group_s g_group;
 static const char *g_heap_owner;
 static int g_activated;
 
@@ -51,6 +52,16 @@ void mm_add_app_heap_list(struct mm_heap_s *heap, char *app_name)
 	g_heap_owner = app_name;
 }
 
+bool mm_app_heap_registered(struct mm_heap_s *heap)
+{
+	return heap != NULL && g_heap_owner != NULL;
+}
+
+void mm_uninitialize(struct mm_heap_s *heap)
+{
+	(void)heap;
+}
+
 void mm_remove_app_heap_list(struct mm_heap_s *heap)
 {
 	(void)heap;
@@ -79,6 +90,7 @@ int task_init(struct tcb_s *tcb, const char *name, int priority, void *stack,
 	(void)entry;
 	(void)argv;
 	tcb->pid = 37;
+	tcb->group = &g_group;
 	for (index = 0; index < CONFIG_TASK_NAME_SIZE && name[index] != '\0';
 			index++) {
 		tcb->name[index] = name[index];
@@ -140,7 +152,10 @@ int main(void)
 	binary.sections[BIN_DATA] = (uint32_t)(base_address + 8192u);
 	binary.sections[BIN_TEXT] = (uint32_t)(base_address + 12288u);
 
+	g_parent.uheap = 0x12340000u;
 	pid = exec_module(&binary);
+	assert(g_parent.uheap == 0x12340000u);
+	assert(g_group.tg_bininfo == &binary);
 	if (pid <= 0 || g_launched == NULL || g_launched->cmn.app_id != 1u ||
 			strcmp(g_launched->cmn.name, "app1") != 0 ||
 			g_heap_owner == NULL || strcmp(g_heap_owner, "app1") != 0 ||

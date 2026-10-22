@@ -10,7 +10,12 @@ struct binary_s;
 
 #define TCB_FLAG_TTYPE_TASK 0
 
+struct task_group_s {
+	struct binary_s *tg_bininfo;
+};
+
 struct tcb_s {
+	struct task_group_s *group;
 	pid_t pid;
 	uint32_t *stack_alloc_ptr;
 	uint32_t uheap;

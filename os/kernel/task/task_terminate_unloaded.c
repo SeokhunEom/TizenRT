@@ -67,6 +67,9 @@
 #include <tinyara/mpu.h>
 #endif
 
+#ifdef CONFIG_BINARY_MANAGER
+#include "binary_manager/binary_manager_internal.h"
+#endif
 #include "task/task.h"
 #include "sched/sched.h"
 #include "signal/signal.h"
@@ -103,6 +106,7 @@
 int task_terminate_unloaded(FAR struct tcb_s *tcb)
 {
 	irqstate_t saved_state;
+	int ret;
 
 	/* Suppress context changes for a bit so that the task is unloaded seemlessly.
 	 */
@@ -127,6 +131,11 @@ int task_terminate_unloaded(FAR struct tcb_s *tcb)
 #if defined(CONFIG_SCHED_ATEXIT) || defined(CONFIG_SCHED_ONEXIT)
 	task_atexit(tcb);
 	task_onexit(tcb, EXIT_SUCCESS);
+#endif
+#ifdef CONFIG_BINARY_MANAGER
+	/* This path bypasses task_exithook, which normally unlinks the member.
+	 * Deferred image teardown must not see stale list pointers to its TCB. */
+	if (tcb->group) { binary_manager_remove_binlist(tcb); }
 #endif
 #ifdef HAVE_TASK_GROUP
 	group_leave(tcb);
@@ -157,9 +166,12 @@ int task_terminate_unloaded(FAR struct tcb_s *tcb)
 	 */
 	tcb->stack_alloc_ptr = NULL;
 
+	/* sched_releasetcb requires IRQs disabled. In particular, releasing the
+	 * PID makes deferred image teardown eligible; the collector must not
+	 * preempt the remaining stack/dspace/group cleanup in that function. */
+	saved_state = enter_critical_section();
+	ret = sched_releasetcb(tcb, tcb->flags & TCB_FLAG_TTYPE_MASK);
+	leave_critical_section(saved_state);
 	sched_unlock();
-
-	/* Deallocate its TCB */
-
-	return sched_releasetcb(tcb, tcb->flags & TCB_FLAG_TTYPE_MASK);
+	return ret;
 }
