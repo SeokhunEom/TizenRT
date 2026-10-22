@@ -1,5 +1,6 @@
 """Reject stale or incomplete app lifecycle evidence; does not emulate firmware."""
 import importlib.util
+import itertools
 from pathlib import Path
 import sys
 import unittest
@@ -18,6 +19,26 @@ START = b"NXMM LIFE ROUND BEGIN round=1\r\n"
 
 
 class LifecycleEvidenceTest(unittest.TestCase):
+    def test_boot_waits_for_all_events_in_any_order_and_advances_cursor(self):
+        events = (b"TASH>>\0", b"binary_manager_load_binary: Load success! [Name: app1] [Version: 260611]\r\n", GROUP)
+        for order in itertools.permutations(events):
+            with self.subTest(order=order):
+                partial = b"boot\r\n" + order[0] + order[1]
+                self.assertIsNone(RUNNER.BOOT_READY.search(partial))
+                transcript = partial + order[2] + b"\0"
+                ready = RUNNER.BOOT_READY.search(transcript)
+                self.assertIsNotNone(ready)
+                self.assertEqual(ready.end(), len(transcript))
+                # The old prompt must not satisfy a future shell response.
+                self.assertNotIn(b"TASH>>", transcript[ready.end():])
+
+    def test_incomplete_loader_or_group_line_does_not_release_boot_wait(self):
+        loader = b"binary_manager_load_binary: Load success! [Name: app1] [Version: 260611]\r\n"
+        for transcript in (b"TASH>>" + GROUP + loader[:-1], b"TASH>>" + loader + GROUP[:-1],
+                           b"TASH>>" + loader.replace(b"app1", b"app2") + GROUP):
+            with self.subTest(transcript=transcript):
+                self.assertIsNone(RUNNER.BOOT_READY.search(transcript))
+
     def test_warmup_is_excluded_only_before_round_boundary(self):
         warmup = CHILD.replace(b"pid=15", b"pid=10") + GROUP.replace(b"pid=16", b"pid=9")
         result = RUNNER.validate_round(warmup + START + MAIN + CHILD + GROUP + CLEAN, 1)

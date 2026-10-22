@@ -20,6 +20,11 @@ CYCLE = re.compile(rb"NXMM LIFE CYCLE PASS round=(\d+) main_pid=(\d+) child_pid=
 MAIN = re.compile(rb"NXMM APP2 MAIN PASS pid=(\d+) live_bytes=257 normal_exit=1\r?\n")
 CHILD = re.compile(rb"NXMM APP2 PASS pid=(\d+) after_main=1 final_child=1\r?\n")
 GROUP = re.compile(rb"NXMM APP2 GROUP PASS pid=(\d+) after_main=1 after_child=1 separate_group=1\r?\n")
+# TASH may appear before the loader and app2 finish printing. Consume the
+# complete buffered boot transcript only after all three events, in any order.
+BOOT_READY = re.compile(
+    rb"(?s)(?=.*TASH>>)(?=.*binary_manager_load_binary: Load success! \[Name: app1\][^\n]*\n)"
+    rb"(?=.*" + GROUP.pattern + rb").*")
 
 
 def round_start_pattern(number: int) -> bytes:
@@ -137,7 +142,7 @@ def main() -> int:
     try:
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0)
         selector.register(process.stdout, selectors.EVENT_READ)
-        wait(rb"TASH>>")
+        wait(BOOT_READY.pattern)
         for _ in range(20):
             if b"nuttx_mm_life" in shell("help"):
                 break
