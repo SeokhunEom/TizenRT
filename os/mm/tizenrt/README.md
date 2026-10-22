@@ -35,8 +35,10 @@ disabled for this complete interval; backend unlock inherits the disabled state
 and only the outermost metadata unlock restores the original state. IRQ and
 task-exit transition frees enqueue the Tizen prefix without acquiring either
 lock; the next thread-context allocation/free drains this queue. The queue is
-protected by native IRQ save/restore only in flat or kernel builds. Protected
-user code does not issue privileged IRQ instructions.
+protected by native IRQ save/restore in flat builds. Protected kernel and user
+images share lock-free pointer publication/detachment operations, so an IRQ
+enqueue cannot be lost during a user-space drain. Protected user code does not
+issue privileged IRQ instructions.
 
 `mm_uninitialize` requires that the caller has stopped all heap users. It drains
 queued frees, destroys both mutexes, and drops metadata references before app
@@ -46,8 +48,15 @@ rejected until resetting allocator owner/recursion state is integrated with
 Binary Manager's semaphore recovery.
 
 The initial runtime acceptance profile is flat QEMU ARMv8-M with multiheap and
-heapinfo enabled. Protected/app lifecycle adapters are source scaffolding until
-separately built and exercised. Free-history/UAF debugging, large-allocation
+heapinfo enabled. The protected `loadable_all` and `loadable_apps` profiles now
+also exercise normal exit and reload: the original group and separate child
+groups must all release their TCBs before deferred image/heap teardown. See the
+[protected validation record](../../../docs/NuttX_12.13_MM_Loadable_Validation.md)
+and [developer migration guide](../../../docs/NuttX_12.13_MM_Migration_Guide.md).
+Live-app forced termination/update is outside this contract even when fault
+recovery is disabled. Global `HEAPINFO_USER_GROUP` charges for live allocations
+discarded by whole-heap teardown are not yet decremented; the lifecycle test
+uses backend kernel heap totals with that option disabled. Free-history/UAF debugging, large-allocation
 back placement, granule/page/MMU heaps, and Binary Manager force recovery fail
 explicitly when enabled; none is silently compiled into a no-op. The imported
 optional allocator sources remain available for later module work.

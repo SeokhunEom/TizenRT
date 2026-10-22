@@ -2,6 +2,8 @@
 
 검증일: **2026-10-23 KST**. 기존 TizenRT Make/Kconfig/dbuild를 유지한 상태에서 NuttX 기본 heap을 연결하고, 새 QEMU 실행의 TASH example·network_tc·kernel_tc가 모두 통과했다. 아래 결과는 flat UP multiheap 구성에 한정한다.
 
+후속 protected/loadable 변경과 실행 결과는 [앱 수명 검증 기록](NuttX_12.13_MM_Loadable_Validation.md)에, 변경 API와 호출자 전환 방법은 [개발자 가이드](NuttX_12.13_MM_Migration_Guide.md)에 정리했다. 아래 flat 결과는 해당 시점의 source commit에 대한 기록으로 유지한다.
+
 ## 1. 기준과 최종 소스
 
 | 항목 | 값 |

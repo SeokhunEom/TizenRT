@@ -1,0 +1,381 @@
+{
+  "validation_date_kst": "2026-10-23",
+  "branch": "codex/nuttx-mm-12.13",
+  "previous_remote_commit": "90ddd88ead805843ef9baa73f6ef9cdbbb519c48",
+  "upstream": {
+    "tag": "nuttx-12.13.0",
+    "commit": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+    "unchanged": 155,
+    "documented_changes": 2,
+    "failures": []
+  },
+  "environment": {
+    "qemu": "11.1.2",
+    "machine": "MPS2-AN505",
+    "build_image": "tizenrt/tizenrt:2.0.1-arm64-local",
+    "platform": "linux/arm64",
+    "compiler": "GNU Arm Embedded 10.3.1",
+    "python": "Homebrew 3.11"
+  },
+  "profiles": {
+    "loadable_all": {
+      "build_source_commit": "5363bc64406ac25a7209b0462cba90b04736b1cf",
+      "runtime_runner_commit": "14c3ca55872b2fa02a08988276402b2ca649a003",
+      "source_status_at_build_and_lifecycle_start": "",
+      "configuration": {
+        "protected": true,
+        "smp": false,
+        "kernel_heaps": 3,
+        "apps": 2,
+        "xip_kernel": false,
+        "xip_elf": false,
+        "binmgr_recovery": false,
+        "heapinfo_user_group": false
+      },
+      "artifact_sha256": {
+        "app1": "5104a033579337577a683ba8e9174fcc5b6123c067eb06e0ef4bb701ce03de2d",
+        "app1_dbg": "8be9a4e32aba22ff37ec11c46ff74fe68814018412766c263a784e1a127aa51e",
+        "app2": "c7c0f026202f83430439d9ae4680b3f08fce49b3c3d15956011e2c0420844c26",
+        "app2_dbg": "8dc1a5a31c20f06781075e392f48bbd41935f9fbcc95a817fe9079452a0d7e74",
+        "build.log": "30a0a1bc88ecf8e269a32b754b32fffac11d7e102918faecc2e8137b0e44fa64",
+        "common": "f209607682ee706acbc4c8879638fa7d877235d62e4f35d45612acfb0ab615c1",
+        "common_dbg": "965201bbe1dfddd8ee655fbe4d8bb5f421c65d4c445ef5e2e4c98250806c16e9",
+        "config": "cb8f197b54b08c7e5cd24e0cadee73906d2622a826c7801cad331c66029a7086",
+        "tinyara": "d526bc11a6d1b7ce4489f0d76e42f6004f0cf84c79689c5388801ade1b1ac48d",
+        "tinyara.bin": "e489e98c866565d1b1b051aa447e3b7deec098183712f8d08012b711eeac4b3d",
+        "tinyara.map": "757224a8b13a043a562de658137f61e2696184ce8f3e49269230b6eec139a3b9"
+      },
+      "same_packages_after_lifecycle_and_kernel_suite": true,
+      "lifecycle": {
+        "status": "pass",
+        "backend_revision": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+        "cycles": [
+          {
+            "round": 1,
+            "main_pid": 16,
+            "child_pid": 20,
+            "group_pid": 19,
+            "heap": "0x80555e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          },
+          {
+            "round": 2,
+            "main_pid": 22,
+            "child_pid": 26,
+            "group_pid": 25,
+            "heap": "0x80555e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          },
+          {
+            "round": 3,
+            "main_pid": 28,
+            "child_pid": 37,
+            "group_pid": 31,
+            "heap": "0x80555e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          }
+        ],
+        "test_task_exited": true,
+        "qemu_exit_after_cleanup": 0,
+        "elapsed_seconds": 25.224
+      },
+      "full_suite": {
+        "active_slot": 0,
+        "attempt": 0,
+        "config": "loadable_all",
+        "fail_count": 0,
+        "forbidden_marker": null,
+        "forbidden_marker_seen": false,
+        "log_path": "build/nuttx-mm-validation/loadable-all-final-kernel-tc.log",
+        "network": {
+          "commands": [
+            "sleep 1",
+            "help",
+            "ifdown eth0",
+            "ifup eth0",
+            "ifconfig eth0 dhcp",
+            "ifconfig eth0 fec0::15",
+            "sleep 2",
+            "ifconfig eth0",
+            "ping -c 3 10.0.2.2",
+            "ping6 -c 3 fec0::2",
+            "netdb --host example.com",
+            "ping -c 1 1.1.1.1",
+            "net_stats",
+            "network_tc",
+            "sleep 2",
+            "kernel_tc"
+          ],
+          "dns_resolved": true,
+          "failure_reason": null,
+          "ipv4": "10.0.2.15",
+          "network_tc_fail_count": 0,
+          "network_tc_pass_count": 161,
+          "pings": {
+            "gateway-ping": {
+              "received": 3,
+              "transmitted": 3
+            },
+            "gateway-ping6": {
+              "received": 3,
+              "transmitted": 3
+            },
+            "public-ping": {
+              "received": 0,
+              "transmitted": 1
+            }
+          },
+          "retry_count": 0,
+          "status": "pass"
+        },
+        "pass_count": 447,
+        "reason": "pass",
+        "required_marker": null,
+        "required_marker_seen": false,
+        "returncode": null,
+        "send_count": 16,
+        "status": "pass"
+      },
+      "evidence": {
+        "lifecycle_serial": {
+          "path": "build/nuttx-mm-validation/loadable-all-lifecycle-verified/serial.log",
+          "sha256": "35f72ed30ad4f4ee22d6aa01da3455e29ec398fc0bad379d028fe7991c07017e"
+        },
+        "lifecycle_receipt": {
+          "path": "build/nuttx-mm-validation/loadable-all-lifecycle-verified/result.json",
+          "sha256": "d812444cf7bb0581b015f6cca6cd79eca4e69544e6174d576accda6c28e079ad"
+        },
+        "full_suite_serial": {
+          "path": "build/nuttx-mm-validation/loadable-all-final-kernel-tc.log",
+          "sha256": "3710caaebf1d655d15aaa701368636eb5bc9269bca1f4530534de3fa20205ebb"
+        },
+        "full_suite_receipt": {
+          "path": "build/nuttx-mm-validation/loadable-all-final-kernel-tc.json",
+          "sha256": "deb5375b1d305b727587e59c6e062f5243bcba63ce270fb2b64c78e5e4316513"
+        }
+      }
+    },
+    "loadable_apps": {
+      "build_source_commit": "14c3ca55872b2fa02a08988276402b2ca649a003",
+      "runtime_runner_commit": "14c3ca55872b2fa02a08988276402b2ca649a003",
+      "source_status_at_build_and_lifecycle_start": "",
+      "configuration": {
+        "protected": true,
+        "smp": false,
+        "kernel_heaps": 3,
+        "apps": 2,
+        "xip_kernel": true,
+        "xip_elf": false,
+        "binmgr_recovery": false,
+        "heapinfo_user_group": false
+      },
+      "artifact_sha256": {
+        "app1": "0565d0f33d59a3c461df4c7b131aa2f1189174ce3ee6a25a0f141ba567e9236c",
+        "app1_dbg": "8be9a4e32aba22ff37ec11c46ff74fe68814018412766c263a784e1a127aa51e",
+        "app2": "c7c0f026202f83430439d9ae4680b3f08fce49b3c3d15956011e2c0420844c26",
+        "app2_dbg": "8dc1a5a31c20f06781075e392f48bbd41935f9fbcc95a817fe9079452a0d7e74",
+        "build.log": "d1483cbb79c15a101c0c63f4ca5d2a177ea76643c4f8e04ce0db142417d6e503",
+        "common": "e7e969af0af8766348319b3d1d8850fb6f2f7822b05f305a257567f898b405ee",
+        "common_dbg": "9076b45925fc6fbe2d7ae4060486588d3cef9a30f9cf37bee11b4d5aa3075468",
+        "config": "adb03dc793394583cc366ea9ac0e134c13f2a6383f0e0ba39e15861c23f0cd92",
+        "tinyara": "a7c0b34565d00bfb0f91059204b7c641d8717154e8f7991a6138002dda10e032",
+        "tinyara.bin": "0c18c3fba9c6eaf7bf4dd0b35c83fcd808c85b1abed07c15b62449d55db1ffb5",
+        "tinyara.map": "757224a8b13a043a562de658137f61e2696184ce8f3e49269230b6eec139a3b9"
+      },
+      "same_packages_after_lifecycle_and_kernel_suite": true,
+      "lifecycle": {
+        "status": "pass",
+        "backend_revision": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+        "cycles": [
+          {
+            "round": 1,
+            "main_pid": 16,
+            "child_pid": 20,
+            "group_pid": 19,
+            "heap": "0x808d5e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          },
+          {
+            "round": 2,
+            "main_pid": 22,
+            "child_pid": 26,
+            "group_pid": 25,
+            "heap": "0x808d5e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          },
+          {
+            "round": 3,
+            "main_pid": 28,
+            "child_pid": 37,
+            "group_pid": 31,
+            "heap": "0x808d5e98",
+            "live_allocation_in_app_heap": true,
+            "initialized": 1,
+            "uninitialized": 1,
+            "app_registry_entries": 0,
+            "common_heap_slot": 0,
+            "delayed_references": 0,
+            "kernel_heap_restored": true
+          }
+        ],
+        "test_task_exited": true,
+        "qemu_exit_after_cleanup": 0,
+        "elapsed_seconds": 24.875
+      },
+      "full_suite": {
+        "active_slot": 0,
+        "attempt": 0,
+        "config": "loadable_apps",
+        "fail_count": 0,
+        "forbidden_marker": null,
+        "forbidden_marker_seen": false,
+        "log_path": "build/nuttx-mm-validation/loadable-apps-final-kernel-tc.log",
+        "network": {
+          "commands": [
+            "sleep 1",
+            "help",
+            "ifdown eth0",
+            "ifup eth0",
+            "ifconfig eth0 dhcp",
+            "ifconfig eth0 fec0::15",
+            "sleep 2",
+            "ifconfig eth0",
+            "ping -c 3 10.0.2.2",
+            "ping6 -c 3 fec0::2",
+            "netdb --host example.com",
+            "ping -c 1 1.1.1.1",
+            "net_stats",
+            "network_tc",
+            "sleep 2",
+            "kernel_tc"
+          ],
+          "dns_resolved": true,
+          "failure_reason": null,
+          "ipv4": "10.0.2.15",
+          "network_tc_fail_count": 0,
+          "network_tc_pass_count": 161,
+          "pings": {
+            "gateway-ping": {
+              "received": 3,
+              "transmitted": 3
+            },
+            "gateway-ping6": {
+              "received": 3,
+              "transmitted": 3
+            },
+            "public-ping": {
+              "received": 0,
+              "transmitted": 1
+            }
+          },
+          "retry_count": 0,
+          "status": "pass"
+        },
+        "pass_count": 447,
+        "reason": "pass",
+        "required_marker": null,
+        "required_marker_seen": false,
+        "returncode": null,
+        "send_count": 16,
+        "status": "pass"
+      },
+      "evidence": {
+        "lifecycle_serial": {
+          "path": "build/nuttx-mm-validation/loadable-apps-lifecycle-verified/serial.log",
+          "sha256": "23cd8532b8cf61826cd8ed0e7ad3863ba1bf543499ac489a238fc9953871faa8"
+        },
+        "lifecycle_receipt": {
+          "path": "build/nuttx-mm-validation/loadable-apps-lifecycle-verified/result.json",
+          "sha256": "945583c75605c0f05db1e7720ec5cb815623d4a95effdfa26d11f5f892d44318"
+        },
+        "full_suite_serial": {
+          "path": "build/nuttx-mm-validation/loadable-apps-final-kernel-tc.log",
+          "sha256": "83c240660ef3b3d9dd3b498503a6b913a0901d803199febb0b89187f985e9640"
+        },
+        "full_suite_receipt": {
+          "path": "build/nuttx-mm-validation/loadable-apps-final-kernel-tc.json",
+          "sha256": "7366953a8a7478a104e9d303eb6e7ac9b2f90ef5bdc037976d597c212522cb42"
+        }
+      }
+    }
+  },
+  "host_checks": {
+    "allocator_sanitizers": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-host-final.log",
+      "sha256": "d0cf77c7cbf1742cb10123cee076e33bf8881842916763166d8fd709347f78e8"
+    },
+    "registry_30": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-registry-final.log",
+      "sha256": "c093a65013ed722228d450d1e248e1fedb0f8e4e79df9311fc8885d942879bc3"
+    },
+    "runner_11": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-runner-final.log",
+      "sha256": "cd90997a376622ad2cf3087cfeabcd183d8c7aa596520a035839f070f6c7de53"
+    },
+    "exec_no_bm": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-exec-final.log",
+      "sha256": "903da534e805d7a137046cb8a46f4a35506bc7cb2222f1009eefc322310d7ff2"
+    },
+    "native_arm_abi_loadable_all": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-abi-final.log",
+      "sha256": "cc7f496112b8b7d3e0c399c7ed10570e065322c96ac5faf1a349533857042dff"
+    },
+    "native_arm_abi_loadable_apps": {
+      "status": "pass",
+      "path": "build/nuttx-mm-validation/protected-abi-loadable-apps-final.log",
+      "sha256": "2a3e5ad574782dfc41d56203f540a8dc6767cb6b4f06e4e576f059be2fbe5734"
+    },
+    "board_full_host_check": {
+      "status": "fail",
+      "path": "build/nuttx-mm-validation/protected-board-host-check.log",
+      "sha256": "d7771b88d650cb8e2c164c499114dc10759df95f231e57c552dd9f5297a002f7",
+      "exit_code": 2,
+      "reason": "Existing qemu_armv8m_boot.c:141,299 int to size_t -Werror=sign-conversion on the 64-bit host; file unchanged since previous remote commit"
+    }
+  },
+  "unsupported_or_unverified": [
+    "live-app forced unload/update and backend owner recovery",
+    "BINMGR_RECOVERY",
+    "retained-arena optimized reload",
+    "loadable app-context C++ destructors",
+    "XIP ELF apps",
+    "HEAPINFO_USER_GROUP charge cleanup for discarded live allocations",
+    "SMP and real IRQ ordering",
+    "physical boards"
+  ]
+}
