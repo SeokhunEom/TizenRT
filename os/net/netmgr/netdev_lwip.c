@@ -256,23 +256,13 @@ static void _lwip_init_loop(struct netif *nic)
 
 static inline void _free_ifaddrs(struct ifaddrs *addrs)
 {
-	struct ifaddrs *ifa = NULL, *prev = NULL;
-	for (ifa = addrs; ifa; ifa = ifa->ifa_next) {
-		if (ifa->ifa_name) {
-			free(ifa->ifa_name);
-		}
-		if (ifa->ifa_addr) {
-			free(ifa->ifa_addr);
-		}
-		if (ifa->ifa_netmask) {
-			free(ifa->ifa_netmask);
-		}
-		if (ifa->ifa_dstaddr) {
-			free(ifa->ifa_dstaddr);
-		}
-		prev = ifa;
-		ifa = prev->ifa_next;
-		free(prev);
+	while (addrs) {
+		struct ifaddrs *next = addrs->ifa_next;
+		free(addrs->ifa_name);
+		/* IPv4 netmask/destination share the allocation at ifa_addr. */
+		free(addrs->ifa_addr);
+		free(addrs);
+		addrs = next;
 	}
 }
 
@@ -556,6 +546,7 @@ static int lwip_get_ifaddrs(struct netdev *dev, struct ifaddrs **addrs)
 		NET_LOGKE(TAG, "zalloc fail\n");
 		return -1;
 	}
+	cursor = root = ifa4;
 	ifa4->ifa_name = (char *)zalloc(IFNAMSIZ);
 	if (!ifa4->ifa_name) {
 		NET_LOGKE(TAG, "zalloc fail\n");
@@ -575,8 +566,6 @@ static int lwip_get_ifaddrs(struct netdev *dev, struct ifaddrs **addrs)
 	ifa4->ifa_netmask = (struct sockaddr *)(&dest[1]);
 	_convert_ip4addr_lton(&dest[2], &ni->netmask);
 	ifa4->ifa_dstaddr = (struct sockaddr *)&dest[2];
-
-	cursor = root = ifa4;
 
 #ifdef CONFIG_NET_IPv6
 	// get ipv6 address

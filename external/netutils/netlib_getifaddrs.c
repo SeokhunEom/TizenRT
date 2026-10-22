@@ -71,19 +71,14 @@ int netlib_getifaddrs(struct ifaddrs **ifap)
 void netlib_freeifaddrs(struct ifaddrs *ifa)
 {
 	struct ifaddrs *cursor = ifa, *next = NULL;
-	if (cursor) {
+	while (cursor) {
 		next = cursor->ifa_next;
 		if (cursor->ifa_name) {
 			free(cursor->ifa_name);
 		}
+		/* IPv4 netmask/destination share the allocation at ifa_addr. */
 		if (cursor->ifa_addr) {
 			free(cursor->ifa_addr);
-		}
-		if (cursor->ifa_netmask) {
-			free(cursor->ifa_netmask);
-		}
-		if (cursor->ifa_dstaddr) {
-			free(cursor->ifa_dstaddr);
 		}
 		free(cursor);
 		cursor = next;
