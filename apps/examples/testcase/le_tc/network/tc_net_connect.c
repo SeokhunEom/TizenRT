@@ -21,6 +21,7 @@
 #include <tinyara/config.h>
 #include <stdio.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <net/if.h>
 #include <arpa/inet.h>
@@ -69,12 +70,16 @@ static void tc_net_connect_broadcastaddr_n(struct sockaddr_in *sa)
 	}
 	struct in_addr ad;
 
-	ad.s_addr = INADDR_BROADCAST;
+	ad.s_addr = htonl(INADDR_BROADCAST);
 	sa->sin_addr = ad;
+	/* Invalid TCP destinations must be rejected, not enter SYN retry. */
+	TC_ASSERT_EQ_CLEANUP("fcntl", fcntl(fd, F_SETFL, O_NONBLOCK), 0, close(fd));
 	int ret = connect(fd, (struct sockaddr *)sa, sizeof(struct sockaddr_in));
+	int saved_errno = errno;
 	close(fd);
 
 	TC_ASSERT_EQ("connect", ret, -1);
+	TC_ASSERT_EQ("connect broadcast errno", saved_errno, EINVAL);
 	TC_SUCCESS_RESULT();
 }
 
@@ -95,7 +100,7 @@ static void tc_net_connect_loopbackaddr_n(struct sockaddr_in *sa)
 	}
 
 	struct in_addr ad;
-	ad.s_addr = INADDR_LOOPBACK;
+	ad.s_addr = htonl(INADDR_LOOPBACK);
 	sa->sin_addr = ad;
 	int ret = connect(fd, (struct sockaddr *)sa, sizeof(struct sockaddr_in));
 	close(fd);
@@ -120,7 +125,7 @@ static void tc_net_connect_socklen_n(struct sockaddr_in *sa)
 		return;
 	}
 	struct in_addr ad;
-	ad.s_addr = INADDR_LOOPBACK;
+	ad.s_addr = htonl(INADDR_LOOPBACK);
 	sa->sin_addr = ad;
 	int ret = connect(fd, (struct sockaddr *)sa, -1);
 	close(fd);
@@ -128,6 +133,47 @@ static void tc_net_connect_socklen_n(struct sockaddr_in *sa)
 	TC_ASSERT_EQ("connect", ret, -1);
 	TC_SUCCESS_RESULT();
 }
+
+/* Nonblocking mode makes a missing validation fail without waiting for the
+ * TCP SYN retry timer. Both IPv4 and IPv6 multicast must be rejected.
+ */
+static void tc_net_connect_multicastaddr_n(void)
+{
+	struct sockaddr_in sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sin_family = AF_INET;
+	sa.sin_port = htons(1100);
+	inet_pton(AF_INET, "224.0.0.1", &sa.sin_addr);
+	int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	TC_ASSERT_GEQ("socket", fd, 0);
+	TC_ASSERT_EQ_CLEANUP("fcntl", fcntl(fd, F_SETFL, O_NONBLOCK), 0, close(fd));
+	int ret = connect(fd, (struct sockaddr *)&sa, sizeof(sa));
+	int saved_errno = errno;
+	close(fd);
+	TC_ASSERT_EQ("connect", ret, -1);
+	TC_ASSERT_EQ("connect multicast errno", saved_errno, EINVAL);
+	TC_SUCCESS_RESULT();
+}
+
+#ifdef CONFIG_NET_IPv6
+static void tc_net_connect_ipv6_multicastaddr_n(void)
+{
+	struct sockaddr_in6 sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sin6_family = AF_INET6;
+	sa.sin6_port = htons(1100);
+	inet_pton(AF_INET6, "ff02::1", &sa.sin6_addr);
+	int fd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	TC_ASSERT_GEQ("socket", fd, 0);
+	TC_ASSERT_EQ_CLEANUP("fcntl", fcntl(fd, F_SETFL, O_NONBLOCK), 0, close(fd));
+	int ret = connect(fd, (struct sockaddr *)&sa, sizeof(sa));
+	int saved_errno = errno;
+	close(fd);
+	TC_ASSERT_EQ("connect", ret, -1);
+	TC_ASSERT_EQ("connect IPv6 multicast errno", saved_errno, EINVAL);
+	TC_SUCCESS_RESULT();
+}
+#endif
 
 /****************************************************************************
  * Name: connect()
@@ -145,6 +191,10 @@ int net_connect_main(void)
 	tc_net_connect_broadcastaddr_n(&sa);
 	tc_net_connect_loopbackaddr_n(&sa);
 	tc_net_connect_socklen_n(&sa);
+	tc_net_connect_multicastaddr_n();
+#ifdef CONFIG_NET_IPv6
+	tc_net_connect_ipv6_multicastaddr_n();
+#endif
 	
 	return 0;
 }
