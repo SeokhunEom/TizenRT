@@ -710,8 +710,9 @@ static ssize_t smartfs_write(FAR struct file *filep, const char *buffer, size_t 
 				smartfs_setbuffer(&readwrite, sf->currsector, size,\
 					 fs->fs_llformat.availbytes - size, (uint8_t *)&sf->buffer[size]);
 #else
+				/* The caller only supplies bytes, not a complete sector tail. */
 				smartfs_setbuffer(&readwrite, sf->currsector, sf->curroffset,\
-					 fs->fs_llformat.availbytes - sf->curroffset, (uint8_t *)&buffer[byteswritten]);
+					 bytes, (uint8_t *)&buffer[byteswritten]);
 #endif
 				/* Only the data bytes of the sector are written,
 				 * we do not re-write/overwrite the header bytes.
