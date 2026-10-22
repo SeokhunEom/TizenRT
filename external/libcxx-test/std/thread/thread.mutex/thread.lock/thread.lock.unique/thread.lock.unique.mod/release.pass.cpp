@@ -35,6 +35,9 @@ static mutex m;
 
 int tc_libcxx_thread_thread_lock_unique_mod_release(void)
 {
+    // The integrated runner can execute this test more than once per boot.
+    mutex::lock_count = 0;
+    mutex::unlock_count = 0;
     std::unique_lock<mutex> lk(m);
     TC_ASSERT_EXPR(lk.mutex() == &m);
     TC_ASSERT_EXPR(lk.owns_lock() == true);
