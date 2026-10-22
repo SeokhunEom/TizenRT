@@ -23,10 +23,15 @@ class QemuSession:
         self.data = bytearray()
         self.cursor = 0
 
-    def start(self, timeout=None):
+    def start(self, network=False, timeout=None):
         self.command = ['qemu-system-arm', '-M', 'lm3s6965evb', '-kernel',
                         '/work/build/output/bin/tinyara', '-nographic', '-monitor', 'none']
-        self.command.extend(['-net', 'none'])
+        if network:
+            self.command.extend(['-net', 'nic,macaddr=52:54:00:12:34:56', '-net',
+                                 'user,hostfwd=tcp:127.0.0.1:40001-10.0.2.15:15001,'
+                                 'hostfwd=udp:127.0.0.1:40002-10.0.2.15:15002'])
+        else:
+            self.command.extend(['-net', 'none'])
         self.process = subprocess.Popen(self.command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT, bufsize=0)
         self.selector.register(self.process.stdout, selectors.EVENT_READ)
@@ -128,7 +133,7 @@ def save_result(output, result):
 def parse_smoke_args(parser, timeout):
     parser.add_argument('--root', type=Path)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--image', default='tizenrt/qemu-build-test:2.12.0-16m')
+    parser.add_argument('--image', default='tizenrt/qemu-build-test-ci:2.12.0-gcc10.3')
     parser.add_argument('--timeout', type=float, default=timeout)
     parser.add_argument('--inside', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -139,7 +144,53 @@ def parse_smoke_args(parser, timeout):
     return args
 
 
-def run_container(root, output, image, script, extra, timeout, extra_metadata=None, configuration='qemu/kernel_test'):
+def check_helloxx(qemu, version=201103):
+    qemu.send('helloxx')
+    output = ''.join(qemu.wait(rb'CHelloWorld::HelloWorld: Hello, World!!') for _ in range(3))
+    markers = ('dynamically constructed instance', 'constructed on the stack',
+               'statically constructed instance', 'c++ version used : ' + str(version))
+    if any(marker not in output for marker in markers):
+        raise RuntimeError('Incomplete C++ constructor coverage or wrong language version')
+    return {'name': 'helloxx', 'status': 'pass', 'output': output, 'post_ps': qemu.wait_for_exit('helloxx')}
+
+
+def check_cxxtest(qemu):
+    qemu.send('cxxtest')
+    output = qemu.wait(rb'thread::join test') + qemu.wait(rb'All threads joined!')
+    markers = ('Successfully opened /dev/console', 'Writing this to /dev/console', 'Test iostream',
+               'Test STL(Array)', 'Test STL(Vectors)', 'v1=1 2 3', 'Test STL(Map)', 'Test STL(List)',
+               'Test STL(Tuple)', 'Test STL(Function Templates)', 'Test RTTI', 'extend',
+               'Catch exception: runtime error', 'thread::operator= test', 'thread::joinable test',
+               'bar: true', 'bar: false', 'pause of 5 seconds ended')
+    if any(marker not in output for marker in markers) or output.count('All threads joined!') != 2:
+        raise RuntimeError('Incomplete C++ runtime coverage')
+    return {'name': 'cxxtest', 'status': 'pass', 'output': output, 'post_ps': qemu.wait_for_exit('cxxtest')}
+
+
+def storage_command(qemu, command, required=(), timeout=None):
+    output = qemu.shell(command, required, timeout=timeout)
+    if re.search(r'ERROR:|Unable to|Failed|failure|Seek error|^Fail\r?$|is failed', output, re.I | re.M):
+        raise RuntimeError('Storage command failed: ' + command)
+    return output
+
+
+def check_smartfs(command, loops, filename):
+    output = command('smart_test -s 50 -w 50 -l 100 -c 32 -t 16 -e 4 -r 64 ' + filename,
+                     ('Performing 50 random seek tests', 'Performing 50 random seek with write tests',
+                      'Performing 32 circular log record update tests'))
+    if len(re.findall(r'(?m)^Pass\r?$', output)) != 2:
+        raise RuntimeError('Missing SmartFS write/circular-log pass markers')
+    command('rm ' + filename)
+    output = command('smart', ('Final memory usage:',))
+    fills = list(map(int, re.findall(r'=== FILLING (\d+) ', output)))
+    deletes = list(map(int, re.findall(r'=== DELETING (\d+) ', output)))
+    counts = list(map(int, re.findall(r'Number of files:\s*(\d+)', output)))
+    if loops <= 0 or fills != list(range(1, loops + 1)) or fills != deletes or len(counts) != loops * 2 or min(counts) <= 0:
+        raise RuntimeError('Incomplete SmartFS fill/delete workload')
+    return {'status': 'pass', 'loops': loops, 'minimum_file_count': min(counts)}
+
+
+def run_container(root, output, image, script, extra, timeout, extra_metadata=None, configuration='qemu/build_test'):
     """Run one checker in an isolated container and attach firmware provenance."""
     root = Path(root).resolve()
     out = Path(os.path.realpath(str(output)))
@@ -192,7 +243,7 @@ def run_container(root, output, image, script, extra, timeout, extra_metadata=No
     return 0 if result['status'] in accepted else 1
 
 
-def snapshot(qemu, expected_ids=None):
+def snapshot(qemu, expected_ids=None, transient_tasks=()):
     deadline = time.monotonic() + 15
     while True:
         ps = qemu.shell('ps', ['PID | PRIO'])
@@ -201,7 +252,7 @@ def snapshot(qemu, expected_ids=None):
         if not names:
             raise RuntimeError('Empty task inventory')
         ids = [int(line.split('|', 1)[0]) for line in ps.splitlines() if re.match(r'^\s*\d+\s*\|', line)]
-        if (expected_ids is None or sorted(ids) == sorted(expected_ids)):
+        if not set(transient_tasks).intersection(names) and (expected_ids is None or sorted(ids) == sorted(expected_ids)):
             break
         if time.monotonic() >= deadline:
             raise RuntimeError('Test tasks remained after completion: ' + repr(names))
@@ -215,5 +266,3 @@ def snapshot(qemu, expected_ids=None):
         raise RuntimeError('Inconsistent heap counters')
     return {'tasks': names, 'task_ids': ids, 'task_count': len(names), 'total': total, 'used': used,
             'free': available, 'largest': largest, 'ps_output': ps, 'free_output': free}
-
-

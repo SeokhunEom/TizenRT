@@ -6,11 +6,26 @@ from pathlib import Path
 import sys
 
 
+PROFILES = {
+    'qemu/kernel_test': {
+        'status': 'pass', 'suites': [('kernel_tc', 'Kernel', 432, 0)], 'extra': []},
+    'qemu/build_test': {
+        'status': 'pass_with_known_driver_failures',
+        'suites': [('network_tc', 'Network', 163, 0), ('libcxx_utc', 'libc++', 795, 0),
+                   ('filesystem_tc', 'Filesystem', 203, 0), ('kernel_tc', 'Kernel', 432, 0),
+                   ('drivers_tc', 'Drivers', 14, 8)],
+        'extra': ['network-peer', 'cpp', 'smartfs']},
+}
+
+
 def summarize(build, run):
-    if build.get('status') != 'pass' or run.get('status') != 'pass' or run.get('container_exit') != 0:
-        raise ValueError(run.get('error') or 'The clean build and kernel run must complete')
-    if build.get('configuration') != 'qemu/kernel_test' or run.get('configuration') != build['configuration']:
-        raise ValueError('Build and runtime configurations differ')
+    configuration = build.get('configuration')
+    if configuration not in PROFILES or run.get('configuration') != configuration:
+        raise ValueError('Build and runtime configurations differ or are unsupported')
+    profile = PROFILES[configuration]
+    status = profile['status']
+    if build.get('status') != 'pass' or run.get('status') != status or run.get('container_exit') != 0:
+        raise ValueError(run.get('error') or 'The clean build and selected run must complete')
     if run.get('boot_count') != 1 or run.get('kernel_omitted') is not False:
         raise ValueError('One boot including the kernel is required')
     if run.get('rounds_requested') != 3 or len(run.get('rounds', [])) != 3:
@@ -23,32 +38,47 @@ def summarize(build, run):
         raise ValueError('The effective configuration differs from the selected defconfig')
     if run['memory_growth_after_warmup'] > 0:
         raise ValueError('Heap usage increased after warmup')
+    if profile['extra'] and not run.get('storage_guard_survived'):
+        raise ValueError('Storage sentinel check failed')
     rows = []
     for number, round_result in enumerate(run['rounds'], 1):
-        if round_result['number'] != number or round_result['status'] != 'pass':
+        if round_result['number'] != number or round_result['status'] != status:
             raise ValueError('A round is incomplete or out of order')
-        steps = round_result['steps']
-        if len(steps) != 1 or steps[0]['name'] != 'kernel_tc':
-            raise ValueError('The kernel workload is missing or duplicated')
-        step = steps[0]
-        if step['status'] != 'pass' or (step['pass'], step['fail']) != (432, 0):
-            raise ValueError('The kernel workload did not pass completely')
-        rows.append([str(number), '{0} / {1}'.format(step['pass'], step['fail']),
-                     str(round_result['after']['used']), str(round_result['after']['task_count'])])
-    return {'status': 'pass', 'configuration': build['configuration'], 'source_commit': build['source_commit'],
+        steps = {step['name']: step for step in round_result['steps']}
+        expected = {item[0] for item in profile['suites']} | set(profile['extra'])
+        if len(round_result['steps']) != len(expected) or set(steps) != expected:
+            raise ValueError('A workload is missing or duplicated')
+        row = [str(number)]
+        for name, title, passed, failed in profile['suites']:
+            step = steps[name]
+            expected_status = 'known_failures' if failed else 'pass'
+            if step['status'] != expected_status or (step['pass'], step['fail']) != (passed, failed):
+                raise ValueError('Unexpected testcase result for ' + name)
+            row.append('{0} / {1}'.format(passed, failed))
+        if any(steps[name]['status'] != 'pass' for name in profile['extra']):
+            raise ValueError('A smoke workload did not complete')
+        row.extend(str(round_result['after'][name]) for name in ('used', 'task_count'))
+        rows.append(row)
+    return {'status': status, 'configuration': configuration, 'source_commit': build['source_commit'],
             'image_id': build['image_id'], 'firmware_sha256': run['firmware_sha256'], 'rows': rows,
+            'columns': ['Round'] + [item[1] for item in profile['suites']] + ['Heap used', 'Tasks'],
             'elapsed_wall_seconds': run['elapsed_wall_seconds'], 'heap_growth_after_warmup': run['memory_growth_after_warmup']}
 
 
 def markdown(report):
-    text = ['## QEMU kernel tests', '', 'Result: **' + report['status'] + '**', '']
+    text = ['## QEMU validation', '', 'Result: **' + report['status'] + '**', '']
     if report['status'] == 'fail':
         text.extend(['Validation did not complete. See build.log and runtime/runner.log.',
                      '', 'Error: ' + str(report['error']).replace('\n', ' '), ''])
     else:
-        text.extend(['One boot, three kernel rounds. Values are PASS / FAIL.', '',
-                     '| Round | Kernel | Heap used | Tasks |', '|---|---|---|---|'])
+        text.extend(['Configuration: `' + report['configuration'] + '`', '',
+                     'One boot, three rounds. Values are PASS / FAIL.', '',
+                     '| ' + ' | '.join(report['columns']) + ' |',
+                     '| ' + ' | '.join('---' for _ in report['columns']) + ' |'])
         text.extend('| ' + ' | '.join(row) + ' |' for row in report['rows'])
+        if report['status'] == 'pass_with_known_driver_failures':
+            text.extend(['', 'Driver FAIL values are the exact unsupported-device baseline; they are not zero failures.',
+                         'Each round also completed network peers, C++ smoke and 100 SmartFS fill/delete loops.'])
         text.extend(['', 'Elapsed: {0}s. Heap growth after warmup: {1} bytes.'.format(
             report['elapsed_wall_seconds'], report['heap_growth_after_warmup']), '',
             'Commit: `' + report['source_commit'] + '`', 'Image: `' + report['image_id'] + '`',

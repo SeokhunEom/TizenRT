@@ -3,7 +3,7 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/../.." && pwd)"
-output="${1:?Usage: bash tools/qemu-build-test/ci-build.sh NEW_OUTPUT_DIRECTORY [qemu/kernel_test]}"
+output="${1:?Usage: bash tools/qemu-build-test/ci-build.sh NEW_OUTPUT_DIRECTORY [qemu/kernel_test|qemu/build_test]}"
 configuration="${2:-qemu/kernel_test}"
 if [ ! -f "$root/build/configs/$configuration/defconfig" ]; then
     echo "Unknown configuration: $configuration" >&2

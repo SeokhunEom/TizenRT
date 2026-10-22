@@ -85,5 +85,54 @@ class SummaryTests(unittest.TestCase):
             self.assertEqual(json.loads((out / 'ci-summary.json').read_text())['status'], 'pass')
 
 
+def full_evidence():
+    build, run = evidence()
+    build['configuration'] = run['configuration'] = 'qemu/build_test'
+    run['status'] = 'pass_with_known_driver_failures'
+    run['storage_guard_survived'] = True
+    counts = [('network_tc', 163, 0), ('libcxx_utc', 795, 0), ('filesystem_tc', 203, 0),
+              ('kernel_tc', 432, 0), ('drivers_tc', 14, 8)]
+    for result in run['rounds']:
+        result['status'] = run['status']
+        result['steps'] = [{'name': name, 'status': 'known_failures' if failed else 'pass',
+                            'pass': passed, 'fail': failed} for name, passed, failed in counts]
+        result['steps'].extend({'name': name, 'status': 'pass'} for name in ('network-peer', 'cpp', 'smartfs'))
+    return build, run
+
+
+class FullSummaryTests(unittest.TestCase):
+    def test_complete_full_run_retains_raw_driver_failures(self):
+        report = summary.summarize(*full_evidence())
+        self.assertEqual(report['status'], 'pass_with_known_driver_failures')
+        self.assertEqual(report['rows'][0][5], '14 / 8')
+        self.assertIn('not zero failures', summary.markdown(report))
+
+    def test_full_resources_and_completion_are_required(self):
+        for key, value in [('status', 'pass'), ('status', 'diagnostic_pass'),
+                           ('storage_guard_survived', False), ('memory_growth_after_warmup', 16),
+                           ('kernel_omitted', True), ('rounds_requested', 2)]:
+            with self.subTest(key=key):
+                build, run = full_evidence()
+                run[key] = value
+                with self.assertRaises(ValueError):
+                    summary.summarize(build, run)
+
+    def test_missing_duplicate_failed_or_changed_workload_is_rejected(self):
+        for fault in ('missing', 'duplicate', 'smoke', 'counts'):
+            with self.subTest(fault=fault):
+                build, run = full_evidence()
+                steps = run['rounds'][1]['steps']
+                if fault == 'missing':
+                    steps.pop()
+                elif fault == 'duplicate':
+                    steps[-1] = steps[-2]
+                elif fault == 'smoke':
+                    steps[-1]['status'] = 'fail'
+                else:
+                    steps[0]['pass'] -= 1
+                with self.assertRaises(ValueError):
+                    summary.summarize(build, run)
+
+
 if __name__ == '__main__':
     unittest.main()
