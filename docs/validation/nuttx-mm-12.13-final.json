@@ -1,0 +1,331 @@
+{
+  "validation_date_kst": "2026-10-23",
+  "source_commit": "af7ce05fcfe2375d52c764979decc5634c0ccc81",
+  "source_status_at_run": "",
+  "firmware_sha256": "0ef865e352e963e5f62c26f55e3caff3f1933e992ec98ccfaef8a5ff26af01d1",
+  "config_sha256": "f8e3c108a1b80334e43ef3a5748cc7f5a7262958e5d827441f225556761a0d9f",
+  "same_firmware_and_config_verified_after_kernel_run": true,
+  "target": "qemu-armv8m/hello",
+  "profile": {
+    "build": "flat",
+    "smp": false,
+    "heaps": 2
+  },
+  "source_verification": {
+    "tag": "nuttx-12.13.0",
+    "commit": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+    "unchanged": 155,
+    "documented_changes": 2,
+    "failures": []
+  },
+  "host_core": {
+    "status": "pass",
+    "sanitizers": [
+      "address",
+      "undefined"
+    ]
+  },
+  "host_registry_tests": {
+    "status": "pass",
+    "suite_counts": [
+      5,
+      4,
+      6,
+      15
+    ],
+    "total": 30
+  },
+  "mm_example": {
+    "status": "pass",
+    "cases": [
+      {
+        "case": "public",
+        "checks": 445,
+        "failures": 0,
+        "status": "PASS"
+      },
+      {
+        "case": "failure-preserves-data",
+        "checks": 13,
+        "failures": 0,
+        "status": "PASS"
+      },
+      {
+        "case": "multiheap",
+        "checks": 625,
+        "failures": 0,
+        "status": "PASS"
+      },
+      {
+        "case": "fragmentation",
+        "checks": 19672,
+        "failures": 0,
+        "status": "PASS"
+      },
+      {
+        "case": "threaded",
+        "checks": 79043,
+        "failures": 0,
+        "status": "PASS"
+      }
+    ],
+    "backend_revision": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+    "test_task_exited": true,
+    "qemu_exit_after_cleanup": 0
+  },
+  "kernel_runner": {
+    "config": "hello",
+    "fail_count": 0,
+    "forbidden_marker": null,
+    "forbidden_marker_seen": false,
+    "log_path": "build/nuttx-mm-validation/hello-final-fault-kernel-tc.log",
+    "network": {
+      "commands": [
+        "sleep 1",
+        "help",
+        "ifdown eth0",
+        "ifup eth0",
+        "ifconfig eth0 dhcp",
+        "ifconfig eth0 fec0::15",
+        "sleep 2",
+        "ifconfig eth0",
+        "ping -c 3 10.0.2.2",
+        "ping6 -c 3 fec0::2",
+        "netdb --host example.com",
+        "ping -c 1 1.1.1.1",
+        "net_stats",
+        "network_tc",
+        "sleep 2",
+        "kernel_tc"
+      ],
+      "dns_resolved": true,
+      "failure_reason": null,
+      "ipv4": "10.0.2.15",
+      "network_tc_fail_count": 0,
+      "network_tc_pass_count": 161,
+      "pings": {
+        "gateway-ping": {
+          "received": 3,
+          "transmitted": 3
+        },
+        "gateway-ping6": {
+          "received": 3,
+          "transmitted": 3
+        },
+        "public-ping": {
+          "received": 0,
+          "transmitted": 1
+        }
+      },
+      "retry_count": 0,
+      "status": "pass"
+    },
+    "pass_count": 460,
+    "reason": "pass",
+    "required_marker": null,
+    "required_marker_seen": false,
+    "returncode": null,
+    "send_count": 16,
+    "status": "pass"
+  },
+  "artifact_sha256": {
+    "build/nuttx-mm-validation/source-verification.json": "31ba000dd6d546ffdd1aceb4258d69006a43b1aa0fa5e55b6c214ee6bc61b8e7",
+    "build/nuttx-mm-validation/host-core.log": "996484fa382c05c73054b3edcbd06a42f1619c0d468e69e53f5b8f8564828ee7",
+    "build/nuttx-mm-validation/registry-tests.log": "a13f200e664e5eac681cbb438358343391631e99228b276da68f4ec41e1b0d25",
+    "build/nuttx-mm-validation/hello-final-fault/result.json": "3d035ddf10c8239d07f7867c77e7f34616604fcce8c0e3290bf158d704c15b02",
+    "build/nuttx-mm-validation/hello-final-fault/serial.log": "8aa6839ee5563a67352810ef9821cd4e7861974d0b12fded2614ac692b14149c",
+    "build/nuttx-mm-validation/hello-final-fault-kernel-tc.json": "ed3fcc8ee7d5412552f2bf0b58ddc244ea925cc73b944baf83e5887d6acd3862",
+    "build/nuttx-mm-validation/hello-final-fault-kernel-tc.log": "bf2d0627a9f4532c59046dfafcfa8b08d87ee96880c5e6891ac60d3ac62a644d"
+  },
+  "commit_series": [
+    {
+      "commit": "6e2e19fe9279060c6bb0bdf125ef170ffba98bb9",
+      "stage": "port",
+      "subject": "mm: import Apache NuttX 12.13.0 memory manager sources"
+    },
+    {
+      "commit": "b65d40b7bb30705b4f4b81450c17434f7206d749",
+      "stage": "port",
+      "subject": "docs(mm): pin 12.13.0 port design and source verification"
+    },
+    {
+      "commit": "70e53b7ae38065f1295495c319f72c4f5c01915c",
+      "stage": "port",
+      "subject": "mm: bridge NuttX allocator into native TizenRT heap APIs"
+    },
+    {
+      "commit": "e5eed5b72c35e4075ea9837efb899b0b944b46bc",
+      "stage": "qemu",
+      "subject": "tools/docker: Add TizenRT 2.0.1 ARM64 build image",
+      "cherry_pick_source": "36affa38a9aee7309ec6cfee2bac5ce0adeac64e"
+    },
+    {
+      "commit": "2578b0d0864fe6df81362d85c558409671cbd898",
+      "stage": "qemu",
+      "subject": "build: Use the local ARM64 image for Docker builds",
+      "cherry_pick_source": "72292507d4feebc4eb7f6f29f4294990d5baecd5"
+    },
+    {
+      "commit": "c623d96d26372e73a074137c969fc639c23a9e9d",
+      "stage": "qemu",
+      "subject": "build: Preserve the GNU Make jobserver in submakes",
+      "cherry_pick_source": "2606acfcfa41dae764a57b01995cc96ef30ed00f"
+    },
+    {
+      "commit": "fe19cf29ea21e8f98dcda6cb5477d01ed0e13eb6",
+      "stage": "qemu",
+      "subject": "build/configs: Fix qemu and bk7239n host build paths",
+      "cherry_pick_source": "03b7542e03af812d8165b7f097b885ba9957f87a"
+    },
+    {
+      "commit": "0ff22e7a6cf510af4e7d36b957eef3ea6af878ae",
+      "stage": "qemu",
+      "subject": "docs: Document the Apple Silicon ARM64 Docker workflow",
+      "cherry_pick_source": "85056ad9243187183920d09379da2e0854909a49"
+    },
+    {
+      "commit": "27d61a8c3fb6ed871099c5ff4175d1bbafb4f279",
+      "stage": "qemu",
+      "subject": "fix(libc): support GCC long-double ABI generically",
+      "cherry_pick_source": "690d31f777ff058133919113b72e814668ebab1d"
+    },
+    {
+      "commit": "36561bbd7d49f49a21727ab41c07e47792985c59",
+      "stage": "qemu",
+      "subject": "fix(tools): make loadable packaging cross-toolchain safe",
+      "cherry_pick_source": "9116ded36447f7666d61c7904728511a6ee79c69"
+    },
+    {
+      "commit": "cdd5575da1cd7e1081ccdea6bec4c8cadc284ba5",
+      "stage": "qemu",
+      "subject": "fix(binfmt): support app-separated QEMU loadables without binary manager",
+      "cherry_pick_source": "c065b9db6a2294dac7012aca60d48d76b8032425"
+    },
+    {
+      "commit": "3eddc2e10130317934a8f1f556ff11594171c6b8",
+      "stage": "qemu",
+      "subject": "fix(kernel): stabilize child lifecycle, SMP signal, and mqueue testcase behavior",
+      "cherry_pick_source": "a01d53b877ed22586d441e31bed9a93817cca655"
+    },
+    {
+      "commit": "abd62c29b3000c88b2896a3d50ec322d7e63f352",
+      "stage": "qemu",
+      "subject": "feat(qemu-armv8m): add architecture, loader validation, and recipe layout",
+      "cherry_pick_source": "e1d40cfa6db024deaa37a937bda53d3108a35bd8"
+    },
+    {
+      "commit": "2effacaf0a8f6823b1a024b3c6d58315cab1c410",
+      "stage": "qemu",
+      "subject": "test(os-api-test): build the registry-backed kernel coverage and shared wrappers",
+      "cherry_pick_source": "aa23a411724af8b59024d39ae41ac2d0c46e1b23"
+    },
+    {
+      "commit": "0ec2584ceccde67745ad255fe7894468a5b074c2",
+      "stage": "qemu",
+      "subject": "test(ci): add and harden the QEMU ARMv8-M kernel-test runner",
+      "cherry_pick_source": "43770a916d75cd94384c7a9886664270eff753a1"
+    },
+    {
+      "commit": "b65f5d6a74210e41dad31a3e46a64bf122823cee",
+      "stage": "qemu",
+      "subject": "docs(qemu): document validated ARMv8-M target roles",
+      "cherry_pick_source": "5bf59e3a67378d9ea9aaeee1681a39a8c96acdca"
+    },
+    {
+      "commit": "3a8725c0f01d382944e2f431526fe2edb6c4e467",
+      "stage": "qemu",
+      "subject": "docs(build): document menu builds and automatic Docker platform selection",
+      "cherry_pick_source": "67f11179eb562381d50c4509a77041e412823711"
+    },
+    {
+      "commit": "4d3301e46bbddebe1afc4a8dc5381bb205342031",
+      "stage": "qemu",
+      "subject": "feat(qemu): add SRAM multiheap and persistent A/B runtime",
+      "cherry_pick_source": "703b1efaa8045200518422a67ba254899b033514"
+    },
+    {
+      "commit": "fd22bf4b01d5333f5820b8378fa3735b3a01fd11",
+      "stage": "qemu",
+      "subject": "docs(qemu): document SRAM layout and runtime boundaries",
+      "cherry_pick_source": "84709d01ebd33a0ba1d38e88660b3c7cb6e5fef0"
+    },
+    {
+      "commit": "d96b860f0cc6ef66a00771d55da02ddc246a0757",
+      "stage": "qemu",
+      "subject": "fix(kernel): stabilize semaphore holder accounting and multiheap usage reporting",
+      "cherry_pick_source": "137cfe412805a23ed76513e32c99a9bf86104707"
+    },
+    {
+      "commit": "08cd7914b7f883e5f169e7c17fd7c486461a2f8c",
+      "stage": "qemu",
+      "subject": "fix(build): retry one transient exFAT bind-mount copy race",
+      "cherry_pick_source": "7601e8fe66f48ed9067e8d012425340325f4f9ad"
+    },
+    {
+      "commit": "a5cce5c0eec72dd969833906cfee4b8c73591f00",
+      "stage": "qemu",
+      "subject": "test(qemu): fail fast on kernel assertions",
+      "cherry_pick_source": "636597b1d1418ebe375fdd89575654333ef1f651"
+    },
+    {
+      "commit": "adb8100ab7dd8c876abbf01c764bfde0dca46b54",
+      "stage": "qemu",
+      "subject": "docs(qemu): record validated kernel-test workflows",
+      "cherry_pick_source": "6abc8fd971bb5dd3ec54a6eb6797d24cb6a5e6e3"
+    },
+    {
+      "commit": "5b62a7d9fef090051d33033d653c00a831761328",
+      "stage": "qemu",
+      "subject": "config(qemu-armv8m): align TASH, SmartFS, and heap diagnostics",
+      "cherry_pick_source": "9ee9cbf0820cb93a61cb105c6e34d973c50938f2"
+    },
+    {
+      "commit": "25e1efcb33bd8ece90c6dba3f65cee99bb818e0a",
+      "stage": "qemu",
+      "subject": "feat(qemu-armv8m): add LAN9118 Ethernet runtime",
+      "cherry_pick_source": "a3dc62131a01c0036dfe03bdcaeb37779c70ed1a"
+    },
+    {
+      "commit": "fd319a8b863083d44b814b215eb7c6a528da574d",
+      "stage": "qemu",
+      "subject": "test(qemu-armv8m): enable, validate, and document Ethernet networking",
+      "cherry_pick_source": "d63eb1d9e3f18b7644eff2b392331f1109d40a96"
+    },
+    {
+      "commit": "db23135f46b16eea1b6c2ab863a52d320ac4d4a8",
+      "stage": "qemu",
+      "subject": "docs(human): add recipe comparison and history guides",
+      "cherry_pick_source": "fc907ccb7258167355d0c2d6a5a4226053ea48c6"
+    },
+    {
+      "commit": "7bfc345b2bf27fa0ea66c2c040e10e6e0a0aba43",
+      "stage": "qemu",
+      "subject": "docs: clarify QEMU guide links and live main baseline",
+      "cherry_pick_source": "b5eacbdc0426df9ca0784dc5198ac8ff30443631"
+    },
+    {
+      "commit": "442d6039ecd11547b824943c229899bd4270ec43",
+      "stage": "qemu",
+      "subject": "fix(qemu-armv8m): account for elapsed timer ticks",
+      "cherry_pick_source": "82ed01c10739ef5291c036d96d9a29c73fdb6b5c"
+    },
+    {
+      "commit": "2a4bc1cab316219678c75630dd8a805640130568",
+      "stage": "qemu",
+      "subject": "fix(qemu-armv8m): preserve UART interrupts on TCSETS",
+      "cherry_pick_source": "5c0120f685ff47ab17f7ec26c0554965e312bc27"
+    },
+    {
+      "commit": "af7ce05fcfe2375d52c764979decc5634c0ccc81",
+      "stage": "example",
+      "subject": "test(mm): verify NuttX heap integration from QEMU TASH"
+    }
+  ],
+  "limitations": [
+    "QEMU flat UP only; protected/loadable/physical board unverified; SMP unsupported",
+    "Fault-context diagnostic is simulated; actual crash dump unverified",
+    "Leak checker TC ran but reported four 4-byte allocations in two snapshots",
+    "Public IPv4 ping received 0 of 1; gateway IPv4/IPv6 and DNS passed",
+    "Performance and metadata overhead not benchmarked"
+  ]
+}

@@ -1,6 +1,6 @@
 # NuttX 모듈 동기화 구조 설계 — 12.13.0 mm 우선
 
-작성일: 2026-10-22. 이 문서는 구현 방향과 검증 범위를 정의한다. 실제 빌드·실행 결과는 검증 기록과 함께 판단한다.
+최종 갱신: 2026-10-23. 이 문서는 구현 방향과 검증 범위를 정의한다. 실제 빌드·실행 결과와 커밋별 변경은 [최종 검증 기록](NuttX_12.13_MM_Validation.md)에 정리했다.
 
 ## 1. 확정한 요구사항
 
@@ -147,8 +147,9 @@ QEMU `hello` 통과는 flat UP multiheap 구성의 증거다. loadable 앱 수�
 - 누수 검사는 필요한 storage를 먼저 확보하고, 잠근 allocation을 snapshot으로 복사한 뒤 lock 밖에서 출력한다. 사용 중인 heap을 얻지 못하면 완전한 결과를 만든 것처럼 보고하지 않는다.
 - 원본의 overlapping `memcpy` realloc 경로와 `mm_extend`의 임시 allocation 사용량 accounting은 호스트 회귀 검사로 재현했다. 전자는 imported object 전용 `memmove` mapping, 후자는 bridge의 accounting으로 처리하여 upstream 원본 diff를 만들지 않는다.
 - native heap과 bridge의 lock은 heap RAM 회수 전에 파괴한다. protected/loadable 앱 경로는 소스 연결 단계이며, 첫 실행 검증 범위는 flat UP 구성이다.
+- fault/IRQ 상황에서는 잠금을 기다리지 않고, UP에서 IRQ를 막고 두 heap lock이 모두 비어 있을 때만 bounded corruption 검사를 수행한다. 검사 불가(`-EAGAIN`)와 실제 손상(`-EFAULT`)을 구분하여 ARM assert 경로가 검사 불가만으로 crash report를 중단하지 않게 한다. TASH에서는 잠긴 heap과 유휴 heap의 모의 fault 검사 및 잠금·취소 상태 보존을 확인했다. 실제 panic/crash dump 검증은 별도다.
 
-세부 계약과 제거 조건은 [compat 설명](../os/mm/compat/README.md), [TizenRT 계층 설명](../os/mm/tizenrt/README.md)에 있다. SMP, KASAN/TLSF/mempool, GRAN/PGALLOC/MMU, free-history/UAF, large-back placement, Binary Manager 강제 복구 등 미지원 조합은 명시적으로 거부한다.
+세부 계약과 제거 조건은 [compat 설명](../os/mm/compat/README.md), [TizenRT 계층 설명](../os/mm/tizenrt/README.md)에 있다. SMP, KASAN/TLSF/mempool, GRAN/PGALLOC/MMU, free-history/UAF, large-back placement, Binary Manager 강제 복구 등 미지원 조합은 명시적으로 거부한다. `MM_DUMP_CORRPUTED_HEAP`에는 fault-safe raw dump provider가, NuttX dump/panic-on-failure에는 native heap identity 연결이 필요하므로 현재 활성화하면 빌드를 거부한다.
 
 ## 9. 근거
 

@@ -53,7 +53,7 @@ NuttX의 `mm_lock()`은 UP IRQ에서 mutex가 잠겨 있으면 `-EAGAIN`, SMP IR
 
 `mm`부터 진행할 수 있다. mutex·IRQ·task 조회 중 기본 allocator가 요구하는 interface만 호환 계층에 제공한다. 이를 위해 scheduler/semaphore 전체를 먼저 가져오는 것은 선행 조건이 아니다. 다만 지금 커널에서 올바르게 제공할 수 없는 특정 계약이 발견되면 그 경로의 최소 변경은 필요하다.
 
-전체 `mm/` source 동기화와 모든 allocator/옵션 runtime 지원은 별도로 기록한다. 이번 설계와 커밋 순서는 [모듈 동기화 설계](NuttX_Module_Sync_Design.md)가 기준이다.
+전체 `mm/` source 동기화와 모든 allocator/옵션 runtime 지원은 별도로 기록한다. 이번 설계와 커밋 순서는 [모듈 동기화 설계](NuttX_Module_Sync_Design.md)가 기준이다. 구현 후 원본 차이, 남은 호환 처리와 실제 TASH 결과는 [최종 검증 기록](NuttX_12.13_MM_Validation.md)에 있다.
 
 ## 고정 소스 근거
 
