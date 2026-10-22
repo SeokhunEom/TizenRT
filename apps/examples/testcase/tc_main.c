@@ -109,6 +109,9 @@ extern int tc_drivers_main(int argc, char *argv[]);
 extern int tc_filesystem_main(int argc, char *argv[]);
 extern int tc_kernel_main(int argc, char *argv[]);
 extern int tc_network_main(int argc, char *argv[]);
+#ifdef CONFIG_TC_NET_PEER
+extern int tc_network_peer_main(int argc, char *argv[]);
+#endif
 extern int tc_tcp_tls_main(int agrc, char *agrv[]);
 extern int stress_task_create_term_main(int argc, char *argv[]);
 extern int stress_sem_prio_inherit_main(int argc, char *argv[]);
@@ -207,6 +210,9 @@ static const tash_cmdlist_t tc_cmds[] = {
 #endif
 #ifdef CONFIG_EXAMPLES_TESTCASE_NETWORK
 	{"network_tc", tc_network_main, TASH_EXECMD_ASYNC},
+#ifdef CONFIG_TC_NET_PEER
+	{"network_peer", tc_network_peer_main, TASH_EXECMD_ASYNC},
+#endif
 #endif
 #ifdef CONFIG_EXAMPLES_TESTCASE_PREFERENCE_UTC
 	{"preference_utc", utc_preference_main, TASH_EXECMD_ASYNC},

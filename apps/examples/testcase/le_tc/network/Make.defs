@@ -53,6 +53,9 @@
 
 ifeq ($(CONFIG_EXAMPLES_TESTCASE_NETWORK),y)
 CSRCS += network_tc_main.c
+ifeq ($(CONFIG_TC_NET_PEER),y)
+CSRCS += tc_net_peer.c
+endif
 ifeq ($(CONFIG_TC_NET_SOCKET),y)
 CSRCS +=tc_net_socket.c
 endif
