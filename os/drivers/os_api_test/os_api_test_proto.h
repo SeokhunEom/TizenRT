@@ -24,6 +24,9 @@ int test_clock(int cmd, unsigned long arg);
 int test_timer(int cmd, unsigned long arg);
 int test_sched(int cmd, unsigned long arg);
 int test_wqueue(int cmd, unsigned long arg);
+#ifdef CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE
+int test_mm_lifecycle(int cmd, unsigned long arg);
+#endif
 #define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
 	int provider(int cmd, unsigned long arg);
 #include "os_api_test_kernel_registry.inc"

@@ -83,6 +83,12 @@ static int os_api_test_drv_ioctl(FAR struct file *filep, int cmd, unsigned long 
 	/* Handle built-in ioctl commands */
 
 	switch (cmd) {
+#ifdef CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE
+	case TESTIOC_MM_LIFECYCLE_RUN:
+	case TESTIOC_MM_LIFECYCLE_REPORT:
+		ret = test_mm_lifecycle(cmd, arg);
+		break;
+#endif
 	/* TESTFWIOC_DRIVER_ANALOG - Run the test case for /os/driver/analog module
 	 *
 	 *   ioctl argument:  An integer value indicating the particular test to be run

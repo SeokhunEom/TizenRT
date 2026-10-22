@@ -98,6 +98,17 @@
 #endif
 #define TESTIOC_WORK_QUEUE_TEST			_TESTIOC(28)
 
+#ifdef CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE
+#define TESTIOC_MM_LIFECYCLE_RUN            _TESTIOC(100)
+#define TESTIOC_MM_LIFECYCLE_REPORT         _TESTIOC(101)
+struct mm_lifecycle_app_report_s {
+	unsigned int stage; /* 1: main; 2: late pthread; 3: separate task group */
+	unsigned int status;
+	unsigned int live_bytes;
+	void *live;
+};
+#endif
+
 #define OS_API_TEST_KERNEL_DESCRIPTOR(symbol, id, provider, provider_source, wrapper, wrapper_source, test_gate) \
 	enum { symbol = _TESTIOC(id) };
 #include "../../drivers/os_api_test/os_api_test_kernel_registry.inc"

@@ -53,6 +53,9 @@
 -include $(TOPDIR)/Make.defs
 
 SRCS = micomapp.c
+ifeq ($(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE),y)
+SRCS += nuttx_mm_lifecycle_app.c
+endif
 ifeq ($(CONFIG_EXAMPLES_MESSAGING_TEST),y)
 SRCS += messaging.c
 endif

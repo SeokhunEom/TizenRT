@@ -1,5 +1,8 @@
 # NuttX allocator TASH verification
 
+This page describes the flat allocator example. Protected app load, normal
+exit and reload have a separate [lifecycle test](LIFECYCLE.md).
+
 Enable `CONFIG_EXAMPLES_NUTTX_MM_TEST=y` in a **flat, pthread-enabled,
 multiheap** build using `CONFIG_MM_NUTTX=y`. The initial target is
 `qemu-armv8m/hello`. The existing Make/Kconfig application discovery finds the

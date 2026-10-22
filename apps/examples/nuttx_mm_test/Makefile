@@ -24,7 +24,13 @@
 include $(APPDIR)/Make.defs
 
 APPNAME = nuttx_mm_test
-FUNCNAME = $(APPNAME)_main
+FUNCNAME = nuttx_mm_test_main
+MAINSRC = nuttx_mm_test_main.c
+ifeq ($(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE),y)
+APPNAME = nuttx_mm_life
+FUNCNAME = nuttx_mm_lifecycle_main
+MAINSRC = nuttx_mm_lifecycle_main.c
+endif
 PRIORITY = SCHED_PRIORITY_DEFAULT
 STACKSIZE = 8192
 THREADEXEC = TASH_EXECMD_ASYNC
@@ -32,7 +38,6 @@ THREADEXEC = TASH_EXECMD_ASYNC
 ASRCS =
 
 CSRCS =
-MAINSRC = nuttx_mm_test_main.c
 
 AOBJS = $(ASRCS:.S=$(OBJEXT))
 COBJS = $(CSRCS:.c=$(OBJEXT))
@@ -94,7 +99,7 @@ install:
 
 endif
 
-ifeq ($(CONFIG_BUILTIN_APPS)$(CONFIG_EXAMPLES_NUTTX_MM_TEST),yy)
+ifeq ($(CONFIG_BUILTIN_APPS),y)
 $(BUILTIN_REGISTRY)$(DELIM)$(FUNCNAME).bdat: $(DEPCONFIG) Makefile
 	$(Q) $(call REGISTER,$(APPNAME),$(FUNCNAME),$(THREADEXEC),$(PRIORITY),$(STACKSIZE))
 

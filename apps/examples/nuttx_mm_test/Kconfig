@@ -8,3 +8,17 @@ config EXAMPLES_NUTTX_MM_TEST
 		public allocation, alignment/reallocation, per-heap ownership,
 		failure preservation and bounded concurrent fragmentation.
 		This is a verification example, not a product startup task.
+
+config EXAMPLES_NUTTX_MM_LIFECYCLE
+	bool "NuttX protected app heap lifecycle verification"
+	default n
+	depends on MM_NUTTX && BUILD_PROTECTED && APP_BINARY_SEPARATION
+	depends on BINARY_MANAGER && SUPPORT_COMMON_BINARY && EXAMPLES_LOADABLE
+	depends on NUM_APPS > 1 && !DISABLE_PTHREAD && BUILTIN_APPS
+	depends on !BINMGR_RECOVERY && !OPTIMIZE_APP_RELOAD_TIME && !XIP_ELF
+	select DRIVERS_OS_API_TEST
+	---help---
+		Register nuttx_mm_lifecycle in TASH and replace the app2 sample
+		with a bounded allocator workload that returns normally. Reload
+		app2 three times and verify heap, mutex and deferred-free cleanup.
+		Intended for QEMU loadable_all and loadable_apps verification.

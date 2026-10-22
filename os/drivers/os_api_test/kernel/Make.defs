@@ -19,6 +19,10 @@
 
 ifeq ($(CONFIG_DRIVERS_OS_API_TEST),y)
 
+ifeq ($(CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE),y)
+CSRCS += test_mm_lifecycle.c
+endif
+
 ifeq ($(CONFIG_TC_KERNEL_TASK),y)
 CSRCS += test_task.c
 endif

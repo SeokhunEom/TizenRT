@@ -27,6 +27,10 @@
 #endif
 #include "micomapp_internal.h"
 
+#ifdef CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE
+int nuttx_mm_lifecycle_app(void);
+#endif
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -36,6 +40,11 @@ int main(int argc, char **argv)
 int micomapp_main(int argc, char **argv)
 #endif
 {
+#ifdef CONFIG_EXAMPLES_NUTTX_MM_LIFECYCLE
+	(void)argc;
+	(void)argv;
+	return nuttx_mm_lifecycle_app();
+#else
 	int ret;
 #ifdef CONFIG_EXAMPLES_MICOM_TIMER_TEST
 	char *timer_args[TIMER_ARG_NUM];
@@ -68,5 +77,5 @@ int micomapp_main(int argc, char **argv)
 	}
 
 	return 0;
-
+#endif
 }
