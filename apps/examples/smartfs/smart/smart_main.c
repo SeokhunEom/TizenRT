@@ -326,12 +326,24 @@ static inline int smart_wrfile(FAR struct smart_filedesc_s *file)
 	size_t offset;
 	int fd;
 	int ret;
+	int retries;
 
 	/* Create a random file */
 
-	smart_randname(file);
-	smart_randfile(file);
-	fd = open(file->name, O_WRONLY | O_CREAT | O_EXCL, 0666);
+	/* Random names may collide with a live file. Retry only EEXIST, with
+	 * a bound so a small name space cannot trap the stress test forever.
+	 */
+
+	for (retries = 0; ; retries++) {
+		smart_randname(file);
+		fd = open(file->name, O_WRONLY | O_CREAT | O_EXCL, 0666);
+		if (fd >= 0 || errno != EEXIST || retries >= CONFIG_EXAMPLES_SMART_MAXOPEN) {
+			break;
+		}
+
+		smart_freefile(file);
+	}
+
 	if (fd < 0) {
 		/* If it failed because there is no space on the device, then don't
 		 * complain.
@@ -346,6 +358,8 @@ static inline int smart_wrfile(FAR struct smart_filedesc_s *file)
 		smart_freefile(file);
 		return ERROR;
 	}
+
+	smart_randfile(file);
 
 	/* Write a random amount of data to the file */
 
