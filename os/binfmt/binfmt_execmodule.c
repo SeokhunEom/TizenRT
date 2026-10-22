@@ -172,10 +172,11 @@ static void exec_ctors(FAR void *arg)
  ****************************************************************************/
 int exec_module(FAR struct binary_s *binp)
 {
-	FAR struct task_tcb_s *newtcb;
+	FAR struct task_tcb_s *newtcb = NULL;
 	FAR struct tcb_s *rtcb;
 	FAR uint32_t *stack;
 	pid_t pid;
+	uint32_t caller_uheap;
 	int ret;
 	int binary_idx;
 
@@ -206,6 +207,7 @@ int exec_module(FAR struct binary_s *binp)
 	pointer to the start of the text section */
 	*(uint32_t *)(binp->sections[BIN_DATA]) = (uint32_t)binp->uheap;
 	rtcb = (struct tcb_s *)sched_self();
+	caller_uheap = rtcb->uheap;
 	rtcb->uheap = (uint32_t)binp->uheap;
 
 	/* Allocate a TCB for the new task. */
@@ -292,7 +294,7 @@ int exec_module(FAR struct binary_s *binp)
 	 * be passed on to all the child tasks of the user app. Since the user
 	 * app is now created, we will reset these values here
 	 */
-	rtcb->uheap = 0;
+	rtcb->uheap = caller_uheap;
 #ifdef CONFIG_ARM_MPU
 	memset(rtcb->mpu_regs, 0, sizeof(rtcb->mpu_regs));
 #endif
@@ -345,7 +347,6 @@ int exec_module(FAR struct binary_s *binp)
 	return (int)pid;
 
 errout_with_appheap:
-	mm_remove_app_heap_list(binp->uheap);
 errout_with_tcbinit:
 	if (newtcb != NULL) {
 #ifdef CONFIG_BINARY_MANAGER
@@ -355,13 +356,20 @@ errout_with_tcbinit:
 		BIN_LOADINFO(binary_idx) = NULL;
 		binary_manager_remove_binlist(&newtcb->cmn);
 #endif
+		/* The load caller owns binp on failure; prevent group_leave from
+		 * unloading it before the heap mutexes have been destroyed here. */
+		newtcb->bininfo = NULL;
 		sched_releasetcb(&newtcb->cmn, TCB_FLAG_TTYPE_TASK);
 	}
-	return ret;
+	goto errout_heap_cleanup;
 
 errout_with_stack:
 	kumm_free(stack);
 	kmm_free(newtcb);
+errout_heap_cleanup:
+	mm_remove_app_heap_list(binp->uheap);
+	mm_uninitialize(binp->uheap);
+	rtcb->uheap = caller_uheap;
 	return ret;
 }
 

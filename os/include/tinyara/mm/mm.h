@@ -271,8 +271,7 @@ struct mm_allocnode_s {
 
 /* What is the size of the allocnode? */
 
-#define SIZEOF_MM_ALLOCNODE \
-	(sizeof(mmsize_t) + sizeof(mmsize_t) + SIZEOF_MM_MALLOC_DEBUG_INFO)
+#define SIZEOF_MM_ALLOCNODE (sizeof(struct mm_allocnode_s))
 
 #define CHECK_ALLOCNODE_SIZE \
 	DEBUGASSERT(sizeof(struct mm_allocnode_s) == SIZEOF_MM_ALLOCNODE)
@@ -360,7 +359,13 @@ struct mm_alloc_fail_s {
 
 /* This describes one heap (possibly with multiple regions) */
 
+struct mm_tizen_record_s;
+
 struct mm_heap_s {
+	/* The NuttX allocator is opaque. These fields are TizenRT policy only. */
+	void *nuttx_heap;
+	struct mm_tizen_record_s *allocations;
+	struct mm_tizen_record_s *pending_free;
 	/* Mutually exclusive access to this data set is enforced with
 	 * the following un-named semaphore.
 	 */
@@ -368,6 +373,7 @@ struct mm_heap_s {
 	sem_t mm_semaphore;
 	pid_t mm_holder;
 	int mm_counts_held;
+	int mm_cancel_state;
 
 	/* This is the size of the heap provided to mm */
 
@@ -391,18 +397,6 @@ struct mm_heap_s {
 	int mm_nregions;
 #endif
 
-	/* All free nodes are maintained in a doubly linked list.  This
-	 * array provides some hooks into the list at various points to
-	 * speed searches for free nodes.
-	 */
-
-	struct mm_freenode_s mm_nodelist[MM_NNODES + 1];
-	
-	/* Free delay list, for some situations where we can't do free
-	* immdiately.
-	*/
-
-	FAR struct mm_delaynode_s *mm_delaylist[CONFIG_SMP_NCPUS];
 
 };
 
@@ -468,9 +462,18 @@ extern uint32_t g_cur_app;
  * Public Function Prototypes
  ****************************************************************************/
 
+const char *mm_nuttx_backend_version(void);
+const char *mm_nuttx_backend_revision(void);
+struct mm_allocnode_s *mm_first_allocnode(struct mm_heap_s *heap);
+struct mm_allocnode_s *mm_next_allocnode(struct mm_allocnode_s *node);
+/* Physical backend chunk charge of a live TizenRT allocation (payload +
+ * allocator and product metadata). Caller must retain ownership of mem. */
+size_t mm_allocation_charge(const void *mem);
+
 /* Functions contained in mm_initialize.c ***********************************/
 
 int mm_initialize(FAR struct mm_heap_s *heap, FAR void *heap_start, size_t heap_size);
+void mm_uninitialize(FAR struct mm_heap_s *heap);
 int mm_addregion(FAR struct mm_heap_s *heap, FAR void *heapstart, size_t heapsize);
 
 /* Functions contained in umm_initialize.c **********************************/
@@ -647,23 +650,6 @@ int kmm_mallinfo(struct mallinfo *info);
 
 #ifdef CONFIG_MM_KERNEL_HEAP
 struct mm_heap_s *kmm_get_baseheap(void);
-#endif
-
-/* Functions contained in mm_shrinkchunk.c **********************************/
-
-void mm_shrinkchunk(FAR struct mm_heap_s *heap, FAR struct mm_allocnode_s *node, size_t size);
-
-/* Functions contained in mm_addfreechunk.c *********************************/
-
-void mm_addfreechunk(FAR struct mm_heap_s *heap, FAR struct mm_freenode_s *node);
-
-/* Functions contained in mm_size2ndx.c.c ***********************************/
-
-int mm_size2ndx(size_t size);
-
-#ifdef CONFIG_DEBUG_MM_UAF
-void mm_uaf_poison(FAR struct mm_freenode_s *node);
-void mm_uaf_verify(FAR struct mm_freenode_s *node);
 #endif
 
 void mm_dump_node(struct mm_allocnode_s *node, char *node_type);

@@ -21,6 +21,7 @@
  ************************************************************************/
 
 #include <tinyara/config.h>
+#include <stdlib.h>
 #include <tinyara/mm/mm.h>
 
 #ifdef CONFIG_MM_KERNEL_HEAP
@@ -37,7 +38,14 @@
 
 size_t kmm_get_largest_freenode_size(void)
 {
-	return mm_get_largest_freenode_size();
+	struct mallinfo info;
+    size_t largest = 0;
+    int i;
+    for (i = 0; i < CONFIG_KMM_NHEAPS; i++) {
+        mm_mallinfo(&g_kmmheap[i], &info);
+        if ((size_t)info.mxordblk > largest) { largest = info.mxordblk; }
+    }
+    return largest;
 }
 
 /************************************************************************
@@ -50,7 +58,14 @@ size_t kmm_get_largest_freenode_size(void)
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 size_t kmm_get_heap_free_size(void)
 {
-	return mm_get_heap_free_size();
+	struct mallinfo info;
+    size_t total = 0;
+    int i;
+    for (i = 0; i < CONFIG_KMM_NHEAPS; i++) {
+        mm_mallinfo(&g_kmmheap[i], &info);
+        total += info.fordblks;
+    }
+    return total;
 }
 #endif /* CONFIG_DEBUG_MM_HEAPINFO */
 

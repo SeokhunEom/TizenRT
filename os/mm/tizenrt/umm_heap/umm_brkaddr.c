@@ -16,9 +16,9 @@
  *
  ****************************************************************************/
 /****************************************************************************
- * mm/mm_gran/mm_granmark.c
+ * mm/umm_heap/umm_breakaddr.c
  *
- *   Copyright (C) 2012, 2014 Gregory Nutt. All rights reserved.
+ *   Copyright (C) 2014 Gregory Nutt. All rights reserved.
  *   Author: Gregory Nutt <gnutt@nuttx.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,21 +55,11 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
-
 #include <assert.h>
-
-#include <tinyara/mm/gran.h>
-
-#include "mm_gran/mm_gran.h"
-
-#ifdef CONFIG_GRAN
+#include <tinyara/mm/mm.h>
 
 /****************************************************************************
  * Pre-processor Definitions
- ****************************************************************************/
-
-/****************************************************************************
- * Private Functions
  ****************************************************************************/
 
 /****************************************************************************
@@ -77,70 +67,15 @@
  ****************************************************************************/
 
 /****************************************************************************
- * Name: gran_mark_allocated
+ * Name: umm_brkaddr
  *
  * Description:
- *   Mark a range of granules as allocated.
- *
- * Input Parameters:
- *   priv  - The granule heap state structure.
- *   alloc - The address of the allocation.
- *   ngranules - The number of granules allocated
- *
- * Returned Value:
- *   None
+ *   Return the break address of a region in the user heap
  *
  ****************************************************************************/
 
-void gran_mark_allocated(FAR struct gran_s *priv, uintptr_t alloc, unsigned int ngranules)
+FAR void *umm_brkaddr(int region)
 {
-	unsigned int granno;
-	unsigned int gatidx;
-	unsigned int gatbit;
-	unsigned int avail;
-	uint32_t     gatmask;
-
-	/* Determine the granule number of the allocation */
-
-	granno = (alloc - priv->heapstart) >> priv->log2gran;
-
-	/* Determine the GAT table index associated with the allocation */
-
-	gatidx = granno >> 5;
-	gatbit = granno & 31;
-
-	/* Mark bits in the GAT entry or entries */
-
-	avail = 32 - gatbit;
-	if (ngranules > avail) {
-		/* Mark bits in the first GAT entry */
-
-		gatmask = 0xffffffff << gatbit;
-		DEBUGASSERT((priv->gat[gatidx] & gatmask) == 0);
-
-		priv->gat[gatidx] |= gatmask;
-		ngranules -= avail;
-
-		/* Mark bits in the second GAT entry */
-
-		gatmask = 0xffffffff >> (32 - ngranules);
-		DEBUGASSERT((priv->gat[gatidx + 1] & gatmask) == 0);
-
-		priv->gat[gatidx + 1] |= gatmask;
-	}
-
-	/* Handle the case where where all of the granules come from one entry */
-
-	else {
-		/* Mark bits in a single GAT entry */
-
-		gatmask = 0xffffffff >> (32 - ngranules);
-		gatmask <<= gatbit;
-		DEBUGASSERT((priv->gat[gatidx] & gatmask) == 0);
-
-		priv->gat[gatidx] |= gatmask;
-		return;
-	}
+	return mm_brkaddr(BASE_HEAP, region);
 }
 
-#endif							/* CONFIG_GRAN */

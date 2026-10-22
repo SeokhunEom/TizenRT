@@ -40,6 +40,7 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
+#include <errno.h>
 
 /* Output debug info if stack dump is selected -- even if debug is not
  * selected.
@@ -508,8 +509,12 @@ void check_heap_corrupt(struct tcb_s *fault_tcb)
 			lldbg_noarg("Checking app %d heap for corruption \n",index);
 			lldbg_noarg("===========================================================\n");
 			struct mm_heap_s *app_heap = BIN_BINARY_HEAP_PTR(index);
-			lldbg_noarg("mm_holder: %d\n", app_heap->mm_holder);
-			mm_check_heap_corruption(app_heap);
+            int status = mm_check_heap_corruption(app_heap);
+            if (status == -EFAULT) {
+                lldbg_noarg("App heap corruption detected\n");
+            } else if (status != OK) {
+                lldbg_noarg("App heap check unavailable (heap busy or not initialized)\n");
+            }
 		}
 #endif
 
@@ -518,10 +523,14 @@ void check_heap_corrupt(struct tcb_s *fault_tcb)
 		lldbg_noarg("===========================================================\n");
 		lldbg_noarg("mm_holder: %d\n", g_kmmheap->mm_holder);
 	}
-	if (mm_check_heap_corruption(g_kmmheap) != OK) {
-		/* treat kernel fault */
-		arm_assert();
-	}
+    for (int heap_index = 0; heap_index < CONFIG_KMM_NHEAPS; heap_index++) {
+        int status = mm_check_heap_corruption(&g_kmmheap[heap_index]);
+        if (status == -EFAULT) {
+            arm_assert();
+        } else if (status != OK && !IS_SECURE_STATE()) {
+            lldbg_noarg("Kernel heap %d check unavailable (heap busy or not initialized)\n", heap_index);
+        }
+    }
 }
 
 /****************************************************************************

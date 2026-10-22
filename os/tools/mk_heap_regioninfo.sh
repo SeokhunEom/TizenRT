@@ -23,7 +23,7 @@ OSTOOLDIR=`test -d ${0%/*} && cd ${0%/*}; pwd`
 OSDIR="${OSTOOLDIR}/.."
 source ${OSDIR}/.config
 
-REGION_INFO_C_FILE_PATH=${OSDIR}/mm/mm_heap/mm_heap_regioninfo.c
+REGION_INFO_C_FILE_PATH=${OSDIR}/mm/tizenrt/mm_heap_regioninfo.c
 
 KREGIONx_START=${CONFIG_RAM_KREGIONx_START}
 KREGIONx_SIZE=${CONFIG_RAM_KREGIONx_SIZE}

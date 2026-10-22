@@ -55,6 +55,7 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
+#include <errno.h>
 
 /* Output debug info if stack dump is selected -- even if debug is not
  * selected.
@@ -513,7 +514,12 @@ void check_heap_corrupt(struct tcb_s *fault_tcb)
 			lldbg_noarg("===========================================================\n");
 			lldbg_noarg("Checking app heap for corruption\n");
 			lldbg_noarg("===========================================================\n");
-			mm_check_heap_corruption((struct mm_heap_s *)(fault_tcb->uheap));
+            int status = mm_check_heap_corruption((struct mm_heap_s *)(fault_tcb->uheap));
+            if (status == -EFAULT) {
+                lldbg_noarg("App heap corruption detected\n");
+            } else if (status != OK) {
+                lldbg_noarg("App heap check unavailable (heap busy or not initialized)\n");
+            }
 
 		}
 #endif
@@ -522,10 +528,15 @@ void check_heap_corrupt(struct tcb_s *fault_tcb)
 		lldbg_noarg("Checking kernel heap for corruption\n");
 		lldbg_noarg("===========================================================\n");
 	}
-	if (mm_check_heap_corruption(g_kmmheap) != OK) {
-			/* treat kernel fault */
-			_up_assert(EXIT_FAILURE);
-	} 
+    for (int heap_index = 0; heap_index < CONFIG_KMM_NHEAPS; heap_index++) {
+        int status = mm_check_heap_corruption(&g_kmmheap[heap_index]);
+        if (status == -EFAULT) {
+            /* Confirmed corruption still follows the existing fatal policy. */
+            _up_assert(EXIT_FAILURE);
+        } else if (status != OK && !IS_SECURE_STATE()) {
+            lldbg_noarg("Kernel heap %d check unavailable (heap busy or not initialized)\n", heap_index);
+        }
+    }
 }
 
 /****************************************************************************

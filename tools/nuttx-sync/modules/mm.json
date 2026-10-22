@@ -789,5 +789,14 @@
       "sha256": "1f6ac972692c4f94fe4b904590654aeb795ff08efd9799427c2358fb568814bb"
     }
   ],
-  "deviations": {}
+  "deviations": {
+    "os/mm/Makefile": {
+      "sha256": "0e2684d1781fd8f20664a68da80de6e61130401f2bd50175dc7c189f9810b294",
+      "reason": "Preserve TizenRT Make build and compile pinned sources with private compatibility headers and symbol namespace."
+    },
+    "os/mm/Kconfig": {
+      "sha256": "6e9486617c8d713144530f2a3d5102ca004987ebddfaf73310f5be60c3fa60c0",
+      "reason": "Preserve TizenRT configuration interface; advanced imported backends remain explicitly unsupported until integrated."
+    }
+  }
 }

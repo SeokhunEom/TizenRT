@@ -124,7 +124,7 @@ TASH 검증은 실제 public allocation 경로로 수행한다.
 - 지정 heap 할당과 heap ownership 확인.
 - 고정 seed의 fragmentation 반복 및 각 block의 데이터 패턴 확인.
 - 여러 pthread의 동시 할당/재할당/해제와 join.
-- 별도 arena에서 allocation failure·병합·회수 등 적용 가능한 경계 시험.
+- TASH에서는 실제 public allocation의 heap에서 overflow·OOM 실패와 기존 데이터 보존을 검사한다. 독립 arena의 병합·회수·확장은 별도 호스트 검사로 확인한다.
 - example 후 TASH 재진입 및 기존 kernel TC 회귀 시험.
 
 QEMU `hello` 통과는 flat UP multiheap 구성의 증거다. loadable 앱 수명·앱 분리, SMP/IRQ ordering, 실제 보드, 모든 debug 옵션 또는 성능 향상은 별도 증거가 필요하다. 결과는 PASS/FAIL/미검증으로 나누고 과거 QEMU 브랜치의 통과 수치를 이번 이식 결과로 재사용하지 않는다.
@@ -138,7 +138,19 @@ QEMU `hello` 통과는 flat UP multiheap 구성의 증거다. loadable 앱 수�
 
 소스 동기화는 manifest/hash 및 허용 diff 검증으로 판정한다. runtime 전환은 최종 link의 선택된 backend와 실기동 테스트로 판정한다. old allocator가 연결된 상태에서 example만 통과한 결과를 NuttX 검증으로 계산하지 않는다. 생성된 firmware와 큰 serial 로그는 검증 artifact로 보관하며 일반 소스 커밋에 넣지 않는다.
 
-## 8. 근거
+## 8. 구현된 호환 경계
+
+- 원본 157개 중 155개는 고정 tag와 byte-for-byte 동일하다. `os/mm/Makefile`과 `os/mm/Kconfig`만 기존 빌드 연결을 위해 변경하고, 현재 파일의 hash와 이유를 manifest에 기록한다.
+- `compat/nuttx_os.c`는 TizenRT semaphore로 mutex를 제공한다. 메모리 변경 중 cancellation을 막고, IRQ·task 종료 전환 중 해제는 안전한 thread context까지 지연한다.
+- TizenRT의 caller/PID 및 live allocation 목록은 별도 prefix에 저장한다. prefix와 정렬 여유 공간은 실제 메모리 비용이며, 이전 allocator와 동일한 footprint 또는 성능을 주장하지 않는다.
+- `mm_mallinfo`는 heap 하나의 snapshot을 반환하고, public wrapper가 다중 heap을 합산한다. per-PID 논리 크기와 실제 chunk 비용은 별도 계약으로 문서화한다.
+- 누수 검사는 필요한 storage를 먼저 확보하고, 잠근 allocation을 snapshot으로 복사한 뒤 lock 밖에서 출력한다. 사용 중인 heap을 얻지 못하면 완전한 결과를 만든 것처럼 보고하지 않는다.
+- 원본의 overlapping `memcpy` realloc 경로와 `mm_extend`의 임시 allocation 사용량 accounting은 호스트 회귀 검사로 재현했다. 전자는 imported object 전용 `memmove` mapping, 후자는 bridge의 accounting으로 처리하여 upstream 원본 diff를 만들지 않는다.
+- native heap과 bridge의 lock은 heap RAM 회수 전에 파괴한다. protected/loadable 앱 경로는 소스 연결 단계이며, 첫 실행 검증 범위는 flat UP 구성이다.
+
+세부 계약과 제거 조건은 [compat 설명](../os/mm/compat/README.md), [TizenRT 계층 설명](../os/mm/tizenrt/README.md)에 있다. SMP, KASAN/TLSF/mempool, GRAN/PGALLOC/MMU, free-history/UAF, large-back placement, Binary Manager 강제 복구 등 미지원 조합은 명시적으로 거부한다.
+
+## 9. 근거
 
 - [12.13.0 비교](NuttX_12.13_Kernel_Comparison.md)
 - [NuttX 공개 mm API](https://github.com/apache/nuttx/blob/b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35/include/nuttx/mm/mm.h)

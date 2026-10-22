@@ -16,9 +16,9 @@
  *
  ****************************************************************************/
 /****************************************************************************
- * mm/mm_heap/mm_addfreechunk.c
+ * mm/kmm_heap/kmm_memalign.c
  *
- *   Copyright (C) 2007, 2009, 2013 Gregory Nutt. All rights reserved.
+ *   Copyright (C) 2014 Gregory Nutt. All rights reserved.
  *   Author: Gregory Nutt <gnutt@nuttx.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,12 @@
 
 #include <tinyara/config.h>
 
+#include <debug.h>
+#include <stdlib.h>
+
 #include <tinyara/mm/mm.h>
+
+#ifdef CONFIG_MM_KERNEL_HEAP
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -67,44 +72,89 @@
  ****************************************************************************/
 
 /****************************************************************************
- * Global Functions
+ * Public Functions
  ****************************************************************************/
-
-/****************************************************************************
- * Name: mm_addfreechunk
+/************************************************************************
+ * Name: kmm_memalign_at
  *
  * Description:
- *   Add a free chunk to the node next.  It is assumed that the caller holds
- *   the mm semaphore
+ *   memalign to the specific kernel heap.
+ *   kmm_memalign_at tries to align the memory for a specific heap
+ *  which passed by api argument.
+ *   If there is no enough space, it will return NULL.
  *
- ****************************************************************************/
-
-void mm_addfreechunk(FAR struct mm_heap_s *heap, FAR struct mm_freenode_s *node)
+ * Return Value:
+ *   The address of the allocated memory (NULL on failure to allocate)
+ *
+ ************************************************************************/
+#if CONFIG_KMM_NHEAPS > 1
+void *kmm_memalign_at(int heap_index, size_t alignment, size_t size)
 {
-	FAR struct mm_freenode_s *next;
-	FAR struct mm_freenode_s *prev;
+	void *ret;
+	struct mm_heap_s *kheap;
 
-#ifdef CONFIG_DEBUG_MM_UAF
-	mm_uaf_poison(node);
+	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_memalign api */
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	caller_retaddr = GET_RETURN_ADDRESS();
+#endif
+	if (heap_index > HEAP_END_IDX || heap_index < HEAP_START_IDX) {
+		mdbg("kmm_memalign_at failed. Wrong heap index (%d) of (%d)\n", heap_index, HEAP_END_IDX);
+		return NULL;
+	}
+
+	if (size == 0) {
+		mdbg("Invalid parameter, size is 0\n");
+		return NULL;
+	}
+
+	kheap = kmm_get_baseheap();
+	ret = mm_memalign(&kheap[heap_index], alignment, size, caller_retaddr);
+	if (ret == NULL) {
+		mm_manage_alloc_fail(kheap, heap_index, heap_index, size, alignment, KERNEL_HEAP, caller_retaddr);
+	}
+	return ret;
+}
 #endif
 
-	/* Convert the size to a nodelist index */
+/************************************************************************
+ * Name: kmm_memalign
+ *
+ * Description:
+ *   Allocate aligned memory in the kernel heap.
+ *
+ * Parameters:
+ *   alignment - Log2 byte alignment
+ *   size - Size (in bytes) of the new memory region to be allocated.
+ *
+ * Return Value:
+ *   The address of the re-allocated memory (NULL on failure to allocate)
+ *
+ ************************************************************************/
 
-	int ndx = mm_size2ndx(node->size);
+FAR void *kmm_memalign(size_t alignment, size_t size)
+{
+	void *ret;
+	int kheap_idx;
 
-	/* Now put the new free node in a descending order */
-
-	for (prev = &heap->mm_nodelist[ndx], next = prev->flink; next && next->size > node->size; prev = next, next = next->flink) ;
-
-	/* Does it go in mid next or at the end? */
-
-	prev->flink = node;
-	node->blink = prev;
-	node->flink = next;
-
-	if (next) {
-		/* The new node goes between prev and next */
-
-		next->blink = node;
+	if (size == 0) {
+		mdbg("Invalid parameter, size is 0\n");
+		return NULL;
 	}
+
+	mmaddress_t caller_retaddr = NULL;	/* for generalising the call to mm_memalign api */
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+	caller_retaddr = GET_RETURN_ADDRESS();
+#endif
+	struct mm_heap_s *kheap = kmm_get_baseheap();
+	for (kheap_idx = HEAP_START_IDX; kheap_idx <= HEAP_END_IDX; kheap_idx++) {
+		ret = mm_memalign(&kheap[kheap_idx], alignment, size, caller_retaddr);
+		if (ret != NULL) {
+			return ret;
+		}
+	}
+
+	mm_manage_alloc_fail(kheap, HEAP_START_IDX, HEAP_END_IDX, size, alignment, KERNEL_HEAP, caller_retaddr);
+	return NULL;
 }
+
+#endif							/* CONFIG_MM_KERNEL_HEAP */

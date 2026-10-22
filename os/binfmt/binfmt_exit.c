@@ -130,6 +130,8 @@ int binfmt_exit(FAR struct binary_s *bin)
 		address = (FAR void *)sq_next((FAR sq_entry_t *)address);
 	}
 	mm_disable_app_heap_list(bin->uheap);
+	/* Both allocator mutexes must leave the semaphore registry before RAM reuse. */
+	mm_uninitialize(bin->uheap);
 
 	/* Free the load structure */
 

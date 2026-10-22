@@ -147,20 +147,24 @@ void heapinfo_set_pid(void *address, pid_t pid)
 	heap = mm_get_heap(address);
 	if (heap) {
 		node = (struct mm_allocnode_s *)((char *)address - SIZEOF_MM_ALLOCNODE);
-		DEBUGASSERT(mm_takesemaphore(heap));
+		if (!mm_takesemaphore(heap)) { return; }
 		
 		old_pid = node->pid;
 		if (old_pid != pid) {
 			/* Subtract from old PID's accounting */
 			heapinfo_subtract_size(heap, old_pid, node->size);
-			heapinfo_update_total_size(heap, (-1) * node->size, old_pid);
+#ifdef CONFIG_HEAPINFO_USER_GROUP
+			heapinfo_update_group(-mm_allocation_charge(address), old_pid);
+#endif
 			
 			/* Update node PID */
 			node->pid = pid;
 			
 			/* Add to new PID's accounting */
 			heapinfo_add_size(heap, pid, node->size);
-			heapinfo_update_total_size(heap, node->size, pid);
+#ifdef CONFIG_HEAPINFO_USER_GROUP
+			heapinfo_update_group(mm_allocation_charge(address), pid);
+#endif
 		}
 		
 		mm_givesemaphore(heap);
@@ -184,8 +188,8 @@ void heapinfo_set_caller_addr(void *address, mmaddress_t caller_retaddr)
 	heap = mm_get_heap(address);
 	if (heap) {
 		node = (struct mm_allocnode_s *)((char *)address - SIZEOF_MM_ALLOCNODE);
-		DEBUGASSERT(mm_takesemaphore(heap));
-		heapinfo_update_node(node, caller_retaddr);
+		if (!mm_takesemaphore(heap)) { return; }
+		node->alloc_call_addr = caller_retaddr;
 		mm_givesemaphore(heap);
 	} else {
 		mdbg("Failed to set caller address, heap not found. addr:%x\n", address);
@@ -230,16 +234,9 @@ void heapinfo_exclude_stacksize(void *stack_ptr)
 	hash_pid = PIDHASH(node->pid);
 	heap->alloc_list[hash_pid].curr_alloc_size -= node->size;
 #ifdef CONFIG_HEAPINFO_USER_GROUP
-	int check_idx;
-	int group_num;
-
-	for (check_idx = 0; check_idx <= heapinfo_max_group; check_idx++) {
-		if (node->pid == group_info[check_idx].pid) {
-			group_num = group_info[check_idx].group;
-			heapinfo_group[group_num].curr_size -= node->size;
-			break;
-		}
-	}
+    /* Group allocation accounting uses physical backend charges; per-PID
+     * counters above retain the logical Tizen diagnostic-node size. */
+    heapinfo_update_group(-mm_allocation_charge(stack_ptr), node->pid);
 #endif
 }
 
@@ -251,15 +248,12 @@ void heapinfo_exclude_stacksize(void *stack_ptr)
  ****************************************************************************/
 void heapinfo_peak_init(struct mm_heap_s *heap)
 {
-	int tcb_idx;
-	int heap_idx;
-
-	DEBUGASSERT(heap);
-	for (heap_idx = 0; heap_idx < CONFIG_KMM_NHEAPS; heap_idx++) {
-		for (tcb_idx = 0; tcb_idx < CONFIG_MAX_TASKS; tcb_idx++) {
-			heap[heap_idx].alloc_list[tcb_idx].peak_alloc_size = 0;
-		}
-	}
+    int index;
+    /* The caller passes one heap, including independently allocated app heaps. */
+    for (index = 0; index < CONFIG_MAX_TASKS; index++) {
+        heap->alloc_list[index].peak_alloc_size = heap->alloc_list[index].curr_alloc_size;
+    }
+    heap->peak_alloc_size = heap->total_alloc_size;
 }
 
 /************************************************************************
@@ -300,10 +294,10 @@ void heapinfo_dump_heap(struct mm_heap_s *heap)
 		if (!abort_mode && !up_interrupt_context())
 #endif
 		{
-			DEBUGASSERT(mm_takesemaphore(heap));
+			if (!mm_takesemaphore(heap)) { return; }
 		}
 
-		mm_dump_heap_region((uint32_t)(heap->mm_heapstart[region]), (uint32_t)(heap->mm_heapend[region]) + SIZEOF_MM_ALLOCNODE);
+		mm_dump_heap_region((uint32_t)(heap->mm_heapstart[region]), (uint32_t)(heap->mm_heapend[region]));
 #if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
 		if (!abort_mode && !up_interrupt_context())
 #endif

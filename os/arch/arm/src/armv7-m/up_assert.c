@@ -55,6 +55,7 @@
  ****************************************************************************/
 
 #include <tinyara/config.h>
+#include <errno.h>
 
 /* Output debug info if stack dump is selected -- even if debug is not
  * selected.
@@ -435,9 +436,14 @@ static inline void print_assert_detail(const uint8_t *filename, int lineno, stru
 #ifdef CONFIG_APP_BINARY_SEPARATION
 	if (IS_FAULT_IN_USER_THREAD(fault_tcb)) {
 		lldbg("Checking current app heap for corruption...\n");
-		if (mm_check_heap_corruption((struct mm_heap_s *)(fault_tcb->uheap)) == OK) {
-			lldbg("No app heap corruption detected\n");
-		}
+        int status = mm_check_heap_corruption((struct mm_heap_s *)(fault_tcb->uheap));
+        if (status == OK) {
+            lldbg("No app heap corruption detected\n");
+        } else if (status == -EFAULT) {
+            lldbg("App heap corruption detected\n");
+        } else {
+            lldbg("App heap check unavailable (heap busy or not initialized)\n");
+        }
 	}
 #endif
 	lldbg("Assert location (PC) : 0x%08x\n", asserted_location);
@@ -579,9 +585,14 @@ void up_assert(const uint8_t *filename, int lineno)
 		print_assert_detail(filename, lineno, fault_tcb, asserted_location);
 		lldbg("Checking kernel heap for corruption...\n");
 	}
-	if (mm_check_heap_corruption(g_kmmheap) != OK) {
-		is_kmm_corruption = true;
-	}
+    for (int heap_index = 0; heap_index < CONFIG_KMM_NHEAPS; heap_index++) {
+        int status = mm_check_heap_corruption(&g_kmmheap[heap_index]);
+        if (status == -EFAULT) {
+            is_kmm_corruption = true;
+        } else if (status != OK && !IS_SECURE_STATE()) {
+            lldbg("Kernel heap %d check unavailable (heap busy or not initialized)\n", heap_index);
+        }
+    }
 
 	irqrestore(flags);
 

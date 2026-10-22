@@ -62,6 +62,8 @@
 #include <sched.h>
 
 #include <tinyara/mm/mm.h>
+#include <tinyara/sched.h>
+#include <tinyara/arch.h>
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -70,6 +72,24 @@
 /****************************************************************************
  * Private Data
  ****************************************************************************/
+
+/* Required operations still execute when assertions are disabled. */
+static void mm_require(bool condition)
+{
+    if (!condition) { PANIC(); for (;;) {} }
+}
+
+/* task_exit changes the ready head before the next context is running. Do
+ * not obtain a heap mutex or touch that next task's cancellation state there. */
+static bool mm_safe_context(void)
+{
+#if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
+    struct tcb_s *tcb = sched_self();
+    return !up_interrupt_context() && (!tcb || tcb->task_state == TSTATE_TASK_RUNNING);
+#else
+    return true;
+#endif
+}
 
 /****************************************************************************
  * Public Functions
@@ -89,10 +109,11 @@ void mm_seminitialize(FAR struct mm_heap_s *heap)
 	 * private data sets.
 	 */
 
-	(void)sem_init(&heap->mm_semaphore, 0, 1);
+	mm_require(sem_init(&heap->mm_semaphore, 0, 1) == OK);
 
 	heap->mm_holder      = -1;
 	heap->mm_counts_held = 0;
+	heap->mm_cancel_state = TASK_CANCEL_ENABLE;
 }
 
 /****************************************************************************
@@ -108,28 +129,30 @@ void mm_seminitialize(FAR struct mm_heap_s *heap)
 
 int mm_trysemaphore(FAR struct mm_heap_s *heap)
 {
-	pid_t my_pid = getpid();
-
-	/* Do I already have the semaphore? */
-
-	if (heap->mm_holder == my_pid) {
-		/* Yes, just increment the number of references that I have */
-
-		heap->mm_counts_held++;
-		return OK;
-	} else {
-		/* Try to take the semaphore (perhaps waiting) */
-
-		if (sem_trywait(&heap->mm_semaphore) != 0) {
-			return -get_errno();
-		}
-
-		/* We have it.  Claim the stak and return */
-
-		heap->mm_holder      = my_pid;
-		heap->mm_counts_held = 1;
-		return OK;
-	}
+    pid_t pid;
+    int saved_state;
+    int saved_errno;
+    int ret;
+    if (!mm_safe_context()) { return -EAGAIN; }
+    pid = getpid();
+    if (heap->mm_holder == pid && heap->mm_counts_held) {
+        heap->mm_counts_held++;
+        return OK;
+    }
+    saved_errno = get_errno();
+    mm_require(task_setcancelstate(TASK_CANCEL_DISABLE, &saved_state) == OK);
+    ret = sem_trywait(&heap->mm_semaphore);
+    if (ret != OK) {
+        ret = -get_errno();
+        set_errno(saved_errno);
+        mm_require(task_setcancelstate(saved_state, NULL) == OK);
+        return ret;
+    }
+    heap->mm_holder = pid;
+    heap->mm_counts_held = 1;
+    heap->mm_cancel_state = saved_state;
+    set_errno(saved_errno);
+    return OK;
 }
 
 /****************************************************************************
@@ -143,43 +166,29 @@ int mm_trysemaphore(FAR struct mm_heap_s *heap)
 
 bool mm_takesemaphore(FAR struct mm_heap_s *heap)
 {
-#if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
-	if (up_interrupt_context())
-	{
-#if defined(CONFIG_SMP)
-		/* Can't take semaphore in SMP interrupt handler */
-		return false;
-#endif
-	}
-#endif
-	pid_t my_pid = getpid();
-
-	/* Do I already have the semaphore? */
-
-	if (heap->mm_holder == my_pid) {
-		/* Yes, just increment the number of references that I have */
-
-		heap->mm_counts_held++;
-	} else {
-		/* Take the semaphore (perhaps waiting) */
-
-		mvdbg("PID=%d taking\n", my_pid);
-		while (sem_wait(&heap->mm_semaphore) != 0) {
-			/* The only case that an error should occur here is if
-			 * the wait was awakened by a signal.
-			 */
-
-			ASSERT(errno == EINTR);
-		}
-
-		/* We have it.  Claim the stake and return */
-
-		heap->mm_holder      = my_pid;
-		heap->mm_counts_held = 1;
-	}
-
-	mvdbg("Holder=%d count=%d\n", heap->mm_holder, heap->mm_counts_held);
-	return true;
+    pid_t pid;
+    int saved_state;
+    int saved_errno;
+    int ret;
+    if (!mm_safe_context()) { return false; }
+    pid = getpid();
+    if (heap->mm_holder == pid && heap->mm_counts_held) {
+        heap->mm_counts_held++;
+        return true;
+    }
+    /* The core mutex is nested inside this lock. It must inherit DISABLE so
+     * restoring cancellation at its unlock cannot abandon metadata locked. */
+    saved_errno = get_errno();
+    mm_require(task_setcancelstate(TASK_CANCEL_DISABLE, &saved_state) == OK);
+    do {
+        ret = sem_wait(&heap->mm_semaphore);
+    } while (ret != OK && get_errno() == EINTR);
+    mm_require(ret == OK);
+    heap->mm_holder = pid;
+    heap->mm_counts_held = 1;
+    heap->mm_cancel_state = saved_state;
+    set_errno(saved_errno);
+    return true;
 }
 
 /****************************************************************************
@@ -192,32 +201,15 @@ bool mm_takesemaphore(FAR struct mm_heap_s *heap)
 
 void mm_givesemaphore(FAR struct mm_heap_s *heap)
 {
-#ifdef CONFIG_DEBUG
-	pid_t my_pid = getpid();
-#endif
-
-	/* I better be holding at least one reference to the semaphore */
-
-	DEBUGASSERT(heap->mm_holder == my_pid);
-
-	/* Do I hold multiple references to the semphore */
-
-	if (heap->mm_counts_held > 1) {
-		/* Yes, just release one count and return */
-
-		heap->mm_counts_held--;
-		mvdbg("Holder=%d count=%d\n", heap->mm_holder, heap->mm_counts_held);
-	} else {
-		/* Nope, this is the last reference I have */
-
-#ifdef CONFIG_DEBUG
-		mvdbg("PID=%d giving\n", my_pid);
-#endif
-
-		heap->mm_holder      = -1;
-		heap->mm_counts_held = 0;
-		ASSERT(sem_post(&heap->mm_semaphore) == 0);
-	}
+    int saved_state;
+    int saved_errno = get_errno();
+    mm_require(heap->mm_holder == getpid() && heap->mm_counts_held > 0);
+    if (--heap->mm_counts_held) { return; }
+    saved_state = heap->mm_cancel_state;
+    heap->mm_holder = -1;
+    mm_require(sem_post(&heap->mm_semaphore) == OK);
+    set_errno(saved_errno);
+    mm_require(task_setcancelstate(saved_state, NULL) == OK);
 }
 
 /****************************************************************************
@@ -236,6 +228,6 @@ void mm_is_sem_available(void *address)
 		mdbg("Invalid Heap address given, Fail to check sem availability.\n");
 		return;
 	}
-	DEBUGASSERT(mm_takesemaphore(heap));
+	mm_require(mm_takesemaphore(heap));
 	mm_givesemaphore(heap);
 }

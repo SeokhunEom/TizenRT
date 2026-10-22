@@ -60,13 +60,9 @@ void wd_corruption_dbg(struct wdog_s *wdog)
 	if (mm_get_heap(wdog)) {
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
-		// Wdog struct is in heap
-		lldbg("WDOG is in HEAP. Print neighbour heap nodes\n");
-		wd_node = (uint32_t)wdog - SIZEOF_MM_ALLOCNODE;
-		lldbg("PREV WDOG INFO\n");
-		mm_dump_node((struct mm_allocnode_s *)(wd_node - (((struct mm_allocnode_s *)wd_node)->preceding & ~MM_ALLOC_BIT)), "PREV HEAP NODE");
-		lldbg("NEXT WDOG INFO\n");
-		mm_dump_node((struct mm_allocnode_s *)(wd_node + ((struct mm_allocnode_s *)wd_node)->size), "NEXT HEAP NODE");
+        lldbg("WDOG is in heap; allocation metadata\n");
+        wd_node = (uint32_t)wdog - SIZEOF_MM_ALLOCNODE;
+        mm_dump_node((struct mm_allocnode_s *)wd_node, "WDOG ALLOCATION");
 #endif
 
 	} else if (wd_is_prealloc(wdog)) {

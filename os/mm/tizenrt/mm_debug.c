@@ -20,11 +20,13 @@
  * Included Files
  ****************************************************************************/
 #include <tinyara/config.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <tinyara/sched.h>
 #include <tinyara/mm/mm.h>
+#include "bridge/nuttx_heap_bridge.h"
 #include <tinyara/security_level.h>
 
 /************************************************************************
@@ -81,37 +83,26 @@ void mm_dump_heap_region(uint32_t start, uint32_t end)
  *
  * Description: Print the hex value contents of heap free nodes.
  ************************************************************************/
-void mm_dump_heap_free_node_list(struct mm_heap_s *heap)
+static void dump_free(const struct trmm_node *node, void *arg)
 {
-	struct mm_freenode_s *node;
-	heap_dbg("#########################################################################################\n");
-	heap_dbg("Dump heap free node list\n");
-	heap_dbg("[ndx], [HEAD]: [FREE NODES(SIZE)]\n");
-	heap_dbg("#########################################################################################\n");
-	for (uint8_t ndx = 0; ndx < MM_NNODES; ndx++) {
-		heap_dbg("%3d, %08x:", ndx, &heap->mm_nodelist[ndx]);
-		for (node = heap->mm_nodelist[ndx].flink; node; node = node->flink) {
-			heap_dbg(" %08x(%d)", node, node->size);
-		}
-		heap_dbg("\n");
-
-		if (heap->mm_nodelist[ndx].size != 0) {
-			mfdbg("    Corrupted HEAD of free node link %08x\n", &heap->mm_nodelist[ndx]);
-		}
-	}
-	heap_dbg("#########################################################################################\n");
+    (void)arg;
+    if (!node->allocated) {
+        heap_dbg("free %p size=%lu\n", node->address, (unsigned long)node->size);
+    }
 }
 
-/************************************************************************
- * Name: mm_dump_node
- *
- * Description: Print the information of heap node.
- ************************************************************************/
+void mm_dump_heap_free_node_list(struct mm_heap_s *heap)
+{
+    trmm_walk(heap->nuttx_heap, dump_free, NULL);
+}
+
 void mm_dump_node(struct mm_allocnode_s *node, char *node_type)
 {
-#if defined(CONFIG_DEBUG_MM_HEAPINFO)  && (CONFIG_TASK_NAME_SIZE > 0)
-	char myname[CONFIG_TASK_NAME_SIZE + 1];
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
 	char is_stack[9] = "'s stack";
+#if CONFIG_TASK_NAME_SIZE > 0
+	char myname[CONFIG_TASK_NAME_SIZE + 1];
+#endif
 #endif
 
 	if (!node) {
@@ -142,3 +133,74 @@ void mm_dump_node(struct mm_allocnode_s *node, char *node_type)
 #endif
 #endif
 }
+
+#ifdef CONFIG_BUILD_PROTECTED
+#define MM_PUBLIC_HEAP_COUNT 1
+#else
+#define MM_PUBLIC_HEAP_COUNT CONFIG_KMM_NHEAPS
+#endif
+
+size_t mm_get_largest_freenode_size(void)
+{
+    size_t largest = 0;
+    int i;
+    struct mallinfo info;
+    for (i = 0; i < MM_PUBLIC_HEAP_COUNT; i++) {
+        mm_mallinfo(&BASE_HEAP[i], &info);
+        if (info.mxordblk > largest) { largest = info.mxordblk; }
+    }
+    return largest;
+}
+
+#ifdef CONFIG_DEBUG_MM_HEAPINFO
+size_t mm_get_heap_free_size(void)
+{
+    size_t total = 0;
+    int i;
+    struct mallinfo info;
+    for (i = 0; i < MM_PUBLIC_HEAP_COUNT; i++) {
+        mm_mallinfo(&BASE_HEAP[i], &info);
+        total += info.fordblks;
+    }
+    return total;
+}
+
+void heapinfo_parse_heap(struct mm_heap_s *heap, int mode, pid_t pid)
+{
+    struct mallinfo info;
+    struct mm_allocnode_s *node;
+#if defined(CONFIG_BUILD_FLAT) || defined(__KERNEL__)
+    if (abort_mode || up_interrupt_context()) {
+        heap_dbg("Heap statistics unavailable in fault/IRQ context\n");
+        return;
+    }
+#endif
+    if (mm_trysemaphore(heap) != OK) {
+        heap_dbg("Heap statistics unavailable (metadata busy)\n");
+        return;
+    }
+    if (mm_mallinfo(heap, &info) != OK) {
+        heap_dbg("Heap statistics unavailable (backend busy)\n");
+        mm_givesemaphore(heap);
+        return;
+    }
+    heap_dbg("NuttX %s heap: arena=%lu used=%lu free=%lu largest=%lu peak=%lu\n",
+        mm_nuttx_backend_version(), (unsigned long)info.arena,
+        (unsigned long)info.uordblks, (unsigned long)info.fordblks,
+        (unsigned long)info.mxordblk, (unsigned long)heap->peak_alloc_size);
+    if (mode == HEAPINFO_INIT_PEAK) { heapinfo_peak_init(heap); }
+    else if (mode == HEAPINFO_DUMP_HEAP) { heapinfo_dump_heap(heap); }
+    else if (mode == HEAPINFO_DETAIL_FREE) { mm_dump_heap_free_node_list(heap); }
+    else if (mode != HEAPINFO_SIMPLE) {
+        heap_dbg("Address      Size     PID Caller\n");
+        for (node = mm_first_allocnode(heap); node; node = mm_next_allocnode(node)) {
+            if (pid == HEAPINFO_PID_ALL || node->pid == pid || node->pid == -pid) {
+                heap_dbg("%p %8lu %6d %p\n", (char *)node + SIZEOF_MM_ALLOCNODE,
+                    (unsigned long)(node->size - SIZEOF_MM_ALLOCNODE),
+                    node->pid, node->alloc_call_addr);
+            }
+        }
+    }
+    mm_givesemaphore(heap);
+}
+#endif

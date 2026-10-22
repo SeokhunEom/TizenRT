@@ -121,23 +121,39 @@ void mm_manage_alloc_fail_dump(struct mm_heap_s *heap, int startidx, int endidx,
 	mfdbg(" - caller address = 0x%08x\n", caller);
 #endif
 
-	struct mallinfo info;
-	memset(&info, 0, sizeof(struct mallinfo));
-	for (int idx = startidx; idx <= endidx; idx++) {
-		mm_mallinfo(&heap[idx], &info);
-	}
-
-	if (align) {
-		mfdbg(" - largest un-aligned free size : %d\n", info.mxordblk);
-		memset(&info, 0, sizeof(struct mallinfo));
-		for (int idx = startidx; idx <= endidx; idx++) {
-			mm_mallinfo_aligned(&heap[idx], &info, align);
-		}
-		mfdbg(" - largest algined free size : %d\n", info.mxordblk);
-	} else {
-		mfdbg(" - largest free size : %d\n", info.mxordblk);
-	}
-	mfdbg(" - total free size   : %d\n", info.fordblks);
+    struct mallinfo info;
+    struct mallinfo one;
+    bool available = true;
+    memset(&info, 0, sizeof(info));
+    for (int idx = startidx; idx <= endidx; idx++) {
+        if (mm_mallinfo(&heap[idx], &one) != OK) {
+            available = false;
+            mfdbg(" - heap %d statistics unavailable (heap busy or fault context)\n", idx);
+            continue;
+        }
+        info.fordblks += one.fordblks;
+        if (one.mxordblk > info.mxordblk) { info.mxordblk = one.mxordblk; }
+    }
+    if (available) {
+        mfdbg(" - largest free size : %d\n", info.mxordblk);
+        mfdbg(" - total free size   : %d\n", info.fordblks);
+    }
+    if (align) {
+        available = true;
+        memset(&info, 0, sizeof(info));
+        for (int idx = startidx; idx <= endidx; idx++) {
+            if (mm_mallinfo_aligned(&heap[idx], &one, align) != OK) {
+                available = false;
+                continue;
+            }
+            if (one.mxordblk > info.mxordblk) { info.mxordblk = one.mxordblk; }
+        }
+        if (available) {
+            mfdbg(" - largest aligned free size : %d\n", info.mxordblk);
+        } else {
+            mfdbg(" - aligned free statistics unavailable\n");
+        }
+    }
 
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 #ifdef CONFIG_APP_BINARY_SEPARATION
