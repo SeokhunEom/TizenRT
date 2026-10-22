@@ -1,0 +1,793 @@
+{
+  "repository": "https://github.com/apache/nuttx.git",
+  "tag": "nuttx-12.13.0",
+  "commit": "b9b5d9afbf5a88f3c52830d4ce88ae038be0fd35",
+  "files": [
+    {
+      "upstream": "include/nuttx/lib/math32.h",
+      "path": "os/include/nuttx/lib/math32.h",
+      "sha256": "54959d147a59e7d6022cd53a115f7e7e5d61e06abf8b3a52fb295f39122ed63e"
+    },
+    {
+      "upstream": "include/nuttx/mm/gran.h",
+      "path": "os/include/nuttx/mm/gran.h",
+      "sha256": "bc9413ae9e42292756f04b868b2ec4ecbaa546abd0fc96fd614ff671b992d4ef"
+    },
+    {
+      "upstream": "include/nuttx/mm/iob.h",
+      "path": "os/include/nuttx/mm/iob.h",
+      "sha256": "38de81b6ed20a0c2c7f8c68b74c7ea74a86c075db18b90315795531132824546"
+    },
+    {
+      "upstream": "include/nuttx/mm/kasan.h",
+      "path": "os/include/nuttx/mm/kasan.h",
+      "sha256": "35f77dc5c12acdbb039d1da89b47074c9792054aeaf306f9923b9fa28137e82f"
+    },
+    {
+      "upstream": "include/nuttx/mm/kmap.h",
+      "path": "os/include/nuttx/mm/kmap.h",
+      "sha256": "6a03315cb96090a81fa02da92baab26ea20068c08573730b2da896b0aef3dfce"
+    },
+    {
+      "upstream": "include/nuttx/mm/map.h",
+      "path": "os/include/nuttx/mm/map.h",
+      "sha256": "c2c6d0ed8fea645755a38f739f0317b3ba0225b401c706bf186f9731956c66bd"
+    },
+    {
+      "upstream": "include/nuttx/mm/mempool.h",
+      "path": "os/include/nuttx/mm/mempool.h",
+      "sha256": "50f9329d1714d8308d1f082cbadba17b945000c6c6732d7900ea84c2414a10a9"
+    },
+    {
+      "upstream": "include/nuttx/mm/mm.h",
+      "path": "os/include/nuttx/mm/mm.h",
+      "sha256": "68cb8596514a1b24907753268b2963cbd3d8bdca1bd9996f5f5306663a8847a0"
+    },
+    {
+      "upstream": "mm/CMakeLists.txt",
+      "path": "os/mm/CMakeLists.txt",
+      "sha256": "10069475aa540c18b17450a62a6a13307822b115be77ce5e051b9bbad73479b1"
+    },
+    {
+      "upstream": "mm/Kconfig",
+      "path": "os/mm/Kconfig",
+      "sha256": "5b528a27adfb89224d7dd29a6e3428abc45753e023c7047ced06b6b26462861e"
+    },
+    {
+      "upstream": "mm/Makefile",
+      "path": "os/mm/Makefile",
+      "sha256": "93d0df84bc6e0e1d2fd9fdfa5a749970468cff066fea972288050346c80e8e74"
+    },
+    {
+      "upstream": "mm/iob/CMakeLists.txt",
+      "path": "os/mm/iob/CMakeLists.txt",
+      "sha256": "50d6094b3723df83e3d94f8e0c73a3ec6cb72cec8e0bfc94bfa9bcf634370a5e"
+    },
+    {
+      "upstream": "mm/iob/Kconfig",
+      "path": "os/mm/iob/Kconfig",
+      "sha256": "8119056642ddc57955f3fc3fb60f71e63f15fc3aa0059a32a780c07babd57314"
+    },
+    {
+      "upstream": "mm/iob/Make.defs",
+      "path": "os/mm/iob/Make.defs",
+      "sha256": "5f8d623c0ddad9ef62a4b6f047810d2c102522212108e71351cda447381fa542"
+    },
+    {
+      "upstream": "mm/iob/iob.h",
+      "path": "os/mm/iob/iob.h",
+      "sha256": "b08c77e306dc40c486401d4d8708ba86a01947b8a1b23eba7f58edd1088f14c8"
+    },
+    {
+      "upstream": "mm/iob/iob_add_queue.c",
+      "path": "os/mm/iob/iob_add_queue.c",
+      "sha256": "bedc518536b8f1d1c8731c6ce7552d2d755d97eb234eee8481316c8353df6e3d"
+    },
+    {
+      "upstream": "mm/iob/iob_alloc.c",
+      "path": "os/mm/iob/iob_alloc.c",
+      "sha256": "7c795a996d081535957779432ee343a47780013cf904a09254fbdf43dfb5bf8a"
+    },
+    {
+      "upstream": "mm/iob/iob_alloc_qentry.c",
+      "path": "os/mm/iob/iob_alloc_qentry.c",
+      "sha256": "bb3703a9a74200342c9f55dc483719949c0ac60b11ae2c6d2371adcc54c48fe3"
+    },
+    {
+      "upstream": "mm/iob/iob_clone.c",
+      "path": "os/mm/iob/iob_clone.c",
+      "sha256": "0044f2eabbfa7a0b27bdee777b2e224746bc5866a156993cb6de5541df50d26a"
+    },
+    {
+      "upstream": "mm/iob/iob_concat.c",
+      "path": "os/mm/iob/iob_concat.c",
+      "sha256": "ff97cbdec659cc4fd355eacbe9eb33b3f98bb9be300acbd936305eb82685cb49"
+    },
+    {
+      "upstream": "mm/iob/iob_contig.c",
+      "path": "os/mm/iob/iob_contig.c",
+      "sha256": "fc00797f100a33e3d3ca542143c3c14b949be65836efa99f7c60e57142256535"
+    },
+    {
+      "upstream": "mm/iob/iob_copyin.c",
+      "path": "os/mm/iob/iob_copyin.c",
+      "sha256": "2e5f668b40c74e1cf3c35cd82d4370ba02b7c30606b388f5f3927c4b10514056"
+    },
+    {
+      "upstream": "mm/iob/iob_copyout.c",
+      "path": "os/mm/iob/iob_copyout.c",
+      "sha256": "1e6516bf2c0283d593224dc40ee4434f5edc52ae29eaa5e974189e4facb31e32"
+    },
+    {
+      "upstream": "mm/iob/iob_count.c",
+      "path": "os/mm/iob/iob_count.c",
+      "sha256": "fefc3271e6b62997b8d992d943bef15ca60f0e5829c3e9e1ee465b50b4820c93"
+    },
+    {
+      "upstream": "mm/iob/iob_dump.c",
+      "path": "os/mm/iob/iob_dump.c",
+      "sha256": "221eb688f3daf26ecef5180cb56e105206db7186c974fd4d5910bdbaea960f23"
+    },
+    {
+      "upstream": "mm/iob/iob_free.c",
+      "path": "os/mm/iob/iob_free.c",
+      "sha256": "46dd66df3017e98961cb43dcd715c897bd72f1519ec518e31accff126398d0a7"
+    },
+    {
+      "upstream": "mm/iob/iob_free_chain.c",
+      "path": "os/mm/iob/iob_free_chain.c",
+      "sha256": "c21f202d280f37affa8453033b2511c5c74e88b13165a71f56ffd6c632021830"
+    },
+    {
+      "upstream": "mm/iob/iob_free_qentry.c",
+      "path": "os/mm/iob/iob_free_qentry.c",
+      "sha256": "f1f9bb6a5e14946fd4a60fae5b93dda15d5d68d2cf805c884f2b2f8d01510ff5"
+    },
+    {
+      "upstream": "mm/iob/iob_free_queue.c",
+      "path": "os/mm/iob/iob_free_queue.c",
+      "sha256": "bf1ac92afc0715643ae22dedb4718dbfc5b0245b1b1290540fa047385985a096"
+    },
+    {
+      "upstream": "mm/iob/iob_free_queue_qentry.c",
+      "path": "os/mm/iob/iob_free_queue_qentry.c",
+      "sha256": "dbe19417c3709cc5f171c84dbeb4fed120e32eb32607f9a56ea324b076d4b7a8"
+    },
+    {
+      "upstream": "mm/iob/iob_get_queue_info.c",
+      "path": "os/mm/iob/iob_get_queue_info.c",
+      "sha256": "f8e805f4e5e37374f4770de6410f02afb88698e007410cfc35bf116c3432558b"
+    },
+    {
+      "upstream": "mm/iob/iob_initialize.c",
+      "path": "os/mm/iob/iob_initialize.c",
+      "sha256": "55f4fb4852035030e679c39f0022d8c5e2b3240c1178abe3d407e50f270954a6"
+    },
+    {
+      "upstream": "mm/iob/iob_navail.c",
+      "path": "os/mm/iob/iob_navail.c",
+      "sha256": "7bf37734727315eaba570c947ee4dcf70af6954fff053ffe155cc5e3ad304f61"
+    },
+    {
+      "upstream": "mm/iob/iob_notifier.c",
+      "path": "os/mm/iob/iob_notifier.c",
+      "sha256": "6617657467764e31e7477af564a233760a0f445129ba83cfc365121096df3f89"
+    },
+    {
+      "upstream": "mm/iob/iob_pack.c",
+      "path": "os/mm/iob/iob_pack.c",
+      "sha256": "88dbcf137e8610169223248bdb16fda6316bfc7d8f042fcac376eff873c376f7"
+    },
+    {
+      "upstream": "mm/iob/iob_peek_queue.c",
+      "path": "os/mm/iob/iob_peek_queue.c",
+      "sha256": "c0d6680892636130907fecb226ac1151617d03b52da9bd4f6eff629b858e9ed3"
+    },
+    {
+      "upstream": "mm/iob/iob_remove_queue.c",
+      "path": "os/mm/iob/iob_remove_queue.c",
+      "sha256": "b2f1e3a1081ec0bd9fcae8d39f0ed2a955e40464fdf7a90df96a7deaabf05dd0"
+    },
+    {
+      "upstream": "mm/iob/iob_reserve.c",
+      "path": "os/mm/iob/iob_reserve.c",
+      "sha256": "bb37284e2c5c9392c881cea56e5721a2655dd05e08373b117f43efd5910197b8"
+    },
+    {
+      "upstream": "mm/iob/iob_statistics.c",
+      "path": "os/mm/iob/iob_statistics.c",
+      "sha256": "12d7d3f8dce0af4b377a1c4a9106980bdac03000c7e9f3d026089abe3681b39c"
+    },
+    {
+      "upstream": "mm/iob/iob_tailroom.c",
+      "path": "os/mm/iob/iob_tailroom.c",
+      "sha256": "722dd44963740cb02550a8393408ba4ad28cb8fbac17667cd9ae9b85183d0631"
+    },
+    {
+      "upstream": "mm/iob/iob_test.c",
+      "path": "os/mm/iob/iob_test.c",
+      "sha256": "35482ce5e8cc801680e9d8523991ec8df408a4b216f661530cd9339e707e9748"
+    },
+    {
+      "upstream": "mm/iob/iob_trimhead.c",
+      "path": "os/mm/iob/iob_trimhead.c",
+      "sha256": "537385f5492a865dac304cd766b88ccdde6be1f2f65ea08daaafc6cbb15b0c7a"
+    },
+    {
+      "upstream": "mm/iob/iob_trimhead_queue.c",
+      "path": "os/mm/iob/iob_trimhead_queue.c",
+      "sha256": "40319aa2c17a6b9ef929dfa46d1b5923b8be57fcd25692c8c6cfd02db47269a0"
+    },
+    {
+      "upstream": "mm/iob/iob_trimtail.c",
+      "path": "os/mm/iob/iob_trimtail.c",
+      "sha256": "6e089df8905acad9afcb809d80e1ae43acd1f11f21ae638b0ca290fe5d538d77"
+    },
+    {
+      "upstream": "mm/iob/iob_update_pktlen.c",
+      "path": "os/mm/iob/iob_update_pktlen.c",
+      "sha256": "b29eed3701221caf40c1a32c5f0853eba950652e5992dbba9a422111d45792c2"
+    },
+    {
+      "upstream": "mm/kasan/CMakeLists.txt",
+      "path": "os/mm/kasan/CMakeLists.txt",
+      "sha256": "4fa416f07bc9c2b2b72f4f3e55e056c9c97226cef1a3f6e1379351ccaefab3ef"
+    },
+    {
+      "upstream": "mm/kasan/Kconfig",
+      "path": "os/mm/kasan/Kconfig",
+      "sha256": "ad8672c0655c5b69e4fa89b83c2113cb1ef0c31a41058f3829d3dd5fac1da563"
+    },
+    {
+      "upstream": "mm/kasan/Make.defs",
+      "path": "os/mm/kasan/Make.defs",
+      "sha256": "5e445e2260b07bc4759d4754be3eda63bde98f50bbcf077e89af34b3d6339d9c"
+    },
+    {
+      "upstream": "mm/kasan/generic.c",
+      "path": "os/mm/kasan/generic.c",
+      "sha256": "118da7905df81a7d54ffb956d2177c632f4ff1e41b7d2b6fdeb7106d4d0541f6"
+    },
+    {
+      "upstream": "mm/kasan/global.c",
+      "path": "os/mm/kasan/global.c",
+      "sha256": "5f794089be76ea9dd200d4cd602288b07b5308eb0bfd36cc8e700c153d1f5adb"
+    },
+    {
+      "upstream": "mm/kasan/hook.c",
+      "path": "os/mm/kasan/hook.c",
+      "sha256": "560f1a56d84341eda8848accf4028ece89ca8779465cf100455f1b0e08dc5ed1"
+    },
+    {
+      "upstream": "mm/kasan/hw_tags.c",
+      "path": "os/mm/kasan/hw_tags.c",
+      "sha256": "d82b0f07663d9ab86037e126fe0277e4ce62465c33569bfedc331a314bbdea10"
+    },
+    {
+      "upstream": "mm/kasan/sw_tags.c",
+      "path": "os/mm/kasan/sw_tags.c",
+      "sha256": "a3eb34fa91e9294aa8b14261ce6ee3e63ab15e38c992039df3c11fe89258728a"
+    },
+    {
+      "upstream": "mm/kmap/CMakeLists.txt",
+      "path": "os/mm/kmap/CMakeLists.txt",
+      "sha256": "cf0e613c4dcc9108e7bffd8e365e17e5a67b6a760beb8538685a99998e605c3d"
+    },
+    {
+      "upstream": "mm/kmap/Make.defs",
+      "path": "os/mm/kmap/Make.defs",
+      "sha256": "86a7f473693c04d1088a79214c292925540837fbe9a72ceff7f9ce4da1bed536"
+    },
+    {
+      "upstream": "mm/kmap/kmm_map.c",
+      "path": "os/mm/kmap/kmm_map.c",
+      "sha256": "a2bd0b4287a98a54afd415c465f3a5a13bedba221cd5eb95b6f184e16956a6dc"
+    },
+    {
+      "upstream": "mm/kmm_heap/CMakeLists.txt",
+      "path": "os/mm/kmm_heap/CMakeLists.txt",
+      "sha256": "681553f97abed3eabc124cd58a3ce53a28f802f7d3ed70aac47c8a139c6ec8e0"
+    },
+    {
+      "upstream": "mm/kmm_heap/Make.defs",
+      "path": "os/mm/kmm_heap/Make.defs",
+      "sha256": "fa4dd0c1c59f7f42263c678c4e1b62b3955d84b47d35355c5e4a2d2aef7e80a6"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_addregion.c",
+      "path": "os/mm/kmm_heap/kmm_addregion.c",
+      "sha256": "533eb265c230b0358edf57e780ceed415e232281f3375a819d10a5d93a152781"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_brkaddr.c",
+      "path": "os/mm/kmm_heap/kmm_brkaddr.c",
+      "sha256": "d1d8d85045b1994cfe184988055605e43a54fb7923fc327344563ca4fbd4de4b"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_calloc.c",
+      "path": "os/mm/kmm_heap/kmm_calloc.c",
+      "sha256": "d38379790b88e82ebd0b04292bb76df19b8fde91df1289fb705f56a0433c0334"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_checkcorruption.c",
+      "path": "os/mm/kmm_heap/kmm_checkcorruption.c",
+      "sha256": "888470c3b01cc2a27620b5d3da56b0927e96f56c78ec2aab218e23bc9763fea3"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_extend.c",
+      "path": "os/mm/kmm_heap/kmm_extend.c",
+      "sha256": "74df25f4065834c41f98947f145800df7681d06b6d2362facc89d6bcdfa384b2"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_free.c",
+      "path": "os/mm/kmm_heap/kmm_free.c",
+      "sha256": "48aa9e3578e2ddd0aa9764d4f773eac694f2b35beeb9ba0156a8c1e8134e3d9b"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_heapmember.c",
+      "path": "os/mm/kmm_heap/kmm_heapmember.c",
+      "sha256": "ac464b915d68cd02a19f7e8c48979e6150546ba3a9302c72bf3c41d220dcfe4f"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_initialize.c",
+      "path": "os/mm/kmm_heap/kmm_initialize.c",
+      "sha256": "62abb1341184ba3e6203923b0c9be0185d719edc690734bfdbec28df44e91194"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_mallinfo.c",
+      "path": "os/mm/kmm_heap/kmm_mallinfo.c",
+      "sha256": "cc69d440266fb94f6781c0c1f1592fbad549474284ca6ed5051b15965f173902"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_malloc.c",
+      "path": "os/mm/kmm_heap/kmm_malloc.c",
+      "sha256": "0415757b1995460b12e1032ae0f5574e665fb43afc7e52c77541f3695a04baca"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_malloc_size.c",
+      "path": "os/mm/kmm_heap/kmm_malloc_size.c",
+      "sha256": "987af3aa42f62bc7ac63e7d24655b4e74630a4ca628acbdb5f8178383f8b9bec"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_memalign.c",
+      "path": "os/mm/kmm_heap/kmm_memalign.c",
+      "sha256": "1c0db403c4c941bba18ac1258c7f4b434d267e80d21a19a8b7a5157e5e34698f"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_memdump.c",
+      "path": "os/mm/kmm_heap/kmm_memdump.c",
+      "sha256": "0e5127b4e4e7e64402c2954785d9932904a7ff96a6ec25014c42065378dec7af"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_realloc.c",
+      "path": "os/mm/kmm_heap/kmm_realloc.c",
+      "sha256": "f6886dccd3a5564f5b6dd534cfd97bd67a34e2c5b6f024efcdaba81f08a5493f"
+    },
+    {
+      "upstream": "mm/kmm_heap/kmm_zalloc.c",
+      "path": "os/mm/kmm_heap/kmm_zalloc.c",
+      "sha256": "20f25fd5f278982ebd162cb82c44a7a363fd7c4bcf1e9f12a97190ab9ec0e488"
+    },
+    {
+      "upstream": "mm/map/CMakeLists.txt",
+      "path": "os/mm/map/CMakeLists.txt",
+      "sha256": "917c99ae751068c9258690226a7a2b3b0f6f815e497e9bef50ef9d0d1a16178e"
+    },
+    {
+      "upstream": "mm/map/Make.defs",
+      "path": "os/mm/map/Make.defs",
+      "sha256": "51e43aff7903dde1563cb5939cddcbb7fb5bab8a98787a15ddef6fd60f01e420"
+    },
+    {
+      "upstream": "mm/map/mm_map.c",
+      "path": "os/mm/map/mm_map.c",
+      "sha256": "08305dc01041040d019e455340a857afa3f0fb4d14e008277f777349453d4727"
+    },
+    {
+      "upstream": "mm/map/vm_region.c",
+      "path": "os/mm/map/vm_region.c",
+      "sha256": "305a51ef81debd1f089ffafd1e9ca2f89d07b3c5dba3bd42726c77020f7b5a9a"
+    },
+    {
+      "upstream": "mm/mempool/CMakeLists.txt",
+      "path": "os/mm/mempool/CMakeLists.txt",
+      "sha256": "423e0330a3d12c14dbb4c0e367424592b47e4a7d62ed6cdf7df9ec393d370543"
+    },
+    {
+      "upstream": "mm/mempool/Make.defs",
+      "path": "os/mm/mempool/Make.defs",
+      "sha256": "dca89899fc68d952b5ee7b122a8a09c2a931319cfe62a0e199778986dd848fd4"
+    },
+    {
+      "upstream": "mm/mempool/mempool.c",
+      "path": "os/mm/mempool/mempool.c",
+      "sha256": "5a6cda0efd9c8e618a56c028d12635ce5aaf3f506abf3b92af3abab048ab9c59"
+    },
+    {
+      "upstream": "mm/mempool/mempool_multiple.c",
+      "path": "os/mm/mempool/mempool_multiple.c",
+      "sha256": "123cd090aca445eaaef1b93a9798d2fa455ba9dceb6598a62c2cadc3baf8c3f9"
+    },
+    {
+      "upstream": "mm/mempool/mempool_procfs.c",
+      "path": "os/mm/mempool/mempool_procfs.c",
+      "sha256": "f6eb38b3b09c9bfea34bc55a3276613ccf99823071e41ef20f0e649aa41567e5"
+    },
+    {
+      "upstream": "mm/mm_gran/CMakeLists.txt",
+      "path": "os/mm/mm_gran/CMakeLists.txt",
+      "sha256": "b73b48cc39e196079f789d615965c194200056d3ff9710c6807e86dfa076ba8a"
+    },
+    {
+      "upstream": "mm/mm_gran/Make.defs",
+      "path": "os/mm/mm_gran/Make.defs",
+      "sha256": "8421333c00b7f62dc2647fabba2ccb0b188df292459792d5a8c17cf0c4dd9a63"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_gran.h",
+      "path": "os/mm/mm_gran/mm_gran.h",
+      "sha256": "51db674ccb396e56bb7da2a9b072565c04abd8fe04f13af5083eb733288eea3b"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_granalloc.c",
+      "path": "os/mm/mm_gran/mm_granalloc.c",
+      "sha256": "206134e63ad2f2fa047cb50d75f5b2d224e82dc12aa9c4db5f8328a1e8442995"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_grancritical.c",
+      "path": "os/mm/mm_gran/mm_grancritical.c",
+      "sha256": "75cb19b57927be1effb1e9e2eb8755e834a4754944b9198750e8d378e5b13142"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_granfree.c",
+      "path": "os/mm/mm_gran/mm_granfree.c",
+      "sha256": "ffd226c0f0b766b95f7f5a9d44275e3ad41989a1c0c7dbdcda96b9aa66bfe043"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_graninfo.c",
+      "path": "os/mm/mm_gran/mm_graninfo.c",
+      "sha256": "94fce81c08be44a7dfa8b2617fd81ff1cdfc3b3cec952e3189a95af42eacbe71"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_graninit.c",
+      "path": "os/mm/mm_gran/mm_graninit.c",
+      "sha256": "3b0a1128663231a4acc9124a47a8ef3ab6a6ae714d0d9ff8264d5e74db36e2b1"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_granrelease.c",
+      "path": "os/mm/mm_gran/mm_granrelease.c",
+      "sha256": "56deeff5a45a011b1a1834f62f3f36d53029d953907894c307f3f8ac8b39a5d5"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_granreserve.c",
+      "path": "os/mm/mm_gran/mm_granreserve.c",
+      "sha256": "b5d54f91a85fbe04acf20797f3b453684015a8b8124e9dd11f931b381701603d"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_grantable.c",
+      "path": "os/mm/mm_gran/mm_grantable.c",
+      "sha256": "d9b630b9da1ff40225ba399708571cf33119c1b50e33835051b0831c3597fe2f"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_grantable.h",
+      "path": "os/mm/mm_gran/mm_grantable.h",
+      "sha256": "e4137ee09164d0efd175379ad83f378004ec8e9f373312fd4bc2b8f594608790"
+    },
+    {
+      "upstream": "mm/mm_gran/mm_pgalloc.c",
+      "path": "os/mm/mm_gran/mm_pgalloc.c",
+      "sha256": "b713c9f5d4254d2f26b301dde92b49d83b7e4119c9d0fe1ab72da7f0796ca443"
+    },
+    {
+      "upstream": "mm/mm_heap/CMakeLists.txt",
+      "path": "os/mm/mm_heap/CMakeLists.txt",
+      "sha256": "cae04aafd94cfa2447deffae4109308534fc04175cdcbd107744f2dc2fc1fd0f"
+    },
+    {
+      "upstream": "mm/mm_heap/Make.defs",
+      "path": "os/mm/mm_heap/Make.defs",
+      "sha256": "b2eb0843f50d85d8fbf4b582569345d118cdce680fcc9a7e1152fce457424724"
+    },
+    {
+      "upstream": "mm/mm_heap/mm.h",
+      "path": "os/mm/mm_heap/mm.h",
+      "sha256": "62d631f97ead7921c0c16af137a940b464043a5ed60ffa3ecc78a12316c155ca"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_brkaddr.c",
+      "path": "os/mm/mm_heap/mm_brkaddr.c",
+      "sha256": "a2ff8d871fe0f1073af6bb57a17948f3d36dc9c8e5e2ee1652bec1002cb967bd"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_calloc.c",
+      "path": "os/mm/mm_heap/mm_calloc.c",
+      "sha256": "c4fec733aee477a75404c5863714563f5cdbead1dca0136e8753655cbb5cdfd6"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_checkcorruption.c",
+      "path": "os/mm/mm_heap/mm_checkcorruption.c",
+      "sha256": "91bfcfdbcc9efcfce7f18bb32e45a1ed8d9c5a8920cb5fc2c7039a96adae13e8"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_extend.c",
+      "path": "os/mm/mm_heap/mm_extend.c",
+      "sha256": "6bc9d6c50215071ec009e3ae98bb639691457bcfdb16587209063db51df22783"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_foreach.c",
+      "path": "os/mm/mm_heap/mm_foreach.c",
+      "sha256": "45e607647b2ddb0e04661c2b5693fcf035cef06ec820a12f607e291735a4aa91"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_free.c",
+      "path": "os/mm/mm_heap/mm_free.c",
+      "sha256": "da37b1f7c38492464b75e660b0df5e9b0fa2c2e8faf3af707c6e27d44264034a"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_heapmember.c",
+      "path": "os/mm/mm_heap/mm_heapmember.c",
+      "sha256": "2e38beb38989937212353b7f3bf63beb3719ff0fcb6dd8e75aa9d2c1a38a7336"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_initialize.c",
+      "path": "os/mm/mm_heap/mm_initialize.c",
+      "sha256": "c8b169e6347e06cf67506c1261f21ee9b5286cd14d37aa431edfc9696b9d75e6"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_lock.c",
+      "path": "os/mm/mm_heap/mm_lock.c",
+      "sha256": "c8609f3467f267bc92f7905923a4d788267415015270d61f3aad6ab2a701a37b"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_mallinfo.c",
+      "path": "os/mm/mm_heap/mm_mallinfo.c",
+      "sha256": "c877c2e3cbb28c02c8cc72f85dcd41beb708dfd1b4dd1030193e74545f9598fc"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_malloc.c",
+      "path": "os/mm/mm_heap/mm_malloc.c",
+      "sha256": "2e79f4118c02283b8fa54626ea4c8f3e4e47a5935d2c4d399145e14fb0b64fe1"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_malloc_size.c",
+      "path": "os/mm/mm_heap/mm_malloc_size.c",
+      "sha256": "b24f271ebae2d5c9b536617669d9dc9519c89e2c6bcf9c4ef8d8bd0eaad9bdee"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_memalign.c",
+      "path": "os/mm/mm_heap/mm_memalign.c",
+      "sha256": "8ac31cabfed2a2b62464de3299e6c85c720991f1fd724f01d1c1496506ebec4e"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_memdump.c",
+      "path": "os/mm/mm_heap/mm_memdump.c",
+      "sha256": "e07932f3cf03694c172d40ba612ab1ae78a03a385769711f441f90d571f6d636"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_realloc.c",
+      "path": "os/mm/mm_heap/mm_realloc.c",
+      "sha256": "4b1118ddfc9ce053dfb2020d2988c226f8089f96bc6a5480b64ed3ac4ac6adef"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_shrinkchunk.c",
+      "path": "os/mm/mm_heap/mm_shrinkchunk.c",
+      "sha256": "e28c7e4aa44b8957c7a5e94e441c06474c186e28a22db1d6330604e9ddecd80f"
+    },
+    {
+      "upstream": "mm/mm_heap/mm_zalloc.c",
+      "path": "os/mm/mm_heap/mm_zalloc.c",
+      "sha256": "6ce70aae4c6776b19ac709b55ed9716ae4f27fe8582c3ff854c372daee0fc14d"
+    },
+    {
+      "upstream": "mm/shm/CMakeLists.txt",
+      "path": "os/mm/shm/CMakeLists.txt",
+      "sha256": "0e9f733d300451b134ae5304cec45c15a2bf01c8a88d481732b5061cb0d23232"
+    },
+    {
+      "upstream": "mm/shm/Make.defs",
+      "path": "os/mm/shm/Make.defs",
+      "sha256": "2bc849b00c295bc9f543d1e2068afa0402ffbeae70cb6374075a8de099e634cf"
+    },
+    {
+      "upstream": "mm/shm/shm.h",
+      "path": "os/mm/shm/shm.h",
+      "sha256": "613a292d150aec27354c53ba198c600b912fc9b3d5313bf13bfc78b7137da010"
+    },
+    {
+      "upstream": "mm/shm/shmat.c",
+      "path": "os/mm/shm/shmat.c",
+      "sha256": "1d8fb5ce28bfe0653e3027e012b2c8d6f6976a5942123ac6f2b069d1b490a783"
+    },
+    {
+      "upstream": "mm/shm/shmctl.c",
+      "path": "os/mm/shm/shmctl.c",
+      "sha256": "79e5d93052e287401b1506ab53a431f57d91a419110d12938661da53ce6345aa"
+    },
+    {
+      "upstream": "mm/shm/shmdt.c",
+      "path": "os/mm/shm/shmdt.c",
+      "sha256": "bbf8ea80dd15aca47a2ed5a41e3c5df768d9664f0141d8dd2febd7f19961e34c"
+    },
+    {
+      "upstream": "mm/shm/shmget.c",
+      "path": "os/mm/shm/shmget.c",
+      "sha256": "daee1d4e9c89397131eefd2d3648922a3a8e67506d9f172ad4855688d0aec6c2"
+    },
+    {
+      "upstream": "mm/tlsf/.gitignore",
+      "path": "os/mm/tlsf/.gitignore",
+      "sha256": "6d499418fbbce1fa8d303ccf9d96f8dc6b9963689257db53b3d3fbb51cd6b8a3"
+    },
+    {
+      "upstream": "mm/tlsf/0001-Add-TLSF_API-and-tlsf_printf.patch",
+      "path": "os/mm/tlsf/0001-Add-TLSF_API-and-tlsf_printf.patch",
+      "sha256": "957187a29764e3928c31894d55ba2f888e14b22a9b9f5fb3e0ebcbcbd25eda22"
+    },
+    {
+      "upstream": "mm/tlsf/0002-Define-_DEBUG-to-0-if-not-done-yet.patch",
+      "path": "os/mm/tlsf/0002-Define-_DEBUG-to-0-if-not-done-yet.patch",
+      "sha256": "63ae6524c76ce508d1ca6e837c374c84188cf1f278b40456f733ec8e9a28d7bf"
+    },
+    {
+      "upstream": "mm/tlsf/0003-Support-customize-FL_INDEX_MAX-to-reduce-the-memory-.patch",
+      "path": "os/mm/tlsf/0003-Support-customize-FL_INDEX_MAX-to-reduce-the-memory-.patch",
+      "sha256": "6300bd2d984d99da81d5f8850b04d938f5ad88c301ff54563d643d299d3c8d11"
+    },
+    {
+      "upstream": "mm/tlsf/0004-Add-tlsf_extend_pool-function.patch",
+      "path": "os/mm/tlsf/0004-Add-tlsf_extend_pool-function.patch",
+      "sha256": "5eb5f224058a3ee00f4d2c5740742b321e4716987b276825d78641d2212cf11f"
+    },
+    {
+      "upstream": "mm/tlsf/0005-Fix-warnining-on-implicit-pointer-conversion.patch",
+      "path": "os/mm/tlsf/0005-Fix-warnining-on-implicit-pointer-conversion.patch",
+      "sha256": "811b8d90f93b02541a17976bc9233a5d9ea9aa4a0a1fd7dafe3b90f160a48cef"
+    },
+    {
+      "upstream": "mm/tlsf/CMakeLists.txt",
+      "path": "os/mm/tlsf/CMakeLists.txt",
+      "sha256": "f4a47d94bcda11fa09b31e499a6000566de875de5373ccf002c7bde55865daa9"
+    },
+    {
+      "upstream": "mm/tlsf/Make.defs",
+      "path": "os/mm/tlsf/Make.defs",
+      "sha256": "2339705ee2f2f3419a004fad704009bb61f84c213d0965a3768d572bec567825"
+    },
+    {
+      "upstream": "mm/tlsf/mm_tlsf.c",
+      "path": "os/mm/tlsf/mm_tlsf.c",
+      "sha256": "b236d389ae3a615d4a9a8d5ab2e5a27e3ff40963ffb8b5a4ce5fd70c3ed378fa"
+    },
+    {
+      "upstream": "mm/ubsan/CMakeLists.txt",
+      "path": "os/mm/ubsan/CMakeLists.txt",
+      "sha256": "ea572706afba0528bd2b65d6eb1e2d341335d9f6b1abe445efdefff7a3d39f77"
+    },
+    {
+      "upstream": "mm/ubsan/Make.defs",
+      "path": "os/mm/ubsan/Make.defs",
+      "sha256": "1b01570b83387dbd91d7a50b2c9a76a206ef21daf10706e02b70402b14ee2bdb"
+    },
+    {
+      "upstream": "mm/ubsan/ubsan.c",
+      "path": "os/mm/ubsan/ubsan.c",
+      "sha256": "33de587b3abbabbd4afd37c2287f5ec4966dfc522f58c52c324c3c7b49ceb5d6"
+    },
+    {
+      "upstream": "mm/ubsan/ubsan.h",
+      "path": "os/mm/ubsan/ubsan.h",
+      "sha256": "de3f11978b000fb4d5efb5486bf1f14f18625897b96669d54751520074db5ad0"
+    },
+    {
+      "upstream": "mm/umm_heap/CMakeLists.txt",
+      "path": "os/mm/umm_heap/CMakeLists.txt",
+      "sha256": "d35e732adc337a8f73ba6f678b79c5ba8eddd8a4d11113a9eb7f8e9908a03b28"
+    },
+    {
+      "upstream": "mm/umm_heap/Make.defs",
+      "path": "os/mm/umm_heap/Make.defs",
+      "sha256": "3e6b2dd1cad282b729f1bd758ae9febc72348a8ba1bf2fc05988c9a07fd1dd0f"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_addregion.c",
+      "path": "os/mm/umm_heap/umm_addregion.c",
+      "sha256": "a5767290b40629542bcbd8e093a0f8f1de7e428f3ed48acde4c723ef4df7e34a"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_brkaddr.c",
+      "path": "os/mm/umm_heap/umm_brkaddr.c",
+      "sha256": "134e5375d864458f7c20ad40e00dfd7ac38cdea99a0f92161605642e1bbba751"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_calloc.c",
+      "path": "os/mm/umm_heap/umm_calloc.c",
+      "sha256": "b20fc6cd622de3f03497f140a61788065b61995edf8d39828ff218b527cdbb27"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_checkcorruption.c",
+      "path": "os/mm/umm_heap/umm_checkcorruption.c",
+      "sha256": "5f004a556dceaea35deb4b43cbaa801297cd11f91784eb4002bb0677a214ae3e"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_extend.c",
+      "path": "os/mm/umm_heap/umm_extend.c",
+      "sha256": "1f2d74e201b920e3e3e84b35fabc977417e891ed9bf3bd96dce122878a029b32"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_free.c",
+      "path": "os/mm/umm_heap/umm_free.c",
+      "sha256": "770f33e9b53adab8bb905da7e64091bebd8376c6128aefad75db751502e0e8e4"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_globals.c",
+      "path": "os/mm/umm_heap/umm_globals.c",
+      "sha256": "eecef4d75c919eccdc23853a2eb617b7723d5d08cf1429d665cc392a1ea09c86"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_heap.h",
+      "path": "os/mm/umm_heap/umm_heap.h",
+      "sha256": "f445bb0ce552d93cdb194fd9e31e00762e967c20261e8303bbec9d2729eff560"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_heapmember.c",
+      "path": "os/mm/umm_heap/umm_heapmember.c",
+      "sha256": "7f3a77c4323ff8f1c743de68f251a1434193f6064e48147cd0a4fa174e0cf32f"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_initialize.c",
+      "path": "os/mm/umm_heap/umm_initialize.c",
+      "sha256": "79ce0ad669e187d6aa074612da2ee8b71b2efcf343d487892f0ac89471def237"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_mallinfo.c",
+      "path": "os/mm/umm_heap/umm_mallinfo.c",
+      "sha256": "30bb413c488df57141b11f403b6c43a50ca445e5ba8a0a10f6e88da71bdfd39a"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_malloc.c",
+      "path": "os/mm/umm_heap/umm_malloc.c",
+      "sha256": "48281ed5a80c5ae045641a70596587026cbfe6094dfe1e658f97154621d0d6dd"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_malloc_size.c",
+      "path": "os/mm/umm_heap/umm_malloc_size.c",
+      "sha256": "e28f1991af07cfa897ea1d50493c3388c96f9d7dc20037f98b58ece6c84bc4f2"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_memalign.c",
+      "path": "os/mm/umm_heap/umm_memalign.c",
+      "sha256": "31d5dd135502c02b17be35a45705abe5025385623679a22c40f40e8e10dae247"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_memdump.c",
+      "path": "os/mm/umm_heap/umm_memdump.c",
+      "sha256": "1fa3bbc19337e79cf7f0edb9894f8a3317b6427c5b94103e92e52368669f77a8"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_realloc.c",
+      "path": "os/mm/umm_heap/umm_realloc.c",
+      "sha256": "649b1acfee85a8ecbe29f3a6e16f46f171a61023c86b2d9983a7ffee5d98aa33"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_sbrk.c",
+      "path": "os/mm/umm_heap/umm_sbrk.c",
+      "sha256": "c6b570086e76551f0bb27fae9de5f613feb3ebb1d042acd9bd34c7fdeae9baaf"
+    },
+    {
+      "upstream": "mm/umm_heap/umm_zalloc.c",
+      "path": "os/mm/umm_heap/umm_zalloc.c",
+      "sha256": "ab107d18ed3d046a1649ffb5f50ba1533526f3cd43cc9851184275893a3a6d49"
+    },
+    {
+      "upstream": "LICENSE",
+      "path": "os/mm/UPSTREAM_LICENSE",
+      "sha256": "9e55334f4cd333f08b2d4a76a233ff88f2b198b616ef189ccafa827dc12ed59e"
+    },
+    {
+      "upstream": "NOTICE",
+      "path": "os/mm/UPSTREAM_NOTICE",
+      "sha256": "1f6ac972692c4f94fe4b904590654aeb795ff08efd9799427c2358fb568814bb"
+    }
+  ],
+  "deviations": {}
+}
