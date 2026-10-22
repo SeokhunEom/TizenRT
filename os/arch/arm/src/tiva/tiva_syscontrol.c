@@ -332,16 +332,20 @@ void tiva_clockconfig(uint32_t newrcc, uint32_t newrcc2)
 #endif
 	}
 #else
+	/* Divider and PLL settings must also change when the selected
+	 * oscillators are already enabled (as at LM3S QEMU reset).
+	 */
+
+	/* Temporarily bypass the PLL and system clock dividers */
+
+	rcc |= SYSCON_RCC_BYPASS;
+	rcc &= ~(SYSCON_RCC_USESYSDIV);
+	putreg32(rcc, TIVA_SYSCON_RCC);
+
+	rcc2 |= SYSCON_RCC2_BYPASS2;
+	putreg32(rcc2, TIVA_SYSCON_RCC2);
+
 	if (((rcc & SYSCON_RCC_MOSCDIS) != 0 && (newrcc & SYSCON_RCC_MOSCDIS) == 0) || ((rcc & SYSCON_RCC_IOSCDIS) != 0 && (newrcc & SYSCON_RCC_IOSCDIS) == 0)) {
-		/* Temporarily bypass the PLL and system clock dividers */
-
-		rcc |= SYSCON_RCC_BYPASS;
-		rcc &= ~(SYSCON_RCC_USESYSDIV);
-		putreg32(rcc, TIVA_SYSCON_RCC);
-
-		rcc2 |= SYSCON_RCC2_BYPASS2;
-		putreg32(rcc2, TIVA_SYSCON_RCC2);
-
 		/* Enable any selected oscillators (but don't disable any yet) */
 
 		rcc &= (~RCC_OSCMASK | (newrcc & RCC_OSCMASK));
@@ -353,62 +357,62 @@ void tiva_clockconfig(uint32_t newrcc, uint32_t newrcc2)
 		 */
 
 		tiva_oscdelay(rcc, rcc2);
-
-		/* Set the new crystal value, oscillator source and PLL configuration */
-
-		rcc &= ~RCC_XTALMASK;
-		rcc |= (newrcc & RCC_XTALMASK);
-
-		rcc2 &= ~RCC2_XTALMASK;
-		rcc2 |= (newrcc2 & RCC2_XTALMASK);
-
-		/* Clear the PLL lock interrupt */
-
-		putreg32(SYSCON_MISC_PLLLMIS, TIVA_SYSCON_MISC);
-
-		/* Write the new RCC/RCC2 values.
-		 *
-		 * Original LM3S Logic: Order depends upon whether RCC2 or RCC is
-		 * currently enabled.
-		 */
-
-		putreg32(rcc, TIVA_SYSCON_RCC);
-		putreg32(rcc2, TIVA_SYSCON_RCC2);
-
-		/* Wait for the new crystal value and oscillator source to take effect */
-
-		tiva_delay(16);
-
-		/* Set the requested system divider and disable the non-selected osciallators */
-
-		rcc &= ~RCC_DIVMASK;
-		rcc |= (newrcc & RCC_DIVMASK);
-
-		rcc2 &= ~RCC2_DIVMASK;
-		rcc2 |= (newrcc2 & RCC2_DIVMASK);
-
-		/* Will the PLL output be used to clock the system? */
-
-		if ((newrcc & SYSCON_RCC_BYPASS) == 0) {
-			/* Yes, wait until the PLL is locked */
-
-			tiva_pll_lock();
-
-			/* Then enable the PLL */
-
-			rcc &= ~SYSCON_RCC_BYPASS;
-			rcc2 &= ~SYSCON_RCC2_BYPASS2;
-		}
-
-		/* Now we can set the final RCC/RCC2 values */
-
-		putreg32(rcc, TIVA_SYSCON_RCC);
-		putreg32(rcc2, TIVA_SYSCON_RCC2);
-
-		/* Wait for the system divider to be effective */
-
-		tiva_delay(6);
 	}
+
+	/* Set the new crystal value, oscillator source and PLL configuration */
+
+	rcc &= ~RCC_XTALMASK;
+	rcc |= (newrcc & RCC_XTALMASK);
+
+	rcc2 &= ~RCC2_XTALMASK;
+	rcc2 |= (newrcc2 & RCC2_XTALMASK);
+
+	/* Clear the PLL lock interrupt */
+
+	putreg32(SYSCON_MISC_PLLLMIS, TIVA_SYSCON_MISC);
+
+	/* Write the new RCC/RCC2 values.
+	 *
+	 * Original LM3S Logic: Order depends upon whether RCC2 or RCC is
+	 * currently enabled.
+	 */
+
+	putreg32(rcc, TIVA_SYSCON_RCC);
+	putreg32(rcc2, TIVA_SYSCON_RCC2);
+
+	/* Wait for the new crystal value and oscillator source to take effect */
+
+	tiva_delay(16);
+
+	/* Set the requested system divider and disable the non-selected osciallators */
+
+	rcc &= ~RCC_DIVMASK;
+	rcc |= (newrcc & RCC_DIVMASK);
+
+	rcc2 &= ~RCC2_DIVMASK;
+	rcc2 |= (newrcc2 & RCC2_DIVMASK);
+
+	/* Will the PLL output be used to clock the system? */
+
+	if ((newrcc & SYSCON_RCC_BYPASS) == 0) {
+		/* Yes, wait until the PLL is locked */
+
+		tiva_pll_lock();
+
+		/* Then enable the PLL */
+
+		rcc &= ~SYSCON_RCC_BYPASS;
+		rcc2 &= ~SYSCON_RCC2_BYPASS2;
+	}
+
+	/* Now we can set the final RCC/RCC2 values */
+
+	putreg32(rcc, TIVA_SYSCON_RCC);
+	putreg32(rcc2, TIVA_SYSCON_RCC2);
+
+	/* Wait for the system divider to be effective */
+
+	tiva_delay(6);
 #endif
 }
 
