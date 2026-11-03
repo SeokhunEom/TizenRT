@@ -296,13 +296,13 @@ LogSilencer::LogSilencer() {
   internal::InitLogSilencerCountOnce();
   MutexLock lock(internal::log_silencer_count_mutex_);
   ++internal::log_silencer_count_;
-};
+}
 
 LogSilencer::~LogSilencer() {
   internal::InitLogSilencerCountOnce();
   MutexLock lock(internal::log_silencer_count_mutex_);
   --internal::log_silencer_count_;
-};
+}
 
 // ===================================================================
 // emulates google3/base/callback.cc
@@ -419,13 +419,13 @@ namespace internal {
 typedef void OnShutdownFunc();
 struct ShutdownData {
   ~ShutdownData() {
-    for (int i = 0; i < functions.size(); i++) {
+    for (size_t i = 0; i < functions.size(); i++) {
       functions[i]();
     }
-    for (int i = 0; i < strings.size(); i++) {
+    for (size_t i = 0; i < strings.size(); i++) {
       strings[i]->~string();
     }
-    for (int i = 0; i < messages.size(); i++) {
+    for (size_t i = 0; i < messages.size(); i++) {
       messages[i]->~MessageLite();
     }
   }

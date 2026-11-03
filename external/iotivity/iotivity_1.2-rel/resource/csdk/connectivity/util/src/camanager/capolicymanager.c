@@ -34,7 +34,7 @@
 
 #define TAG "OIC_CM_POLICY"
 
-static CMConfigureInfo_t g_configure = {.addr = NULL,
+static CMConfigureInfo_t g_configure = {.addr = {0},
                                         .adapter = CA_ADAPTER_IP,
                                         .level = NORMAL_SPEED};
 
@@ -46,19 +46,19 @@ void CMSetConfigure(CMConfigureInfo_t info)
     g_configure.level = info.level;
 }
 
-const char* CMGetTargetAddress()
+const char* CMGetTargetAddress(void)
 {
     OIC_LOG(DEBUG, TAG, "CMGetTargetAddress");
     return g_configure.addr;
 }
 
-CATransportAdapter_t CMGetAdapterType()
+CATransportAdapter_t CMGetAdapterType(void)
 {
     OIC_LOG(DEBUG, TAG, "CMGetAdapterType");
     return g_configure.adapter;
 }
 
-CMSpeedLevel_t CMGetSpeedOfResponseLevel()
+CMSpeedLevel_t CMGetSpeedOfResponseLevel(void)
 {
     OIC_LOG(DEBUG, TAG, "CMGetSpeedOfResponseLevel");
     return g_configure.level;

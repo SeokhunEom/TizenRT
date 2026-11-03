@@ -112,7 +112,7 @@ CAResult_t CAInitializeBlockWiseTransfer(CASendThreadFunc sendThreadFunc,
     return res;
 }
 
-CAResult_t CATerminateBlockWiseTransfer()
+CAResult_t CATerminateBlockWiseTransfer(void)
 {
     OIC_LOG(DEBUG, TAG, "CATerminateBlockWiseTransfer");
 
@@ -127,7 +127,7 @@ CAResult_t CATerminateBlockWiseTransfer()
     return CA_STATUS_OK;
 }
 
-CAResult_t CAInitBlockWiseMutexVariables()
+CAResult_t CAInitBlockWiseMutexVariables(void)
 {
     if (!g_context.blockDataListMutex)
     {
@@ -153,7 +153,7 @@ CAResult_t CAInitBlockWiseMutexVariables()
     return CA_STATUS_OK;
 }
 
-void CATerminateBlockWiseMutexVariables()
+void CATerminateBlockWiseMutexVariables(void)
 {
     if (g_context.blockDataListMutex)
     {
@@ -418,8 +418,8 @@ CAResult_t CAReceiveBlockWiseData(coap_pdu_t *pdu, const CAEndpoint_t *endpoint,
                 return CA_STATUS_FAILED;
             }
 
-            coap_block_t *block = CAGetBlockOption(blockDataID, data->type);
-            if (!block)
+            coap_block_t *local_block = CAGetBlockOption(blockDataID, data->type);
+            if (!local_block)
             {
                 OIC_LOG(ERROR, TAG, "block is null");
                 CADestroyBlockID(blockDataID);
@@ -429,7 +429,7 @@ CAResult_t CAReceiveBlockWiseData(coap_pdu_t *pdu, const CAEndpoint_t *endpoint,
             CAResult_t res = CA_STATUS_OK;
             if (COAP_OPTION_BLOCK2 == data->type)
             {
-                res = CASetNextBlockOption2(pdu, endpoint, receivedData, *block, dataLen);
+                res = CASetNextBlockOption2(pdu, endpoint, receivedData, *local_block, dataLen);
                 if (CA_STATUS_OK != res)
                 {
                     OIC_LOG(ERROR, TAG, "setting has failed");
@@ -439,7 +439,7 @@ CAResult_t CAReceiveBlockWiseData(coap_pdu_t *pdu, const CAEndpoint_t *endpoint,
             }
             else if (COAP_OPTION_BLOCK1 == data->type)
             {
-                res = CASetNextBlockOption1(pdu, endpoint, receivedData, *block, dataLen);
+                res = CASetNextBlockOption1(pdu, endpoint, receivedData, *local_block, dataLen);
                 if (CA_STATUS_OK != res)
                 {
                     OIC_LOG(ERROR, TAG, "setting has failed");
@@ -952,9 +952,9 @@ CAResult_t CASetNextBlockOption1(coap_pdu_t *pdu, const CAEndpoint_t *endpoint,
     else
     {
         // received message type is response
-        uint32_t code = CA_RESPONSE_CODE(pdu->transport_hdr->udp.code);
-        if (0 == block.m && (CA_REQUEST_ENTITY_INCOMPLETE != code
-                && CA_REQUEST_ENTITY_TOO_LARGE != code))
+        uint32_t local_code = CA_RESPONSE_CODE(pdu->transport_hdr->udp.code);
+        if (0 == block.m && (CA_REQUEST_ENTITY_INCOMPLETE != local_code
+                && CA_REQUEST_ENTITY_TOO_LARGE != local_code))
         {
             int isBlock2 = coap_get_block(pdu, COAP_OPTION_BLOCK2, &block);
             if (isBlock2)
@@ -1096,8 +1096,8 @@ CAResult_t CASetNextBlockOption2(coap_pdu_t *pdu, const CAEndpoint_t *endpoint,
                                                                           COAP_OPTION_SIZE2,
                                                                           &(data->payloadLength));
 
-            uint32_t code = CA_RESPONSE_CODE(pdu->transport_hdr->udp.code);
-            if (CA_REQUEST_ENTITY_INCOMPLETE != code && CA_REQUEST_ENTITY_TOO_LARGE != code)
+            uint32_t local_code = CA_RESPONSE_CODE(pdu->transport_hdr->udp.code);
+            if (CA_REQUEST_ENTITY_INCOMPLETE != local_code && CA_REQUEST_ENTITY_TOO_LARGE != local_code)
             {
                 // check if received payload is exact
                 blockWiseStatus = CACheckBlockErrorType(data, &block, receivedData,
@@ -2624,7 +2624,7 @@ CAResult_t CARemoveBlockDataFromList(const CABlockDataID_t *blockID)
     return CA_STATUS_OK;
 }
 
-CAResult_t CARemoveAllBlockDataFromList()
+CAResult_t CARemoveAllBlockDataFromList(void)
 {
     OIC_LOG(DEBUG, TAG, "CARemoveAllBlockDataFromList");
 
@@ -2800,7 +2800,7 @@ void CAResetBlockDataTTL(const CABlockDataID_t *blockID)
     oc_mutex_unlock(g_context.blockDataListMutex);
 }
 
-void CACheckAndDeleteTimedOutBlockData()
+void CACheckAndDeleteTimedOutBlockData(void)
 {
     coap_tick_t now;
     coap_ticks(&now);

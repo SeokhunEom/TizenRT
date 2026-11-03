@@ -859,7 +859,6 @@ static int async_irq_log_write(const char *fmt, va_list args)
 	uint16_t write_pos;
 	uint16_t read_pos;
 	uint16_t available;
-	uint16_t write_len;
 	uint32_t flags;
 
 	/* Check if initialized */
@@ -914,7 +913,6 @@ static int async_irq_log_write(const char *fmt, va_list args)
 	} else {
 		/* Wrap-around case */
 		uint16_t first_part = g_async_irq_log.buffer_size - write_pos;
-		uint16_t second_part = total_size - first_part;
 
 		if (first_part > msg_len) {
 			/* Message fits in first part, null terminator wraps */

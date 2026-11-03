@@ -1023,7 +1023,7 @@ static int ndp120_release(FAR struct audio_lowerhalf_s *dev)
 	return 0;
 }
 
-static void ndp120_interrupt_dispatch(int d)
+static void ndp120_interrupt_dispatch(void *d)
 {
 	struct ndp120_dev_s *priv = (struct ndp120_dev_s *)d;
 #ifdef CONFIG_PM
@@ -1158,7 +1158,7 @@ FAR struct audio_lowerhalf_s *ndp120_lowerhalf_initialize(FAR struct spi_dev_s *
 	DEBUGASSERT(ret == OK);
 #endif
 
-	priv->lower->attach(ndp120_interrupt_dispatch, priv);
+	priv->lower->attach(ndp120_interrupt_dispatch, (char *)priv);
 	return &priv->dev;
 }
 
@@ -2850,10 +2850,15 @@ errout_with_irq:
 	return ret;
 }
 
+static void ndp120_irq_worker(void *arg)
+{
+	(void)ndp120_irq_handler_work((struct ndp120_dev_s *)arg);
+}
+
 int ndp120_irq_handler(struct ndp120_dev_s *dev)
 {
 	/* add work to the work queue, dont enable interrupts until we handled this one compeltely */
-	return work_queue(HPWORK, &ndp120_work, ndp120_irq_handler_work, (void *)dev, 0);
+	return work_queue(HPWORK, &ndp120_work, ndp120_irq_worker, (void *)dev, 0);
 }
 
 int ndp120_set_sample_ready_int(struct ndp120_dev_s *dev, int on)

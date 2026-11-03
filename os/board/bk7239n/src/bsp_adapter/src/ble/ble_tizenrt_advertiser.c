@@ -801,7 +801,6 @@ int32_t bk_tr_ble_advertiser_set_multi_adv_data(uint8_t adv_handle, uint8_t *pda
         bk_tr_ble_advertiser_multi_adv_enable(adv_handle, 1);
     }
 
-end:;
     return ret;
 }
 
@@ -834,7 +833,6 @@ int32_t bk_tr_ble_advertiser_set_multi_resp_data(uint8_t adv_handle, uint8_t *pd
         bk_tr_ble_advertiser_multi_adv_enable(adv_handle, 1);
     }
 
-end:;
     return ret;
 }
 
@@ -1012,7 +1010,6 @@ int32_t bk_tr_ble_advertiser_set_multi_adv_interval(uint8_t adv_handle, unsigned
         bk_tr_ble_advertiser_multi_adv_enable(adv_handle, 1);
     }
 
-end:;
     return ret;
 }
 
@@ -1074,7 +1071,6 @@ int32_t bk_tr_ble_advertiser_one_shot_adv_init(void)
     }
 
     hal_ble_adv_env.oneshot_init = 1;
-end:;
     return ret;
 }
 
@@ -1090,7 +1086,6 @@ int32_t bk_tr_ble_advertiser_one_shot_adv_deinit(void)
 
     LOGD("");
     hal_ble_adv_env.oneshot_init = 0;
-end:;
     return ret;
 }
 

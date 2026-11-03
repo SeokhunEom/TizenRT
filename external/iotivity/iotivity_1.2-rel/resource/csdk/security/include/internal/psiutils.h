@@ -67,6 +67,6 @@ OCStackResult psiGetKey(unsigned char* key);
  * @brief It provides state to set key for encryption
  * @return ::true for setting key.
  */
-bool psiIsKeySet();
+bool psiIsKeySet(void);
 
 #endif //IOTVT_SRM_PSIUTILS_H

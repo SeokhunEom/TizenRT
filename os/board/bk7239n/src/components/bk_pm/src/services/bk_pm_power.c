@@ -428,7 +428,6 @@ int32_t bk_pm_module_power_state_get(pm_power_module_name_e module)
 
 void pm_check_power_on_module(uint32_t *pm_off_modules, uint32_t *pm_on_modules, uint64_t *pm_sleeped_modules)
 {
-	uint32_t off_modules = 0;
 
 	if (!(*pm_on_modules & ((0x1 << PM_POWER_MODULE_NAME_BTSP)))) // when the module not power on , set the module sleep state
 	{

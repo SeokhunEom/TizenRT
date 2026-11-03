@@ -33,7 +33,7 @@ void evalQuantized(const circle::Tensor *input1, const circle::Tensor *input2,
                    const circle::Tensor *output, const circle::AddOptions *options,
                    BaseRuntimeGraph *runtime_graph, DataType type, bool is_inplace)
 {
-  assert(type == DataType::S16 or type == DataType::S8 && "Wrong Type");
+  assert((type == DataType::S16 or type == DataType::S8) && "Wrong Type");
 
   luci_interpreter_pal::ArithmeticParams params{};
   luci_interpreter::RuntimeShape input_shape1 =

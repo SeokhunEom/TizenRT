@@ -21,7 +21,9 @@
 
 #include <tinyara/lcd/mipi_lcd.h>
 
-int send_init_cmd(struct mipi_lcd_dev_s *priv, lcm_setting_table_t *table);
+struct mipi_lcd_dev_s;
+
+int send_init_cmd(struct mipi_lcd_dev_s *priv, const lcm_setting_table_t *table);
 int set_return_packet_len(struct mipi_lcd_dev_s *priv, u8 rx_len);
 int read_response(struct mipi_lcd_dev_s *priv, lcm_setting_table_t command, u8 *rxbuf, u8 rx_len);
 

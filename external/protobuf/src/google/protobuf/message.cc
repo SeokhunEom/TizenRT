@@ -217,13 +217,13 @@ RepeatedField<TYPE>* Reflection::MutableRepeatedField<TYPE>(          \
       MutableRawRepeatedField(message, field, CPPTYPE, CTYPE, NULL)); \
 }
 
-HANDLE_TYPE(int32,  FieldDescriptor::CPPTYPE_INT32,  -1);
-HANDLE_TYPE(int64,  FieldDescriptor::CPPTYPE_INT64,  -1);
-HANDLE_TYPE(uint32, FieldDescriptor::CPPTYPE_UINT32, -1);
-HANDLE_TYPE(uint64, FieldDescriptor::CPPTYPE_UINT64, -1);
-HANDLE_TYPE(float,  FieldDescriptor::CPPTYPE_FLOAT,  -1);
-HANDLE_TYPE(double, FieldDescriptor::CPPTYPE_DOUBLE, -1);
-HANDLE_TYPE(bool,   FieldDescriptor::CPPTYPE_BOOL,   -1);
+HANDLE_TYPE(int32,  FieldDescriptor::CPPTYPE_INT32,  -1)
+HANDLE_TYPE(int64,  FieldDescriptor::CPPTYPE_INT64,  -1)
+HANDLE_TYPE(uint32, FieldDescriptor::CPPTYPE_UINT32, -1)
+HANDLE_TYPE(uint64, FieldDescriptor::CPPTYPE_UINT64, -1)
+HANDLE_TYPE(float,  FieldDescriptor::CPPTYPE_FLOAT,  -1)
+HANDLE_TYPE(double, FieldDescriptor::CPPTYPE_DOUBLE, -1)
+HANDLE_TYPE(bool,   FieldDescriptor::CPPTYPE_BOOL,   -1)
 
 
 #undef HANDLE_TYPE

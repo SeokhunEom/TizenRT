@@ -43,7 +43,7 @@ void wdt_hal_force_feed(void)
 	REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0xA5FFF0);
 }
 
-static inline void wdt_hal_nmi_reboot()
+static inline void wdt_hal_nmi_reboot(void)
 {
 	set_reboot_tag(REBOOT_TAG_REQ);
 	aon_pmu_drv_wdt_change_not_rosc_clk();

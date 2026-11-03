@@ -96,11 +96,11 @@ FAR struct spi_dev_s *amebad_spibus_initialize(int bus);
 
 void amebad_spi0select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool selected);
 uint8_t amebad_spi0status(FAR struct spi_dev_s *dev, enum spi_dev_e devid);
-int amebad_spi0cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd);
+int amebad_spi0cmddata(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool cmd);
 
 void amebad_spi1select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool selected);
 uint8_t amebad_spi1status(FAR struct spi_dev_s *dev, enum spi_dev_e devid);
-int amebad_spi1cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd);
+int amebad_spi1cmddata(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool cmd);
 
 /************************************************************************************
  * Name: amebad_spi1/2/...register

@@ -75,7 +75,7 @@ extern void delay_us(uint32_t us);
 extern void flush_all_dcache(void);
 #define DELAY_US(us)						  delay_us(us)
 __attribute__((section(".iram"))) void pm_delay_us(volatile uint32_t us);
-static __attribute__((section(".iram"))) uint64_t pm_get_current_tick();
+static __attribute__((section(".iram"))) uint64_t pm_get_current_tick(void);
 __attribute__((section(".iram"))) void pm_delay_us(volatile uint32_t us);
 
 #if defined(CONFIG_OTA_POSITION_INDEPENDENT_AB)
@@ -1431,7 +1431,7 @@ void sys_hal_enter_cpu_wfi()
 {
 	arch_sleep();
 }
-static __attribute__((section(".iram"))) uint64_t pm_get_current_tick()
+static __attribute__((section(".iram"))) uint64_t pm_get_current_tick(void)
 {
 	uint32_t low_tick   = aon_pmu_hal_rtc_tick_l_get();
 	uint32_t high_tick = aon_pmu_hal_rtc_tick_h_get()&0xF;
@@ -1464,8 +1464,6 @@ __attribute__((section(".iram"))) void sys_hal_enter_normal_sleep(uint32_t peri_
 	volatile uint32_t systick_val_before    = 0;
 	volatile uint32_t pwd_rom_value         = 0;
 
-	uint32_t systick_ticks_per_ms = 0;
-	uint32_t adjusted_val = 0;
 
 	clken_peri = sys_ll_get_cpu_device_clk_enable_value();
 	sys_ll_set_cpu_device_clk_enable_mac_cken(0);

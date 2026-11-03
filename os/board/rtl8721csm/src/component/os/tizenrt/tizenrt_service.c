@@ -43,7 +43,6 @@ struct _tizenrt_timer_entry {
 };
 
 static _list _tizenrt_timer_table;
-static u8 _tizenrt_timer_table_init = 0;
 static _mutex _tizenrt_timer_mutex = NULL;
 
 unsigned int save_and_cli(void)
@@ -928,7 +927,7 @@ _timerHandle _tizenrt_timerCreate(const signed char *pcTimerName, osdepTickType 
 	}
 
 	struct _tizenrt_timer_entry *timer_entry;
-	timer_entry = _tizenrt_zmalloc(sizeof(struct _tizenrt_timer_entry));
+	timer_entry = (struct _tizenrt_timer_entry *)_tizenrt_zmalloc(sizeof(struct _tizenrt_timer_entry));
 	if (timer_entry == NULL) {
 		kmm_free(timer->work_hdl);
 		kmm_free(timer);
@@ -1223,9 +1222,9 @@ void vTaskDelay(int ms)
 
 int rtw_printf(const char *format,...)
 {
-	va_list ap;
 	int ret = 0;
 #ifdef CONFIG_DEBUG_LWNL80211_VENDOR_DRV_INFO
+	va_list ap;
 	va_start(ap, format);
 #ifdef CONFIG_LOGM
 	ret = logm_internal(LOGM_NORMAL, LOGM_IDX, LOGM_INF, format, ap);

@@ -508,8 +508,9 @@ uint32_t bk_timer_get_enable_status(void)
 
 bool bk_timer_is_interrupt_triggered(timer_id_t timer_id)
 {
-    TIMER_RETURN_ON_NOT_INIT();
-    TIMER_RETURN_ON_INVALID_ID(timer_id);
+    if (!s_timer_driver_is_init || timer_id >= SOC_TIMER_CHAN_NUM_PER_UNIT) {
+        return false;
+    }
 
     TIMER_PM_CHECK_RESTORE(timer_id);
 

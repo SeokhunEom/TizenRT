@@ -280,7 +280,7 @@ static string CanonicalizePath(string path) {
   std::vector<string> canonical_parts;
   std::vector<string> parts = Split(
       path, "/", true);  // Note:  Removes empty parts.
-  for (int i = 0; i < parts.size(); i++) {
+  for (size_t i = 0; i < parts.size(); i++) {
     if (parts[i] == ".") {
       // Ignore.
     } else {
@@ -390,7 +390,7 @@ DiskSourceTree::DiskFileToVirtualFile(
   int mapping_index = -1;
   string canonical_disk_file = CanonicalizePath(disk_file);
 
-  for (int i = 0; i < mappings_.size(); i++) {
+  for (size_t i = 0; i < mappings_.size(); i++) {
     // Apply the mapping in reverse.
     if (ApplyMapping(canonical_disk_file, mappings_[i].disk_path,
                      mappings_[i].virtual_path, virtual_file)) {
@@ -456,7 +456,7 @@ io::ZeroCopyInputStream* DiskSourceTree::OpenVirtualFile(
     return NULL;
   }
 
-  for (int i = 0; i < mappings_.size(); i++) {
+  for (size_t i = 0; i < mappings_.size(); i++) {
     string temp_disk_file;
     if (ApplyMapping(virtual_file, mappings_[i].virtual_path,
                      mappings_[i].disk_path, &temp_disk_file)) {

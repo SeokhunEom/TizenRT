@@ -127,7 +127,7 @@ Status GetNanosFromStringPiece(StringPiece s_nanos,
     return Status(INVALID_ARGUMENT, exceeded_limit_message);
   }
   // s_nanos should only have digits. No whitespace.
-  if (s_nanos.find_first_not_of("0123456789") != StringPiece::npos) {
+  if (s_nanos.find_first_not_of("0123456789") >= 0) {
     return Status(INVALID_ARGUMENT, parse_failure_message);
   }
 
@@ -354,7 +354,7 @@ void ProtoStreamObjectWriter::AnyWriter::StartAny(const DataPiece& value) {
 
   // Now we know the proto type and can interpret all data fields we gathered
   // before the "@type" field.
-  for (int i = 0; i < uninterpreted_events_.size(); ++i) {
+  for (size_t i = 0; i < uninterpreted_events_.size(); ++i) {
     uninterpreted_events_[i].Replay(this);
   }
 }

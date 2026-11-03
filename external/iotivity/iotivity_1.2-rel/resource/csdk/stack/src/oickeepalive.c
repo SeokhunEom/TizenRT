@@ -114,13 +114,13 @@ static OCStackResult OCSendDisconnectMessage(const KeepAliveEntry_t *entry);
  * This function creates KeepAlive resource.
  * @return  ::OC_STACK_OK or Appropriate error code.
  */
-static OCStackResult OCCreateKeepAliveResource();
+static OCStackResult OCCreateKeepAliveResource(void);
 
 /**
  * This function deletes KeepAlive resource.
  * @return  ::OC_STACK_OK or Appropriate error code.
  */
-static OCStackResult OCDeleteKeepAliveResource();
+static OCStackResult OCDeleteKeepAliveResource(void);
 
 /**
  * API to handle the GET request received for a KeepAlive resource.
@@ -411,7 +411,7 @@ OCStackResult OCHandleKeepAliveResponse(const CAEndpoint_t *endPoint, const OCPa
     return OC_STACK_OK;
 }
 
-OCStackResult OCCreateKeepAliveResource()
+OCStackResult OCCreateKeepAliveResource(void)
 {
     OIC_LOG(DEBUG, TAG, "OCCreateKeepAliveResource IN");
 
@@ -438,7 +438,7 @@ OCStackResult OCCreateKeepAliveResource()
     return result;
 }
 
-OCStackResult OCDeleteKeepAliveResource()
+OCStackResult OCDeleteKeepAliveResource(void)
 {
     OIC_LOG(DEBUG, TAG, "OCDeleteKeepAliveResource IN");
 
@@ -605,7 +605,7 @@ OCEntityHandlerResult OCHandleKeepAlivePOSTRequest(OCServerRequest *request,
     return OC_EH_OK;
 }
 
-void OCProcessKeepAlive()
+void OCProcessKeepAlive(void)
 {
     oc_mutex_lock(g_mutexObjectList);
     KeepAliveEntry_t *entry = NULL;

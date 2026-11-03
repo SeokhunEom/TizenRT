@@ -421,7 +421,7 @@ void spin_clrbit(FAR volatile cpu_set_t *set, unsigned int cpu,
  ****************************************************************************/
 
 #if defined(CONFIG_SMP)
-irqstate_t spin_lock_irqsave(spinlock_t *lock);
+irqstate_t spin_lock_irqsave(volatile spinlock_t *lock);
 #else
 #  define spin_lock_irqsave(l) ((void)(l), irqsave())
 #endif
@@ -431,7 +431,7 @@ irqstate_t spin_lock_irqsave(spinlock_t *lock);
  ****************************************************************************/
 
 #if defined(CONFIG_SMP)
-irqstate_t spin_lock_irqsave_wo_note(spinlock_t *lock);
+irqstate_t spin_lock_irqsave_wo_note(volatile spinlock_t *lock);
 #else
 #  define spin_lock_irqsave_wo_note(l) ((void)(l), irqsave())
 #endif
@@ -466,7 +466,7 @@ irqstate_t spin_lock_irqsave_wo_note(spinlock_t *lock);
  ****************************************************************************/
 
 #if defined(CONFIG_SMP)
-void spin_unlock_irqrestore(spinlock_t *lock, irqstate_t flags);
+void spin_unlock_irqrestore(volatile spinlock_t *lock, irqstate_t flags);
 #else
 #  define spin_unlock_irqrestore(l, f) irqrestore(f)
 #endif
@@ -476,7 +476,7 @@ void spin_unlock_irqrestore(spinlock_t *lock, irqstate_t flags);
  ****************************************************************************/
 
 #if defined(CONFIG_SMP)
-void spin_unlock_irqrestore_wo_note(spinlock_t *lock, irqstate_t flags);
+void spin_unlock_irqrestore_wo_note(volatile spinlock_t *lock, irqstate_t flags);
 #else
 #  define spin_unlock_irqrestore_wo_note(l, f) irqrestore(f)
 #endif

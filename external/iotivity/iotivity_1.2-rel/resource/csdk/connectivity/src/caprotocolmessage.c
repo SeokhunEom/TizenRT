@@ -446,7 +446,7 @@ CAResult_t CAParseURI(const char *uriInfo, coap_list_t **optlist)
     return CA_STATUS_OK;
 }
 
-CAResult_t CAParseUriPartial(const unsigned char *str, size_t length, int target,
+CAResult_t CAParseUriPartial(const unsigned char *text, size_t length, int target,
                              coap_list_t **optlist)
 {
     VERIFY_NON_NULL(optlist, TAG, "optlist");
@@ -457,13 +457,13 @@ CAResult_t CAParseUriPartial(const unsigned char *str, size_t length, int target
         OIC_LOG(DEBUG, TAG, "Unexpected URI component.");
         return CA_NOT_SUPPORTED;
     }
-    else if (str && length)
+    else if (text && length)
     {
         unsigned char uriBuffer[CA_MAX_URI_LENGTH] = { 0 };
         unsigned char *pBuf = uriBuffer;
         size_t unusedBufferSize = sizeof(uriBuffer);
-        int res = (target == COAP_OPTION_URI_PATH) ? coap_split_path(str, length, pBuf, &unusedBufferSize) :
-                                                     coap_split_query(str, length, pBuf, &unusedBufferSize);
+        int res = (target == COAP_OPTION_URI_PATH) ? coap_split_path(text, length, pBuf, &unusedBufferSize) :
+                                                     coap_split_query(text, length, pBuf, &unusedBufferSize);
 
         if (res > 0)
         {

@@ -83,7 +83,6 @@ void gather(const circle::GatherOptions *options, kernels::TISOKernel *kernel)
     {
       for (int coord = 0; coord < coord_size; ++coord)
       {
-        auto x = coords_data[coord];
         std::memcpy(
           output_data + (((batch * outer_size) + outer) * coord_size + coord) * inner_size,
           input_data +

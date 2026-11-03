@@ -46,7 +46,7 @@ namespace util {
 namespace converter {
 
 using strings::ArrayByteSource;
-;
+
 
 JsonObjectWriter::~JsonObjectWriter() {
   if (!element_->is_root()) {

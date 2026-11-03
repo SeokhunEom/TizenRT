@@ -65,7 +65,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
     uint32_t num_dims = Tensor::num_dims(output);
     luci_interpreter::RuntimeShape dynamic_shape(num_dims);
     int32_t data_size = 1;
-    for (int i = 0; i < num_dims; ++i)
+    for (uint32_t i = 0; i < num_dims; ++i)
     {
       dynamic_shape.setDim(i, output_shape[i]);
       data_size *= output_shape[i];

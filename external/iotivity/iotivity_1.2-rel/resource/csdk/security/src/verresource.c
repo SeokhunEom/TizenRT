@@ -279,7 +279,7 @@ OCEntityHandlerResult VerEntityHandler(OCEntityHandlerFlag flag,
     return ehRet;
 }
 
-OCStackResult CreateVerResource()
+OCStackResult CreateVerResource(void)
 {
     OCStackResult ret = OCCreateResource(&gVerHandle,
                                          OIC_RSRC_TYPE_SEC_VER,
@@ -302,18 +302,18 @@ OCStackResult CreateVerResource()
  *
  * @return the version string of security.
  */
-const char* GetSecVersion()
+const char* GetSecVersion(void)
 {
     OIC_LOG(DEBUG, TAG, "GetSecVersion");
     return gVer.secv;
 }
 
-const OicSecVer_t* GetVerResourceData()
+const OicSecVer_t* GetVerResourceData(void)
 {
     return &gVer;
 }
 
-OCStackResult InitVerResource()
+OCStackResult InitVerResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -339,7 +339,7 @@ OCStackResult InitVerResource()
     return ret;
 }
 
-OCStackResult DeInitVerResource()
+OCStackResult DeInitVerResource(void)
 {
     OCStackResult ret = OCDeleteResource(gVerHandle);
 

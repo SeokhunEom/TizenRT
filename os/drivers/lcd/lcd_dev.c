@@ -88,7 +88,7 @@ struct lcd_s {
 #endif
 #if defined(CONFIG_LCD_FLUSH_THREAD)
 	uint8_t *lcd_kbuffer;
-	FAR const struct lcddev_area_s *lcd_area;
+	struct lcddev_area_s lcd_area;
 	sem_t flush_buffer_sem;
 	sem_t copy_buffer_sem;
 #endif
@@ -248,12 +248,21 @@ static int lcddev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 	break;
 	case LCDDEVIO_PUTAREA: {
 #if defined(CONFIG_LCD_FLUSH_THREAD)
-		sem_wait(&priv->copy_buffer_sem);
-		priv->lcd_area = (FAR const struct lcddev_area_s *)arg;
-		if (priv->planeinfo[priv->lcd_area->planeno].putarea) {
-			memcpy(priv->lcd_kbuffer, priv->lcd_area->data, CONFIG_LCD_XRES * CONFIG_LCD_YRES * sizeof(uint16_t));
+		while (sem_wait(&priv->copy_buffer_sem) != OK) {
+			if (errno != EINTR) {
+				ret = -errno;
+				break;
+			}
+		}
+		if (ret != OK) {
+			break;
+		}
+		priv->lcd_area = *(FAR const struct lcddev_area_s *)arg;
+		if (priv->planeinfo[priv->lcd_area.planeno].putarea) {
+			memcpy(priv->lcd_kbuffer, priv->lcd_area.data, CONFIG_LCD_XRES * CONFIG_LCD_YRES * sizeof(uint16_t));
 			sem_post(&priv->flush_buffer_sem);
 		} else {
+			sem_post(&priv->copy_buffer_sem);
 			ret = -ENOSYS;
 		}
 #else
@@ -385,11 +394,10 @@ static int lcddev_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 }
 
 #if defined(CONFIG_LCD_FLUSH_THREAD)
-static void lcd_flushing_thread(int argc, char **argv)
+static int lcd_flushing_thread(int argc, char **argv)
 {
-	int ret;
 	DEBUGASSERT(argc == 2);
-	FAR struct lcddev_area_s *lcd_area;
+	FAR const struct lcddev_area_s *lcd_area;
 	struct lcd_s *lcd_info = (struct lcd_s *)strtoul(argv[1], NULL, 16);
 	lcd_area = &(lcd_info->lcd_area);
 	while (true) {
@@ -403,7 +411,7 @@ static void lcd_flushing_thread(int argc, char **argv)
 		lcd_info->planeinfo[lcd_area->planeno].putarea(lcd_info->dev, lcd_area->row_start, lcd_area->row_end, lcd_area->col_start, lcd_area->col_end, lcd_info->lcd_kbuffer, row_size);
 		sem_post(&lcd_info->copy_buffer_sem);
 	}
-	return;
+	return OK;
 }
 #endif
 
@@ -493,7 +501,7 @@ int lcddev_register(struct lcd_dev_s *dev)
 	}
 
 	if (lcd_info->dev->getplaneinfo) {
-		lcd_info->dev->getplaneinfo(lcd_info->dev, 0, &lcd_info->planeinfo);	//plane no is taken 0 here
+		lcd_info->dev->getplaneinfo(lcd_info->dev, 0, &lcd_info->planeinfo[0]);	//plane no is taken 0 here
 		snprintf(devname, 16, "/dev/lcd0");
 		ret = register_driver(devname, &g_lcddev_fops, 0666, lcd_info);
 		if (ret == OK) {

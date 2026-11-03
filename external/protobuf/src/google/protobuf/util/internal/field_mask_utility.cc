@@ -72,7 +72,7 @@ string ConvertFieldMaskPath(const StringPiece path,
 
   // Loops until 1 passed the end of the input to make handling the last
   // segment easier.
-  for (size_t i = 0; i <= path.size(); ++i) {
+  for (stringpiece_ssize_type i = 0; i <= path.size(); ++i) {
     // Outputs quoted string as-is.
     if (is_quoted) {
       if (i == path.size()) {

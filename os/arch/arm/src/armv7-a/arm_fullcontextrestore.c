@@ -39,6 +39,7 @@
  * Included Files
  ****************************************************************************/
 #include <stdint.h>
+#include <assert.h>
 #include <tinyara/config.h>
 
 #include <syscall.h>
@@ -63,4 +64,8 @@
 void arm_fullcontextrestore(uint32_t *restoreregs)
 {
 	sys_call1(SYS_restore_context, (uintptr_t)restoreregs);
+	/* A successful context restore cannot return to this stack. */
+	PANIC();
+	for (;;) {
+	}
 }

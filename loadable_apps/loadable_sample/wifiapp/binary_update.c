@@ -609,14 +609,14 @@ static void binary_update_run_tests(void)
 	ret = binary_update_same_version_test(APP1_NAME);
 	if (ret != OK) {
 		printf("Same version test failed\n");
-		return ret;
+		return;
 	}
 
 	/* 3. Reload test with invalid binary. */
 	ret = binary_update_invalid_binary_test(APP1_NAME);
 	if (ret != OK) {
 		printf("Invalid binary test failed\n");
-		return ret;
+		return;
 	}
 
 	/* 4. Register a callack for changed state. */
@@ -626,7 +626,7 @@ static void binary_update_run_tests(void)
 	ret = binary_update_new_version_test(APP1_NAME);
 	if (ret != OK) {
 		printf("New version test failed\n");
-		return ret;
+		return;
 	}
 
 	/* 6. Unregister registered callback. */

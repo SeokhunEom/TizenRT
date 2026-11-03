@@ -29,33 +29,12 @@ int DeriveCryptoKeyFromPassword(const unsigned char *passwd, size_t pLen,
     const size_t iterations,
     const size_t keyLen, uint8_t *derivedKey)
 {
-    mbedtls_md_context_t sha_ctx;
-    const mbedtls_md_info_t *info_sha;
-    int ret = -1;
-
-    /* Setup the hash/HMAC function, for the PBKDF2 function. */
-    mbedtls_md_init(&sha_ctx);
-
-    info_sha = mbedtls_md_info_from_type(MBEDTLS_MD_SHA256);
-    if (info_sha == NULL)
-    {
-        OIC_LOG(ERROR, TAG, "Failed to get hash information");
-        return ret;
-    }
-
-    ret = mbedtls_md_setup(&sha_ctx, info_sha, 1);
-    if (ret != 0)
-    {
-        OIC_LOG(ERROR, TAG, "Failed to setup hash function");
-        return ret;
-    }
-
-    ret = mbedtls_pkcs5_pbkdf2_hmac(&sha_ctx, passwd, pLen, salt, saltLen, iterations, keyLen, derivedKey);
+    int ret = mbedtls_pkcs5_pbkdf2_hmac_ext(MBEDTLS_MD_SHA256, passwd, pLen,
+                                            salt, saltLen, iterations, keyLen, derivedKey);
     if (ret != 0)
     {
         OIC_LOG(ERROR, TAG, "Call to mbedtls PBKDF2 function failed");
     }
 
-    mbedtls_md_free(&sha_ctx);
     return ret;
 }

@@ -280,33 +280,33 @@ StatusOr<uint32> ProtoStreamObjectSource::RenderMap(
     int old_limit = stream_->PushLimit(buffer32);
     string map_key;
     for (uint32 tag = stream_->ReadTag(); tag != 0; tag = stream_->ReadTag()) {
-      const google::protobuf::Field* field =
+      const google::protobuf::Field* map_field =
           FindAndVerifyField(*field_type, tag);
-      if (field == NULL) {
+      if (map_field == NULL) {
         WireFormat::SkipField(stream_, tag, NULL);
         continue;
       }
-      // Map field numbers are key = 1 and value = 2
-      if (field->number() == 1) {
-        map_key = ReadFieldValueAsString(*field);
-      } else if (field->number() == 2) {
+      // Map map_field numbers are key = 1 and value = 2
+      if (map_field->number() == 1) {
+        map_key = ReadFieldValueAsString(*map_field);
+      } else if (map_field->number() == 2) {
         if (map_key.empty()) {
           // An absent map key is treated as the default.
           const google::protobuf::Field* key_field =
               FindFieldByNumber(*field_type, 1);
           if (key_field == NULL) {
             // The Type info for this map entry is incorrect. It should always
-            // have a field named "key" and with field number 1.
+            // have a map_field named "key" and with map_field number 1.
             return Status(util::error::INTERNAL, "Invalid map entry.");
           }
           ASSIGN_OR_RETURN(map_key, MapKeyDefaultValueAsString(*key_field));
           // Key is empty, force it to render as empty (for string values).
           ow->empty_name_ok_for_next_key();
         }
-        RETURN_IF_ERROR(RenderField(field, map_key, ow));
+        RETURN_IF_ERROR(RenderField(map_field, map_key, ow));
       } else {
         // The Type info for this map entry is incorrect. It should contain
-        // exactly two fields with field number 1 and 2.
+        // exactly two fields with map_field number 1 and 2.
         return Status(util::error::INTERNAL, "Invalid map entry.");
       }
     }

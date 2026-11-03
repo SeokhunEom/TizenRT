@@ -45,9 +45,9 @@ namespace converter {
 
 using google::protobuf::EnumDescriptor;
 using google::protobuf::EnumValueDescriptor;
-;
-;
-;
+
+
+
 using util::error::Code;
 using util::Status;
 using util::StatusOr;
@@ -60,8 +60,13 @@ inline Status InvalidArgument(StringPiece value_str) {
 
 template <typename To, typename From>
 StatusOr<To> ValidateNumberConversion(To after, From before) {
-  if (after == before &&
-      MathUtil::Sign<From>(before) == MathUtil::Sign<To>(after)) {
+  // Preserve the usual arithmetic conversions used by equality. Converting
+  // after back to From can overflow when an integer rounds up in a float.
+  typedef decltype(after + before) ComparisonType;
+  if (static_cast<ComparisonType>(after) ==
+          static_cast<ComparisonType>(before) &&
+      static_cast<ComparisonType>(MathUtil::Sign<From>(before)) ==
+          static_cast<ComparisonType>(MathUtil::Sign<To>(after))) {
     return after;
   } else {
     return InvalidArgument(::google::protobuf::internal::is_integral<From>::value

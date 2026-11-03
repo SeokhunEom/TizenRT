@@ -404,7 +404,7 @@ int binary_manager_mount_resource(void)
 #ifdef CONFIG_RESOURCE_BINARY_SIGNING
 			ret = mount(fs_devpath, RESOURCE_MOUNTPT, "romfs", MS_RDONLY, RESOURCE_HEADER_SIZE + USER_SIGN_PREPEND_SIZE);
 #else
-			ret = mount(fs_devpath, RESOURCE_MOUNTPT, "romfs", MS_RDONLY, RESOURCE_HEADER_SIZE);
+			ret = mount(fs_devpath, RESOURCE_MOUNTPT, "romfs", MS_RDONLY, (const void *)(uintptr_t)RESOURCE_HEADER_SIZE);
 #endif
 			if (ret == OK) {
 				/* Update inuse index and resource version */

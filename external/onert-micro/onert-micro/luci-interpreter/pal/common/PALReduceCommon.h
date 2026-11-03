@@ -81,7 +81,7 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
       return;
   }
 
-  for (size_t idx = 0; idx < output_flat_size; ++idx)
+  for (int idx = 0; idx < output_flat_size; ++idx)
   {
     output_data[idx] = init_value;
   }

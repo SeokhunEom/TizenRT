@@ -26,7 +26,7 @@ typedef struct lock {
     uint32_t int_level;
 } bk_lock_t;
 
-bk_lock_t* lock_init();
+bk_lock_t* lock_init(void);
 void lock_deinit(bk_lock_t* bk_lock);
 void lock(bk_lock_t* bk_lock);
 void unlock(bk_lock_t* bk_lock);

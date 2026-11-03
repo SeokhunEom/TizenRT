@@ -476,7 +476,7 @@ void wd_timer_nohz(clock_t ticks)
 	FAR struct wdog_s *wdog;
 	int decr;
 
-	for (wdog = g_wdactivelist.head; ticks > 0 && wdog; wdog = wdog->next) {
+	for (wdog = (struct wdog_s *)sq_peek(&g_wdactivelist); ticks > 0 && wdog; wdog = wdog->next) {
 
 		/* Decrement the lag for this watchdog. */
 

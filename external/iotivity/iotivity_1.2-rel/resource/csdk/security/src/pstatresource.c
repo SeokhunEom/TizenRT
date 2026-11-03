@@ -746,7 +746,7 @@ static OCEntityHandlerResult HandlePstatPostRequest(OCEntityHandlerRequest *ehRe
 /**
  * This internal method is used to create '/oic/sec/pstat' resource.
  */
- OCStackResult CreatePstatResource()
+ OCStackResult CreatePstatResource(void)
 {
     OCStackResult ret = OCCreateResource(&gPstatHandle,
                                          OIC_RSRC_TYPE_SEC_PSTAT,
@@ -770,12 +770,12 @@ static OCEntityHandlerResult HandlePstatPostRequest(OCEntityHandlerRequest *ehRe
  *
  * @return the gDefaultPstat pointer.
  */
-static OicSecPstat_t* GetPstatDefault()
+static OicSecPstat_t* GetPstatDefault(void)
 {
     return &gDefaultPstat;
 }
 
-OCStackResult InitPstatResource()
+OCStackResult InitPstatResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -827,7 +827,7 @@ exit:
     return ret;
 }
 
-OCStackResult DeInitPstatResource()
+OCStackResult DeInitPstatResource(void)
 {
     if (gPstat != &gDefaultPstat)
     {
@@ -841,7 +841,7 @@ OCStackResult DeInitPstatResource()
  * Function to restore pstat resurce to initial status.
  * This function will use in case of error while ownership transfer
  */
-void RestorePstatToInitState()
+void RestorePstatToInitState(void)
 {
     if(gPstat)
     {
@@ -905,7 +905,7 @@ exit:
  *
  * @return true iff pstat.isop == 1, else false
  */
-bool GetPstatIsop()
+bool GetPstatIsop(void)
 {
     return gPstat->isOp;
 }

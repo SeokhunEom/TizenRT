@@ -36,7 +36,7 @@
 static volatile spinlock_t dma_spin_lock = SPIN_LOCK_INIT;
 #endif // CONFIG_FREERTOS_SMP
 
-static inline uint32_t dma_enter_critical()
+static inline uint32_t dma_enter_critical(void)
 {
 	uint32_t flags = rtos_disable_int();
 

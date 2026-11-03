@@ -569,7 +569,6 @@ static int i2s_tx_worker_thread(int argc, FAR char *argv[])
 static void i2s_tx_schedule(struct amebasmart_i2s_s *priv, int result)
 {
 	struct amebasmart_buffer_s *bfcontainer;
-	int ret;
 
 	/* Upon entry, the transfer(s) that just completed are the ones in the
 	 * priv->tx.act queue.  NOTE: In certain conditions, this function may
@@ -1862,19 +1861,19 @@ errout:
  ****************************************************************************/
 struct i2s_dev_s *amebasmart_i2s_initialize(uint16_t port)
 {
-	struct amebasmart_i2s_config_s *hw_config_s = NULL;
+	const struct amebasmart_i2s_config_s *hw_config_s = NULL;
 	struct amebasmart_i2s_s *priv;
 	int ret;
 
 	/* Assign HW configuration */
 #ifdef CONFIG_AMEBASMART_I2S2
 	if (port == I2S_NUM_2) {
-		hw_config_s = (struct amebasmart_i2s_config_s *)&amebasmart_i2s2_config;
+		hw_config_s = &amebasmart_i2s2_config;
 	} else
 #endif
 #ifdef CONFIG_AMEBASMART_I2S3
 	if (port == I2S_NUM_3) {
-		hw_config_s = (struct amebasmart_i2s_config_s *)&amebasmart_i2s3_config;
+		hw_config_s = &amebasmart_i2s3_config;
 	} else 
 #endif
 	{
@@ -2009,7 +2008,7 @@ static void amebasmart_i2s_suspend(uint16_t port)
 
 static void amebasmart_i2s_resume(uint16_t port)
 {
-	struct amebasmart_i2s_config_s *hw_config_s;
+	const struct amebasmart_i2s_config_s *hw_config_s;
 	struct amebasmart_i2s_s *priv = g_i2sdevice[port];	/* The I2S structure should exist after system wakeup */
 	int ret;
 

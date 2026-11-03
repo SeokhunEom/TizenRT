@@ -886,7 +886,7 @@ bool Tokenizer::ParseInteger(const string& text, uint64 max_value,
       // token, but Tokenizer still think it's integer.
       return false;
     }
-    if (digit > max_value || result > (max_value - digit) / base) {
+    if (static_cast<uint64>(digit) > max_value || result > (max_value - digit) / base) {
       // Overflow.
       return false;
     }
@@ -916,7 +916,7 @@ double Tokenizer::ParseFloat(const string& text) {
     ++end;
   }
 
-  GOOGLE_LOG_IF(DFATAL, end - start != text.size() || *start == '-')
+  GOOGLE_LOG_IF(DFATAL, static_cast<size_t>(end - start) != text.size() || *start == '-')
     << " Tokenizer::ParseFloat() passed text that could not have been"
        " tokenized as a float: " << CEscape(text);
   return result;
@@ -1116,7 +1116,7 @@ void Tokenizer::ParseStringAppend(const string& text, string* output) {
 
 template<typename CharacterClass>
 static bool AllInClass(const string& s) {
-  for (int i = 0; i < s.size(); ++i) {
+  for (size_t i = 0; i < s.size(); ++i) {
     if (!CharacterClass::InClass(s[i]))
       return false;
   }

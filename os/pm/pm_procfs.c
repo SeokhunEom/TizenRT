@@ -165,7 +165,7 @@ static bool power_read_domain_snapshot(FAR const char *domain_name, FAR char *na
 
 static const struct power_path_template_s g_power_domain_dynamic_path_list[] = {
 	{
-		.name       = "info",      /* "/proc/power/domains/* /info" */
+		.name       = "info",      /* "/proc/power/domains/<domain>/info" */
 		.dtype      = DTYPE_FILE,
 		.read       = power_read_dynamic_domain_info,
 		.readdir    = NULL,
@@ -183,7 +183,7 @@ static const struct power_path_template_s g_power_domains_path_list[] = {
 		.children   = NULL
 	},
 	{
-		.name       = "*",        /* "/proc/power/domains/*" */
+		.name       = "*",        /* "/proc/power/domains/<domain>" */
 		.dtype      = DTYPE_DIRECTORY,
 		.read       = NULL,
 		.readdir    = power_readdir_common,
@@ -327,12 +327,12 @@ static void power_read_state(FAR struct power_file_s *priv, void (*readprint)(co
  *
  ****************************************************************************/
 
-static struct power_path_template_s *power_find_best_match(const char *relpath, const struct power_path_template_s *templates, struct power_path_priv_s *path_priv, struct procfs_dir_priv_s *proc_dir)
+static const struct power_path_template_s *power_find_best_match(const char *relpath, const struct power_path_template_s *templates, struct power_path_priv_s *path_priv, struct procfs_dir_priv_s *proc_dir)
 {
 	char domain_name[CONFIG_PM_DOMAIN_NAME_SIZE];
-	struct power_path_template_s *best_match = NULL;
-	struct power_path_template_s *curr_level_candidate = NULL;
-	struct power_path_template_s *child_matched_candidate = NULL;
+	const struct power_path_template_s *best_match = NULL;
+	const struct power_path_template_s *curr_level_candidate = NULL;
+	const struct power_path_template_s *child_matched_candidate = NULL;
 
 	/* Validate input parameters */
 	if (!relpath || !templates || !path_priv) {
@@ -342,7 +342,7 @@ static struct power_path_template_s *power_find_best_match(const char *relpath, 
 	size_t relpath_len = strlen(relpath);
 
 	/* Iterate through all templates at the current level */
-	for (struct power_path_template_s *current = templates; current && current->name; current++) {
+	for (const struct power_path_template_s *current = templates; current && current->name; current++) {
 		FAR const struct power_path_template_s *candidate = NULL;
 		size_t domain_len;
 
@@ -400,7 +400,7 @@ static struct power_path_template_s *power_find_best_match(const char *relpath, 
 			/* If this level is highest, set nentries. */
 			proc_dir->nentries = 0;
 
-			for (struct power_path_template_s *current = best_match->children; current && current->name; current++) {
+			for (const struct power_path_template_s *current = best_match->children; current && current->name; current++) {
 				const char *wildcard = strstr(current->name, "*");
 				if (wildcard) {
 					proc_dir->nentries += g_pmglobals.ndomains;

@@ -65,12 +65,12 @@ static struct CAIPCBData_t *g_adapterCallbackList = NULL;
 /**
  * Initialize the network interface monitoring list.
  */
-static CAResult_t CAIPInitializeNetworkMonitorList();
+static CAResult_t CAIPInitializeNetworkMonitorList(void);
 
 /**
  * Destroy the network interface monitoring list.
  */
-static void CAIPDestroyNetworkMonitorList();
+static void CAIPDestroyNetworkMonitorList(void);
 
 /**
  * Compare the interface with the already added interface in list.
@@ -98,7 +98,7 @@ static void CAIPPassNetworkChangesToAdapter(CANetworkStatus_t status);
 static CAInterface_t *CANewInterfaceItem(int index, const char *name, int family,
 										 const char *addr, int flags);
 
-static CAResult_t CAIPInitializeNetworkMonitorList()
+static CAResult_t CAIPInitializeNetworkMonitorList(void)
 {
 	if (!g_networkMonitorContextMutex) {
 		g_networkMonitorContextMutex = oc_mutex_new();
@@ -119,7 +119,7 @@ static CAResult_t CAIPInitializeNetworkMonitorList()
 	return CA_STATUS_OK;
 }
 
-static void CAIPDestroyNetworkMonitorList()
+static void CAIPDestroyNetworkMonitorList(void)
 {
 	if (g_netInterfaceList) {
 		u_arraylist_destroy(g_netInterfaceList);
@@ -291,7 +291,7 @@ static CAInterface_t *CANewInterfaceItem(int index, const char *name, int family
 	return ifitem;
 }
 
-u_arraylist_t *CAFindInterfaceChange()
+u_arraylist_t *CAFindInterfaceChange(void)
 {
 	u_arraylist_t *iflist = NULL;
 	lwnl_cb_status status;

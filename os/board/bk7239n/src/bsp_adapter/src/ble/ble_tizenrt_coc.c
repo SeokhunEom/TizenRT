@@ -373,7 +373,6 @@ int32_t bk_tr_ble_coc_notice_cb(ble_notice_t notice, void *param)
         break;
     }
 
-end:;
     return ret;
 }
 
@@ -517,7 +516,6 @@ int32_t bk_tr_ble_coc_set_param(bk_le_coc_param_type_t type, uint16_t value)
         break;
     }
 
-end:;
     return ret;
 }
 
@@ -589,7 +587,6 @@ int32_t bk_tr_ble_coc_connect(uint16_t conn_handle, uint16_t le_psm)
     LOGD("handle %d psm 0x%x", conn_handle, le_psm);
 
     ret = bk_ble_coc_connection_req(conn_handle, le_psm, s_ctb.local_mtu, 0, 0);
-end:;
     return ret;
 }
 
@@ -606,7 +603,6 @@ int32_t bk_tr_ble_coc_disconnect(uint16_t conn_handle, uint16_t cid)
     LOGD("conn_handle %d cid 0x%x", conn_handle, cid);
 
     ret = bk_ble_coc_disconnection_req(conn_handle, cid);
-end:;
     return ret;
 }
 
@@ -622,7 +618,6 @@ int32_t bk_tr_ble_coc_send_data(uint16_t conn_handle, uint16_t cid, uint16_t len
 
     LOGD("conn_handle %d cid 0x%x len %d", conn_handle, cid, len);
     ret = bk_ble_coc_send_req(conn_handle, cid, data, len);
-end:;
     return ret;
 }
 
@@ -655,6 +650,5 @@ int32_t bk_tr_ble_coc_deinit_private(void)
     }
 
     os_memset(&s_ctb, 0, sizeof(s_ctb));
-end:;
     return ret;
 }

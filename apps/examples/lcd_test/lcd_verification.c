@@ -29,8 +29,6 @@
 #define LCD_DEV_PATH "/dev/lcd%d"
 #define LCD_DEV_PORT 0
 #define SIZE 40
-static int xres;
-static int yres;
 // RGB565 helper macro
 #define RGB565(r, g, b) (((r & 0x1F) << 11) | ((g & 0x3F) << 5) | (b & 0x1F))
 
@@ -244,8 +242,6 @@ static void draw_line(int x0, int y0, int x1, int y1, uint16_t color, uint8_t *f
 void line_draw_test(int xres, int yres)
 {
 	int fd = 0;
-	int width = xres;
-	int height = yres;
 	char port[20] = {'\0'};
 	struct lcddev_area_s area;
 	snprintf(port, sizeof(port) / sizeof(port[0]), LCD_DEV_PATH, LCD_DEV_PORT);
@@ -297,7 +293,6 @@ void sliding_frame_test(int xres, int yres)
 	int step_size = 4;
 	struct lcddev_area_s area;
 	uint16_t red = RGB565(31, 0, 0);   // red
-	uint16_t green = RGB565(0, 63, 0); // green
 	uint16_t blue = RGB565(0, 0, 31);  // blue
 	snprintf(port, sizeof(port) / sizeof(port[0]), LCD_DEV_PATH, LCD_DEV_PORT);
 	fd = open(port, O_RDWR | O_SYNC, 0666);

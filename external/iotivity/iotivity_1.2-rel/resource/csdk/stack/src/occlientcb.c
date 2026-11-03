@@ -305,7 +305,7 @@ OCStackResult InsertResourceTypeFilter(ClientCB * cbNode, char * resourceTypeNam
 }
 #endif // WITH_PRESENCE
 
-void DeleteClientCBList()
+void DeleteClientCBList(void)
 {
     ClientCB* out;
     ClientCB* tmp;

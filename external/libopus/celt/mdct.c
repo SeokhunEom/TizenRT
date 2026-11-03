@@ -95,7 +95,7 @@ int clt_mdct_init(mdct_lookup *l,int N, int maxshift, int arch)
 #endif
 #else
       for (i=0;i<N2;i++)
-         trig[i] = (kiss_twiddle_scalar)cos(2*PI*(i+.125)/N);
+         trig[i] = (kiss_twiddle_scalar)cos(2*CELT_PI*(i+.125)/N);
 #endif
       trig += N2;
       N2 >>= 1;

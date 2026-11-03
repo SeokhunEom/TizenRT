@@ -32,14 +32,14 @@ extern "C" {
  *
  * @retval  OC_STACK_OK for Success, otherwise some error value
  */
-OCStackResult InitDpairingResource();
+OCStackResult InitDpairingResource(void);
 
 /**
  * Perform cleanup for DPAIRING resources.
  *
  * @retval  OC_STACK_OK for Success, otherwise some error value
  */
-OCStackResult DeInitDpairingResource();
+OCStackResult DeInitDpairingResource(void);
 
 /**
  * This method converts CBOR DPAIRING into binary DPAIRING.

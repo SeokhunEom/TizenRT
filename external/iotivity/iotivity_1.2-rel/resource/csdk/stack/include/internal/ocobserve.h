@@ -145,7 +145,7 @@ OCStackResult SendListObserverNotification (OCResource * resource,
 /**
  * Delete all observers in the observe list.
  */
-void DeleteObserverList();
+void DeleteObserverList(void);
 
 /**
  * Create a unique observation ID.

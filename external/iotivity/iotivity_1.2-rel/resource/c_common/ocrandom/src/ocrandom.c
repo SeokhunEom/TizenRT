@@ -127,7 +127,7 @@ int8_t OCSeedRandom(void)
     struct timespec getTs;
     clock_gettime(CLOCK_MONOTONIC, &getTs);
     currentTime = (getTs.tv_sec * (uint64_t)NANO_SEC + getTs.tv_nsec)/1000;
-#elif _WIN32
+#elif defined(_WIN32)
     LARGE_INTEGER count;
     if (QueryPerformanceCounter(&count)) {
         currentTime = count.QuadPart;

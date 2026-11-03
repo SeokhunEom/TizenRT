@@ -35,21 +35,21 @@ extern "C" {
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult InitDoxmResource();
+OCStackResult InitDoxmResource(void);
 
 /**
  * Perform cleanup for DOXM resources.
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult DeInitDoxmResource();
+OCStackResult DeInitDoxmResource(void);
 
 /**
  * This method is used by SRM to retrieve DOXM resource data..
  *
  * @return reference to @ref OicSecDoxm_t, binary format of Doxm resource data.
  */
-const OicSecDoxm_t* GetDoxmResourceData();
+const OicSecDoxm_t* GetDoxmResourceData(void);
 
 /**
  * This method converts CBOR DOXM into binary DOXM.
@@ -154,7 +154,7 @@ void DeleteDoxmBinData(OicSecDoxm_t* doxm);
  * Function to restore doxm resurce to initial status.
  * This function will use in case of error while ownership transfer
  */
-void RestoreDoxmToInitState();
+void RestoreDoxmToInitState(void);
 
 #if defined(__WITH_DTLS__) && defined(MULTIPLE_OWNER)
 /**

@@ -576,8 +576,8 @@ OCStackResult HandleSingleResponse(OCEntityHandlerResponse * ehResponse)
     responseInfo.info.tokenLength = serverRequest->tokenLength;
     if (serverRequest->observeResult == OC_STACK_OK)
     {
-        OCStackResult result = EntityHandlerCodeToOCStackCode(ehResponse->ehResult);
-        if (!OCResultToSuccess(result))
+        OCStackResult local_result = EntityHandlerCodeToOCStackCode(ehResponse->ehResult);
+        if (!OCResultToSuccess(local_result))
         {
             serverRequest->observeResult = OC_STACK_ERROR;
         }

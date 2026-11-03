@@ -192,7 +192,7 @@ OCStackResult InsertResourceTypeFilter(ClientCB * cbNode, char * resourceTypeNam
  * This method is used to clear the cbList.
  *
  */
-void DeleteClientCBList();
+void DeleteClientCBList(void);
 
 /** @ingroup ocstack
  *

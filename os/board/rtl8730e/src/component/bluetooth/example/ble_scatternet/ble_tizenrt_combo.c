@@ -40,7 +40,6 @@ extern int attr_counter;
 trble_le_coc_init_config le_coc_init_parm;
 rtk_bt_le_conn_ind_t *ble_tizenrt_scatternet_conn_ind = NULL;
 
-static void *bt_service_add_task_hdl = NULL;
 
 trble_result_e rtw_ble_combo_init(trble_client_init_config* init_client, trble_server_init_config* init_server)
 { 

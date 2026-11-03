@@ -977,7 +977,7 @@ hal_ble_conn_t * le_get_conn_info_ext(uint8_t conn_id)
                     &hal_ble_con_env.con_dev[conn_id];
 }
 
-T_GAP_CONN_INFO *le_get_conn_info_by_mac(uint8_t *mac, uint32_t *index)
+hal_ble_conn_t *le_get_conn_info_by_mac(uint8_t *mac, uint32_t *index)
 {
    for (uint32_t i = 0; i < sizeof(hal_ble_con_env.con_dev) / sizeof(hal_ble_con_env.con_dev[0]); ++i)
    {

@@ -96,7 +96,7 @@ __FLASH_BOOT_CODE uint32_t aon_pmu_hal_get_dpll_unlock(uint32_t *unlockL, uint32
 }
 
 /* Flash version for early boot (in FLASH) */
-__FLASH_BOOT_CODE uint32_t aon_pmu_hal_get_dpll_band_flash()
+__FLASH_BOOT_CODE uint32_t aon_pmu_hal_get_dpll_band_flash(void)
 {
 	return aon_pmu_ll_get_r7d_dpll_band();
 }
@@ -181,7 +181,7 @@ uint32_t aon_pmu_hal_bias_cal_get()
 	return aon_pmu_ll_get_r7e_cbcal();
 }
 
-__IRAM_SEC uint32_t aon_pmu_hal_band_cal_get()
+__IRAM_SEC uint32_t aon_pmu_hal_band_cal_get(void)
 {
 	return aon_pmu_ll_get_r7e_band_cal();
 }

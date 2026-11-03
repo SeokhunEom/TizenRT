@@ -53,7 +53,7 @@ static const struct file_operations compress_fops = {
 #endif
 };
 
-static struct file_decomp_data_s {
+struct file_decomp_data_s {
 	int fd;
 	struct s_header *compression_header;
 };

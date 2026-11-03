@@ -448,14 +448,14 @@ int bledev_handle(struct bledev *dev, lwnl_req cmd, void *data, uint32_t data_le
 	break;
 	case LWNL_REQ_BLE_GET_READ_WRITE_PENDING_CNT:
 	{
-		trble_operation_handle *handle = NULL;
+		trble_conn_handle *handle = NULL;
 		uint8_t *count = NULL;
 
 		lwnl_msg_params param = { 0, };
 		if (_copy_lwnl_msg_params(&param, data, data_len, 2, 0) != 0) {
 			return TRBLE_INVALID_ARGS;
 		}
-		handle = (trble_operation_handle *)param.param[0];
+		handle = (trble_conn_handle *)param.param[0];
 		count = (uint8_t *)param.param[1];
 
 		TRBLE_DRV_CALL(ret, dev, get_write_read_queue_cnt, (dev, handle, count));
@@ -940,7 +940,7 @@ int bledev_handle(struct bledev *dev, lwnl_req cmd, void *data, uint32_t data_le
 		}
 		uint8_t param_type = *(uint8_t *)param.param[0];
 		uint16_t cid = *(uint8_t *)param.param[1];
-		uint16_t *value = (uint8_t *)param.param[2];
+		uint16_t *value = (uint16_t *)param.param[2];
 		TRBLE_DRV_CALL(ret, dev, coc_get_param, (dev, param_type, cid, value));
 	}
 	break;
@@ -974,8 +974,8 @@ int bledev_handle(struct bledev *dev, lwnl_req cmd, void *data, uint32_t data_le
 		}
 		uint16_t cid = *(uint8_t *)param.param[0];
 		uint16_t len = *(uint8_t *)param.param[1];
-		uint8_t *data = (uint8_t *)param.param[2];
-		TRBLE_DRV_CALL(ret, dev, coc_send_data, (dev, cid, len, data));
+		uint8_t *payload = (uint8_t *)param.param[2];
+		TRBLE_DRV_CALL(ret, dev, coc_send_data, (dev, cid, len, payload));
 	}
 	break;
 	default:

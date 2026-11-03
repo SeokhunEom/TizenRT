@@ -42,8 +42,7 @@ AIFW_RESULT AIModelService::freeTimer(void)
 	if (mTimer) {
 		int status = sem_wait(&(mTimer->exitSemaphore));
 		if (status != 0) {
-			int error = errno;
-			AIFW_LOGE("ERROR sem_wait failed, errno=%d", error);
+			AIFW_LOGE("ERROR sem_wait failed, errno=%d", errno);
 			return AIFW_ERROR;
 		}
 		aifw_timer_result res = aifw_timer_destroy(mTimer);

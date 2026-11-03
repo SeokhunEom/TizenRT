@@ -279,7 +279,7 @@ bool CodedInputStream::ReadLittleEndian32Fallback(uint32* value) {
   uint8 bytes[sizeof(*value)];
 
   const uint8* ptr;
-  if (BufferSize() >= sizeof(*value)) {
+  if (BufferSize() >= static_cast<int>(sizeof(*value))) {
     // Fast path:  Enough bytes in the buffer to read directly.
     ptr = buffer_;
     Advance(sizeof(*value));
@@ -296,7 +296,7 @@ bool CodedInputStream::ReadLittleEndian64Fallback(uint64* value) {
   uint8 bytes[sizeof(*value)];
 
   const uint8* ptr;
-  if (BufferSize() >= sizeof(*value)) {
+  if (BufferSize() >= static_cast<int>(sizeof(*value))) {
     // Fast path:  Enough bytes in the buffer to read directly.
     ptr = buffer_;
     Advance(sizeof(*value));
@@ -413,7 +413,7 @@ int64 CodedInputStream::ReadVarint32Fallback(uint32 first_byte_or_zero) {
       (buffer_end_ > buffer_ && !(buffer_end_[-1] & 0x80))) {
     GOOGLE_DCHECK_NE(first_byte_or_zero, 0)
         << "Caller should provide us with *buffer_ when buffer is non-empty";
-    uint32 temp;
+    uint32 temp = 0;
     ::std::pair<bool, const uint8*> p =
           ReadVarint32FromArray(first_byte_or_zero, buffer_, &temp);
     if (!p.first) return -1;
@@ -423,7 +423,7 @@ int64 CodedInputStream::ReadVarint32Fallback(uint32 first_byte_or_zero) {
     // Really slow case: we will incur the cost of an extra function call here,
     // but moving this out of line reduces the size of this function, which
     // improves the common case. In micro benchmarks, this is worth about 10-15%
-    uint32 temp;
+    uint32 temp = 0;
     return ReadVarint32Slow(&temp) ? static_cast<int64>(temp) : -1;
   }
 }
@@ -491,7 +491,7 @@ uint32 CodedInputStream::ReadTagFallback(uint32 first_byte_or_zero) {
       ++buffer_;
       return 0;
     }
-    uint32 tag;
+    uint32 tag = 0;
     ::std::pair<bool, const uint8*> p =
         ReadVarint32FromArray(first_byte_or_zero, buffer_, &tag);
     if (!p.first) {
@@ -722,7 +722,7 @@ void CodedOutputStream::WriteAliasedRaw(const void* data, int size) {
 void CodedOutputStream::WriteLittleEndian32(uint32 value) {
   uint8 bytes[sizeof(value)];
 
-  bool use_fast = buffer_size_ >= sizeof(value);
+  bool use_fast = buffer_size_ >= static_cast<int>(sizeof(value));
   uint8* ptr = use_fast ? buffer_ : bytes;
 
   WriteLittleEndian32ToArray(value, ptr);
@@ -737,7 +737,7 @@ void CodedOutputStream::WriteLittleEndian32(uint32 value) {
 void CodedOutputStream::WriteLittleEndian64(uint64 value) {
   uint8 bytes[sizeof(value)];
 
-  bool use_fast = buffer_size_ >= sizeof(value);
+  bool use_fast = buffer_size_ >= static_cast<int>(sizeof(value));
   uint8* ptr = use_fast ? buffer_ : bytes;
 
   WriteLittleEndian64ToArray(value, ptr);

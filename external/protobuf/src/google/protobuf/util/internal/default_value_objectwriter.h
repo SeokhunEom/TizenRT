@@ -153,7 +153,7 @@ class LIBPROTOBUF_EXPORT DefaultValueObjectWriter : public ObjectWriter {
          bool preserve_proto_field_names,
          FieldScrubCallBack* field_scrub_callback);
     virtual ~Node() {
-      for (int i = 0; i < children_.size(); ++i) {
+      for (size_t i = 0; i < children_.size(); ++i) {
         delete children_[i];
       }
     }

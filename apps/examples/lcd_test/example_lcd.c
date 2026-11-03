@@ -356,10 +356,10 @@ static void release_frame_buffer(struct lcddev_area_s *area)
 	free(area->data);
 }
 
-static int prepare_frame_buffer(struct lcddev_area_s *area, uint16_t color, int xres, int yres)
+static int prepare_frame_buffer(struct lcddev_area_s *area, uint16_t color, int width, int height)
 {
 	size_t len;
-	len = xres * yres * 2 + 1;
+	len = width * height * 2 + 1;
 	uint8_t *lcd_data = (uint8_t *)malloc(len);
 	if (lcd_data == NULL) {
 		printf("malloc failed for lcd data : %d\n", len);
@@ -373,10 +373,10 @@ static int prepare_frame_buffer(struct lcddev_area_s *area, uint16_t color, int 
 
 	area->planeno = 0;
 	area->row_start = 0;
-	area->row_end = yres - 1;
+	area->row_end = height - 1;
 	area->col_start = 0;
-	area->col_end = xres - 1;
-	area->stride = 2 * xres;
+	area->col_end = width - 1;
+	area->stride = 2 * width;
 	area->data = lcd_data;
 
 	return OK;
@@ -512,7 +512,7 @@ bool is_valid_stress_test_arg(char *arg)
 	return true;
 }
 
-static void power_cycle_test(void)
+static int power_cycle_test(int argc, char **argv)
 {
 	int fd = 0;
 	char port[20] = { '\0' };
@@ -521,7 +521,7 @@ static void power_cycle_test(void)
 	fd = open(port, O_RDWR | O_SYNC, 0666);
 	if (fd < 0) {
 		printf("ERROR: Failed to open lcd port : %s error:%d\n", port, get_errno());
-		return;
+		return ERROR;
 	}
 	while (!g_terminate) {
 		if (ioctl(fd, LCDDEVIO_SETPOWER, power) < 0) {
@@ -537,9 +537,10 @@ static void power_cycle_test(void)
 	}
 cleanup:
 	close(fd);
+	return OK;
 }
 
-static void frame_change_test(void)
+static int frame_change_test(int argc, char **argv)
 {
 	int fd = 0;
 	int ret;
@@ -551,12 +552,12 @@ static void frame_change_test(void)
 	fd = open(port, O_RDWR | O_SYNC, 0666);
 	if (fd < 0) {
 		printf("ERROR: STRESS TEST, Failed to open lcd port : %s error:%d\n", port, get_errno());
-		return;
+		return ERROR;
 	}
 	if (ioctl(fd, LCDDEVIO_GETVIDEOINFO, (unsigned long)(uintptr_t)&vinfo) < 0) {
 		printf("Fail to call LCD GETVIDEOINFO(errno %d)", get_errno());
 		close(fd);
-		return;
+		return ERROR;
 	}
 	xres = vinfo.xres;
 	yres = vinfo.yres;
@@ -564,14 +565,14 @@ static void frame_change_test(void)
 	if (ret != OK) {
 		printf("ERROR: prepare_frame_buffer failed\n");
 		close(fd);
-		return;
+		return ERROR;
 	}
 	ret = prepare_frame_buffer(&area_blue, BLUE, xres, yres);
 	if (ret != OK) {
 		printf("ERROR: prepare_frame_buffer failed\n");
 		close(fd);
 		release_frame_buffer(&area_red);
-		return;
+		return ERROR;
 	}
 
 	bool is_red = true;
@@ -595,6 +596,7 @@ cleanup:
 	close(fd);
 	release_frame_buffer(&area_red);
 	release_frame_buffer(&area_blue);
+	return OK;
 }
 
 static int lcd_get_info(void)
@@ -662,7 +664,6 @@ static void stress_test(int num)
 
 int power_test(int power)
 {
-	int count = 0;
 	int fd = 0;
 	char port[20] = { '\0' };
 	snprintf(port, sizeof(port) / sizeof(port[0]), LCD_DEV_PATH, LCD_DEV_PORT);
@@ -697,8 +698,6 @@ static int lcd_verification_test(void)
 	}
 	xres = vinfo.xres;
 	yres = vinfo.yres;
-	uint16_t red = RGB565(31, 0, 0);   // red
-	uint16_t green = RGB565(0, 63, 0); // green
 	uint16_t blue = RGB565(0, 0, 31);  // blue
 	printf("Sliding frame test\n");
 	sliding_frame_test(xres, yres);

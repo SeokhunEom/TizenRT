@@ -168,7 +168,7 @@ TextFormat::ParseLocation TextFormat::ParseInfoTree::GetLocation(
 
   const std::vector<TextFormat::ParseLocation>* locations =
       FindOrNull(locations_, field);
-  if (locations == NULL || index >= locations->size()) {
+  if (locations == NULL || index < 0 || static_cast<size_t>(index) >= locations->size()) {
     return TextFormat::ParseLocation();
   }
 
@@ -182,7 +182,7 @@ TextFormat::ParseInfoTree* TextFormat::ParseInfoTree::GetTreeForNested(
 
   const std::vector<TextFormat::ParseInfoTree*>* trees =
       FindOrNull(nested_, field);
-  if (trees == NULL || index >= trees->size()) {
+  if (trees == NULL || index < 0 || static_cast<size_t>(index) >= trees->size()) {
     return NULL;
   }
 
@@ -1241,7 +1241,7 @@ class TextFormat::Printer::TextGenerator
       if (failed_) return;
     }
 
-    while (size > buffer_size_) {
+    while (size > static_cast<size_t>(buffer_size_)) {
       // Data exceeds space in the buffer.  Copy what we can and request a
       // new buffer.
       if (buffer_size_ > 0) {
@@ -1846,7 +1846,7 @@ void TextFormat::Printer::Print(const Message& message,
   if (print_message_fields_in_index_order_) {
     std::sort(fields.begin(), fields.end(), FieldIndexSorter());
   }
-  for (int i = 0; i < fields.size(); i++) {
+  for (size_t i = 0; i < fields.size(); i++) {
     PrintField(message, reflection, fields[i], generator);
   }
   if (!hide_unknown_fields_) {

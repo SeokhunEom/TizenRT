@@ -75,7 +75,7 @@ void bk_otp_driver_deinit(void)
 	return;
 }
 
-static void otp_sleep()
+static void otp_sleep(void)
 {
 #if defined(CONFIG_ATE_TEST)
 	return ;
@@ -83,7 +83,7 @@ static void otp_sleep()
 	otp_hal_power_off(&s_otp.hal);
 }
 
-static int otp_active()
+static int otp_active(void)
 {
 #if defined(CONFIG_ATE_TEST)
 	return 0;
@@ -121,12 +121,12 @@ static int switch_map(uint8_t map_id)
 #define OTP_ACTIVE(map_id) \
 	do { \
 		otp_lock();\
-		int ret = switch_map(map_id); \
-		if(ret != 0) { \
-			return ret;\
+		int activation_ret = switch_map(map_id); \
+		if(activation_ret != 0) { \
+			return activation_ret;\
 		} \
-		ret = otp_active(); \
-		if(ret != 0) { \
+		activation_ret = otp_active(); \
+		if(activation_ret != 0) { \
 			otp_sleep(); \
 			otp_map = NULL; \
 			return -1;\
@@ -159,12 +159,12 @@ static void _otp_write_otp(uint32_t location,uint32_t value)
 	otp_hal_write_otp(&s_otp.hal,location,value);
 }
 
-static uint32_t otp_read_status()
+static uint32_t otp_read_status(void)
 {
 	return otp_hal_read_status(&s_otp.hal);
 }
 
-static uint32_t otp_get_failcnt()
+static uint32_t otp_get_failcnt(void)
 {
 	return otp_hal_get_failcnt(&s_otp.hal);
 }

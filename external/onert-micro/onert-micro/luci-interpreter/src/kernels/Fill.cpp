@@ -26,7 +26,7 @@ namespace
 
 template <typename T> void fillImpl(const size_t flat_size, const T *value_data, T *output_data)
 {
-  for (int i = 0; i < flat_size; ++i)
+  for (size_t i = 0; i < flat_size; ++i)
   {
     output_data[i] = *value_data;
   }

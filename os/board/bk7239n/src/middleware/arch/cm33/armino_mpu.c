@@ -22,9 +22,10 @@
 #include "components/log.h"
 #include "components/system.h"
 
-#define MPU_MAX_REGION 16
+#define ARMINO_MPU_REGION_COUNT 16
+#define ARMINO_MPU_ATTRIBUTE_COUNT 8
 
-uint8_t mpu_entry_register[MPU_MAX_REGION];
+uint8_t mpu_entry_register[ARMINO_MPU_REGION_COUNT];
 
 
 void mpu_enable(void)
@@ -89,7 +90,7 @@ void mpu_set_mem_attr(uint8_t attr_idx, uint8_t mem_attr)
 	uint32_t mair_mask;
 	uint32_t bit_offset;
 
-	BK_ASSERT(attr_idx < MPU_MAX_REGION);
+	BK_ASSERT(attr_idx < ARMINO_MPU_ATTRIBUTE_COUNT);
 
 	mpu_disable();
 
@@ -119,7 +120,7 @@ void mpu_region_cfg(uint8_t region_num, mpu_region_config *pmpu_cfg)
 {
 	u32 region_limit = 0;
 
-	BK_ASSERT(region_num < MPU_MAX_REGION);
+	BK_ASSERT(region_num < ARMINO_MPU_REGION_COUNT);
 
 	if (pmpu_cfg->region_base & ~MPU_RBAR_BASE_Msk) {
 		bk_printf("MPU: region_base should be 32 bytes aligned %08x\n",
@@ -181,7 +182,7 @@ char mpu_entry_alloc(void)
 {
 	u32 entry_index = 0;
 
-	for (entry_index = 0; entry_index < MPU_MAX_REGION; entry_index++) {
+	for (entry_index = 0; entry_index < ARMINO_MPU_REGION_COUNT; entry_index++) {
 		if (mpu_entry_register[entry_index] == 0) {
 			mpu_entry_register[entry_index] = 1;
 			return entry_index;

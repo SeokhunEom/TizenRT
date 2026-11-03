@@ -97,7 +97,7 @@ CAResult_t CAInitializeTCP(CARegisterConnectivityCallback registerCallback,
  * Start TCP Interface adapter.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAStartTCP();
+CAResult_t CAStartTCP(void);
 
 /**
  * Disconnect TCP session.
@@ -116,7 +116,7 @@ CAResult_t CATCPDisconnectSession(const CAEndpoint_t *endpoint);
  * number and as per OIC Specification.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAStartTCPListeningServer();
+CAResult_t CAStartTCPListeningServer(void);
 
 /**
  * Stops listening server from receiving connect requests.
@@ -125,7 +125,7 @@ CAResult_t CAStartTCPListeningServer();
  * number and as per OIC Specification.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAStopTCPListeningServer();
+CAResult_t CAStopTCPListeningServer(void);
 
 /**
  * Start discovery servers for receiving advertisements.
@@ -134,7 +134,7 @@ CAResult_t CAStopTCPListeningServer();
  * number as per OIC Specification.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAStartTCPDiscoveryServer();
+CAResult_t CAStartTCPDiscoveryServer(void);
 
 /**
  * Sends data to the endpoint using the adapter connectivity.
@@ -178,19 +178,19 @@ CAResult_t CAGetTCPInterfaceInformation(CAEndpoint_t **info, uint32_t *size);
  * Read Synchronous API callback.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAReadTCPData();
+CAResult_t CAReadTCPData(void);
 
 /**
  * Stops Unicast, servers and close the sockets.
  * @return  ::CA_STATUS_OK or Appropriate error code.
  */
-CAResult_t CAStopTCP();
+CAResult_t CAStopTCP(void);
 
 /**
  * Terminate the TCP connectivity adapter.
  * Configuration information will be deleted from further use.
  */
-void CATerminateTCP();
+void CATerminateTCP(void);
 
 /**
  * Set connection status changes callback to process KeepAlive.

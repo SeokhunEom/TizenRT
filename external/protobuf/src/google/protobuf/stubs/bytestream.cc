@@ -152,7 +152,7 @@ StringPiece ArrayByteSource::Peek() {
 }
 
 void ArrayByteSource::Skip(size_t n) {
-  GOOGLE_DCHECK_LE(n, input_.size());
+  GOOGLE_DCHECK_LE(n, static_cast<size_t>(input_.size()));
   input_.remove_prefix(n);
 }
 
@@ -172,7 +172,7 @@ size_t LimitByteSource::Available() const {
 
 StringPiece LimitByteSource::Peek() {
   StringPiece piece(source_->Peek());
-  if (piece.size() > limit_) {
+  if (static_cast<size_t>(piece.size()) > limit_) {
     piece.set(piece.data(), limit_);
   }
 

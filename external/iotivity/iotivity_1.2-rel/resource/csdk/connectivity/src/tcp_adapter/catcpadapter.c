@@ -99,9 +99,9 @@ static CAResult_t CATCPPacketReceivedCB(const CASecureEndpoint_t *sep,
 static void CATCPErrorHandler(const CAEndpoint_t *endpoint, const void *data,
                               size_t dataLength, CAResult_t result);
 
-static CAResult_t CATCPInitializeQueueHandles();
+static CAResult_t CATCPInitializeQueueHandles(void);
 
-static void CATCPDeinitializeQueueHandles();
+static void CATCPDeinitializeQueueHandles(void);
 
 static void CATCPSendDataThread(void *threadData);
 
@@ -112,7 +112,7 @@ void CAFreeTCPData(CATCPData *ipData);
 
 static void CADataDestroyer(void *data, uint32_t size);
 
-CAResult_t CATCPInitializeQueueHandles()
+CAResult_t CATCPInitializeQueueHandles(void)
 {
     // Check if the message queue is already initialized
     if (g_sendQueueHandle)
@@ -142,7 +142,7 @@ CAResult_t CATCPInitializeQueueHandles()
     return CA_STATUS_OK;
 }
 
-void CATCPDeinitializeQueueHandles()
+void CATCPDeinitializeQueueHandles(void)
 {
     CAQueueingThreadDestroy(g_sendQueueHandle);
     OICFree(g_sendQueueHandle);
@@ -302,7 +302,7 @@ void CATCPAdapterHandler(CATransportAdapter_t adapter, CANetworkStatus_t status)
     }
 }
 
-static void CAInitializeTCPGlobals()
+static void CAInitializeTCPGlobals(void)
 {
     caglobals.tcp.ipv4.fd = -1;
     caglobals.tcp.ipv4s.fd = -1;
@@ -387,7 +387,7 @@ CAResult_t CAInitializeTCP(CARegisterConnectivityCallback registerCallback,
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStartTCP()
+CAResult_t CAStartTCP(void)
 {
     OIC_LOG(DEBUG, TAG, "IN");
 
@@ -443,7 +443,7 @@ CAResult_t CATCPDisconnectSession(const CAEndpoint_t *endpoint)
     return res;
 }
 
-CAResult_t CAStartTCPListeningServer()
+CAResult_t CAStartTCPListeningServer(void)
 {
 #if !defined(SINGLE_THREAD) && !defined(DISABLE_TCP_SERVER)
     if (!caglobals.server)
@@ -462,12 +462,12 @@ CAResult_t CAStartTCPListeningServer()
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStopTCPListeningServer()
+CAResult_t CAStopTCPListeningServer(void)
 {
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStartTCPDiscoveryServer()
+CAResult_t CAStartTCPDiscoveryServer(void)
 {
     if (!caglobals.client)
     {
@@ -532,7 +532,7 @@ int32_t CASendTCPMulticastData(const CAEndpoint_t *endpoint,
     return CAQueueTCPData(true, endpoint, data, dataLength);
 }
 
-CAResult_t CAReadTCPData()
+CAResult_t CAReadTCPData(void)
 {
     OIC_LOG(DEBUG, TAG, "IN");
 #ifdef SINGLE_THREAD
@@ -541,7 +541,7 @@ CAResult_t CAReadTCPData()
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStopTCP()
+CAResult_t CAStopTCP(void)
 {
     CAIPStopNetworkMonitor(CA_ADAPTER_TCP);
 
@@ -561,7 +561,7 @@ CAResult_t CAStopTCP()
     return CA_STATUS_OK;
 }
 
-void CATerminateTCP()
+void CATerminateTCP(void)
 {
     CATCPSetPacketReceiveCallback(NULL);
 }

@@ -102,7 +102,7 @@ int otp_uh_read(struct otp_upperhalf_s *upper, uint32_t addr, uint8_t *data, uin
 	OU_LOCK(upper);
 
 	// setting address should be updated
-	int res = lower->ops->read(lower, 0, data, length);
+	int res = lower->ops->read(lower, addr, data, *length);
 	if (res < 0) {
 		OU_UNLOCK(upper);
 		return ENOTTY;

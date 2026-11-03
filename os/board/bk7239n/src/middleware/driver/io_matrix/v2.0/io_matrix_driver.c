@@ -65,7 +65,7 @@ static uint32_t s_iomx_gpio_baked_regs[SOC_GPIO_NUM] = {0};
 			}\
 		} while(0)
 
-static void iomx_gpio_isr(int irq, void *context, void *arg);
+static void iomx_gpio_isr(void);
 bk_err_t bk_iomx_driver_init(void)
 {
 	if (s_iomx_is_init)
@@ -209,14 +209,18 @@ bk_err_t bk_iomx_output_low(gpio_id_t gpio_id)
 
 bool bk_iomx_get_input(gpio_id_t gpio_id)
 {
-	IOMX_RETURN_ON_INVALID_ID(gpio_id);
+	if (gpio_id >= SOC_GPIO_NUM) {
+		return false;
+	}
 
 	return iomx_hal_get_input(gpio_id);
 }
 
 bool bk_iomx_get_output(gpio_id_t gpio_id)
 {
-	IOMX_RETURN_ON_INVALID_ID(gpio_id);
+	if (gpio_id >= SOC_GPIO_NUM) {
+		return false;
+	}
 
 	return iomx_hal_get_output(gpio_id);
 }
@@ -295,7 +299,7 @@ bk_err_t bk_iomx_set_interrupt_type(gpio_id_t gpio_id, gpio_int_type_t type)
 	return iomx_hal_set_int_type(gpio_id, type);
 }
 
-static void iomx_gpio_isr(int irq, void *context, void *arg)
+static void iomx_gpio_isr(void)
 {
 	iomx_gpio_interrupt_status_t gpio_status;
 	int gpio_id;

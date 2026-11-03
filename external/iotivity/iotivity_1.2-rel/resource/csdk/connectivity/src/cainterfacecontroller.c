@@ -649,7 +649,7 @@ CAResult_t CASendMulticastData(const CAEndpoint_t *endpoint, const void *data, u
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStartListeningServerAdapters()
+CAResult_t CAStartListeningServerAdapters(void)
 {
     CAResult_t result = CA_STATUS_FAILED;
 
@@ -695,7 +695,7 @@ CAResult_t CAStartListeningServerAdapters()
     return result;
 }
 
-CAResult_t CAStopListeningServerAdapters()
+CAResult_t CAStopListeningServerAdapters(void)
 {
     u_arraylist_t *list = CAGetSelectedNetworkList();
     if (!list)
@@ -731,7 +731,7 @@ CAResult_t CAStopListeningServerAdapters()
     return CA_STATUS_OK;
 }
 
-CAResult_t CAStartDiscoveryServerAdapters()
+CAResult_t CAStartDiscoveryServerAdapters(void)
 {
     CAResult_t result = CA_STATUS_FAILED;
 
@@ -778,7 +778,7 @@ CAResult_t CAStartDiscoveryServerAdapters()
     return result;
 }
 
-void CATerminateAdapters()
+void CATerminateAdapters(void)
 {
     for (uint32_t index = 0; index < g_numberOfAdapters; index++)
     {

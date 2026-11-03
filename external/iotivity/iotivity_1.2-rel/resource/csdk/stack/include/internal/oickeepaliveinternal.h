@@ -77,7 +77,7 @@ OCStackResult OCHandleKeepAliveResponse(const CAEndpoint_t *endPoint, const OCPa
 /**
  * Process the KeepAlive timer to send ping message to OIC Server.
  */
-void OCProcessKeepAlive();
+void OCProcessKeepAlive(void);
 
 /**
  * This API will be called from RI layer whenever there is a request for KeepAlive.

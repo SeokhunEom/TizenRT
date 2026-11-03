@@ -674,9 +674,6 @@ void cmd_wifi_info(int argc, char **argv)
 {
 	int i = 0;
 	u8 *ifname[2] = {(unsigned char*)WLAN0_NAME, (unsigned char*)WLAN1_NAME};
-#ifdef CONFIG_MEM_MONITOR
-	extern int min_free_heap_size;
-#endif
 
 	rtw_wifi_setting_t setting;
 	for (i = 0; i < NET_IF_NUM; i++) {

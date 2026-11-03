@@ -32,21 +32,21 @@ extern "C" {
  *
  * @retval  OC_STACK_OK for Success, otherwise some error value
  */
-OCStackResult InitPconfResource();
+OCStackResult InitPconfResource(void);
 
 /**
  * Perform cleanup for PCONF resources.
  *
  * @retval  OC_STACK_OK for Success, otherwise some error value
  */
-OCStackResult DeInitPconfResource();
+OCStackResult DeInitPconfResource(void);
 
 /**
  * This method is used by SRM to retrieve PCONF resource data..
  *
  * @retval  reference to @ref OicSecPconf_t, binary format of Pconf resource data
  */
-const OicSecPconf_t* GetPconfResourceData();
+const OicSecPconf_t* GetPconfResourceData(void);
 
 /**
  * This method converts CBOR PCONF into binary PCONF.

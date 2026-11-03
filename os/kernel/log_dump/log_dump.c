@@ -118,7 +118,7 @@ static pid_t g_log_dump_pid;		/* PID of log_dump kernel thread */
 
 /* Structures used to compress last partially filled block */
 static unsigned char *last_comp_block;
-static size_t last_comp_block_size;
+static unsigned long last_comp_block_size;
 static int last_comp_block_ptr;
 static bool compress_last_block;
 
@@ -243,7 +243,7 @@ int log_dump_compress_lastblock(void)
 		return -compress_ret;
 	}
 
-	snprintf(comp_size, LOG_DUMP_COMPRESS_NODESZ, "%04d", last_comp_block_size);
+	snprintf(comp_size, LOG_DUMP_COMPRESS_NODESZ, "%04lu", last_comp_block_size);
 	for (int i = 0; i < LOG_DUMP_COMPRESS_NODESZ - 1; i++) {
 		last_comp_block[i] = comp_size[i];
 	}

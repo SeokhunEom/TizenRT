@@ -34,7 +34,7 @@
 // GzipOutputStream.
 
 
-#if HAVE_ZLIB
+#if defined(HAVE_ZLIB) && HAVE_ZLIB
 #include <google/protobuf/io/gzip_stream.h>
 
 #include <google/protobuf/stubs/common.h>

@@ -68,9 +68,6 @@
  * The value of payload size is increased until reaching belox max cbor size. */
 static const uint16_t CBOR_SIZE = 2048;
 
-/** Max cbor size payload. */
-static const uint16_t CBOR_MAX_SIZE = 4400;
-
 /** CRED size - Number of mandatory items. */
 static const uint8_t CRED_ROOT_MAP_SIZE = 4;
 static const uint8_t CRED_MAP_SIZE = 3;
@@ -316,25 +313,25 @@ static size_t OicSecCredCount(const OicSecCred_t *secCred)
 
 static char* EncodingValueToString(OicEncodingType_t encoding)
 {
-    char* str = NULL;
+    char* text = NULL;
     switch (encoding)
     {
         case OIC_ENCODING_RAW:
-            str = (char*)OIC_SEC_ENCODING_RAW;
+            text = (char*)OIC_SEC_ENCODING_RAW;
             break;
         case OIC_ENCODING_BASE64:
-            str = (char*)OIC_SEC_ENCODING_BASE64;
+            text = (char*)OIC_SEC_ENCODING_BASE64;
             break;
         case OIC_ENCODING_DER:
-            str = (char*)OIC_SEC_ENCODING_DER;
+            text = (char*)OIC_SEC_ENCODING_DER;
             break;
         case OIC_ENCODING_PEM:
-            str = (char*)OIC_SEC_ENCODING_PEM;
+            text = (char*)OIC_SEC_ENCODING_PEM;
             break;
         default:
             break;
     }
-    return str;
+    return text;
 }
 
 static CborError SerializeEncodingToCborInternal(CborEncoder *map, const OicSecKey_t *value)
@@ -879,7 +876,7 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
             if (strcmp(tagName, OIC_JSON_CREDS_NAME)  == 0)
             {
                 // Enter CREDS Array
-                size_t len = 0;
+                size_t local_len = 0;
                 int credCount = 0;
                 CborValue credArray = { .parser = NULL, .ptr = NULL, .remaining = 0, .extra = 0, .type = 0, .flags = 0 };
                 cborFindResult = cbor_value_enter_container(&CredRootMap, &credArray);
@@ -913,10 +910,10 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
                     while(cbor_value_is_valid(&credMap) && cbor_value_is_text_string(&credMap))
                     {
                         char* name = NULL;
-                        CborType type = cbor_value_get_type(&credMap);
-                        if (type == CborTextStringType)
+                        CborType local_type = cbor_value_get_type(&credMap);
+                        if (local_type == CborTextStringType)
                         {
-                            cborFindResult = cbor_value_dup_text_string(&credMap, &name, &len, NULL);
+                            cborFindResult = cbor_value_dup_text_string(&credMap, &name, &local_len, NULL);
                             VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding Name in CRED Map.");
                             cborFindResult = cbor_value_advance(&credMap);
                             VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Advancing Value in CRED Map.");
@@ -935,7 +932,7 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
                             if (strcmp(name, OIC_JSON_SUBJECTID_NAME)  == 0)
                             {
                                 char *subjectid = NULL;
-                                cborFindResult = cbor_value_dup_text_string(&credMap, &subjectid, &len, NULL);
+                                cborFindResult = cbor_value_dup_text_string(&credMap, &subjectid, &local_len, NULL);
                                 VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding subjectid Value.");
                                 if(strcmp(subjectid, WILDCARD_RESOURCE_URI) == 0)
                                 {
@@ -952,8 +949,10 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
                             if (strcmp(name, OIC_JSON_CREDTYPE_NAME)  == 0)
                             {
 #ifdef __TIZENRT__
-                                cborFindResult = cbor_value_get_int(&credMap, (int *) &cred->credType);
+                                int credType = 0;
+                                cborFindResult = cbor_value_get_int(&credMap, &credType);
                                 VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding CredType.");
+                                cred->credType = (OicSecCredType_t)credType;
 #else
                                 uint64_t credType = 0;
                                 cborFindResult = cbor_value_get_uint64(&credMap, &credType);
@@ -991,14 +990,14 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
                             //Credusage -- Not Mandatory
                             if (0 == strcmp(OIC_JSON_CREDUSAGE_NAME, name))
                             {
-                                cborFindResult = cbor_value_dup_text_string(&credMap, &cred->credUsage, &len, NULL);
+                                cborFindResult = cbor_value_dup_text_string(&credMap, &cred->credUsage, &local_len, NULL);
                                 VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding Period.");
                             }
 #endif  //__WITH_DTLS__ ||  __WITH_TLS__
 
                             if (0 == strcmp(OIC_JSON_PERIOD_NAME, name))
                             {
-                                cborFindResult = cbor_value_dup_text_string(&credMap, &cred->period, &len, NULL);
+                                cborFindResult = cbor_value_dup_text_string(&credMap, &cred->period, &local_len, NULL);
                                 VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding Period.");
                             }
 
@@ -1007,7 +1006,7 @@ OCStackResult CBORPayloadToCred(const uint8_t *cborPayload, size_t size,
                             if (strcmp(OIC_JSON_EOWNERID_NAME, name)  == 0 && cbor_value_is_text_string(&credMap))
                             {
                                 char *eowner = NULL;
-                                cborFindResult = cbor_value_dup_text_string(&credMap, &eowner, &len, NULL);
+                                cborFindResult = cbor_value_dup_text_string(&credMap, &eowner, &local_len, NULL);
                                 VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding eownerId Value.");
                                 if(NULL == cred->eownerID)
                                 {
@@ -1267,7 +1266,7 @@ static int CmpCredId(const OicSecCred_t * first, const OicSecCred_t *second)
  *
  * @return next available credId if successful, else 0 for error.
  */
-static uint16_t GetCredId()
+static uint16_t GetCredId(void)
 {
     //Sorts credential list in incremental order of credId
     LL_SORT(gCred, CmpCredId);
@@ -1299,7 +1298,7 @@ exit:
  *
  * @return  NULL for now.
  */
-static OicSecCred_t* GetCredDefault()
+static OicSecCred_t* GetCredDefault(void)
 {
     // TODO:Update it when we finalize the default info.
     return NULL;
@@ -1981,10 +1980,10 @@ static OCEntityHandlerResult HandlePostRequest(OCEntityHandlerRequest * ehReques
                   * If some error is occured while ownership transfer,
                   * ownership transfer related resource should be revert back to initial status.
                   */
-                const OicSecDoxm_t* doxm =  GetDoxmResourceData();
-                if(doxm)
+                const OicSecDoxm_t* local_doxm =  GetDoxmResourceData();
+                if(local_doxm)
                 {
-                    if(!doxm->owned)
+                    if(!local_doxm->owned)
                     {
                         OIC_LOG(WARNING, TAG, "The operation failed during handle DOXM request");
 
@@ -2069,8 +2068,8 @@ static OCEntityHandlerResult HandlePostRequest(OCEntityHandlerRequest * ehReques
         {
             if(IsEmptyCred(cred))
             {
-                OicUuid_t emptyUuid = {.id={0}};
-                if(memcmp(cred->rownerID.id, emptyUuid.id, sizeof(emptyUuid.id)) != 0)
+                OicUuid_t local_emptyUuid = {.id={0}};
+                if(memcmp(cred->rownerID.id, local_emptyUuid.id, sizeof(local_emptyUuid.id)) != 0)
                 {
                     OIC_LOG(INFO, TAG, "CRED's rowner will be updated.");
                     memcpy(gCred->rownerID.id, cred->rownerID.id, sizeof(cred->rownerID.id));
@@ -2238,7 +2237,7 @@ OCEntityHandlerResult CredEntityHandler(OCEntityHandlerFlag flag,
     return ret;
 }
 
-OCStackResult CreateCredResource()
+OCStackResult CreateCredResource(void)
 {
     OCStackResult ret = OCCreateResource(&gCredHandle,
                                          OIC_RSRC_TYPE_SEC_CRED,
@@ -3069,4 +3068,4 @@ error:
     return res;
 }
 
-#endif defined(__WITH_DTLS__) || defined(__WITH_TLS__)
+#endif /* defined(__WITH_DTLS__) || defined(__WITH_TLS__) */

@@ -171,7 +171,7 @@ bk_err_t rtos_thread_join(beken_thread_t* thread)
 bool rtos_is_current_thread( beken_thread_t* thread )
 {
     FAR struct tcb_s *tcb = sched_self();
-    if (*thread == tcb->pid) {
+    if ((pid_t)(intptr_t)*thread == tcb->pid) {
         return true;
     }
     return false;

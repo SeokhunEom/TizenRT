@@ -81,6 +81,9 @@
  * can be enabled with CONFIG_FS_AIO
  */
 
+/* Syscall proxies also use this opaque type when AIO is disabled. */
+struct aiocb;
+
 #ifdef CONFIG_FS_AIO
 
 #ifndef CONFIG_SCHED_WORKQUEUE

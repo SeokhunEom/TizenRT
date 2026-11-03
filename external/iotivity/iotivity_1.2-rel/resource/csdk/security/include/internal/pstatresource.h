@@ -30,14 +30,14 @@ extern "C" {
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult InitPstatResource();
+OCStackResult InitPstatResource(void);
 
 /**
  * Perform cleanup for Pstat resources.
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult DeInitPstatResource();
+OCStackResult DeInitPstatResource(void);
 
 /**
  * This method converts PSTAT into the cbor payload.
@@ -87,7 +87,7 @@ void DeletePstatBinData(OicSecPstat_t* pstat);
  * Function to restore pstat resurce to initial status.
  * This function will use in case of error while ownership transfer
  */
-void RestorePstatToInitState();
+void RestorePstatToInitState(void);
 
 /**
  * Internal function to update resource owner
@@ -111,7 +111,7 @@ OCStackResult GetPstatRownerId(OicUuid_t *rowneruuid);
  *
  * @return true iff pstat.isop == 1, else false
  */
-bool GetPstatIsop();
+bool GetPstatIsop(void);
 
 /**
  * Internal function to change pastat resource to Ready for Normal Operation.

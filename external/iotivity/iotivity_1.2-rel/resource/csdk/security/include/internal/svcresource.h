@@ -30,12 +30,12 @@ extern "C" {
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult InitSVCResource();
+OCStackResult InitSVCResource(void);
 
 /**
  * Perform cleanup for SVC resources.
  */
-void DeInitSVCResource();
+void DeInitSVCResource(void);
 
 /**
  * This function converts SVC data into CBOR format.

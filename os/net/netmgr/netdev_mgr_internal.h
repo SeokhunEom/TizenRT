@@ -46,6 +46,8 @@ struct nic_config {
 	struct nic_io_ops io_ops;
 };
 
+struct ifaddrs;
+
 struct netdev_ops {
 	/*  Initialize NIC */
 	int (*init_nic)(struct netdev *dev, struct nic_config *config);

@@ -470,12 +470,12 @@ static OCEntityHandlerResult HandleAmaclPostRequest (const OCEntityHandlerReques
         {
             // Append the new Amacl to existing Amacl
             LL_APPEND(gAmacl, newAmacl);
-            size_t size = 0;
+            size_t local_size = 0;
             // Convert Amacl data into JSON for update to persistent storage.
             uint8_t *cborPayload = NULL;
-            res = AmaclToCBORPayload(gAmacl, &cborPayload, &size);
+            res = AmaclToCBORPayload(gAmacl, &cborPayload, &local_size);
             if (cborPayload && (OC_STACK_OK == res) &&
-                (OC_STACK_OK == UpdateSecureResourceInPS(OIC_JSON_AMACL_NAME, cborPayload, size)))
+                (OC_STACK_OK == UpdateSecureResourceInPS(OIC_JSON_AMACL_NAME, cborPayload, local_size)))
             {
                 ehRet = OC_EH_RESOURCE_CREATED;
             }
@@ -536,7 +536,7 @@ static OCEntityHandlerResult AmaclEntityHandler (OCEntityHandlerFlag flag,
 /**
  * This internal method is used to create '/oic/sec/amacl' resource.
  */
-static OCStackResult CreateAmaclResource()
+static OCStackResult CreateAmaclResource(void)
 {
     OCStackResult ret = OCCreateResource(&gAmaclHandle,
                                          OIC_RSRC_TYPE_SEC_AMACL,
@@ -554,7 +554,7 @@ static OCStackResult CreateAmaclResource()
     return ret;
 }
 
-OCStackResult InitAmaclResource()
+OCStackResult InitAmaclResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -588,7 +588,7 @@ OCStackResult InitAmaclResource()
     return ret;
 }
 
-void DeInitAmaclResource()
+void DeInitAmaclResource(void)
 {
     OCDeleteResource(gAmaclHandle);
     gAmaclHandle = NULL;

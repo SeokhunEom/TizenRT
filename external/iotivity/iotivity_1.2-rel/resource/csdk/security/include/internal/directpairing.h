@@ -60,7 +60,7 @@ OCStackResult DPDirectPairing(void *ctx, OCDirectPairingDev_t* peer, OicSecPrm_t
  *
  * @return OCDirectPairingDev_t pointer on success otherwise NULL.
  */
-const OCDirectPairingDev_t* DPGetDiscoveredDevices();
+const OCDirectPairingDev_t* DPGetDiscoveredDevices(void);
 
 /**
  * This function returns paired devices list until now
@@ -68,13 +68,13 @@ const OCDirectPairingDev_t* DPGetDiscoveredDevices();
  *
  * @return OCDirectPairingDev_t pointer on success otherwise NULL.
  */
-const OCDirectPairingDev_t* DPGetPairedDevices();
+const OCDirectPairingDev_t* DPGetPairedDevices(void);
 
 /**
  * This function delete both discovered devices and paired devices list
  *
  */
-void DPDeleteLists();
+void DPDeleteLists(void);
 
 #ifdef __cplusplus
 }

@@ -58,6 +58,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <debug.h>
+#include <assert.h>
 #include <tinyara/arch.h>
 #include <arch/board/board.h>
 
@@ -87,9 +88,6 @@ extern uint32_t SystemCoreClock;
 
 #define SYSTICK_RELOAD ((SystemCoreClock / CLK_TCK) - 1)
 
-#if SYSTICK_RELOAD > 0x00ffffff
-#  error SYSTICK_RELOAD exceeds the range of the RELOAD register
-#endif
 
 /****************************************************************************
  * Private Functions
@@ -139,6 +137,7 @@ void up_timer_initialize(void)
 
   /* Configure SysTick to interrupt at the requested rate */
 
+  ASSERT(SystemCoreClock >= CLK_TCK && SYSTICK_RELOAD <= 0x00ffffff);
   putreg32(SYSTICK_RELOAD, NVIC_SYSTICK_RELOAD);
 
   /* Attach the timer interrupt vector */

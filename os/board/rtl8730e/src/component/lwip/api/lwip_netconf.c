@@ -121,7 +121,7 @@ struct netif xnetif[NET_IF_NUM]; /* network interface structure */
   */
 
 int lwip_init_done = 0;
-static volatile u8 ip_addr[4] = {0};
+static struct in_addr ip_addr;
 void LwIP_Init(void)
 {
 	struct ip_addr ipaddr;
@@ -506,9 +506,9 @@ uint8_t *LwIP_GetIP(uint8_t idx)
 {
 	int ret = ERROR;
 	if (idx == 0) {
-		ret = _netlib_getipv4addr("wlan0", ip_addr);
+		ret = _netlib_getipv4addr("wlan0", &ip_addr);
 		if (ret == OK){
-			return ip_addr;
+			return (uint8_t *)&ip_addr;
 		}
 	}
 	return NULL;

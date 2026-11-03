@@ -77,7 +77,7 @@ int ke_sk_recv(SOCKET sk, const unsigned char *buf, int len, int flag)
 	int count;
 	int ret = 0;
 	BK_SOCKET *element;
-	SOCKET_MSG *sk_msg, *tmp;
+	SOCKET_MSG *sk_msg;
 
 	WPA_LOGD("ke_rx:%d,buf:0x%x, len:%d\r\n", sk, buf, len);
 	rtos_lock_mutex(&socket_entity.fs_mutex);
@@ -118,7 +118,7 @@ int ke_sk_recv_peek_next_payload_size(SOCKET sk)
 {
 	int ret = 0;
 	BK_SOCKET *element;
-	SOCKET_MSG *sk_msg, *tmp;
+	SOCKET_MSG *sk_msg;
 
 	rtos_lock_mutex(&socket_entity.fs_mutex);
 	element = sk_get_sk_element(sk);
@@ -141,7 +141,7 @@ int ke_sk_send_peek_next_payload_size(SOCKET sk)
 {
 	int ret = 0;
 	BK_SOCKET *element;
-	SOCKET_MSG *sk_msg, *tmp;
+	SOCKET_MSG *sk_msg;
 
 	rtos_lock_mutex(&socket_entity.fs_mutex);
 	element = sk_get_sk_element(sk);
@@ -266,7 +266,7 @@ int fsocket_recv(SOCKET sk, const unsigned char *buf, int len, int flag)
 	int count;
 	int ret = 0;
 	BK_SOCKET *element;
-	SOCKET_MSG *sk_msg, *tmp;
+	SOCKET_MSG *sk_msg;
 
 	WPA_LOGD("hapd_rx:%d,buf:0x%x, len:%d\r\n", sk, buf, len);
 	rtos_lock_mutex(&socket_entity.fs_mutex);
@@ -358,7 +358,7 @@ int fsocket_peek_recv_next_payload_size(SOCKET sk)
 {
 	int ret = 0;
 	BK_SOCKET *element;
-	SOCKET_MSG *sk_msg, *tmp;
+	SOCKET_MSG *sk_msg;
 
 	rtos_lock_mutex(&socket_entity.fs_mutex);
 	element = sk_get_sk_element(sk);

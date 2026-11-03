@@ -399,7 +399,7 @@ string ProtoWriter::ProtoElement::ToString() const {
   if (!ow_->IsRepeated(*parent_field_) ||
       parent()->parent_field_ != parent_field_) {
     string name = parent_field_->name();
-    int i = 0;
+    size_t i = 0;
     while (i < name.size() && (ascii_isalnum(name[i]) || name[i] == '_')) ++i;
     if (i > 0 && i == name.size()) {  // safe field name
       if (loc.empty()) {

@@ -847,7 +847,7 @@ static bk_err_t uart_enter_deep_sleep(uint64_t sleep_time, void *args)
 	return BK_OK;
 }
 
-static void shell_rx_wakeup(int gpio_id, void *priv)
+static void shell_rx_wakeup(gpio_id_t gpio_id, void *priv)
 {
 	//wakeup_process();   //log vote to make it wakeup at least 2 seconds
 	//set_shell_event(SHELL_EVENT_WAKEUP);
@@ -877,7 +877,7 @@ static bk_err_t shell_power_save_enter(uint64_t sleep_time, void *args)
 	bk_uart_set_enable_tx(uart_id, 0);
 
 	uint32_t gpio_id = (uint32_t) bk_uart_get_rx_gpio(uart_id);
-	bk_gpio_register_isr_ex(gpio_id, (gpio_isr_t)shell_rx_wakeup, NULL);
+	bk_gpio_register_isr_ex(gpio_id, shell_rx_wakeup, NULL);
 	bk_uart_set_enable_rx(uart_id, 0);
 
 	return BK_OK;

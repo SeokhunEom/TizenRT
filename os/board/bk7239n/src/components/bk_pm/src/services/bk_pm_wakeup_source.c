@@ -21,6 +21,7 @@
 #include "pm_wakeup_source.h"
 #include "pm_sleep.h"
 #include "gpio_adapter.h"
+#include <driver/aon_rtc.h>
 
 /*=====================DEFINE SECTION START=====================*/
 #define PM_WAKEUP_SOURCE_MARK                                (WAKEUP_SOURCE_MARK)
@@ -255,7 +256,7 @@ bk_pm_wakeup_reason_e bk_pm_sleep_wakeup_reason_get()
 	}
 	return wakeup_reason;
 }
-bk_err_t pm_rtc_wakeup_reason_parse()
+bk_err_t pm_rtc_wakeup_reason_parse(void)
 {
 	bk_pm_wakeup_reason_e wakeup_reason = BK_PM_WAKEUP_UNKNOWN;
 	uint32_t int_src = 0;
@@ -267,21 +268,22 @@ bk_err_t pm_rtc_wakeup_reason_parse()
 
 	if(s_normal_sleep_wakeup_irq_id == int_src)
 	{
-		if(bk_rtc_get_first_alarm_name() != NULL)
+		const char *alarm_name = (const char *)bk_rtc_get_first_alarm_name();
+		if (alarm_name != NULL)
 		{
-			if(strncmp(bk_rtc_get_first_alarm_name(), PM_WIFI_RTC_ALARM_NAME, sizeof(PM_WIFI_RTC_ALARM_NAME)) == 0)
+			if(strncmp(alarm_name, PM_WIFI_RTC_ALARM_NAME, sizeof(PM_WIFI_RTC_ALARM_NAME)) == 0)
 			{
 				wakeup_reason = BK_PM_WAKEUP_WIFI;
 			}
-			else if(strncmp(bk_rtc_get_first_alarm_name(), PM_BT_RTC_ALARM_NAME, sizeof(PM_BT_RTC_ALARM_NAME)) == 0)
+			else if(strncmp(alarm_name, PM_BT_RTC_ALARM_NAME, sizeof(PM_BT_RTC_ALARM_NAME)) == 0)
 			{
 				wakeup_reason = BK_PM_WAKEUP_BLE;
 			}
-			else if(strncmp(bk_rtc_get_first_alarm_name(), PM_APP_RTC_ALARM_NAME, sizeof(PM_APP_RTC_ALARM_NAME)) == 0)
+			else if(strncmp(alarm_name, PM_APP_RTC_ALARM_NAME, sizeof(PM_APP_RTC_ALARM_NAME)) == 0)
 			{
 				wakeup_reason = BK_PM_WAKEUP_HW_TIMER;
 			}
-			else if(strncmp(bk_rtc_get_first_alarm_name(), PM_MM_RTC_ALARM_NAME, sizeof(PM_MM_RTC_ALARM_NAME)) == 0)
+			else if(strncmp(alarm_name, PM_MM_RTC_ALARM_NAME, sizeof(PM_MM_RTC_ALARM_NAME)) == 0)
 			{
 				/*mm rtc alarm is on wifi on, it is not a wakeup source, ignore it*/
 			}

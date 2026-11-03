@@ -59,7 +59,7 @@ bool isSingleUsageOfTensor(CircleReader *reader, const int32_t tensor_index)
     assert(op != nullptr);
 
     const auto *op_inputs = op->inputs();
-    for (int32_t j = 0; j < op_inputs->size(); ++j)
+    for (flatbuffers::uoffset_t j = 0; j < op_inputs->size(); ++j)
     {
       const auto input_index = op_inputs->operator[](j);
       if (input_index == tensor_index)
@@ -117,7 +117,8 @@ void GraphLoader::checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_gr
         if (non_const_input_it == op_inputs->end())
           break;
 
-        auto dist = std::distance(op_inputs->begin(), non_const_input_it);
+        auto dist = static_cast<flatbuffers::uoffset_t>(
+          std::distance(op_inputs->begin(), non_const_input_it));
 
         const auto non_const_input_idx = *non_const_input_it;
 

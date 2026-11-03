@@ -128,7 +128,7 @@ void SubstituteAndAppend(
     }
   }
 
-  GOOGLE_DCHECK_EQ(target - output->data(), output->size());
+  GOOGLE_DCHECK_EQ(static_cast<size_t>(target - output->data()), output->size());
 }
 
 }  // namespace strings

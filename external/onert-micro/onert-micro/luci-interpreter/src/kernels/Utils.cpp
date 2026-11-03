@@ -163,17 +163,6 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
   }
 }
 
-static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
-                                                  const circle::Tensor *output,
-                                                  int32_t *activation_min, int32_t *activation_max)
-{
-  const float scale = Tensor::scale(output);
-  const int32_t zero_point = Tensor::zero_point(output);
-
-  calculateActivationRangeQuantizedImpl(activation, qmin, qmax, zero_point, zero_point,
-                                        activation_min, activation_max);
-}
-
 void calculateActivationRangeQuantized(Activation activation, int32_t output_zero_point,
                                        float output_scale, DataType data_type,
                                        int32_t *activation_min, int32_t *activation_max)

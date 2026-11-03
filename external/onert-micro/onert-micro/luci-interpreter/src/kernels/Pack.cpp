@@ -53,7 +53,7 @@ void packImpl(const circle::Tensor *input0, const circle::Tensor *output,
     copy_size *= output_dims[i];
 
   int input_size = 1;
-  for (int i = 0; i < input_dims.size(); ++i)
+  for (uint32_t i = 0; i < input_dims.size(); ++i)
     input_size *= input_dims[i];
 
   assert(input_size == copy_size * outer_size);

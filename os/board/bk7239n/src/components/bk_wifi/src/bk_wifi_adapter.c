@@ -418,7 +418,7 @@ static void __IRAM2 bk_wifi_set_rtc_timer_wrapper(uint32_t tick, void *callback,
 {
 #if CONFIG_ANA_RTC
     alarm_info_t wifi_rtc_alarm_info = {0};
-    strncpy((char *)wifi_rtc_alarm_info.name, name, ALARM_NAME_MAX_LEN);
+    strncpy((char *)wifi_rtc_alarm_info.name, (const char *)name, ALARM_NAME_MAX_LEN);
     wifi_rtc_alarm_info.period_tick = tick;
     wifi_rtc_alarm_info.period_cnt = 1;
     wifi_rtc_alarm_info.callback = (aon_rtc_isr_t)callback;

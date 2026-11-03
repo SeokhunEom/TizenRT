@@ -52,7 +52,7 @@
 static sys_hal_t s_sys_hal;
 uint32 sys_hal_get_int_group2_status(void);
 bk_err_t sys_hal_ctrl_vdddig_h_vol(uint32_t vol_value);
-uint32_t sys_hal_vdddig_h_vol_get();
+uint32_t sys_hal_vdddig_h_vol_get(void);
 extern void sys_hal_adjust_dpll(void);
 __FLASH_BOOT_CODE static void sys_hal_delay_flash(volatile uint32_t times);
 static void sys_hal_delay(volatile uint32_t times);

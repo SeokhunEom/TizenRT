@@ -155,7 +155,7 @@ static void prefetch_abort_test(void)
 {
 	/* The address allocated from heap can't be code. This will lead prefetch abort. */
 	int *ptr = (int *)malloc(1024);
-	int (*fp)(int, int) = ptr;
+	int (*fp)(int, int) = (int (*)(int, int))ptr;
 	fp(3, 4);
 }
 

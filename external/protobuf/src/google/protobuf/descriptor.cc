@@ -253,7 +253,7 @@ string ToCamelCase(const string& input, bool lower_first) {
   string result;
   result.reserve(input.size());
 
-  for (int i = 0; i < input.size(); i++) {
+  for (size_t i = 0; i < input.size(); i++) {
     if (input[i] == '_') {
       capitalize_next = true;
     } else if (capitalize_next) {
@@ -277,7 +277,7 @@ string ToJsonName(const string& input) {
   string result;
   result.reserve(input.size());
 
-  for (int i = 0; i < input.size(); i++) {
+  for (size_t i = 0; i < input.size(); i++) {
     if (input[i] == '_') {
       capitalize_next = true;
     } else if (capitalize_next) {
@@ -296,7 +296,7 @@ string EnumValueToPascalCase(const string& input) {
   string result;
   result.reserve(input.size());
 
-  for (int i = 0; i < input.size(); i++) {
+  for (size_t i = 0; i < input.size(); i++) {
     if (input[i] == '_') {
       next_upper = true;
     } else {
@@ -337,7 +337,8 @@ class PrefixRemover {
     //
     // This is acceptable (though perhaps not advisable) because even when
     // we PascalCase, these two will still be distinct (BarBaz vs. Barbaz).
-    size_t i, j;
+    stringpiece_ssize_type i;
+    size_t j;
 
     // Skip past prefix_ in str if we can.
     for (i = 0, j = 0; i < str.size() && j < prefix_.size(); i++) {
@@ -483,7 +484,7 @@ void InitAllowedProto3Extendee() {
   const char* kOptionNames[] = {
       "FileOptions",      "MessageOptions", "FieldOptions", "EnumOptions",
       "EnumValueOptions", "ServiceOptions", "MethodOptions", "OneofOptions"};
-  for (int i = 0; i < GOOGLE_ARRAYSIZE(kOptionNames); ++i) {
+  for (size_t i = 0; i < GOOGLE_ARRAYSIZE(kOptionNames); ++i) {
     // descriptor.proto has a different package name in opensource. We allow
     // both so the opensource protocol compiler can also compile internal
     // proto3 files with custom options. See: b/27567912
@@ -800,7 +801,7 @@ DescriptorPool::Tables::~Tables() {
   // Note that the deletion order is important, since the destructors of some
   // messages may refer to objects in allocations_.
   STLDeleteElements(&messages_);
-  for (int i = 0; i < allocations_.size(); i++) {
+  for (size_t i = 0; i < allocations_.size(); i++) {
     operator delete(allocations_[i]);
   }
   STLDeleteElements(&strings_);
@@ -869,17 +870,17 @@ void DescriptorPool::Tables::RollbackToLastCheckpoint() {
   GOOGLE_DCHECK(!checkpoints_.empty());
   const CheckPoint& checkpoint = checkpoints_.back();
 
-  for (int i = checkpoint.pending_symbols_before_checkpoint;
+  for (size_t i = checkpoint.pending_symbols_before_checkpoint;
        i < symbols_after_checkpoint_.size();
        i++) {
     symbols_by_name_.erase(symbols_after_checkpoint_[i]);
   }
-  for (int i = checkpoint.pending_files_before_checkpoint;
+  for (size_t i = checkpoint.pending_files_before_checkpoint;
        i < files_after_checkpoint_.size();
        i++) {
     files_by_name_.erase(files_after_checkpoint_[i]);
   }
-  for (int i = checkpoint.pending_extensions_before_checkpoint;
+  for (size_t i = checkpoint.pending_extensions_before_checkpoint;
        i < extensions_after_checkpoint_.size();
        i++) {
     extensions_.erase(extensions_after_checkpoint_[i]);
@@ -902,7 +903,7 @@ void DescriptorPool::Tables::RollbackToLastCheckpoint() {
   STLDeleteContainerPointers(
       file_tables_.begin() + checkpoint.file_tables_before_checkpoint,
       file_tables_.end());
-  for (int i = checkpoint.allocations_before_checkpoint;
+  for (size_t i = checkpoint.allocations_before_checkpoint;
        i < allocations_.size();
        i++) {
     operator delete(allocations_[i]);
@@ -1541,7 +1542,7 @@ void DescriptorPool::FindAllExtensions(
     std::vector<int> numbers;
     if (fallback_database_->FindAllExtensionNumbers(extendee->full_name(),
                                                     &numbers)) {
-      for (int i = 0; i < numbers.size(); ++i) {
+      for (size_t i = 0; i < numbers.size(); ++i) {
         int number = numbers[i];
         if (tables_->FindExtension(extendee, number) == NULL) {
           TryFindExtensionInFallbackDatabase(extendee, number);
@@ -2233,7 +2234,7 @@ bool RetrieveOptionsAssumingRightPool(int depth, const Message& options,
   const Reflection* reflection = options.GetReflection();
   std::vector<const FieldDescriptor*> fields;
   reflection->ListFields(options, &fields);
-  for (int i = 0; i < fields.size(); i++) {
+  for (size_t i = 0; i < fields.size(); i++) {
     int count = 1;
     bool repeated = false;
     if (fields[i]->is_repeated()) {
@@ -2318,7 +2319,7 @@ bool FormatLineOptions(int depth, const Message& options,
   string prefix(depth * 2, ' ');
   std::vector<string> all_options;
   if (RetrieveOptions(depth, options, pool, &all_options)) {
-    for (int i = 0; i < all_options.size(); i++) {
+    for (size_t i = 0; i < all_options.size(); i++) {
       strings::SubstituteAndAppend(output, "$0option $1;\n",
                                    prefix, all_options[i]);
     }
@@ -2351,7 +2352,7 @@ class SourceLocationCommentPrinter {
   void AddPreComment(string* output) {
     if (have_source_loc_) {
       // Detached leading comments.
-      for (int i = 0 ; i < source_loc_.leading_detached_comments.size(); ++i) {
+      for (size_t i = 0 ; i < source_loc_.leading_detached_comments.size(); ++i) {
         *output += FormatComment(source_loc_.leading_detached_comments[i]);
         *output += "\n";
       }
@@ -2374,7 +2375,7 @@ class SourceLocationCommentPrinter {
     StripWhitespace(&stripped_comment);
     std::vector<string> lines = Split(stripped_comment, "\n");
     string output;
-    for (int i = 0; i < lines.size(); ++i) {
+    for (size_t i = 0; i < lines.size(); ++i) {
       const string& line = lines[i];
       strings::SubstituteAndAppend(&output, "$0// $1\n", prefix_, line);
     }
@@ -3830,7 +3831,7 @@ Symbol DescriptorBuilder::LookupSymbol(
 static bool ValidateQualifiedName(const string& name) {
   bool last_was_period = false;
 
-  for (int i = 0; i < name.size(); i++) {
+  for (size_t i = 0; i < name.size(); i++) {
     // I don't trust isalnum() due to locales.  :(
     if (('a' <= name[i] && name[i] <= 'z') ||
         ('A' <= name[i] && name[i] <= 'Z') ||
@@ -4051,7 +4052,7 @@ void DescriptorBuilder::ValidateSymbolName(
     AddError(full_name, proto, DescriptorPool::ErrorCollector::NAME,
              "Missing name.");
   } else {
-    for (int i = 0; i < name.size(); i++) {
+    for (size_t i = 0; i < name.size(); i++) {
       // I don't trust isalnum() due to locales.  :(
       if ((name[i] < 'a' || 'z' < name[i]) &&
           (name[i] < 'A' || 'Z' < name[i]) &&
@@ -4127,7 +4128,7 @@ template<class DescriptorT> void DescriptorBuilder::AllocateOptionsImpl(
 void DescriptorBuilder::AddRecursiveImportError(
     const FileDescriptorProto& proto, int from_here) {
   string error_message("File recursively imports itself: ");
-  for (int i = from_here; i < tables_->pending_files_.size(); i++) {
+  for (size_t i = from_here; i < tables_->pending_files_.size(); i++) {
     error_message.append(tables_->pending_files_[i]);
     error_message.append(" -> ");
   }
@@ -4200,7 +4201,7 @@ const FileDescriptor* DescriptorBuilder::BuildFile(
   //   mid-file, but that's pretty ugly, and I'm pretty sure there are
   //   some languages out there that do not allow recursive dependencies
   //   at all.
-  for (int i = 0; i < tables_->pending_files_.size(); i++) {
+  for (size_t i = 0; i < tables_->pending_files_.size(); i++) {
     if (tables_->pending_files_[i] == proto.name()) {
       AddRecursiveImportError(proto, i);
       return NULL;
@@ -5797,7 +5798,7 @@ void DescriptorBuilder::ValidateProto3(
 
 static string ToLowercaseWithoutUnderscores(const string& name) {
   string result;
-  for (int i = 0; i < name.size(); ++i) {
+  for (size_t i = 0; i < name.size(); ++i) {
     if (name[i] != '_') {
       if (name[i] >= 'A' && name[i] <= 'Z') {
         result.push_back(name[i] - 'A' + 'a');

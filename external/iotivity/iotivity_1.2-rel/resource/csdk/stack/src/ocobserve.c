@@ -175,8 +175,6 @@ OCStackResult SendAllObserverNotification (OCMethod method, OCResource *resPtr, 
     ResourceObserver * resourceObserver = g_serverObsList;
     uint8_t numObs = 0;
     OCServerRequest * request = NULL;
-    OCEntityHandlerRequest ehRequest = {0};
-    OCEntityHandlerResult ehResult = OC_EH_ERROR;
     bool observeErrorFlag = false;
 
     // Find clients that are observing this resource
@@ -580,7 +578,7 @@ OCStackResult DeleteObserverUsingDevAddr(const OCDevAddr *devAddr)
     return OC_STACK_OK;
 }
 
-void DeleteObserverList()
+void DeleteObserverList(void)
 {
     ResourceObserver *out = NULL;
     ResourceObserver *tmp = NULL;

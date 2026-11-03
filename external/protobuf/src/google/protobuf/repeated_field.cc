@@ -54,7 +54,7 @@ void** RepeatedPtrFieldBase::InternalExtend(int extend_amount) {
   Arena* arena = GetArenaNoVirtual();
   new_size = std::max(kMinRepeatedFieldAllocationSize,
                       std::max(total_size_ * 2, new_size));
-  GOOGLE_CHECK_LE(new_size,
+  GOOGLE_CHECK_LE(static_cast<size_t>(new_size),
            (std::numeric_limits<size_t>::max() - kRepHeaderSize) /
            sizeof(old_rep->elements[0]))
       << "Requested size is too large to fit into size_t.";

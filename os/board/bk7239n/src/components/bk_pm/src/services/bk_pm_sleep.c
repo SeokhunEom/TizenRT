@@ -816,7 +816,6 @@ static void pm_enter_super_deep_sleep()
 pm_sleep_mode_e bk_pm_get_sleep_mode(void)
 {
 	pm_sleep_mode_e sleep_mode = PM_MODE_DEFAULT;
-	bk_err_t ret = BK_OK;
 	#if CONFIG_PM_LOWEST_POWER_MODE == 0
 	sleep_mode = PM_MODE_NORMAL_SLEEP;
 	#elif CONFIG_PM_LOWEST_POWER_MODE == 1

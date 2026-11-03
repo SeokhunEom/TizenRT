@@ -42,6 +42,7 @@
 #include "mbedtls/pkcs12.h"
 #include "mbedtls/ssl_misc.h"
 #include "mbedtls/net_sockets.h"
+#include "ca_ssl_key_export.h"
 #ifdef __WITH_DTLS__
 #include "mbedtls/timing.h"
 #include "mbedtls/ssl_cookie.h"
@@ -249,7 +250,7 @@ if (0 != (ret) && MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY != (int) (ret) &&           
         SSL_RES((peer), CA_DTLS_AUTHENTICATION_FAILURE);                                           \
     }                                                                                              \
     OIC_LOG_V(DEBUG, NET_SSL_TAG, "Out %s", __func__);                                             \
-    if (-1 != error)                                                                               \
+    if (-1 != (intptr_t)(error))                                                                               \
     {                                                                                              \
         return (error);                                                                            \
     }                                                                                              \
@@ -273,9 +274,9 @@ fn((serverConf), __VA_ARGS__);                                                  
  * @param[in] f  Function to call
  */
 #define CHECK_MBEDTLS_RET(f, ...) do {                                                             \
-int ret = (f)(__VA_ARGS__);                                                                        \
-if (0 != ret) {                                                                                    \
-    OIC_LOG_V(ERROR, NET_SSL_TAG, "%s returned -0x%04x\n", __func__, -(ret));                      \
+int mbedtls_result = (f)(__VA_ARGS__);                                                                        \
+if (0 != mbedtls_result) {                                                                                    \
+    OIC_LOG_V(ERROR, NET_SSL_TAG, "%s returned -0x%04x\n", __func__, -(mbedtls_result));                      \
     goto exit;                                                                                     \
 } } while (0)
 
@@ -316,9 +317,9 @@ static const int tlsCipher[SSL_CIPHER_MAX][2] =
 
 static int g_cipherSuitesList[SSL_CIPHER_MAX];
 
-mbedtls_ecp_group_id curve[ADAPTER_CURVE_MAX][2] =
+static const uint16_t curve[ADAPTER_CURVE_MAX][2] =
 {
-    {MBEDTLS_ECP_DP_SECP256R1, MBEDTLS_ECP_DP_NONE}
+    {MBEDTLS_SSL_IANA_TLS_GROUP_SECP256R1, MBEDTLS_SSL_IANA_TLS_GROUP_NONE}
 };
 
 static PkiInfo_t g_pkiInfo = {{NULL, 0}, {NULL, 0}, {NULL, 0}, {NULL, 0}};
@@ -475,9 +476,9 @@ typedef struct SslContext
  */
 static SslContext_t * g_caSslContext = NULL;
 
-static SslExportKeysCallback_t gTlsExportKeysCallback = NULL;
+static SslExportKeysCallback_t gTlsExportKeysCallback[2] = {NULL, NULL};
 
-static SslExportKeysCallback_t gDtlsExportKeysCallback = NULL;
+static SslExportKeysCallback_t gDtlsExportKeysCallback[2] = {NULL, NULL};
 
 /**
  * @var g_getCredentialsCallback
@@ -656,119 +657,66 @@ static int RecvCallBack(void * tep, unsigned char * data, size_t dataLen)
     return (int)retLen;
 }
 
-static int CASslExportKeysHandler(void *p_expkey,
-                                const unsigned char *ms,
-                                const unsigned char *kb,
-                                size_t maclen,
-                                size_t keylen,
-                                size_t ivlen)
+static void CASslExportKeysHandler(void *context, mbedtls_ssl_key_export_type type,
+                                   const unsigned char *secret, size_t secretLen,
+                                   const unsigned char clientRandom[32],
+                                   const unsigned char serverRandom[32],
+                                   mbedtls_tls_prf_types prf)
 {
-    OIC_LOG_V(DEBUG, NET_SSL_TAG, "In %s", __func__);
-
-    if (NULL == g_caSslContext)
+    SslEndPoint_t *peer = (SslEndPoint_t *)context;
+    if (!peer || type != MBEDTLS_SSL_KEY_EXPORT_TLS12_MASTER_SECRET)
     {
-        OIC_LOG(ERROR, NET_SSL_TAG, "SSL Context is not initialized.");
-        return MBEDTLS_ERR_SSL_FEATURE_UNAVAILABLE;
-    }
-    if (NULL == p_expkey)
-    {
-        OIC_LOG(ERROR, NET_SSL_TAG, "Can not find the protocol information from 'p_expkey'.");
-        return MBEDTLS_ERR_SSL_FEATURE_UNAVAILABLE;
+        return;
     }
 
-    CASslEkcbProtocol_t* protocol = (CASslEkcbProtocol_t*)p_expkey;
-
-    if (gTlsExportKeysCallback && CA_SSL_EKCB_TLS == (*protocol))
+    const mbedtls_ssl_config *config = peer->ssl.conf;
+    CASslEkcbRole_t role = config->endpoint == MBEDTLS_SSL_IS_CLIENT ?
+        CA_SSL_EKCB_CLIENT : CA_SSL_EKCB_SERVER;
+    SslExportKeysCallback_t callback = config->transport == MBEDTLS_SSL_TRANSPORT_DATAGRAM ?
+        gDtlsExportKeysCallback[role] : gTlsExportKeysCallback[role];
+    if (!callback)
     {
-        OIC_LOG(DEBUG, NET_SSL_TAG, "Invoking TLS export key callback.");
-        gTlsExportKeysCallback(ms, kb, maclen, keylen, ivlen);
-    }
-    else if (gDtlsExportKeysCallback && CA_SSL_EKCB_DTLS == (*protocol))
-    {
-        OIC_LOG(DEBUG, NET_SSL_TAG, "Invoking DTLS export key callback.");
-        gDtlsExportKeysCallback(ms, kb, maclen, keylen, ivlen);
-    }
-    else
-    {
-        OIC_LOG(ERROR, NET_SSL_TAG, "Failed to Invoke (D)TLS export key callback.");
-        return MBEDTLS_ERR_SSL_FEATURE_UNAVAILABLE;
+        return;
     }
 
-    OIC_LOG_V(DEBUG, NET_SSL_TAG, "Out %s", __func__);
-    return 0;
+    const mbedtls_ssl_session *session = peer->ssl.session_negotiate ?
+        peer->ssl.session_negotiate : peer->ssl.session;
+    if (CAExportTls12Keys(session, secret, secretLen, clientRandom, serverRandom,
+                         prf, callback) != 0)
+    {
+        OIC_LOG(ERROR, NET_SSL_TAG, "Failed to export TLS 1.2 key block.");
+    }
 }
 
 CAResult_t CASetSslExportKeysCallback(SslExportKeysCallback_t exportKeysCb,
                                       CASslEkcbProtocol_t protocol, CASslEkcbRole_t role)
 {
-    OIC_LOG_V(DEBUG, NET_SSL_TAG, "In %s", __func__);
-    mbedtls_ssl_context* sslConf = NULL;
-    static CASslEkcbProtocol_t protocolCtx = CA_SSL_EKCB_TLS;
-
-    if (CA_SSL_EKCB_TLS != protocol && CA_SSL_EKCB_DTLS != protocol)
+    if ((protocol != CA_SSL_EKCB_TLS && protocol != CA_SSL_EKCB_DTLS) ||
+        (role != CA_SSL_EKCB_CLIENT && role != CA_SSL_EKCB_SERVER))
     {
-        OIC_LOG(ERROR, NET_SSL_TAG, "Invaild protocol.");
         return CA_STATUS_INVALID_PARAM;
     }
-    if (CA_SSL_EKCB_CLIENT != role && CA_SSL_EKCB_SERVER != role)
+    if (!g_sslContextMutex)
     {
-        OIC_LOG(ERROR, NET_SSL_TAG, "Invaild role.");
-        return CA_STATUS_INVALID_PARAM;
+        return CA_STATUS_NOT_INITIALIZED;
     }
-
-    OIC_LOG_V(DEBUG, NET_SSL_TAG, "TLS Export Key Callback Type : [%s] [%s]",
-              (CA_SSL_EKCB_TLS == protocol ? "TLS" : "DTLS"),
-              (CA_SSL_EKCB_CLIENT == role ? "Client" : "Server"));
 
     oc_mutex_lock(g_sslContextMutex);
-
-    if (NULL == g_caSslContext)
+    if (!g_caSslContext)
     {
-        OIC_LOG(ERROR, NET_SSL_TAG, "SSL Context is not initialized.");
         oc_mutex_unlock(g_sslContextMutex);
         return CA_STATUS_NOT_INITIALIZED;
     }
 
-    if (CA_SSL_EKCB_TLS == protocol)
+    if (protocol == CA_SSL_EKCB_TLS)
     {
-        gTlsExportKeysCallback = exportKeysCb;
-        if (CA_SSL_EKCB_CLIENT == role)
-        {
-            sslConf = &g_caSslContext->clientTlsConf;
-        }
-        else
-        {
-            sslConf = &g_caSslContext->serverTlsConf;
-        }
+        gTlsExportKeysCallback[role] = exportKeysCb;
     }
     else
     {
-        gDtlsExportKeysCallback = exportKeysCb;
-        if (CA_SSL_EKCB_CLIENT == role)
-        {
-            sslConf = &g_caSslContext->clientDtlsConf;
-        }
-        else
-        {
-            sslConf = &g_caSslContext->serverDtlsConf;
-        }
-    }
-    protocolCtx = protocol;
-
-    if (NULL == exportKeysCb)
-    {
-        mbedtls_ssl_set_export_keys_cb(sslConf, NULL, NULL);
-        OIC_LOG(DEBUG, NET_SSL_TAG, "Export key callback unregistered.");
-    }
-    else
-    {
-        mbedtls_ssl_set_export_keys_cb(sslConf, CASslExportKeysHandler, (void*)(&protocolCtx));
-        OIC_LOG(DEBUG, NET_SSL_TAG, "Export key callback registered.");
+        gDtlsExportKeysCallback[role] = exportKeysCb;
     }
     oc_mutex_unlock(g_sslContextMutex);
-
-    OIC_LOG_V(DEBUG, NET_SSL_TAG, "Out %s", __func__);
-
     return CA_STATUS_OK;
 }
 
@@ -1265,7 +1213,7 @@ static void RemovePeerFromList(const CAEndpoint_t * endpoint)
 /**
  * Deletes session list.
  */
-static void DeletePeerList()
+static void DeletePeerList(void)
 {
     VERIFY_NON_NULL_VOID(g_caSslContext, NET_SSL_TAG, "SSL Context is NULL");
 
@@ -1443,6 +1391,7 @@ static SslEndPoint_t * NewSslEndPoint(const CAEndpoint_t * endpoint, mbedtls_ssl
         return NULL;
     }
 
+    mbedtls_ssl_set_export_keys_cb(&tep->ssl, CASslExportKeysHandler, tep);
     mbedtls_ssl_set_bio(&tep->ssl, tep, SendCallBack, RecvCallBack, NULL);
     if (MBEDTLS_SSL_TRANSPORT_DATAGRAM == config->transport)
     {
@@ -1643,7 +1592,7 @@ static SslEndPoint_t * InitiateTlsHandshake(const CAEndpoint_t *endpoint)
 /**
  * Stops DTLS retransmission.
  */
-static void StopRetransmit()
+static void StopRetransmit(void)
 {
     if (g_caSslContext)
     {
@@ -1652,7 +1601,7 @@ static void StopRetransmit()
     }
 }
 #endif
-void CAdeinitSslAdapter()
+void CAdeinitSslAdapter(void)
 {
     OIC_LOG_V(DEBUG, NET_SSL_TAG, "In %s", __func__);
 
@@ -1664,6 +1613,12 @@ void CAdeinitSslAdapter()
 
     // Clear all lists
     DeletePeerList();
+
+    // Export-key registrations belong to this adapter context.
+    gTlsExportKeysCallback[CA_SSL_EKCB_CLIENT] = NULL;
+    gTlsExportKeysCallback[CA_SSL_EKCB_SERVER] = NULL;
+    gDtlsExportKeysCallback[CA_SSL_EKCB_CLIENT] = NULL;
+    gDtlsExportKeysCallback[CA_SSL_EKCB_SERVER] = NULL;
 
     // De-initialize mbedTLS
     mbedtls_x509_crt_free(&g_caSslContext->ca);
@@ -1717,8 +1672,8 @@ static int InitConfig(mbedtls_ssl_config * conf, int transport, int mode)
 
     mbedtls_ssl_conf_psk_cb(conf, GetPskCredentialsCallback, NULL);
     mbedtls_ssl_conf_rng(conf, mbedtls_ctr_drbg_random, &g_caSslContext->rnd);
-    mbedtls_ssl_conf_curves(conf, curve[ADAPTER_CURVE_SECP256R1]);
-    mbedtls_ssl_conf_min_version(conf, MBEDTLS_SSL_MAJOR_VERSION_3, MBEDTLS_SSL_MINOR_VERSION_3);
+    mbedtls_ssl_conf_groups(conf, curve[ADAPTER_CURVE_SECP256R1]);
+    mbedtls_ssl_conf_min_tls_version(conf, MBEDTLS_SSL_VERSION_TLS1_2);
     mbedtls_ssl_conf_renegotiation(conf, MBEDTLS_SSL_RENEGOTIATION_DISABLED);
     mbedtls_ssl_conf_authmode(conf, MBEDTLS_SSL_VERIFY_REQUIRED);
 
@@ -1744,7 +1699,7 @@ static int InitConfig(mbedtls_ssl_config * conf, int transport, int mode)
 /**
  * Starts DTLS retransmission.
  */
-static int StartRetransmit()
+static int StartRetransmit(void)
 {
     uint32_t listIndex = 0;
     uint32_t listLength = 0;
@@ -1791,7 +1746,7 @@ static int StartRetransmit()
 }
 #endif
 
-CAResult_t CAinitSslAdapter()
+CAResult_t CAinitSslAdapter(void)
 {
     OIC_LOG_V(DEBUG, NET_SSL_TAG, "In %s", __func__);
     // Initialize mutex for tlsContext
@@ -2487,7 +2442,6 @@ CAResult_t CAsetTlsCipherSuite(const uint32_t cipher)
     OIC_LOG_V(DEBUG, NET_SSL_TAG, "In %s", __func__);
     VERIFY_NON_NULL_RET(g_caSslContext, NET_SSL_TAG, "SSL context is not initialized." , CA_STATUS_NOT_INITIALIZED);
 
-    CAResult_t res = CA_STATUS_FAILED;
     SslCipher_t index = GetCipherIndex(cipher);
     if (SSL_CIPHER_MAX == index)
     {

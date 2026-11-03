@@ -244,7 +244,7 @@ bool MessageLite::SerializePartialToCodedStream(
   if (buffer != NULL) {
     uint8* end = InternalSerializeWithCachedSizesToArray(
         output->IsSerializationDeterministic(), buffer);
-    if (end - buffer != size) {
+    if (static_cast<size_t>(end - buffer) != size) {
       ByteSizeConsistencyError(size, ByteSizeLong(), end - buffer, *this);
     }
     return true;
@@ -256,7 +256,7 @@ bool MessageLite::SerializePartialToCodedStream(
     }
     int final_byte_count = output->ByteCount();
 
-    if (final_byte_count - original_byte_count != size) {
+    if (static_cast<size_t>(final_byte_count - original_byte_count) != size) {
       ByteSizeConsistencyError(size, ByteSizeLong(),
                                final_byte_count - original_byte_count, *this);
     }
@@ -294,7 +294,7 @@ bool MessageLite::AppendPartialToString(string* output) const {
   uint8* start =
       reinterpret_cast<uint8*>(io::mutable_string_data(output) + old_size);
   uint8* end = SerializeWithCachedSizesToArray(start);
-  if (end - start != byte_size) {
+  if (static_cast<size_t>(end - start) != byte_size) {
     ByteSizeConsistencyError(byte_size, ByteSizeLong(), end - start, *this);
   }
   return true;

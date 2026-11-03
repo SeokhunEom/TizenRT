@@ -70,7 +70,7 @@ OCStackResult SendSRMResponse(const OCEntityHandlerRequest *ehRequest,
     return ret;
 }
 
-OCStackResult InitSecureResources( )
+OCStackResult InitSecureResources(void)
 {
     OCStackResult ret;
 
@@ -133,7 +133,7 @@ OCStackResult InitSecureResources( )
     return ret;
 }
 
-OCStackResult DestroySecureResources( )
+OCStackResult DestroySecureResources(void)
 {
     DeInitACLResource();
     DeInitCredResource();

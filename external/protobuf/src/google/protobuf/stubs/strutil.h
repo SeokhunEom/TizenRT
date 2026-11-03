@@ -622,15 +622,15 @@ struct LIBPROTOBUF_EXPORT AlphaNum {
   AlphaNum(int32 i32)
       : piece_data_(digits),
         piece_size_(FastInt32ToBufferLeft(i32, digits) - &digits[0]) {}
-  AlphaNum(uint32 u32)
+  AlphaNum(uint32 value)
       : piece_data_(digits),
-        piece_size_(FastUInt32ToBufferLeft(u32, digits) - &digits[0]) {}
+        piece_size_(FastUInt32ToBufferLeft(value, digits) - &digits[0]) {}
   AlphaNum(int64 i64)
       : piece_data_(digits),
         piece_size_(FastInt64ToBufferLeft(i64, digits) - &digits[0]) {}
-  AlphaNum(uint64 u64)
+  AlphaNum(uint64 value)
       : piece_data_(digits),
-        piece_size_(FastUInt64ToBufferLeft(u64, digits) - &digits[0]) {}
+        piece_size_(FastUInt64ToBufferLeft(value, digits) - &digits[0]) {}
 
   AlphaNum(float f)
     : piece_data_(digits), piece_size_(strlen(FloatToBuffer(f, digits))) {}

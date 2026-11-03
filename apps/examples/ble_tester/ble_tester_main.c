@@ -240,7 +240,7 @@ static void ble_operation_notification_cb(ble_client_ctx *ctx, ble_attr_handle a
 	return;
 }
 
-static void ble_server_connected_cb(ble_conn_handle con_handle, ble_server_connection_type_e conn_type, uint8_t mac[BLE_BD_ADDR_MAX_LEN])
+static void ble_server_connected_cb(ble_conn_handle con_handle, ble_server_connection_type_e conn_type, uint8_t mac[BLE_BD_ADDR_MAX_LEN], uint8_t adv_handle)
 {
 	RMC_LOG(RMC_SERVER_TAG, "'%s' is called\n", __FUNCTION__);
 	RMC_LOG(RMC_SERVER_TAG, "conn : %d / conn_type : %d\n", con_handle, conn_type);
@@ -264,7 +264,7 @@ static void ble_server_mtu_update_cb(ble_conn_handle con_handle, uint16_t mtu_si
 	return;
 }
 
-static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg)
+static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg, uint16_t offset, uint16_t length)
 {
 	char *arg_str = "None";
 	if (arg != NULL) {
@@ -273,7 +273,7 @@ static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle c
 	RMC_LOG(RMC_SERVER_TAG, "[CHAR_A_1][%s] type : %d / handle : %d / attr : %02x \n", arg_str, type, conn_handle, attr_handle);
 }
 
-static void utc_cb_desc_b_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg)
+static void utc_cb_desc_b_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg, uint16_t offset, uint16_t length)
 {
 	char *arg_str = "None";
 	if (arg != NULL) {
@@ -282,7 +282,7 @@ static void utc_cb_desc_b_1(ble_server_attr_cb_type_e type, ble_conn_handle conn
 	RMC_LOG(RMC_SERVER_TAG, "[DESC_A_1][%s] type : %d / handle : %d / attr : %02x \n", arg_str, type, conn_handle, attr_handle);
 }
 
-static void ble_peri_cb_charact_rmc_sync(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void* arg) {
+static void ble_peri_cb_charact_rmc_sync(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void* arg, uint16_t offset, uint16_t length) {
 	uint8_t buf[256] = { 0, };
 	ble_data data = { buf, sizeof(buf) };
 	ble_result_e ret = ble_server_attr_get_data(attr_handle, &data);
@@ -316,7 +316,7 @@ static void ble_peri_cb_charact_rmc_sync(ble_server_attr_cb_type_e type, ble_con
 	}
 }
 
-static void ble_peri_cb_charact_ota(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void* arg) {
+static void ble_peri_cb_charact_ota(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void* arg, uint16_t offset, uint16_t length) {
 	char *arg_str = "None";
 	if (arg != NULL) {
 		arg_str = (char *)arg;

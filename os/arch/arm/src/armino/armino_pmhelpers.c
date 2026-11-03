@@ -67,12 +67,13 @@ static void pm_timer_wakeup_callback(aon_rtc_id_t id, uint8_t *name_p, void *par
         BK_LOGE("PM","Error: send message to pm failed\r\n");
     }
 }
-void up_set_pm_timer(unsigned int interval_us) 
+int up_set_pm_timer(unsigned int interval_us)
 {
 	volatile uint32_t int_level    = 0;
 	int_level = pm_disable_int();
 
 	s_pm_timer_interval_us = interval_us;
+	int ret = OK;
 
 	#if defined(CONFIG_AON_RTC) || defined(CONFIG_ANA_RTC)
 	uint32_t sleep_count = 1; //one count
@@ -87,7 +88,7 @@ void up_set_pm_timer(unsigned int interval_us)
 
 	//force unregister previous if doesn't finish.
 	bk_alarm_unregister(AON_RTC_ID_1, sleep_alarm.name);
-	bk_alarm_register(AON_RTC_ID_1, &sleep_alarm);
+	ret = bk_alarm_register(AON_RTC_ID_1, &sleep_alarm);
 	#endif //CONFIG_AON_RTC
 
 	#if CONFIG_PM_LOWEST_POWER_MODE == 0
@@ -107,6 +108,7 @@ void up_set_pm_timer(unsigned int interval_us)
 	bk_pm_module_vote_sleep_ctrl(PM_SLEEP_MODULE_NAME_APP,0x0,0x0);
 	#endif
 	pm_enable_int(int_level);
+	return ret;
 }
 
 void bsp_pm_domain_register(char *domain_name, int bsp_drv_id)

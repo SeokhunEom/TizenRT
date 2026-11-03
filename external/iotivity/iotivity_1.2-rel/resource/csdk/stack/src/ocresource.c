@@ -335,9 +335,9 @@ bool appendOCStringLL(OCRepPayload *device, OCStringLL *dmv)
     return true;
 
 exit:
-    for (int i = 0; i < size; i++)
+    for (int local_i = 0; local_i < size; local_i++)
     {
-        OICFree(dt[i]);
+        OICFree(dt[local_i]);
     }
     OICFree(dt);
     return false;
@@ -1093,7 +1093,7 @@ static OCStackResult HandleVirtualResource (OCServerRequest *request, OCResource
     }
     else
 #endif
-#if ROUTING_GATEWAY
+#if defined(ROUTING_GATEWAY) && ROUTING_GATEWAY
     // Gateway uses the RMHandleGatewayRequest to respond to the request.
     if (OC_GATEWAY_URI != virtualUriInRequest)
 #endif

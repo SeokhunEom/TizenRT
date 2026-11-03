@@ -67,7 +67,7 @@ OCStackResult psiGetKey(unsigned char* key)
     return OC_STACK_OK;
 }
 
-bool psiIsKeySet()
+bool psiIsKeySet(void)
 {
     return isKeySet;
 }

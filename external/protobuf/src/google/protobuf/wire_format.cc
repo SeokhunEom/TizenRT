@@ -815,7 +815,7 @@ void WireFormat::SerializeWithCachedSizes(
     message_reflection->ListFields(message, &fields);
   }
 
-  for (int i = 0; i < fields.size(); i++) {
+  for (size_t i = 0; i < fields.size(); i++) {
     SerializeFieldWithCachedSizes(fields[i], message, output);
   }
 
@@ -1179,7 +1179,7 @@ size_t WireFormat::ByteSize(const Message& message) {
     message_reflection->ListFields(message, &fields);
   }
 
-  for (int i = 0; i < fields.size(); i++) {
+  for (size_t i = 0; i < fields.size(); i++) {
     our_size += FieldByteSize(fields[i], message);
   }
 
@@ -1354,7 +1354,7 @@ size_t WireFormat::FieldDataOnlyByteSize(
 #define HANDLE_TYPE(TYPE, TYPE_METHOD, CPPTYPE_METHOD)                     \
     case FieldDescriptor::TYPE_##TYPE:                                     \
       if (field->is_repeated()) {                                          \
-        for (int j = 0; j < count; j++) {                                  \
+        for (size_t j = 0; j < count; j++) {                                  \
           data_size += WireFormatLite::TYPE_METHOD##Size(                  \
             message_reflection->GetRepeated##CPPTYPE_METHOD(               \
               message, field, j));                                         \
@@ -1394,7 +1394,7 @@ size_t WireFormat::FieldDataOnlyByteSize(
 
     case FieldDescriptor::TYPE_ENUM: {
       if (field->is_repeated()) {
-        for (int j = 0; j < count; j++) {
+        for (size_t j = 0; j < count; j++) {
           data_size += WireFormatLite::EnumSize(
             message_reflection->GetRepeatedEnum(message, field, j)->number());
         }
@@ -1409,7 +1409,7 @@ size_t WireFormat::FieldDataOnlyByteSize(
     // instead of copying.
     case FieldDescriptor::TYPE_STRING:
     case FieldDescriptor::TYPE_BYTES: {
-      for (int j = 0; j < count; j++) {
+      for (size_t j = 0; j < count; j++) {
         string scratch;
         const string& value = field->is_repeated() ?
           message_reflection->GetRepeatedStringReference(

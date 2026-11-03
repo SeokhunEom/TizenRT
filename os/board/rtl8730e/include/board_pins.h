@@ -292,7 +292,7 @@
 /* I2S2 pins configuration */
 #ifdef CONFIG_AMEBASMART_I2S
 #ifdef CONFIG_AMEBASMART_I2S2
-#define		I2S2_MCLK	NULL
+#define		I2S2_MCLK	0
 #define		I2S2_SCLK	PB_21
 #define		I2S2_WS		PA_16
 #define		I2S2_SD_TX	PB_10

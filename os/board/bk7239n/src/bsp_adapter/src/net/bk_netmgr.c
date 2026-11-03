@@ -155,7 +155,9 @@ struct trwifi_ops g_trwifi_bk_ops = {
     bk_wifi_netmgr_get_driver_info,             /* get_driver_info */
     bk_wifi_netmgr_get_wpa_supplicant_state,    /* get_wpa_supplicant_state */
     bk_wifi_netmgr_disable_11ax_mode,           /* disable_11ax_mode */
+#if defined(CONFIG_ENABLE_HOMELYNK) && (CONFIG_ENABLE_HOMELYNK == 1)
     bk_wifi_netmgr_set_bridge,                  /* set_bridge */
+#endif
 };
 
 extern struct netdev *armino_dev_wlan0;
@@ -1000,15 +1002,15 @@ int beken_wifi_event_cb(void *arg, event_module_t event_module,
     case EVENT_WIFI_AP_DISCONNECTED:
         ap_disconnected = (wifi_event_ap_disconnected_t *)event_data;
         {
-            trwifi_cbk_msg_s msg = {TRWIFI_REASON_UNKNOWN, {0,}, NULL};
-            os_memcpy(msg.bssid, ap_disconnected->mac, WIFI_BSSID_LEN);
-            msg.reason = ap_disconnected->disconnect_reason;
+            trwifi_cbk_msg_s disconnect_msg = {TRWIFI_REASON_UNKNOWN, {0,}, NULL};
+            os_memcpy(disconnect_msg.bssid, ap_disconnected->mac, WIFI_BSSID_LEN);
+            disconnect_msg.reason = ap_disconnected->disconnect_reason;
             ndbg(BK_MAC_FORMAT" disconnected from BK AP, reason(%d)\n",
                 BK_MAC_STR(ap_disconnected->mac), ap_disconnected->disconnect_reason);
 #ifdef CONFIG_BK_CONCURRENT_MODE
-            trwifi_post_event(armino_dev_wlan1, LWNL_EVT_SOFTAP_STA_LEFT, &msg, sizeof(trwifi_cbk_msg_s));
+            trwifi_post_event(armino_dev_wlan1, LWNL_EVT_SOFTAP_STA_LEFT, &disconnect_msg, sizeof(trwifi_cbk_msg_s));
 #else
-            trwifi_post_event(armino_dev_wlan0, LWNL_EVT_SOFTAP_STA_LEFT, &msg, sizeof(trwifi_cbk_msg_s));
+            trwifi_post_event(armino_dev_wlan0, LWNL_EVT_SOFTAP_STA_LEFT, &disconnect_msg, sizeof(trwifi_cbk_msg_s));
 #endif
         }
         break;

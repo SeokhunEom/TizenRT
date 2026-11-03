@@ -92,7 +92,7 @@ string MapEntryName(const string& field_name) {
   static const char kSuffix[] = "Entry";
   result.reserve(field_name.size() + sizeof(kSuffix));
   bool cap_next = true;
-  for (int i = 0; i < field_name.size(); ++i) {
+  for (size_t i = 0; i < field_name.size(); ++i) {
     if (field_name[i] == '_') {
       cap_next = true;
     } else if (cap_next) {
@@ -414,7 +414,7 @@ void Parser::LocationRecorder::AttachComments(
   if (!trailing->empty()) {
     location_->mutable_trailing_comments()->swap(*trailing);
   }
-  for (int i = 0; i < detached_comments->size(); ++i) {
+  for (size_t i = 0; i < detached_comments->size(); ++i) {
     location_->add_leading_detached_comments()->swap(
         (*detached_comments)[i]);
   }

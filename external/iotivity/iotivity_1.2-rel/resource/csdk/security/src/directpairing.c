@@ -318,17 +318,17 @@ bool DPGenerateQuery(bool isSecure,
     return true;
 }
 
-const OCDirectPairingDev_t* DPGetDiscoveredDevices()
+const OCDirectPairingDev_t* DPGetDiscoveredDevices(void)
 {
     return g_dp_discover;
 }
 
-const OCDirectPairingDev_t* DPGetPairedDevices()
+const OCDirectPairingDev_t* DPGetPairedDevices(void)
 {
     return g_dp_paired;
 }
 
-void DPDeleteLists()
+void DPDeleteLists(void)
 {
     delList(g_dp_discover);
     delList(g_dp_paired);
@@ -902,10 +902,10 @@ static OCStackApplicationResult DirectPairingDiscoveryHandler(void* ctx, OCDoHan
                 OCDevAddr endpoint;
                 memcpy(&endpoint, &clientResponse->devAddr, sizeof(OCDevAddr));
 
-                OCStackResult res = addDev(&g_dp_discover, &endpoint,
+                OCStackResult local_res = addDev(&g_dp_discover, &endpoint,
                             clientResponse->connType, pconf);
                 DeletePconfBinData(pconf);
-                if (OC_STACK_OK != res)
+                if (OC_STACK_OK != local_res)
                 {
                     OIC_LOG(ERROR, TAG, "Error while adding data to linkedlist.");
                     return OC_STACK_KEEP_TRANSACTION;

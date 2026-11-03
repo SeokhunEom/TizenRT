@@ -185,7 +185,6 @@ static const flash_config_t flash_config[] = {
 
 static flash_driver_t s_flash = {0};
 static bool s_flash_is_init = false;
-static beken_mutex_t s_flash_mutex = NULL;
 static PM_STATUS flash_ps_status;
 static flash_protect_type_t s_flash_runtime_protect_type = FLASH_PROTECT_NONE;
 static flash_ps_callback_t s_flash_ps_suspend_cb = NULL;
@@ -256,7 +255,7 @@ void bk_flash_mutex_unlock(int status)
 }
 
 
-static inline uint32_t flash_enter_critical()
+static inline uint32_t flash_enter_critical(void)
 {
 #if 1
 	uint32_t flags = rtos_disable_int();
@@ -1296,7 +1295,6 @@ int bk_instruction_read_app_or_common(uint32_t address, uint8_t *user_buf, uint3
 
 int bk_data_read_app_or_common(uint32_t address, uint8_t *user_buf, uint32_t size)
 {
-	uint32_t int_level;
 	uint32_t addr = address;
 
 	if(bk_addr_is_app_or_common(addr) !=TRUE) {

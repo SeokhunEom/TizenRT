@@ -515,6 +515,9 @@ static void generate_stub(int nparms)
 		}
 	} else {
 		fprintf(stream, ");\n");
+		if (strcmp(get_parm(RETTYPE_INDEX), "void") == 0) {
+			fprintf(stream, "  return 0;\n");
+		}
 		fprintf(stream, "#else\n");
 		fprintf(stream, "  set_errno(ENOSYS);\n");
 		if (strcmp(get_parm(RETTYPE_INDEX), "void") == 0) {
@@ -522,7 +525,7 @@ static void generate_stub(int nparms)
 		} else if (strcmp(get_parm(RETTYPE_INDEX), "int") == 0) {
 			fprintf(stream, "  return -1;\n");
 		} else {
-			fprintf(stream, "  return NULL;\n");
+			fprintf(stream, "  return 0;\n");
 		}
 		fprintf(stream, "#endif\n");
 		fprintf(stream, "}\n");

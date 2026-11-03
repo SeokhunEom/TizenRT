@@ -60,17 +60,17 @@ typedef enum lcd_mode_e lcd_mode_t;
 #define NUM_OF_LCD_BUFFER	2
 static uint8_t *lcd_buffer[NUM_OF_LCD_BUFFER] = { NULL, NULL };	//Two lcd buffers to avoid screen tearing
 static int lcd_buffer_index = 0;
-static void lcd_rotate_buffer(short int* src, short int* dst)
+static void lcd_rotate_buffer(const uint16_t *src, uint16_t *dst)
 {
 	int row;
 	int col;
 	int dst_inc = 2 * CONFIG_LCD_XRES;
-	short int val0;
-	short int val1;
-	short int val2;
-	short int val3;
-	short int *psrc;
-	short int *pdst;
+	uint16_t val0;
+	uint16_t val1;
+	uint16_t val2;
+	uint16_t val3;
+	const uint16_t *psrc;
+	uint16_t *pdst;
 
 #if defined(CONFIG_LCD_LANDSCAPE)
 	for (row = 0; row < CONFIG_LCD_XRES; row += 2) {
@@ -281,12 +281,12 @@ int read_response(struct mipi_lcd_dev_s *priv, lcm_setting_table_t command, u8 *
 	}
 	return transfer_status;
 }
-int send_init_cmd(struct mipi_lcd_dev_s *priv, lcm_setting_table_t *table)
+int send_init_cmd(struct mipi_lcd_dev_s *priv, const lcm_setting_table_t *table)
 {
 	u8 send_cmd_idx_s = 0;
 	u32 payload_len;
 	u8 cmd;
-	u8 *cmd_addr;
+	const u8 *cmd_addr;
 	int transfer_status = 0;
 	struct mipi_dsi_msg msg;
 	while (1) {
@@ -384,7 +384,7 @@ static int lcd_putarea(FAR struct lcd_dev_s *dev, fb_coord_t row_start, fb_coord
 	col_start += 1;
 	col_end += 1;
 #if defined(CONFIG_LCD_SW_ROTATION)
-	lcd_rotate_buffer((uint8_t *)buffer, lcd_buffer[lcd_buffer_index]);
+	lcd_rotate_buffer((const uint16_t *)buffer, (uint16_t *)lcd_buffer[lcd_buffer_index]);
 	priv->config->lcd_put_area((u8 *)lcd_buffer[lcd_buffer_index], row_start, col_start, row_end, col_end);
 	lcd_buffer_index = (1 - lcd_buffer_index);
 #else
@@ -485,10 +485,10 @@ static int lcd_getplaneinfo(FAR struct lcd_dev_s *dev, unsigned int planeno, FAR
 	if (!pinfo || planeno != 0) {
 		return -EINVAL;
 	}
-	pinfo->putrun = (struct lcd_planeinfo_s *)&lcd_putrun;	/* Put a run into LCD memory */
-	pinfo->putarea = (struct lcd_planeinfo_s *)&lcd_putarea;	/* Put an area into LCD */
+	pinfo->putrun = lcd_putrun;	/* Put a run into LCD memory */
+	pinfo->putarea = lcd_putarea;	/* Put an area into LCD */
 #ifndef CONFIG_LCD_NOGETRUN
-	pinfo->getrun = (struct lcd_planeinfo_s *)&lcd_getrun;	/* Get a run from LCD memory */
+	pinfo->getrun = lcd_getrun;	/* Get a run from LCD memory */
 #endif
 	return OK;
 }
@@ -897,7 +897,7 @@ FAR struct lcd_dev_s *mipi_lcdinitialize(FAR struct mipi_dsi_device *dsi, struct
 	priv->dev.getplaneinfo = lcd_getplaneinfo;
 	priv->dev.getvideoinfo = lcd_getvideoinfo;
 	priv->dev.getlcdinfo = lcd_getlcdinfo;
-	priv->dev.getpower = (struct mipi_lcd_dev_s *)lcd_getpower;
+	priv->dev.getpower = lcd_getpower;
 	priv->dev.setpower = lcd_setpower;
 	priv->dev.getcontrast = lcd_getcontrast;
 	priv->dev.setcontrast = lcd_setcontrast;

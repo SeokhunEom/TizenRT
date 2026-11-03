@@ -78,7 +78,7 @@ class MessageDifferencer::MultipleFieldsMapKeyComparator
         : message_differencer_(message_differencer),
           key_field_paths_(key_field_paths) {
     GOOGLE_CHECK(!key_field_paths_.empty());
-    for (int i = 0; i < key_field_paths_.size(); ++i) {
+    for (size_t i = 0; i < key_field_paths_.size(); ++i) {
       GOOGLE_CHECK(!key_field_paths_[i].empty());
     }
   }
@@ -94,7 +94,7 @@ class MessageDifferencer::MultipleFieldsMapKeyComparator
       const Message& message1,
       const Message& message2,
       const std::vector<SpecificField>& parent_fields) const {
-    for (int i = 0; i < key_field_paths_.size(); ++i) {
+    for (size_t i = 0; i < key_field_paths_.size(); ++i) {
       if (!IsMatchInternal(message1, message2, parent_fields,
                            key_field_paths_[i], 0)) {
         return false;
@@ -108,7 +108,7 @@ class MessageDifferencer::MultipleFieldsMapKeyComparator
       const Message& message2,
       const std::vector<SpecificField>& parent_fields,
       const std::vector<const FieldDescriptor*>& key_field_path,
-      int path_index) const {
+      size_t path_index) const {
     const FieldDescriptor* field = key_field_path[path_index];
     std::vector<SpecificField> current_parent_fields(parent_fields);
     if (path_index == key_field_path.size() - 1) {
@@ -224,10 +224,10 @@ MessageDifferencer::MessageDifferencer()
       output_string_(NULL) {}
 
 MessageDifferencer::~MessageDifferencer() {
-  for (int i = 0; i < owned_key_comparators_.size(); ++i) {
+  for (size_t i = 0; i < owned_key_comparators_.size(); ++i) {
     delete owned_key_comparators_[i];
   }
-  for (int i = 0; i < ignore_criteria_.size(); ++i) {
+  for (size_t i = 0; i < ignore_criteria_.size(); ++i) {
     delete ignore_criteria_[i];
   }
 }
@@ -314,7 +314,7 @@ void MessageDifferencer::TreatAsMapWithMultipleFieldsAsKey(
     const FieldDescriptor* field,
     const std::vector<const FieldDescriptor*>& key_fields) {
   std::vector<std::vector<const FieldDescriptor*> > key_field_paths;
-  for (int i = 0; i < key_fields.size(); ++i) {
+  for (size_t i = 0; i < key_fields.size(); ++i) {
     std::vector<const FieldDescriptor*> key_field_path;
     key_field_path.push_back(key_fields[i]);
     key_field_paths.push_back(key_field_path);
@@ -330,10 +330,10 @@ void MessageDifferencer::TreatAsMapWithMultipleFieldPathsAsKey(
   GOOGLE_CHECK_EQ(FieldDescriptor::CPPTYPE_MESSAGE, field->cpp_type())
       << "Field has to be message type.  Field name is: "
       << field->full_name();
-  for (int i = 0; i < key_field_paths.size(); ++i) {
+  for (size_t i = 0; i < key_field_paths.size(); ++i) {
     const std::vector<const FieldDescriptor*>& key_field_path =
         key_field_paths[i];
-    for (int j = 0; j < key_field_path.size(); ++j) {
+    for (size_t j = 0; j < key_field_path.size(); ++j) {
       const FieldDescriptor* parent_field =
           j == 0 ? field : key_field_path[j - 1];
       const FieldDescriptor* child_field = key_field_path[j];
@@ -608,8 +608,8 @@ void MessageDifferencer::CombineFields(
     Scope fields2_scope,
     std::vector<const FieldDescriptor*>* combined_fields) {
 
-  int index1 = 0;
-  int index2 = 0;
+  size_t index1 = 0;
+  size_t index2 = 0;
 
   while (index1 < fields1.size() && index2 < fields2.size()) {
     const FieldDescriptor* field1 = fields1[index1];
@@ -989,7 +989,7 @@ bool MessageDifferencer::CompareFieldValueUsingParentFields(
 
 bool MessageDifferencer::CheckPathChanged(
     const std::vector<SpecificField>& field_path) {
-  for (int i = 0; i < field_path.size(); ++i) {
+  for (size_t i = 0; i < field_path.size(); ++i) {
     // Don't check indexes for map entries -- maps are unordered.
     if (field_path[i].field != NULL && field_path[i].field->is_map()) continue;
     if (field_path[i].index != field_path[i].new_index) return true;
@@ -1017,7 +1017,7 @@ bool MessageDifferencer::IsIgnored(
   if (ignored_fields_.find(field) != ignored_fields_.end()) {
     return true;
   }
-  for (int i = 0; i < ignore_criteria_.size(); ++i) {
+  for (size_t i = 0; i < ignore_criteria_.size(); ++i) {
     if (ignore_criteria_[i]->IsIgnored(message1, message2, field,
                                        parent_fields)) {
       return true;
@@ -1030,7 +1030,7 @@ bool MessageDifferencer::IsUnknownFieldIgnored(
     const Message& message1, const Message& message2,
     const SpecificField& field,
     const std::vector<SpecificField>& parent_fields) {
-  for (int i = 0; i < ignore_criteria_.size(); ++i) {
+  for (size_t i = 0; i < ignore_criteria_.size(); ++i) {
     if (ignore_criteria_[i]->IsUnknownFieldIgnored(message1, message2, field,
                                                    parent_fields)) {
       return true;
@@ -1151,8 +1151,8 @@ bool MessageDifferencer::CompareUnknownFields(
 
   // Now that we have two sorted lists, we can detect fields which appear only
   // in one list or the other by traversing them simultaneously.
-  int index1 = 0;
-  int index2 = 0;
+  size_t index1 = 0;
+  size_t index2 = 0;
   while (index1 < fields1.size() || index2 < fields2.size()) {
     enum { ADDITION, DELETION, MODIFICATION, COMPARE_GROUPS,
       NO_CHANGE } change_type;
@@ -1538,7 +1538,7 @@ MessageDifferencer::StreamReporter::~StreamReporter() {
 
 void MessageDifferencer::StreamReporter::PrintPath(
     const std::vector<SpecificField>& field_path, bool left_side) {
-  for (int i = 0; i < field_path.size(); ++i) {
+  for (size_t i = 0; i < field_path.size(); ++i) {
     if (i > 0) {
       printer_->Print(".");
     }

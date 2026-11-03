@@ -37,6 +37,7 @@
 #include "psa/protected_storage.h"
 #include "include/armino_adapter_common.h"
 #include "tfm_sca_aes_nsc.h"
+#include "include/armino_key_data.h"
 
 #define HWRAP_TAG "[ARMINO_HAL_WRAPPER]"
 #define HWRAP_ENTER do { sevdbg(HWRAP_TAG"%s:%d\n", __FILE__, __LINE__); } while (0)
@@ -836,7 +837,7 @@ int armino_hal_set_key(hal_key_type mode, uint32_t key_idx, hal_data *key, hal_d
 
     if((mode == HAL_KEY_AES_128)||(mode == HAL_KEY_AES_192)||(mode == HAL_KEY_AES_256)){
         TFM_NSC_LOCK_OR_RETURN();
-        psa_status_t ret = psa_sca_aes_set_key((aes_key_type)mode, key_idx, key);
+        psa_status_t ret = armino_psa_sca_aes_set_key((aes_key_type)mode, key_idx, key);
         TFM_NSC_UNLOCK();
         if(ret != PSA_SUCCESS){
             return HAL_FAIL;
@@ -847,7 +848,7 @@ int armino_hal_set_key(hal_key_type mode, uint32_t key_idx, hal_data *key, hal_d
 
     if((mode == HAL_KEY_ED_25519)||(mode == HAL_KEY_ECC_25519)){
         TFM_NSC_LOCK_OR_RETURN();
-        psa_status_t ret = psa_25519_set_key(key_idx, key, prikey);
+        psa_status_t ret = armino_psa_25519_set_key(key_idx, key, prikey);
         TFM_NSC_UNLOCK();
         if(ret != PSA_SUCCESS){
             return HAL_FAIL;
@@ -1142,7 +1143,7 @@ int armino_hal_get_key(hal_key_type mode, uint32_t key_idx, hal_data *key)
     }
 
     if((mode == HAL_KEY_ED_25519)||(mode == HAL_KEY_ECC_25519)){
-        int ret = psa_25519_get_key(key_idx, key);
+        int ret = armino_psa_25519_get_key(key_idx, key);
         if(ret != HAL_SUCCESS){
             sedbg("Failed to read key: %d\n", ret);
             return ret;
@@ -1817,7 +1818,7 @@ int armino_hal_ecdsa_sign_md(hal_ecdsa_mode mode, hal_data *hash, uint32_t key_i
     }
 
     if (mode.curve == HAL_ECDSA_CURVE_25519){
-        int ret = psa_25519_sign_hash(key_idx, hash, sign);
+        int ret = armino_psa_25519_sign_hash(key_idx, hash, sign);
         if(ret != HAL_SUCCESS){
             sedbg("Failed to sign hash: %d\n", ret);
             return ret;
@@ -1938,7 +1939,7 @@ int armino_hal_ecdsa_verify_md(hal_ecdsa_mode mode, hal_data *hash, hal_data *si
     }
 
     if(mode.curve == HAL_ECDSA_CURVE_25519){
-        int ret = psa_25519_verify_hash(key_idx, hash, sign);
+        int ret = armino_psa_25519_verify_hash(key_idx, hash, sign);
         if(ret != HAL_SUCCESS){
             sedbg("Failed to verify hash: %d\n", ret);
             return ret;

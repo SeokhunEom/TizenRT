@@ -103,7 +103,7 @@ typedef int64_t q63_t;
 #endif
 #endif
 
-#if __ARM_FEATURE_MVE
+#if defined(__ARM_FEATURE_MVE) && __ARM_FEATURE_MVE
 #ifndef ARM_MATH_MVEI
 #define ARM_MATH_MVEI
 #endif
@@ -135,7 +135,7 @@ typedef int64_t q63_t;
 }
 #endif
 
-#if __ARM_FEATURE_MVE
+#if defined(__ARM_FEATURE_MVE) && __ARM_FEATURE_MVE
 #include <arm_mve.h>
 #endif
 

@@ -113,10 +113,12 @@ int rtk_set_multicast_packet_filters(int dev_index, const u8 *addr){
 	u8 mask[MASK_SIZE]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 	int ret = 0;
 	
-	rtw_packet_filter_pattern_t packet_filter;
+	u8 pattern[MASK_SIZE];
+	rtw_packet_filter_pattern_t packet_filter = {0};
 	rtw_packet_filter_rule_t rule;
 
-	RTK_ETHER_COPY(packet_filter.pattern, addr);
+	memcpy(pattern, addr, sizeof(pattern));
+	packet_filter.pattern = pattern;
 
 	packet_filter.offset = 0;
 	packet_filter.mask_size = MASK_SIZE;

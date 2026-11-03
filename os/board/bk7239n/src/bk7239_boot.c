@@ -73,6 +73,7 @@
 #endif
 #include <arch/board/board.h>
 #include "armino_i2c.h"
+#include "armino_rtc.h"
 #include "armino_spi.h"
 #ifdef CONFIG_FLASH_PARTITION
 #include "../common/common.h"
@@ -112,7 +113,6 @@ extern int i2schar_devinit(void);
 #ifdef CONFIG_PRODCONFIG
 static int up_check_prod(void)
 {
-	uint32_t prod_disable = 0;
 	bool swd_enabled = true;
 
 	bk_err_t ret = bk_otp_read_swd_nsc(&swd_enabled);
@@ -127,7 +127,6 @@ static int up_check_prod(void)
 
 int up_check_download(void)
 {
-	uint32_t prod_disable = 0;
 
 	bool download_enabled = true;
 	bk_err_t ret = bk_otp_read_download_nsc(&download_enabled);

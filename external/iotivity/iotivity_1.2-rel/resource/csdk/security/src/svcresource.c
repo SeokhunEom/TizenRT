@@ -348,11 +348,11 @@ static OCEntityHandlerResult HandleSVCPostRequest(const OCEntityHandlerRequest *
             LL_APPEND(gSvc, newSvc);
 
             // Convert SVC data into JSON for update to persistent storage
-            size_t size = 0;
+            size_t local_size = 0;
             uint8_t *cborPayload = NULL;
-            res = SVCToCBORPayload(gSvc, &cborPayload, &size);
+            res = SVCToCBORPayload(gSvc, &cborPayload, &local_size);
             if (cborPayload && OC_STACK_OK == res &&
-                UpdateSecureResourceInPS(OIC_JSON_SVC_NAME, cborPayload, size) == OC_STACK_OK)
+                UpdateSecureResourceInPS(OIC_JSON_SVC_NAME, cborPayload, local_size) == OC_STACK_OK)
             {
                 ehRet = OC_EH_CHANGED;
             }
@@ -411,7 +411,7 @@ static OCEntityHandlerResult SVCEntityHandler(OCEntityHandlerFlag flag,
 /**
  * This internal method is used to create '/oic/sec/svc' resource.
  */
-static OCStackResult CreateSVCResource()
+static OCStackResult CreateSVCResource(void)
 {
     OCStackResult ret = OCCreateResource(&gSvcHandle,
                                          OIC_RSRC_TYPE_SEC_SVC,
@@ -429,7 +429,7 @@ static OCStackResult CreateSVCResource()
     return ret;
 }
 
-OCStackResult InitSVCResource()
+OCStackResult InitSVCResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -467,7 +467,7 @@ OCStackResult InitSVCResource()
     return ret;
 }
 
-void DeInitSVCResource()
+void DeInitSVCResource(void)
 {
     OCDeleteResource(gSvcHandle);
     gSvcHandle = NULL;

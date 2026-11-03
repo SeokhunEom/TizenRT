@@ -578,7 +578,7 @@ static inline size_t CEscapedLength(StringPiece src) {
 // ----------------------------------------------------------------------
 void CEscapeAndAppend(StringPiece src, string* dest) {
   size_t escaped_len = CEscapedLength(src);
-  if (escaped_len == src.size()) {
+  if (escaped_len == static_cast<size_t>(src.size())) {
     dest->append(src.data(), src.size());
     return;
   }
@@ -716,7 +716,7 @@ bool safe_parse_positive_int(
   IntType value = 0;
   const IntType vmax = std::numeric_limits<IntType>::max();
   assert(vmax > 0);
-  assert(vmax >= base);
+  assert(vmax >= static_cast<IntType>(base));
   const IntType vmax_over_base = vmax / base;
   const char* start = text.data();
   const char* end = start + text.size();
@@ -1288,7 +1288,7 @@ char* DoubleToBuffer(double value, char* buffer) {
   // truncated to a double.
   volatile double parsed_value = strtod(buffer, NULL);
   if (parsed_value != value) {
-    int snprintf_result =
+    snprintf_result =
       snprintf(buffer, kDoubleToBufferSize, "%.*g", DBL_DIG+2, value);
 
     // Should never overflow; see above.
@@ -1303,7 +1303,7 @@ static int memcasecmp(const char *s1, const char *s2, size_t len) {
   const unsigned char *us1 = reinterpret_cast<const unsigned char *>(s1);
   const unsigned char *us2 = reinterpret_cast<const unsigned char *>(s2);
 
-  for ( int i = 0; i < len; i++ ) {
+  for ( size_t i = 0; i < len; i++ ) {
     const int diff =
       static_cast<int>(static_cast<unsigned char>(ascii_tolower(us1[i]))) -
       static_cast<int>(static_cast<unsigned char>(ascii_tolower(us2[i])));
@@ -1400,7 +1400,7 @@ char* FloatToBuffer(float value, char* buffer) {
 
   float parsed_value;
   if (!safe_strtof(buffer, &parsed_value) || parsed_value != value) {
-    int snprintf_result =
+    snprintf_result =
       snprintf(buffer, kFloatToBufferSize, "%.*g", FLT_DIG+3, value);
 
     // Should never overflow; see above.
@@ -1624,8 +1624,8 @@ int GlobalReplaceSubstring(const string& substring,
     return 0;
   string tmp;
   int num_replacements = 0;
-  int pos = 0;
-  for (int match_pos = s->find(substring.data(), pos, substring.length());
+  size_t pos = 0;
+  for (size_t match_pos = s->find(substring.data(), pos, substring.length());
        match_pos != string::npos;
        pos = match_pos + substring.length(),
            match_pos = s->find(substring.data(), pos, substring.length())) {

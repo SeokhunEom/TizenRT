@@ -88,18 +88,18 @@ CAResult_t CAInitializeConnectionManager(CASendThreadFunc blockSendMethod,
 /**
  * Terminate the connection manager context.
  */
-void CATerminateConnectionManager();
+void CATerminateConnectionManager(void);
 
 /**
  * Initialize mutex.
  * @return ::CASTATUS_OK or ERROR CODES (::CAResult_t error codes in cacommon.h).
  */
-CAResult_t CAInitConnectionManagerMutexVariables();
+CAResult_t CAInitConnectionManagerMutexVariables(void);
 
 /**
  * Terminate mutex.
  */
-void CATerminateConnectionManagerMutexVariables();
+void CATerminateConnectionManagerMutexVariables(void);
 
 /**
  * Get request/response message to send.

@@ -85,7 +85,7 @@ void DeleteDpairingBinData(OicSecDpairing_t* dpair)
  * Get the default value.
  * @retval  the gDefaultDpair pointer;
  */
-static OicSecDpairing_t* GetDpairingDefault()
+static OicSecDpairing_t* GetDpairingDefault(void)
 {
     OIC_LOG (DEBUG, TAG, "GetDpairingDefault");
 
@@ -448,16 +448,16 @@ static OCEntityHandlerResult HandleDpairingPostRequest (const OCEntityHandlerReq
 
 #if defined(__WITH_DTLS__) || defined(__WITH_TLS__)
             // Add temporary psk
-            OCStackResult res;
+            OCStackResult local_res;
             OicUuid_t subjectId = {.id={0}};
-            res = AddTmpPskWithPIN(&gDpair->pdeviceID,
+            local_res = AddTmpPskWithPIN(&gDpair->pdeviceID,
                            SYMMETRIC_PAIR_WISE_KEY,
                            (char*)pconf->pin.val, DP_PIN_LENGTH,
                            &gDpair->rownerID, &subjectId);
-            if(res != OC_STACK_OK ||
+            if(local_res != OC_STACK_OK ||
                     memcmp(&gDpair->pdeviceID, &subjectId, sizeof(OicUuid_t)))
             {
-                OIC_LOG_V(ERROR, TAG, "Failed to save the temporal PSK : %d", res);
+                OIC_LOG_V(ERROR, TAG, "Failed to save the temporal PSK : %d", local_res);
                 goto exit;
             }
 
@@ -544,8 +544,8 @@ static OCEntityHandlerResult HandleDpairingPutRequest (const OCEntityHandlerRequ
         // Check if valid Put request
         VERIFY_SUCCESS(TAG, PRM_NOT_ALLOWED == newDpair->spm, ERROR);
 
-        const OicSecPconf_t *pconf = GetPconfResourceData();
-        VERIFY_NON_NULL(TAG, pconf, ERROR);
+        const OicSecPconf_t *local_pconf = GetPconfResourceData();
+        VERIFY_NON_NULL(TAG, local_pconf, ERROR);
 
 #if defined(__WITH_DTLS__) || defined(__WITH_TLS__)
         OCServerRequest *request = GetServerRequestUsingHandle(ehRequest->requestHandle);
@@ -555,14 +555,14 @@ static OCEntityHandlerResult HandleDpairingPutRequest (const OCEntityHandlerRequ
         //Generate new credential
         OIC_LOG_V(INFO, TAG, "SavePairingPSK for %s(%d)", request->devAddr.addr,
                 request->devAddr.port);
-        OCStackResult res = SavePairingPSK(&request->devAddr, &newDpair->pdeviceID,
-                (OicUuid_t *)&pconf->rownerID, true);
-        VERIFY_SUCCESS(TAG, OC_STACK_OK == res, ERROR);
+        OCStackResult local_res = SavePairingPSK(&request->devAddr, &newDpair->pdeviceID,
+                (OicUuid_t *)&local_pconf->rownerID, true);
+        VERIFY_SUCCESS(TAG, OC_STACK_OK == local_res, ERROR);
 #endif // __WITH_DTLS__ or __WITH_TLS__
 
         //Generate new acl
         OicSecPdAcl_t *pdAcl;
-        LL_FOREACH(pconf->pdacls, pdAcl)
+        LL_FOREACH(local_pconf->pdacls, pdAcl)
         {
             OicSecAcl_t* acl = (OicSecAcl_t*)OICCalloc(1, sizeof(OicSecAcl_t));
             VERIFY_NON_NULL(TAG, acl, ERROR);
@@ -716,7 +716,7 @@ OCEntityHandlerResult DpairingEntityHandler (OCEntityHandlerFlag flag,
 /*
  * This internal method is used to create '/oic/sec/dpairing' resource.
  */
-OCStackResult CreateDpairingResource()
+OCStackResult CreateDpairingResource(void)
 {
     OCStackResult ret;
 
@@ -741,7 +741,7 @@ OCStackResult CreateDpairingResource()
  *
  * @retval  OC_STACK_OK for Success, otherwise some error value
  */
-OCStackResult InitDpairingResource()
+OCStackResult InitDpairingResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -762,7 +762,7 @@ OCStackResult InitDpairingResource()
  * OC_STACK_ERROR - stack process error
  *
  */
-OCStackResult DeInitDpairingResource()
+OCStackResult DeInitDpairingResource(void)
 {
     OCStackResult ret = OCDeleteResource(gDpairHandle);
     gDpair = NULL;

@@ -95,7 +95,7 @@ CAResult_t CAInitializeConnectionManager(CASendThreadFunc sendThreadFunc,
     return res;
 }
 
-void CATerminateConnectionManager()
+void CATerminateConnectionManager(void)
 {
     OIC_LOG(DEBUG, TAG, "CATerminateConnectionManager");
 
@@ -108,7 +108,7 @@ void CATerminateConnectionManager()
     CATerminateConnectionManagerMutexVariables();
 }
 
-CAResult_t CAInitConnectionManagerMutexVariables()
+CAResult_t CAInitConnectionManagerMutexVariables(void)
 {
     if (!g_context.dataListMutex)
     {
@@ -144,7 +144,7 @@ CAResult_t CAInitConnectionManagerMutexVariables()
     return CA_STATUS_OK;
 }
 
-void CATerminateConnectionManagerMutexVariables()
+void CATerminateConnectionManagerMutexVariables(void)
 {
     if (g_context.dataListMutex)
     {

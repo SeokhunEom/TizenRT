@@ -470,7 +470,9 @@ struct ap_buffer_info_s {
 	apb_samp_t buffer_size;		/* Preferred size of the buffers */
 };
 
-/* This structure describes an Audio Pipeline Buffer */
+/* This native buffer contains queue links and a semaphore, so its members
+ * must keep their natural alignment. It is not a serialized wire format.
+ */
 
 struct ap_buffer_s {
 	struct dq_entry_s dq_entry;	/* Double linked queue entry */
@@ -485,7 +487,7 @@ struct ap_buffer_s {
 	uint16_t flags;				/* Buffer flags */
 	uint16_t crefs;				/* Number of reference counts */
 	uint8_t samp[0];			/* Offset of the first sample */
-} packed_struct;
+};
 
 /* Structure defining the messages passed to a listening audio thread
  * for dequeuing buffers and other operations.  Also used to allocate

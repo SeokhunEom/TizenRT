@@ -39,7 +39,7 @@
 # include <windows.h>
 # define HAVE_QUERYPERFORMANCEFREQUENCY
 #elif !defined(WITH_ARDUINO)
-# if _POSIX_TIMERS > 0
+# if defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0
 #  include <time.h>        // For clock_gettime()
 # else
 #  include <sys/time.h>    // For gettimeofday()
@@ -70,7 +70,7 @@ uint64_t OICGetCurrentTime(OICTimePrecision precision)
         ? count.QuadPart / (frequency.QuadPart / MS_PER_SEC)
         : count.QuadPart / (frequency.QuadPart / US_PER_SEC);
 #else
-# if _POSIX_TIMERS > 0
+# if defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0
 #   if defined(CLOCK_MONOTONIC_COARSE)
     static const clockid_t clockId = CLOCK_MONOTONIC_COARSE;
 #   elif _POSIX_MONOTONIC_CLOCK >= 0

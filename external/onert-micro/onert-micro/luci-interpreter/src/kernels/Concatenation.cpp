@@ -47,7 +47,7 @@ void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph
   std::vector<luci_interpreter::RuntimeShape> all_shape;
   std::vector<luci_interpreter::RuntimeShape *> all_shape_ptr;
 
-  for (int32_t i = 0; i < input_sizes; ++i)
+  for (flatbuffers::uoffset_t i = 0; i < input_sizes; ++i)
   {
     auto input_index = cur_op->inputs()->operator[](i);
     const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);

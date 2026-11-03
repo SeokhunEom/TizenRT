@@ -78,7 +78,6 @@ AIFW_RESULT EPDProcessHandler::preProcessData(std::shared_ptr<aifw::AIDataBuffer
 	}
 
 	/* Step 3 : Prepare InvokeInput for the model inference. */
-	short *srawData = (short *)rawData;
 	uint16_t inputSetSize[2] = {50, 100};
 	memset(invokeInput[0], '\0', inputSetSize[0] * sizeof(float));
 	memset(invokeInput[1], '\0', inputSetSize[1] * sizeof(float));

@@ -231,7 +231,7 @@ public:
     // TODO check removing of wrap
     assert(i >= 0);
     auto const const_dims = wrap(circle_tensor->shape());
-    assert(i < const_dims.size());
+    assert(static_cast<uint32_t>(i) < const_dims.size());
 
     return const_dims[i];
   }

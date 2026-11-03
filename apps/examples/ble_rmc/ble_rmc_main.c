@@ -255,6 +255,7 @@ static void *multi_adv_thread(void *data)
 		ret = ble_server_one_shot_adv(adv_id_1);
 	}
 	RMC_LOG(RMC_SERVER_TAG, "Multi Adv Stop, ID: %d, %d\n", adv_id_0, adv_id_1);
+	return NULL;
 }
 
 
@@ -301,7 +302,7 @@ static void ble_server_pair_bond_cb(uint32_t bond_pair, ble_conn_handle con_hand
 	return;
 }
 
-static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg)
+static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg, uint16_t offset, uint16_t length)
 {
 	char *arg_str = "None";
 	if (arg != NULL) {
@@ -310,7 +311,7 @@ static void utc_cb_charact_a_1(ble_server_attr_cb_type_e type, ble_conn_handle c
 	RMC_LOG(RMC_SERVER_TAG, "[CHAR_A_1][%s] type : %d / handle : %d / attr : %02x \n", arg_str, type, conn_handle, attr_handle);
 }
 
-static void utc_cb_desc_b_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg)
+static void utc_cb_desc_b_1(ble_server_attr_cb_type_e type, ble_conn_handle conn_handle, ble_attr_handle attr_handle, void *arg, uint16_t offset, uint16_t length)
 {
 	char *arg_str = "None";
 	if (arg != NULL) {
@@ -993,10 +994,10 @@ int ble_rmc_main(int argc, char *argv[])
 		ret = ble_server_one_shot_adv_init();
 		uint8_t type1 = 0;
 		uint8_t adv_id_0 = 0;
-		ble_data adv_data_1[1] = { 0x99, };
-		ble_data scan_rsp_data_1[1] = { 0x98, };
-		ble_data adv_data_2[1] = { 0x99, };
-		ble_data scan_rsp_data_2[1] = { 0x98, };
+		ble_data adv_data_1[1] = { { 0 } };
+		ble_data scan_rsp_data_1[1] = { { 0 } };
+		ble_data adv_data_2[1] = { { 0 } };
+		ble_data scan_rsp_data_2[1] = { { 0 } };
 
 		adv_data_1->data = g_adv_raw_1;
 		adv_data_1->length = sizeof(g_adv_raw_1);

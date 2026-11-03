@@ -45,7 +45,7 @@ typedef enum
  *
  * @return char * reference to memory buffer containing SVR database.
  */
-char * GetSVRDatabase();
+char * GetSVRDatabase(void);
 
 /**
  * This method is used by a entity handlers of SVR's to update

@@ -1101,7 +1101,7 @@ OCStackResult DoAction(OCResource* resource, OCActionSet* actionset,
     return result;
 }
 
-void DoScheduledGroupAction()
+void DoScheduledGroupAction(void)
 {
     OIC_LOG(INFO, TAG, "DoScheduledGroupAction Entering...");
     ScheduledResourceInfo* info = GetScheduledResource(g_scheduleResourceList);
@@ -1413,12 +1413,12 @@ OCStackResult BuildCollectionGroupActionCBORResponse(
         else if (strcmp(doWhat, GET_ACTIONSET) == 0)
         {
             char *plainText = NULL;
-            OCActionSet *actionset = NULL;
+            OCActionSet *scheduledActionSet = NULL;
 
-            GetActionSet(details, resource->actionsetHead, &actionset);
-            if (actionset != NULL)
+            GetActionSet(details, resource->actionsetHead, &scheduledActionSet);
+            if (scheduledActionSet != NULL)
             {
-                BuildStringFromActionSet(actionset, &plainText);
+                BuildStringFromActionSet(scheduledActionSet, &plainText);
 
                 if (plainText != NULL)
                 {
@@ -1472,7 +1472,7 @@ exit:
     return stackRet;
 }
 
-OCStackResult InitializeScheduleResourceList()
+OCStackResult InitializeScheduleResourceList(void)
 {
     MUTEX_INITIALIZE(&g_scheduledResourceLock);
 
@@ -1480,7 +1480,7 @@ OCStackResult InitializeScheduleResourceList()
     return OC_STACK_OK;
 }
 
-void TerminateScheduleResourceList()
+void TerminateScheduleResourceList(void)
 {
     assert(g_scheduleResourceList == NULL);
 

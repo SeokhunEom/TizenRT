@@ -474,7 +474,7 @@ trble_result_e trble_netmgr_get_conn_handle_by_addr(struct bledev *dev, uint8_t 
 
 trble_result_e trble_netmgr_set_gap_device_name(struct bledev *dev, uint8_t* device_name)
 {
-    uint8_t len = os_strlen(device_name);
+    uint8_t len = os_strlen((const char *)device_name);
 
     return bk_tr_ble_server_set_gap_device_name(len, device_name);
 }

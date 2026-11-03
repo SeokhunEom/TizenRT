@@ -249,6 +249,7 @@ static int rsa_sign_wrap(void *ctx,
 						 const unsigned char *hash,
 						 size_t hash_len,
 						 unsigned char *sig,
+						 size_t sig_size,
 						 size_t *sig_len,
 						 int (*f_rng)(void *, unsigned char *, size_t),
 						 void *p_rng)
@@ -259,7 +260,7 @@ static int rsa_sign_wrap(void *ctx,
 	hal_data t_hash = {
 		0,
 	};
-	hal_data t_sig = {sig, 0, NULL, 0};
+	hal_data t_sig = {sig, sig_size, NULL, 0};
 	hal_rsa_mode rsa_mode;
 	sl_ctx shnd;
 
@@ -268,6 +269,11 @@ static int rsa_sign_wrap(void *ctx,
 		return MBEDTLS_ERR_PK_BAD_INPUT_DATA;
 	}
 #endif
+
+	*sig_len = mbedtls_rsa_get_len((mbedtls_rsa_context *)ctx);
+	if (sig_size < *sig_len) {
+		return MBEDTLS_ERR_PK_BUFFER_TOO_SMALL;
+	}
 
 	t_hash.data = (unsigned char *)malloc(hash_len);
 	if (t_hash.data == NULL) {
@@ -551,8 +557,11 @@ static size_t rsa_get_bitlen(const void *ctx)
 	return (8 * mbedtls_rsa_get_len(rsa));
 }
 
-static int rsa_check_pair_wrap(const void *pub, const void *prv)
+static int rsa_check_pair_wrap(const void *pub, const void *prv,
+								int (*f_rng)(void *, unsigned char *, size_t), void *p_rng)
 {
+	(void)f_rng;
+	(void)p_rng;
 	return mbedtls_rsa_check_pub_priv((const mbedtls_rsa_context *)pub, (const mbedtls_rsa_context *)prv);
 }
 

@@ -59,7 +59,7 @@ void TypeInfoTestHelper::ResetTypeInfo(
   switch (type_) {
     case USE_TYPE_RESOLVER: {
       const DescriptorPool* pool = descriptors[0]->file()->pool();
-      for (int i = 1; i < descriptors.size(); ++i) {
+      for (size_t i = 1; i < descriptors.size(); ++i) {
         GOOGLE_CHECK(pool == descriptors[i]->file()->pool())
             << "Descriptors from different pools are not supported.";
       }

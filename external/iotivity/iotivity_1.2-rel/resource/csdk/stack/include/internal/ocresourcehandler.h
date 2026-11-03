@@ -175,12 +175,12 @@ OCStackResult SaveDeviceInfo(OCDeviceInfo info);
 /**
  * Internal API used to clear the platform information.
  */
-void DeletePlatformInfo();
+void DeletePlatformInfo(void);
 
 /**
  * Internal API used to clear the device information.
  */
-void DeleteDeviceInfo();
+void DeleteDeviceInfo(void);
 
 /*
  * Prepare payload for resource representation.

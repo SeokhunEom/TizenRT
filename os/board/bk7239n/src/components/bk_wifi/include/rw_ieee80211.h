@@ -1446,6 +1446,7 @@ bool country_code_policy_is_auto(void);
 UINT8 rw_ieee80211_get_scan_default_chan_num(void);
 bool check_non_radar_channel_available(int chan);
 int get_wiphy_idx(struct wiphy *wiphy);
+const struct ieee80211_regdomain *reg_get_regdomain(struct wiphy *wiphy);
 int set_regdom(const struct ieee80211_regdomain *rd);
 int ieee80211_channel_to_frequency(int chan, wifi_band_t band);
 int ieee80211_frequency_to_channel(int freq);

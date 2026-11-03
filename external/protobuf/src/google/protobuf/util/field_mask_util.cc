@@ -46,7 +46,7 @@ string FieldMaskUtil::ToString(const FieldMask& mask) {
 void FieldMaskUtil::FromString(StringPiece str, FieldMask* out) {
   out->Clear();
   std::vector<string> paths = Split(str, ",");
-  for (int i = 0; i < paths.size(); ++i) {
+  for (size_t i = 0; i < paths.size(); ++i) {
     if (paths[i].empty()) continue;
     out->add_paths(paths[i]);
   }
@@ -117,7 +117,7 @@ bool FieldMaskUtil::ToJsonString(const FieldMask& mask, string* out) {
 bool FieldMaskUtil::FromJsonString(StringPiece str, FieldMask* out) {
   out->Clear();
   std::vector<string> paths = Split(str, ",");
-  for (int i = 0; i < paths.size(); ++i) {
+  for (size_t i = 0; i < paths.size(); ++i) {
     if (paths[i].empty()) continue;
     string snakecase_path;
     if (!CamelCaseToSnakeCase(paths[i], &snakecase_path)) {
@@ -135,7 +135,7 @@ bool FieldMaskUtil::GetFieldDescriptors(
     field_descriptors->clear();
   }
   std::vector<string> parts = Split(path, ".");
-  for (int i = 0; i < parts.size(); ++i) {
+  for (size_t i = 0; i < parts.size(); ++i) {
     const string& field_name = parts[i];
     if (descriptor == NULL) {
       return false;
@@ -320,7 +320,7 @@ void FieldMaskTree::AddPath(const string& path) {
   }
   bool new_branch = false;
   Node* node = &root_;
-  for (int i = 0; i < parts.size(); ++i) {
+  for (size_t i = 0; i < parts.size(); ++i) {
     if (!new_branch && node != &root_ && node->children.empty()) {
       // Path matches an existing leaf node. This means the path is already
       // coverred by this tree (for example, adding "foo.bar.baz" to a tree
@@ -350,7 +350,7 @@ void FieldMaskTree::RemovePath(const string& path,
   Node* node = &root_;
   const Descriptor* current_descriptor = descriptor;
   Node* new_branch_node = NULL;
-  for (int i = 0; i < parts.size(); ++i) {
+  for (size_t i = 0; i < parts.size(); ++i) {
     nodes[i] = node;
     const FieldDescriptor* field_descriptor =
         current_descriptor->FindFieldByName(parts[i]);
@@ -369,8 +369,8 @@ void FieldMaskTree::RemovePath(const string& path,
       if (new_branch_node == NULL) {
         new_branch_node = node;
       }
-      for (int i = 0; i < current_descriptor->field_count(); ++i) {
-        node->children[current_descriptor->field(i)->name()] = new Node();
+      for (int field_index = 0; field_index < current_descriptor->field_count(); ++field_index) {
+        node->children[current_descriptor->field(field_index)->name()] = new Node();
       }
     }
     if (ContainsKey(node->children, parts[i])) {
@@ -399,7 +399,7 @@ void FieldMaskTree::IntersectPath(const string& path, FieldMaskTree* out) {
     return;
   }
   const Node* node = &root_;
-  for (int i = 0; i < parts.size(); ++i) {
+  for (size_t i = 0; i < parts.size(); ++i) {
     if (node->children.empty()) {
       if (node != &root_) {
         out->AddPath(path);
@@ -641,7 +641,7 @@ bool FieldMaskUtil::IsPathInFieldMask(StringPiece path, const FieldMask& mask) {
     const string& mask_path = mask.paths(i);
     if (path == mask_path) {
       return true;
-    } else if (mask_path.length() < path.length()) {
+    } else if (mask_path.length() < static_cast<size_t>(path.length())) {
       // Also check whether mask.paths(i) is a prefix of path.
       if (path.substr(0, mask_path.length() + 1).compare(mask_path + ".") ==
           0) {

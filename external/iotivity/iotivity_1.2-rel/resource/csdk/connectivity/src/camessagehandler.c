@@ -122,7 +122,7 @@ void CAAddDataToReceiveThread(CAData_t *data)
 }
 #endif
 
-static bool CAIsSelectedNetworkAvailable()
+static bool CAIsSelectedNetworkAvailable(void)
 {
     u_arraylist_t *list = CAGetSelectedNetworkList();
     if (!list || u_arraylist_length(list) == 0)
@@ -581,16 +581,16 @@ static CAResult_t CAProcessSendData(const CAData_t *data)
                 // Blockwise transfer
                 if (NULL != info)
                 {
-                    CAResult_t res = CAAddBlockOption(&pdu, info,
+                    CAResult_t local_res = CAAddBlockOption(&pdu, info,
                                                       data->remoteEndpoint,
                                                       &options);
-                    if (CA_STATUS_OK != res)
+                    if (CA_STATUS_OK != local_res)
                     {
                         OIC_LOG(INFO, TAG, "to write block option has failed");
-                        CAErrorHandler(data->remoteEndpoint, pdu->transport_hdr, pdu->length, res);
+                        CAErrorHandler(data->remoteEndpoint, pdu->transport_hdr, pdu->length, local_res);
                         coap_delete_list(options);
                         coap_delete_pdu(pdu);
-                        return res;
+                        return local_res;
                     }
                 }
             }
@@ -834,9 +834,9 @@ static CAResult_t CAReceivedPacketCallback(const CASecureEndpoint_t *sep,
                 if (cadata->responseInfo)
                 {
                     CAInfo_t *info = &cadata->responseInfo->info;
-                    CAResult_t res = CAGetTokenFromPDU((const coap_hdr_transport_t *)retransmissionPdu,
+                    CAResult_t local_res = CAGetTokenFromPDU((const coap_hdr_transport_t *)retransmissionPdu,
                                                        info, &(sep->endpoint));
-                    if (CA_STATUS_OK != res)
+                    if (CA_STATUS_OK != local_res)
                     {
                         OIC_LOG(ERROR, TAG, "fail to get Token from retransmission list");
                         OICFree(info->token);
@@ -858,8 +858,8 @@ static CAResult_t CAReceivedPacketCallback(const CASecureEndpoint_t *sep,
 #ifdef WITH_BWT
     if (CAIsSupportedBlockwiseTransfer(sep->endpoint.adapter))
     {
-        CAResult_t res = CAReceiveBlockWiseData(pdu, &(sep->endpoint), cadata, dataLen);
-        if (CA_NOT_SUPPORTED == res || CA_REQUEST_TIMEOUT == res)
+        CAResult_t local_res = CAReceiveBlockWiseData(pdu, &(sep->endpoint), cadata, dataLen);
+        if (CA_NOT_SUPPORTED == local_res || CA_REQUEST_TIMEOUT == local_res)
         {
             OIC_LOG(DEBUG, TAG, "this message does not have block option");
             CAQueueingThreadAddData(&g_receiveThread, cadata, sizeof(CAData_t));
@@ -884,7 +884,7 @@ exit:
     return res;
 }
 
-void CAHandleRequestResponseCallbacks()
+void CAHandleRequestResponseCallbacks(void)
 {
 #ifdef SINGLE_THREAD
     CAReadData();
@@ -1223,7 +1223,7 @@ CAResult_t CAInitializeMessageHandler(CATransportAdapter_t transportType)
     return CA_STATUS_OK;
 }
 
-void CATerminateMessageHandler()
+void CATerminateMessageHandler(void)
 {
 #ifndef SINGLE_THREAD
     CATransportAdapter_t connType;
@@ -1519,6 +1519,7 @@ static void CALogPDUInfo(const CAData_t *data, const coap_pdu_t *pdu)
     }
 
     size_t payloadLen = (pdu->data) ? (unsigned char *) pdu->hdr + pdu->length - pdu->data : 0;
+    (void)payloadLen; /* Logging may be compiled out. */
     OIC_LOG_V(INFO, ANALYZER_TAG, "CoAP Message Full Size = [%lu]", pdu->length);
     OIC_LOG(INFO, ANALYZER_TAG, "CoAP Header (+ 0xFF)");
     OIC_LOG_BUFFER(INFO, ANALYZER_TAG,  (const uint8_t *) pdu->transport_hdr,
@@ -1568,7 +1569,7 @@ static void CASamsungLogMessage(const CAData_t *data, const coap_pdu_t *pdu)
     if (NULL != data->remoteEndpoint)
     {
         int i = 0;
-        while (NULL != data->remoteEndpoint->addr[i])
+        while ('\0' != data->remoteEndpoint->addr[i])
         {
             g_headerBuffer[g_headerIndex++] = data->remoteEndpoint->addr[i];
             i++;
@@ -1623,7 +1624,7 @@ static void CASamsungLogMessage(const CAData_t *data, const coap_pdu_t *pdu)
     if (info->resourceUri)
     {
         size_t i = 0;
-        while (NULL != info->resourceUri[i])
+        while ('\0' != info->resourceUri[i])
         {
             g_headerBuffer[g_headerIndex++] = info->resourceUri[i];
             i++;
@@ -1633,6 +1634,7 @@ static void CASamsungLogMessage(const CAData_t *data, const coap_pdu_t *pdu)
 
     OIC_LOG_CA_BUFFER(INFO, TAG, g_headerBuffer, g_headerIndex, 1);
     size_t payloadLen = (unsigned char *) pdu->hdr + pdu->length - pdu->data;
+    (void)payloadLen; /* Logging may be compiled out. */
     OIC_LOG_CA_BUFFER(INFO_PRIVATE, TAG, pdu->data, payloadLen, 0);
 }
 

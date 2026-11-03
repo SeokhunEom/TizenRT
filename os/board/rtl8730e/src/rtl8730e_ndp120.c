@@ -95,7 +95,7 @@ static void rtl8730e_ndp120_irq_handler(uint32_t id, gpio_irq_event event)
 	gpio_irq_disable(&g_ndp120info.data_ready);
 
 	if (g_ndp120info.handler != NULL) {
-		g_ndp120info.handler(id);
+		g_ndp120info.handler((void *)(uintptr_t)id);
 	} else {
 		gpio_irq_enable(&g_ndp120info.data_ready);
 	}
@@ -110,12 +110,16 @@ static void rtl8730e_ndp120_enable_irq(bool enable)
 	}
 }
 
-static void rtl8730e_ndp120_irq_attach(ndp120_handler_t handler, FAR char *arg)
+static int rtl8730e_ndp120_irq_attach(ndp120_handler_t handler, FAR char *arg)
 {
 	g_ndp120info.handler = handler;
-	gpio_irq_init(&g_ndp120info.data_ready, PA_23, rtl8730e_ndp120_irq_handler, arg);
+	int ret = gpio_irq_init(&g_ndp120info.data_ready, PA_23, rtl8730e_ndp120_irq_handler, (uintptr_t)arg);
+	if (ret != OK) {
+		return ret;
+	}
 	gpio_irq_set(&g_ndp120info.data_ready, IRQ_HIGH, 1);
 	gpio_irq_enable(&g_ndp120info.data_ready);
+	return OK;
 }
 
 static void rtl8730e_ndp120_set_dmic(bool enable)

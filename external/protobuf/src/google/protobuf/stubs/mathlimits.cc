@@ -42,7 +42,7 @@ namespace protobuf {
 
 // MSVC++ 2005 and older compilers think the header declaration was a
 // definition, and erroneously flag these as a duplicate definition.
-#if defined(COMPILER_MSVC) || __cpluscplus < 201103L
+#if defined(COMPILER_MSVC) || __cplusplus < 201103L
 
 #define DEF_COMMON_LIMITS(Type)
 #define DEF_UNSIGNED_INT_LIMITS(Type)
@@ -133,7 +133,7 @@ DEF_UNSIGNED_INT_LIMITS(unsigned long int)
 
 DEF_FP_LIMITS(float, FLT)
 DEF_FP_LIMITS(double, DBL)
-DEF_FP_LIMITS(long double, LDBL);
+DEF_FP_LIMITS(long double, LDBL)
 
 #undef DEF_COMMON_LIMITS
 #undef DEF_SIGNED_INT_LIMITS

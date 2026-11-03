@@ -405,7 +405,7 @@ void oc_cond_wait(oc_cond cond, oc_mutex mutex)
 }
 #endif
 
-struct timespec oc_get_current_time()
+struct timespec oc_get_current_time(void)
 {
 #if defined(__ANDROID__) || _POSIX_TIMERS > 0
     struct timespec ts;

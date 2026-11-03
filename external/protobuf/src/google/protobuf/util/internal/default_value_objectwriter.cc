@@ -70,7 +70,7 @@ DefaultValueObjectWriter::DefaultValueObjectWriter(
       ow_(ow) {}
 
 DefaultValueObjectWriter::~DefaultValueObjectWriter() {
-  for (int i = 0; i < string_values_.size(); ++i) {
+  for (size_t i = 0; i < string_values_.size(); ++i) {
     delete string_values_[i];
   }
   if (own_typeinfo_) {
@@ -243,7 +243,7 @@ DefaultValueObjectWriter::Node* DefaultValueObjectWriter::Node::FindChild(
   if (name.empty() || kind_ != OBJECT) {
     return NULL;
   }
-  for (int i = 0; i < children_.size(); ++i) {
+  for (size_t i = 0; i < children_.size(); ++i) {
     Node* child = children_[i];
     if (child->name() == name) {
       return child;
@@ -288,7 +288,7 @@ void DefaultValueObjectWriter::Node::WriteTo(ObjectWriter* ow) {
 }
 
 void DefaultValueObjectWriter::Node::WriteChildren(ObjectWriter* ow) {
-  for (int i = 0; i < children_.size(); ++i) {
+  for (size_t i = 0; i < children_.size(); ++i) {
     Node* child = children_[i];
     child->WriteTo(ow);
   }
@@ -337,7 +337,7 @@ void DefaultValueObjectWriter::Node::PopulateChildren(
   hash_map<string, int> orig_children_map;
 
   // Creates a map of child nodes to speed up lookup.
-  for (int i = 0; i < children_.size(); ++i) {
+  for (size_t i = 0; i < children_.size(); ++i) {
     InsertIfNotPresent(&orig_children_map, children_[i]->name_, i);
   }
 
@@ -415,7 +415,7 @@ void DefaultValueObjectWriter::Node::PopulateChildren(
     new_children.push_back(child.release());
   }
   // Adds all leftover nodes in children_ to the beginning of new_child.
-  for (int i = 0; i < children_.size(); ++i) {
+  for (size_t i = 0; i < children_.size(); ++i) {
     if (children_[i] == NULL) {
       continue;
     }

@@ -341,14 +341,14 @@ static inline void boot_mem_check(void)
 }
 
 __attribute__((weak)) \
-void *__stack_chk_guard = 0xDEADBEEF;
+uintptr_t __stack_chk_guard = 0xDEADBEEF;
 
 
 static void bk_stack_guard_setup(void)
 {
     BK_LOGI(TAG, "Intialize random stack guard.\r\n");
 #if defined(CONFIG_TRNG_SUPPORT)
-    __stack_chk_guard = (void *)bk_rand();
+    __stack_chk_guard = (uintptr_t)bk_rand();
 #endif
 }
 

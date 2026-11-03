@@ -47,7 +47,6 @@ void sec_ecdsa_command(char *pcWriteBuffer, int xWriteBufferLen, int argc, char 
         .data_len = 32,
     };
 
-	hal_data data_in = {0};
 	hal_data data_out = {0};
 
     if (os_strcmp(argv[1], "sign") == 0) {

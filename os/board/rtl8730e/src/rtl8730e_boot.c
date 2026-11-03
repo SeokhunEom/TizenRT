@@ -77,6 +77,7 @@
 #include "gpio_api.h"
 #include "timer_api.h"
 #include "ameba_i2c.h"
+#include <tinyara/i2c.h>
 #include "ameba_spi.h"
 #ifdef CONFIG_FLASH_PARTITION
 #include "common.h"

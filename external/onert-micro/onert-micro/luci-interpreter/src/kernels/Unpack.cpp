@@ -54,7 +54,7 @@ void UnpackImpl(const circle::Operator *cur_op, const circle::Tensor *input, int
     copy_size *= input_dims[i];
   }
   int output_size = 1;
-  for (int i = 0; i < output_dims.size(); ++i)
+  for (uint32_t i = 0; i < output_dims.size(); ++i)
   {
     output_size *= output_dims[i];
   }
@@ -100,7 +100,9 @@ void configure_kernel_CircleUnpack(const circle::Operator *cur_op, BaseRuntimeGr
 
   const auto *options = cur_op->builtin_options_as_UnpackOptions();
 
-  LUCI_INTERPRETER_CHECK(cur_op->outputs()->size() == options->num());
+  LUCI_INTERPRETER_CHECK(options->num() >= 0);
+  LUCI_INTERPRETER_CHECK(cur_op->outputs()->size() ==
+                         static_cast<flatbuffers::uoffset_t>(options->num()));
   LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
 
   for (int i = 0; i < Tensor::num_dims(input); ++i)

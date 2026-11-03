@@ -107,7 +107,7 @@ static const uint64_t MSECS_PER_SEC = 1000;
  *          DEFAULT_RANDOM_FACTOR       1.5 (CoAP)
  * @return  microseconds.
  */
-static uint64_t CAGetTimeoutValue()
+static uint64_t CAGetTimeoutValue(void)
 {
     return ((DEFAULT_ACK_TIMEOUT_SEC * MSECS_PER_SEC)
             + ((MSECS_PER_SEC * OCGetRandomByte()) >> 8)) * MSECS_PER_SEC;

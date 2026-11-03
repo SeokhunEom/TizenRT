@@ -50,19 +50,19 @@ void CMSetConfigure(CMConfigureInfo_t info);
  * get target address.
  * @return address
  */
-const char* CMGetTargetAddress();
+const char* CMGetTargetAddress(void);
 
 /**
  * get Adapter Type of current priority.
  * @return ::CATransportAdapter_t value.
  */
-CATransportAdapter_t CMGetAdapterType();
+CATransportAdapter_t CMGetAdapterType(void);
 
 /**
  * get speed of response level.
  * @return ::CMSpeedLevel_t value.
  */
-CMSpeedLevel_t CMGetSpeedOfResponseLevel();
+CMSpeedLevel_t CMGetSpeedOfResponseLevel(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

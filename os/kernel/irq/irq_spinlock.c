@@ -82,7 +82,7 @@ static volatile uint8_t g_irq_spin_count[CONFIG_SMP_NCPUS];
  *
  ****************************************************************************/
 
-irqstate_t spin_lock_irqsave(spinlock_t *lock)
+irqstate_t spin_lock_irqsave(volatile spinlock_t *lock)
 {
 	irqstate_t ret;
 	ret = irqsave();
@@ -131,7 +131,7 @@ irqstate_t spin_lock_irqsave(spinlock_t *lock)
  *
  ****************************************************************************/
 
-void spin_unlock_irqrestore(spinlock_t *lock, irqstate_t flags)
+void spin_unlock_irqrestore(volatile spinlock_t *lock, irqstate_t flags)
 {
 	int me = this_cpu();
 

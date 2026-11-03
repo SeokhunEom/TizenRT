@@ -1169,6 +1169,9 @@ static int string_to_script(char *string, t_codec_init_script_entry *script) {
 
 static int syu645b_set_basic_equalizer(FAR struct syu645b_dev_s *priv, bool set_volume) {
 	int ret = syu645b_exec_i2c_script(priv, t_codec_dq_preset_default_script, sizeof(t_codec_dq_preset_default_script) / sizeof(t_codec_init_script_entry));
+	if (ret != OK) {
+		return ret;
+	}
 	if (set_volume) {
 		priv->max_volume = 0x9F;
 		for (uint8_t i = 0; i < SYU645B_NMIXER_GAIN_COEFF; i++) {
@@ -1180,6 +1183,7 @@ static int syu645b_set_basic_equalizer(FAR struct syu645b_dev_s *priv, bool set_
 	if (!priv->mute) {
 		syu645b_setvolume(priv);
 	}
+	return ret;
 }
 
 static int syu645b_set_equalizer(FAR struct syu645b_dev_s *priv, uint32_t preset)

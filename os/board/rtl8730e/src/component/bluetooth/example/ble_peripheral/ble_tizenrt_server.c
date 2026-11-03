@@ -542,8 +542,9 @@ trble_result_e rtw_ble_server_set_adv_data(uint8_t* data, uint16_t length)
     if (is_server_init != true)
         return TRBLE_INVALID_STATE;
 
-    if(length > 31)
+    if(length > 31) {
         return TRBLE_INVALID_ARGS;
+    }
 
 	if (TRBLE_SUCCESS != rtw_ble_server_adv_into_idle())
 		return TRBLE_FAIL;
@@ -565,8 +566,9 @@ trble_result_e rtw_ble_server_set_adv_name(uint8_t* data, uint16_t length)
         return TRBLE_INVALID_STATE;
     }
 
-    if(length > 31)
+    if(length > 31) {
         return TRBLE_INVALID_ARGS;
+    }
 
 	if (TRBLE_SUCCESS != rtw_ble_server_adv_into_idle())
 		return TRBLE_FAIL;

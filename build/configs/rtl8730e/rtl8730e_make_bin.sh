@@ -22,6 +22,7 @@ CONFIG=${TOP_PATH}/os/.config
 BUILDDIR=${TOP_PATH}/build
 BINDIR=${BUILDDIR}/output/bin
 GNUUTL=${BUILDDIR}/tools/amebasmart/gnu_utility
+FIPTOOL=${FIPTOOL:-$GNUUTL/fiptool}
 TOOL_PATH=${THIS_PATH}/../../tools/amebasmart
 BOOT_PATH=${TOOL_PATH}/bootloader
 FLOADER_PATH=${TOOL_PATH}/flashloader
@@ -71,7 +72,7 @@ cp $GNUUTL/bl1_sram.bin $BINDIR/bl1_sram.bin
 cp $GNUUTL/bl1.bin $BINDIR/bl1.bin
 
 $GNUUTL/pad_align.sh $BINDIR/xip_image2.bin 32
-$GNUUTL/fiptool update $BINDIR/fip.bin --tb-fw $GNUUTL/bl2.bin --tos-fw $GNUUTL/bl32.bin --nt-fw $BINDIR/ca32_image2_all.bin
+"$FIPTOOL" update $BINDIR/fip.bin --tb-fw $GNUUTL/bl2.bin --tos-fw $GNUUTL/bl32.bin --nt-fw $BINDIR/ca32_image2_all.bin || exit $?
 
 if [ ! -f $BINDIR/fip.bin ] ; then
 	echo "No fip.bin"

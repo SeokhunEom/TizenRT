@@ -192,7 +192,11 @@ static u32 _inic_ipc_ip_addr_update_in_wowlan(u32 expected_idle_time, void *para
 	if (new_addr == NULL) {
 		return _FAIL;
 	}
-	if (memcmp(inic_ipc_old_ip_addr, new_addr, 4) == 0) {
+	u8 old_addr[4];
+	for (size_t i = 0; i < sizeof(old_addr); ++i) {
+		old_addr[i] = inic_ipc_old_ip_addr[i];
+	}
+	if (memcmp(old_addr, new_addr, sizeof(old_addr)) == 0) {
 		return _SUCCESS;
 	}
 	while (try_cnt) {
@@ -245,7 +249,9 @@ static u32 _inic_ipc_ip_addr_update_in_wowlan(u32 expected_idle_time, void *para
 		return _FAIL;
 	}
 	/* only update old when success */
-	rtw_memcpy(inic_ipc_old_ip_addr, new_addr, 4);
+	for (size_t i = 0; i < sizeof(inic_ipc_old_ip_addr); ++i) {
+		inic_ipc_old_ip_addr[i] = new_addr[i];
+	}
 	return _SUCCESS;
 }
 

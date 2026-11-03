@@ -48,14 +48,14 @@ extern "C"
 
 time_t timespec_diff(const time_t after, const time_t before);
 void timespec_add(time_t * to, const time_t seconds);
-void checkTimeout();
+void checkTimeout(void);
 
 #ifndef WITH_ARDUINO
 long int getSeconds(struct tm* tp);
 long int getRelativeIntervalOfWeek(struct tm* tp);
 long int getSecondsFromAbsTime(struct tm* tp);
 
-int initThread();
+int initThread(void);
 void *loop(void *threadid);
 time_t registerTimer(const time_t seconds, int *id, void *cb);
 void unregisterTimer(int id);

@@ -144,8 +144,9 @@ endif
 # CFLAGS += -I$(COMPONENT_DIR)/tfm/tfm/interface/include
 # CFLAGS += -I$(COMPONENT_DIR)/tfm/tfm/secure_fw/include
 CFLAGS += -I$(COMPONENT_DIR)/tfm/$(tfm_firmware_dir_name)/tfm_install/interface/include
-CFLAGS += -I$(TOPDIR)/../build/output/bin/tfm_build/generated/interface/include
-CFLAGS += -I$(TOPDIR)/../build/output/bin/tfm_build/_build/
+# Dependency generation runs before tfm artifacts are copied to build/output.
+CFLAGS += -I$(COMPONENT_DIR)/tfm/$(tfm_firmware_dir_name)/generated/interface/include
+CFLAGS += -I$(COMPONENT_DIR)/tfm/$(tfm_firmware_dir_name)/_build
 
 # Architecture and board includes
 ifeq ($(WINTOOL),y)
@@ -171,7 +172,7 @@ $(libfile): $(OBJS)
 # 	$(Q) cp $< $(LIBDIR)
 
 .depend: Makefile $(CSRCS)
-	$(Q) $(MKDEP) $(DEPPATH) $(CC) -- $(CFLAGS) -- $(CSRCS) >Make.dep
+	$(Q) $(MKDEP) $(patsubst %,--dep-path %,$(subst :, ,$(VPATH))) $(CC) -- $(CFLAGS) -- $(CSRCS) >Make.dep
 	$(Q) touch $@
 
 depend: .depend

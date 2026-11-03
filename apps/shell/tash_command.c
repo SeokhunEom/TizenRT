@@ -597,9 +597,9 @@ int tash_execute_cmd(char **args, int argc)
 				if (pmdrv_fd < 0) {
 					shdbg("open %s failed(%d), \n", PM_DRVPATH, get_errno());
 				} else {
-					if (ioctl(pmdrv_fd, PMIOC_DOMAIN_REGISTER, &pm_domain_arg) != OK) {
+					if (ioctl(pmdrv_fd, PMIOC_DOMAIN_REGISTER, (unsigned long)(uintptr_t)&pm_domain_arg) != OK) {
 						shdbg("pm_domain_register failed(%d)\n", get_errno());
-					} else if (ioctl(pmdrv_fd, PMIOC_SUSPEND, pm_domain_arg.domain_id) != OK) {
+					} else if (ioctl(pmdrv_fd, PMIOC_SUSPEND, (unsigned long)(uintptr_t)pm_domain_arg.domain_id) != OK) {
 						shdbg("pm_suspend failed(%d)\n", get_errno());
 					} else {
 						pm_suspended = true;
@@ -610,7 +610,7 @@ int tash_execute_cmd(char **args, int argc)
 #ifdef CONFIG_PM
 				if (pm_suspended) {
 					/* pm_resume should only be called when the pm_suspend is executed correctly. */
-					if (ioctl(pmdrv_fd, PMIOC_RESUME, pm_domain_arg.domain_id) != OK) {
+					if (ioctl(pmdrv_fd, PMIOC_RESUME, (unsigned long)(uintptr_t)pm_domain_arg.domain_id) != OK) {
 						shdbg("pm_resume failed(%d)\n", get_errno());
 					}
 				}

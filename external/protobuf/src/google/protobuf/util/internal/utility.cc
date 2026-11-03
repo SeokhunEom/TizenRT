@@ -246,7 +246,7 @@ string ToCamelCase(const StringPiece input) {
   string result;
   result.reserve(input.size());
 
-  for (size_t i = 0; i < input.size(); ++i, was_cap = is_cap) {
+  for (stringpiece_ssize_type i = 0; i < input.size(); ++i, was_cap = is_cap) {
     is_cap = ascii_isupper(input[i]);
     if (input[i] == '_') {
       capitalize_next = true;
@@ -287,7 +287,7 @@ string ToSnakeCase(StringPiece input) {
   string result;
   result.reserve(input.size() << 1);
 
-  for (size_t i = 0; i < input.size(); ++i) {
+  for (stringpiece_ssize_type i = 0; i < input.size(); ++i) {
     if (ascii_isupper(input[i])) {
       // Consider when the current character B is capitalized:
       // 1) At beginning of input:   "B..." => "b..."
@@ -331,7 +331,7 @@ void DeleteWellKnownTypes() { delete well_known_types_; }
 
 void InitWellKnownTypes() {
   well_known_types_ = new std::set<string>;
-  for (int i = 0; i < GOOGLE_ARRAYSIZE(well_known_types_name_array_); ++i) {
+  for (size_t i = 0; i < GOOGLE_ARRAYSIZE(well_known_types_name_array_); ++i) {
     well_known_types_->insert(well_known_types_name_array_[i]);
   }
   google::protobuf::internal::OnShutdown(&DeleteWellKnownTypes);

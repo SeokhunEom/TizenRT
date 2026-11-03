@@ -220,14 +220,16 @@ IotvtICalResult_t ParseRecur(const char *recurStr, IotvtICalRecur_t *recur)
     startPos = recurStr;
     //Iterates though recurrence rule
     //Eg, RRULE: FREQ=DAILY; UNTIL=20150703; BYDAY=MO, WE, FR
-    while ('\0' != startPos)
+    while ('\0' != *startPos)
     {
         endPos = strchr(startPos, ';');
-        if (endPos)
+        size_t tokenLen = endPos ? (size_t)(endPos - startPos) : strlen(startPos);
+        if (tokenLen >= sizeof(buf))
         {
-            endPos += 1;
+            return IOTVTICAL_INVALID_RRULE;
         }
-        OICStrcpy(buf, (endPos - startPos), startPos);
+        memcpy(buf, startPos, tokenLen);
+        buf[tokenLen] = '\0';
         if (NULL != strstr(buf, FREQ))
         {
             if (NULL != strstr(buf, DAILY))
@@ -254,7 +256,11 @@ IotvtICalResult_t ParseRecur(const char *recurStr, IotvtICalRecur_t *recur)
                 return IOTVTICAL_INVALID_RRULE;
             };
         }
-        startPos = endPos;
+        startPos += tokenLen;
+        if (endPos)
+        {
+            ++startPos;
+        }
     }
 
     if (1 != freqFlag)

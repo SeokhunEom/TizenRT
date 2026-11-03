@@ -111,7 +111,7 @@ inline luci_interpreter::RuntimeShape getTensorShape(const circle::Tensor *tenso
   auto const tensor_shape = Tensor::tensor_shape(tensor);
 
   luci_interpreter::RuntimeShape runtime_shape(tensor_shape.size());
-  for (int i = 0; i < tensor_shape.size(); ++i)
+  for (uint32_t i = 0; i < tensor_shape.size(); ++i)
   {
     runtime_shape.setDim(i, tensor_shape[i]);
   }
@@ -140,7 +140,7 @@ inline void getTensorDims(const circle::Tensor *tensor, BaseRuntimeGraph *runtim
   {
     auto const tensor_shape = Tensor::tensor_shape(tensor);
     assert(tensor_shape.size() <= kMaxSmallSize);
-    for (int i = 0; i < tensor_shape.size(); ++i)
+    for (uint32_t i = 0; i < tensor_shape.size(); ++i)
     {
       dims[i] = tensor_shape[i];
     }
@@ -148,7 +148,7 @@ inline void getTensorDims(const circle::Tensor *tensor, BaseRuntimeGraph *runtim
 #else
   auto const tensor_shape = Tensor::tensor_shape(tensor);
   assert(tensor_shape.size() <= kMaxSmallSize);
-  for (int i = 0; i < tensor_shape.size(); ++i)
+  for (uint32_t i = 0; i < tensor_shape.size(); ++i)
   {
     dims[i] = tensor_shape[i];
   }

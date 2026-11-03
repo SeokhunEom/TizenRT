@@ -58,7 +58,7 @@
 
 #include <tinyara/config.h>
 
-#include "chip.h"
+#include <arch/chip/chip.h>
 
 #ifdef CONFIG_RTC
 

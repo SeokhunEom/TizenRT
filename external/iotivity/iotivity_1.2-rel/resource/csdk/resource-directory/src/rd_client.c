@@ -153,25 +153,25 @@ OCStackResult OCRDPublishWithDeviceId(OCDoHandle *handle, const char *host,
 
     for (uint8_t j = 0; j < nPubResHandles; j++)
     {
-        OCResourceHandle handle = pubResHandle[j];
-        if (handle)
+        OCResourceHandle resourceHandle = pubResHandle[j];
+        if (resourceHandle)
         {
             OCRepPayload *link = OCRepPayloadCreate();
 
-            const char *uri = OCGetResourceUri(handle);
+            const char *uri = OCGetResourceUri(resourceHandle);
             if (uri)
             {
                 OCRepPayloadSetPropString(link, OC_RSRVD_HREF, uri);
             }
 
             uint8_t numElement = 0;
-            if (OC_STACK_OK == OCGetNumberOfResourceTypes(handle, &numElement))
+            if (OC_STACK_OK == OCGetNumberOfResourceTypes(resourceHandle, &numElement))
             {
                 size_t rtDim[MAX_REP_ARRAY_DEPTH] = {numElement, 0, 0};
                 char **rt = (char **)OICMalloc(sizeof(char *) * numElement);
                 for (uint8_t i = 0; i < numElement; ++i)
                 {
-                    const char *value = OCGetResourceTypeName(handle, i);
+                    const char *value = OCGetResourceTypeName(resourceHandle, i);
                     OIC_LOG_V(DEBUG, TAG, "value: %s", value);
                     rt[i] = OICStrdup(value);
                 }
@@ -179,13 +179,13 @@ OCStackResult OCRDPublishWithDeviceId(OCDoHandle *handle, const char *host,
             }
 
             numElement = 0;
-            if (OC_STACK_OK == OCGetNumberOfResourceInterfaces(handle, &numElement))
+            if (OC_STACK_OK == OCGetNumberOfResourceInterfaces(resourceHandle, &numElement))
             {
                 size_t ifDim[MAX_REP_ARRAY_DEPTH] = {numElement, 0, 0};
                 char **itf = (char **)OICMalloc(sizeof(char *) * numElement);
                 for (uint8_t i = 0; i < numElement; ++i)
                 {
-                    const char *value = OCGetResourceInterfaceName(handle, i);
+                    const char *value = OCGetResourceInterfaceName(resourceHandle, i);
                     OIC_LOG_V(DEBUG, TAG, "value: %s", value);
                     itf[i] = OICStrdup(value);
                 }
@@ -193,7 +193,7 @@ OCStackResult OCRDPublishWithDeviceId(OCDoHandle *handle, const char *host,
             }
 
             uint8_t ins = 0;
-            if (OC_STACK_OK == OCGetResourceIns(handle, &ins))
+            if (OC_STACK_OK == OCGetResourceIns(resourceHandle, &ins))
             {
                 OCRepPayloadSetPropInt(link, OC_RSRVD_INS, ins);
             }
@@ -216,7 +216,7 @@ OCStackResult OCRDPublishWithDeviceId(OCDoHandle *handle, const char *host,
             mediaType[0] = OICStrdup(DEFAULT_MESSAGE_TYPE);
             OCRepPayloadSetStringArrayAsOwner(link, OC_RSRVD_MEDIA_TYPE, mediaType, mtDim);
 
-            OCResourceProperty p = OCGetResourceProperties(handle);
+            OCResourceProperty p = OCGetResourceProperties(resourceHandle);
             p = (OCResourceProperty) ((p & OC_DISCOVERABLE) | (p & OC_OBSERVABLE));
             OCRepPayload *policy = OCRepPayloadCreate();
             OCRepPayloadSetPropInt(policy, OC_RSRVD_BITMAP, p);
@@ -282,9 +282,9 @@ OCStackResult OCRDDeleteWithDeviceId(OCDoHandle *handle, const char *host,
     char queryParam[MAX_URI_LENGTH] = { 0 };
     for (uint8_t j = 0; j < nHandles; j++)
     {
-        OCResource *handle = (OCResource *) resourceHandles[j];
+        OCResource *resourceHandle = (OCResource *) resourceHandles[j];
         uint8_t ins = 0;
-        OCGetResourceIns(handle, &ins);
+        OCGetResourceIns(resourceHandle, &ins);
         len += snprintf(queryParam + len, MAX_URI_LENGTH, "&ins=%d", ins);
         OIC_LOG_V(DEBUG, TAG, "queryParam [%s]", queryParam);
     }

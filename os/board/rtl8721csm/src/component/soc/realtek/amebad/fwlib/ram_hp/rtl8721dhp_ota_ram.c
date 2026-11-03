@@ -132,7 +132,7 @@ IMAGE2_RAM_TEXT_SECTION
 int OTA_Image2SignatureCheck(uint32_t input_addr)
 {
 	int ret, index = 0;
-	uint32_t image2_addr, SBAddr, xip_AddrSrt, size;
+	uint32_t image2_addr, SBAddr = 0xFFFFFFFF, xip_AddrSrt, size;
 	unsigned char image_key[32], cmp_key[32];
 
 	rtw_printf("Image Start Addrs: 0x%x \n", input_addr);

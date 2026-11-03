@@ -95,7 +95,6 @@ static void cli_aes_cipher_cmd(char *pcWriteBuffer, int xWriteBufferLen, int arg
     size_t input_len = sizeof(input_data);
     uint8_t output_data[CIPHER_OUTPUT_LEN] = {0};
 	uint8_t tag[16] = {0};
-    size_t output_len = 0;
 	hal_data key_data ;
 	uint32_t nonce_off = 0;
 	uint32_t iv_off = 0;
@@ -308,11 +307,11 @@ static void cli_aes_cipher_cmd(char *pcWriteBuffer, int xWriteBufferLen, int arg
 		AES_LOGI("cipher_aes_param.iv_offset:%x \r\n",  *cipher_aes_param.nc_off);
 		for(int i = 0; i< 16; i++)
 	{
-		AES_LOGI("nonce_counter:%x \r\n",  (uint8_t*)cipher_aes_param.nonce_counter[i]);
+		AES_LOGI("nonce_counter:%x \r\n",  cipher_aes_param.nonce_counter[i]);
 	}
 	for(int ij = 0; ij< 16; ij++)
 	{
-		AES_LOGI("stream_block:%x -- 0x%x \r\n",  (uint8_t*)cipher_aes_param.stream_block[ij], s_stream_block[ij]);
+		AES_LOGI("stream_block:%x -- 0x%x \r\n",  cipher_aes_param.stream_block[ij], s_stream_block[ij]);
 	}
 	}else if(alg == AES_CFB128){
 		AES_LOGI("cipher_aes_param.iv_offset:%x \r\n",  *cipher_aes_param.iv_offset);

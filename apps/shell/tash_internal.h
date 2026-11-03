@@ -94,7 +94,8 @@ extern int tash_usleep(int argc, char **args);
 #ifdef CONFIG_PM
 void tash_pm_open_driver(void);
 void tash_pm_close_driver(void);
-int tash_pm_get_domain_id(void);
+struct pm_domain_s;
+struct pm_domain_s *tash_pm_get_domain_id(void);
 void tash_pm_timedsuspend(uint32_t milliseconds);
 #endif
 #endif

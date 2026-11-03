@@ -722,7 +722,7 @@ uint8_t amebad_spi0status(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
  *   TBD
  *
  ************************************************************************************/
-int amebad_spi0cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd)
+int amebad_spi0cmddata(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool cmd)
 {
 	return 0;
 }
@@ -816,7 +816,7 @@ uint8_t amebad_spi1status(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
  *   TBD
  *
  ************************************************************************************/
-int amebad_spi1cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd)
+int amebad_spi1cmddata(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool cmd)
 {
 	return 0;
 }

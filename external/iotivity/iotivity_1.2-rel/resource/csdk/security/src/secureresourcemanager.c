@@ -364,12 +364,12 @@ OCStackResult SRMRegisterPersistentStorageHandler(OCPersistentStorage* persisten
     return res;
 }
 
-OCPersistentStorage* SRMGetPersistentStorageHandler()
+OCPersistentStorage* SRMGetPersistentStorageHandler(void)
 {
     return gPersistentStorageHandler;
 }
 
-OCStackResult SRMInitSecureResources()
+OCStackResult SRMInitSecureResources(void)
 {
     // TODO: temporarily returning OC_STACK_OK every time until default
     // behavior (for when SVR DB is missing) is settled.
@@ -387,17 +387,17 @@ OCStackResult SRMInitSecureResources()
     return ret;
 }
 
-void SRMDeInitSecureResources()
+void SRMDeInitSecureResources(void)
 {
     DestroySecureResources();
 }
 
-OCStackResult SRMInitPolicyEngine()
+OCStackResult SRMInitPolicyEngine(void)
 {
     return InitPolicyEngine(&g_policyEngineContext);
 }
 
-void SRMDeInitPolicyEngine()
+void SRMDeInitPolicyEngine(void)
 {
     DeInitPolicyEngine(&g_policyEngineContext);
 }

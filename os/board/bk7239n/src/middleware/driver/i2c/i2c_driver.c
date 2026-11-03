@@ -1002,8 +1002,11 @@ bk_err_t bk_i2c_disable_interrupt(i2c_id_t id)
 
 bool bk_i2c_is_bus_busy(i2c_id_t id)
 {
-	I2C_RETURN_ON_NOT_INIT();
-	I2C_RETURN_ON_ID_NOT_INIT(id);
+	/* An unavailable controller must not be reported as ready for a transfer. */
+	if (!s_i2c_driver_is_init || id >= SOC_I2C_UNIT_NUM ||
+	    !(s_i2c[id].id_init_bits & BIT(id))) {
+		return true;
+	}
 	I2C_PM_CHECK_RESTORE(id);
 	return i2c_hal_is_busy(&s_i2c[id].hal);
 }

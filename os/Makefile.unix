@@ -664,12 +664,12 @@ ota_img:
 
 pass1dep: context tools/mkdeps$(HOSTEXEEXT) tools/compression/mkcompresstool.sh
 	$(Q) for dir in $(USERDEPDIRS) ; do \
-		$(MAKE) -C $$dir TOPDIR="$(TOPDIR)" EXTDIR="$(EXTDIR)" depend ; \
+		$(MAKE) -C $$dir TOPDIR="$(TOPDIR)" EXTDIR="$(EXTDIR)" depend || exit $$?; \
 	done
 
 pass2dep: context tools/mkdeps$(HOSTEXEEXT)
 	$(Q) for dir in $(KERNDEPDIRS) ; do \
-		$(MAKE) -C $$dir TOPDIR="$(TOPDIR)" EXTDIR="$(EXTDIR)" EXTRADEFINES=$(KDEFINE) depend; \
+		$(MAKE) -C $$dir TOPDIR="$(TOPDIR)" EXTDIR="$(EXTDIR)" EXTRADEFINES=$(KDEFINE) depend || exit $$?; \
 	done
 
 # Configuration targets

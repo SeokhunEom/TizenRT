@@ -173,14 +173,14 @@ CAConnectionStateChangedCB g_connectionHandler = NULL;
  *
  * @return Generated OCDoResource handle.
  */
-static OCDoHandle GenerateInvocationHandle();
+static OCDoHandle GenerateInvocationHandle(void);
 
 /**
  * Initialize resource data structures, variables, etc.
  *
  * @return ::OC_STACK_OK on success, some other value upon failure.
  */
-static OCStackResult initResources();
+static OCStackResult initResources(void);
 
 /**
  * Add a resource to the end of the linked list of resources.
@@ -286,7 +286,7 @@ static OCStackResult deleteResource(OCResource *resource);
 /**
  * Delete all of the resources in the resource list.
  */
-static void deleteAllResources();
+static void deleteAllResources(void);
 
 /**
  * Increment resource sequence number.  Handles rollover.
@@ -3803,7 +3803,7 @@ OCStackResult BindResourceTypeToResource(OCResource* resource,
                                             const char *resourceTypeName)
 {
     OCResourceType *pointer = NULL;
-    char *str = NULL;
+    char *text = NULL;
     OCStackResult result = OC_STACK_ERROR;
 
     VERIFY_NON_NULL(resourceTypeName, ERROR, OC_STACK_INVALID_PARAM);
@@ -3821,13 +3821,13 @@ OCStackResult BindResourceTypeToResource(OCResource* resource,
         goto exit;
     }
 
-    str = OICStrdup(resourceTypeName);
-    if (!str)
+    text = OICStrdup(resourceTypeName);
+    if (!text)
     {
         result = OC_STACK_NO_MEMORY;
         goto exit;
     }
-    pointer->resourcetypename = str;
+    pointer->resourcetypename = text;
     pointer->next = NULL;
 
     insertResourceType(resource, pointer);
@@ -3837,7 +3837,7 @@ exit:
     if (result != OC_STACK_OK)
     {
         OICFree(pointer);
-        OICFree(str);
+        OICFree(text);
     }
 
     return result;
@@ -3847,7 +3847,7 @@ OCStackResult BindResourceInterfaceToResource(OCResource* resource,
         const char *resourceInterfaceName)
 {
     OCResourceInterface *pointer = NULL;
-    char *str = NULL;
+    char *text = NULL;
     OCStackResult result = OC_STACK_ERROR;
 
     VERIFY_NON_NULL(resourceInterfaceName, ERROR, OC_STACK_INVALID_PARAM);
@@ -3867,13 +3867,13 @@ OCStackResult BindResourceInterfaceToResource(OCResource* resource,
         goto exit;
     }
 
-    str = OICStrdup(resourceInterfaceName);
-    if (!str)
+    text = OICStrdup(resourceInterfaceName);
+    if (!text)
     {
         result = OC_STACK_NO_MEMORY;
         goto exit;
     }
-    pointer->name = str;
+    pointer->name = text;
 
     // Bind the resourceinterface to the resource
     insertResourceInterface(resource, pointer);
@@ -3884,7 +3884,7 @@ OCStackResult BindResourceInterfaceToResource(OCResource* resource,
     if (result != OC_STACK_OK)
     {
         OICFree(pointer);
-        OICFree(str);
+        OICFree(text);
     }
 
     return result;
@@ -4202,7 +4202,7 @@ OCStackResult SendPresenceNotification(OCResourceType *resourceType,
     return result;
 }
 
-OCStackResult SendStopNotification()
+OCStackResult SendStopNotification(void)
 {
     OIC_LOG(INFO, TAG, "SendStopNotification");
     OCResource *resPtr = NULL;
@@ -4356,7 +4356,7 @@ OCStackResult OCDoDirectPairing(void *ctx, OCDPDev_t* peer, OCPrm_t pmSel, char 
 //-----------------------------------------------------------------------------
 // Private internal function definitions
 //-----------------------------------------------------------------------------
-static OCDoHandle GenerateInvocationHandle()
+static OCDoHandle GenerateInvocationHandle(void)
 {
     OCDoHandle handle = NULL;
     // Generate token here, it will be deleted when the transaction is deleted
@@ -4395,7 +4395,7 @@ OCStackResult OCChangeResourceProperty(OCResourceProperty * inputProperty,
 }
 #endif
 
-OCStackResult initResources()
+OCStackResult initResources(void)
 {
     OCStackResult result = OC_STACK_OK;
 
@@ -4490,7 +4490,7 @@ OCResource *findResource(OCResource *resource)
     return NULL;
 }
 
-void deleteAllResources()
+void deleteAllResources(void)
 {
     OCResource *pointer = headResource;
     OCResource *temp = NULL;

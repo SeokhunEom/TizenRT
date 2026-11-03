@@ -130,18 +130,18 @@ CAResult_t CAInitializeBlockWiseTransfer(CASendThreadFunc blockSendMethod,
  * Terminate the block-wise transfer context.
  * @return ::CASTATUS_OK or ERROR CODES (::CAResult_t error codes in cacommon.h).
  */
-CAResult_t CATerminateBlockWiseTransfer();
+CAResult_t CATerminateBlockWiseTransfer(void);
 
 /**
  * initialize mutex.
  * @return ::CASTATUS_OK or ERROR CODES (::CAResult_t error codes in cacommon.h).
  */
-CAResult_t CAInitBlockWiseMutexVariables();
+CAResult_t CAInitBlockWiseMutexVariables(void);
 
 /**
  * terminate mutex.
  */
-void CATerminateBlockWiseMutexVariables();
+void CATerminateBlockWiseMutexVariables(void);
 
 /**
  * Pass the bulk data. if block-wise transfer process need,
@@ -564,7 +564,7 @@ CAResult_t CARemoveBlockDataFromList(const CABlockDataID_t *blockID);
  * Remove all block data in block-wise transfer list.
  * @return ::CASTATUS_OK or ERROR CODES (::CAResult_t error codes in cacommon.h).
  */
-CAResult_t CARemoveAllBlockDataFromList();
+CAResult_t CARemoveAllBlockDataFromList(void);
 
 /**
  * Find the block data with seed info and remove it from block-wise transfer list.
@@ -586,7 +586,7 @@ void CAResetBlockDataTTL(const CABlockDataID_t *blockID);
 /**
  * Checks if the blockData is past its time to live and deletes it if timed-out.
  */
-void CACheckAndDeleteTimedOutBlockData();
+void CACheckAndDeleteTimedOutBlockData(void);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

@@ -87,7 +87,7 @@ AIFW_RESULT AIManifestParser::readData(AIModelAttribute *modelAttribute)
 	modelAttribute->stdVals = NULL;
 
 	AIFW_RESULT ret = AIFW_OK;
-	cJSON *version, *modelfile, *features, *maxrowsdatabuffer, *rawdatacount, *windowsize, *invokeinputcount, *invokeoutputcount, *postprocessresultcount, *inferenceresultcount, *crc, *preprocess, *meanVals, *stdVals, *inferenceinterval, *modelcode;
+	cJSON *version, *modelfile, *features, *maxrowsdatabuffer, *rawdatacount, *windowsize, *invokeinputcount, *invokeoutputcount, *postprocessresultcount, *inferenceresultcount, *crc, *preprocess, *meanVals, *inferenceinterval, *modelcode;
 	uint16_t len;
 	char *file;
 	//	Get AI version

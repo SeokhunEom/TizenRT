@@ -84,7 +84,7 @@ extern sq_queue_t g_wdactivelist;
 /*=====================VARIABLE SECTION END====================*/
 
 /*================FUNCTION DECLARATION SECTION START===========*/
-extern void up_set_pm_timer(unsigned int interval_us);
+extern int up_set_pm_timer(unsigned int interval_us);
 extern void up_set_dvfs(int div_lvl);
 extern uint32_t pm_get_sleep_time(void);
 extern struct pm_domain_s *pm_domain_find(FAR const char *domain_name);

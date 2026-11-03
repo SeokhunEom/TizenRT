@@ -1014,7 +1014,7 @@ void GeneratedMessageReflection::ListFields(
       const OneofDescriptor* containing_oneof = field->containing_oneof();
       if (containing_oneof) {
         // Equivalent to: HasOneofField(message, field)
-        if (oneof_case_array[containing_oneof->index()] == field->number()) {
+        if (oneof_case_array[containing_oneof->index()] == static_cast<uint32>(field->number())) {
           output->push_back(field);
         }
       } else if (has_bits) {
@@ -2052,7 +2052,7 @@ inline bool GeneratedMessageReflection::HasOneof(
 
 inline bool GeneratedMessageReflection::HasOneofField(
     const Message& message, const FieldDescriptor* field) const {
-  return (GetOneofCase(message, field->containing_oneof()) == field->number());
+  return (GetOneofCase(message, field->containing_oneof()) == static_cast<uint32>(field->number()));
 }
 
 inline void GeneratedMessageReflection::SetOneofCase(
@@ -2298,7 +2298,7 @@ struct MetadataOwner {
   // this called only once.
   MetadataOwner() { OnShutdown(&DeleteMetadata); }
   ~MetadataOwner() {
-    for (int i = 0; i < metadata_arrays_.size(); i++) {
+    for (size_t i = 0; i < metadata_arrays_.size(); i++) {
       for (const Metadata* m = metadata_arrays_[i].first;
            m < metadata_arrays_[i].second; m++) {
         delete m->reflection;

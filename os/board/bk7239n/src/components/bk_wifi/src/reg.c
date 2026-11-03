@@ -1531,11 +1531,10 @@ static void handle_channel_adjacent_rules(struct wiphy *wiphy,
 				       MHZ_TO_KHZ(20)))
 		chan->flags &= ~IEEE80211_CHAN_NO_20MHZ;
 
-	chan->max_antenna_gain =
-		min_t(int, chan->orig_mag,
-		      min_t(int,
-			    MBI_TO_DBI(power_rule1->max_antenna_gain),
-			    MBI_TO_DBI(power_rule2->max_antenna_gain)));
+	int adjacent_max_gain = min_t(int,
+		MBI_TO_DBI(power_rule1->max_antenna_gain),
+		MBI_TO_DBI(power_rule2->max_antenna_gain));
+	chan->max_antenna_gain = min_t(int, chan->orig_mag, adjacent_max_gain);
 	chan->max_reg_power = min_t(int,
 				    MBM_TO_DBM(power_rule1->max_eirp),
 				    MBM_TO_DBM(power_rule2->max_eirp));

@@ -830,7 +830,7 @@ bool OCRepPayloadGetPropPubDataType(const OCRepPayload *payload, const char *nam
         else
         {
             value->data = val.bytes;
-            value->len  = strlen(val.bytes);
+            value->len  = strlen((const char *)val.bytes);
         }
     }
     else
@@ -989,8 +989,8 @@ bool OCRepPayloadGetByteStringArray(const OCRepPayload* payload, const char* nam
         {
             for (size_t j = 0; j < i; ++j)
             {
-                OCByteString* tmp = &(*array)[j];
-                OICFree(tmp->bytes);
+                OCByteString* entry = &(*array)[j];
+                OICFree(entry->bytes);
             }
             OICFree(*array);
             *array = NULL;

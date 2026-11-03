@@ -421,7 +421,6 @@ int rtc_main(int argc, char *argv[])
 #endif
 {
 #ifndef CONFIG_DISABLE_PTHREAD
-	int ret;
 	pthread_t rtctest;
 	pthread_attr_t rtctest_attr;
 
@@ -432,8 +431,7 @@ int rtc_main(int argc, char *argv[])
 			return OK;
 #ifdef CONFIG_RTC_ALARM
 		} else if (!strncmp(argv[1], "alarm", strlen("alarm") + 1)) {
-			ret = rtc_alarm_main(argc - 1, ++argv);
-			return ret;
+			return rtc_alarm_main(argc - 1, ++argv);
 #endif
 		} else {
 			show_usage();

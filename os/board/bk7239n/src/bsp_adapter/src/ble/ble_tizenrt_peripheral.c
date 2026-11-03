@@ -242,7 +242,6 @@ static int8_t attr_handle_2_att_index(uint16_t attr_handle, uint16_t *prf_task_i
 
 int32_t bk_tr_ble_peripheral_notice_cb(ble_notice_t notice, void *param)
 {
-    int32_t ret = 0;
 
     switch (notice)
     {
@@ -810,7 +809,9 @@ int32_t bk_tr_ble_server_attr_set_peer_read_data_ptr(trble_attr_handle attr_hand
     service_elem->db_addon[att_index].peer_read_buffer_max_len = buffer_len;
 #endif
 
+#if !ALLOC_ATTR_DATA && WRITE_READ_BUFF_SAME
 end:;
+#endif
 
     if (sem)
     {
@@ -827,7 +828,6 @@ int32_t bk_tr_ble_server_attr_get_data_ptr(trble_attr_handle attr_handle, uint8_
 {
     uint16_t att_index = 0;
     uint16_t prof_id = 0;
-    uint32_t service_index = 0;
     struct service_elem *service_elem = NULL;
 
     if (attr_handle_2_att_index(attr_handle, &prof_id, &att_index, &service_elem) < 0)
@@ -1047,7 +1047,7 @@ int32_t bk_tr_ble_server_get_mac_addr_by_conn_handle(trble_conn_handle conn_hand
 int32_t bk_tr_ble_server_get_conn_handle_by_addr(uint8_t *bd_addr, trble_conn_handle *con_handle)
 {
     uint32_t index = 0;
-    T_GAP_CONN_INFO *info = (T_GAP_CONN_INFO *)le_get_conn_info_by_mac(bd_addr, &index);
+    hal_ble_conn_t *info = le_get_conn_info_by_mac(bd_addr, &index);
 
     if (!info)
     {
@@ -1135,7 +1135,6 @@ int32_t bk_tr_ble_server_attr_reject(trble_attr_handle attr_handle, uint8_t app_
 
 int32_t bk_tr_ble_server_report_connected_evt(uint8_t conn_idx, uint8_t type)
 {
-    int32_t ret = 0;
     hal_ble_conn_t *info = (hal_ble_conn_t *)le_get_conn_info_ext(conn_idx);
 
     if (!info)

@@ -445,11 +445,11 @@ static OCStackResult CBORPayloadToDoxmBin(const uint8_t *cborPayload, size_t siz
         VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Entering oxmType Array.")
 
         int i = 0;
-        size_t len = 0;
+        size_t local_len = 0;
         while (cbor_value_is_valid(&oxmType) && cbor_value_is_text_string(&oxmType))
         {
             cborFindResult = cbor_value_dup_text_string(&oxmType, &doxm->oxmType[i++],
-                                                        &len, NULL);
+                                                        &local_len, NULL);
             VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Finding omxType text string.");
             cborFindResult = cbor_value_advance(&oxmType);
             VERIFY_CBOR_SUCCESS(TAG, cborFindResult, "Failed Advancing oxmType.");
@@ -1693,7 +1693,7 @@ OCEntityHandlerResult DoxmEntityHandler(OCEntityHandlerFlag flag,
     return ehRet;
 }
 
-OCStackResult CreateDoxmResource()
+OCStackResult CreateDoxmResource(void)
 {
     OCStackResult ret = OCCreateResource(&gDoxmHandle,
                                          OIC_RSRC_TYPE_SEC_DOXM,
@@ -1717,7 +1717,7 @@ OCStackResult CreateDoxmResource()
  * If DeviceID is NULL then generates the new DeviceID.
  * Once DeviceID is assigned to the device it does not change for the lifetime of the device.
  */
-static OCStackResult CheckDeviceID()
+static OCStackResult CheckDeviceID(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
     bool validId = false;
@@ -1810,13 +1810,13 @@ static OCStackResult CheckDeviceID()
  *
  * @return the default value of doxm, @ref OicSecDoxm_t.
  */
-static OicSecDoxm_t* GetDoxmDefault()
+static OicSecDoxm_t* GetDoxmDefault(void)
 {
     OIC_LOG(DEBUG, TAG, "GetDoxmToDefault");
     return &gDefaultDoxm;
 }
 
-const OicSecDoxm_t* GetDoxmResourceData()
+const OicSecDoxm_t* GetDoxmResourceData(void)
 {
     return gDoxm;
 }
@@ -1869,7 +1869,7 @@ exit:
 }
 #endif //defined(__WITH_DTLS__) && defined(MULTIPLE_OWNER)
 
-OCStackResult InitDoxmResource()
+OCStackResult InitDoxmResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
 
@@ -1934,7 +1934,7 @@ OCStackResult InitDoxmResource()
     return ret;
 }
 
-OCStackResult DeInitDoxmResource()
+OCStackResult DeInitDoxmResource(void)
 {
     OCStackResult ret = OCDeleteResource(gDoxmHandle);
     if (gDoxm  != &gDefaultDoxm)
@@ -2295,7 +2295,7 @@ OCStackResult SetNumberOfSubOwner(size_t numOfSubOwner)
  * Function to restore doxm resurce to initial status.
  * This function will use in case of error while ownership transfer
  */
-void RestoreDoxmToInitState()
+void RestoreDoxmToInitState(void)
 {
 
     gConfirmState = CONFIRM_STATE_READY;

@@ -119,6 +119,7 @@ static struct in6_addr IPv6MulticastAddressOrg;
 #define IPv6_MULTICAST_GLB "ff0e::158"
 static struct in6_addr IPv6MulticastAddressGlb;
 
+#ifndef __TIZENRT__
 static char *ipv6mcnames[IPv6_DOMAINS] = {
     NULL,
     IPv6_MULTICAST_INT,
@@ -137,6 +138,8 @@ static char *ipv6mcnames[IPv6_DOMAINS] = {
     IPv6_MULTICAST_GLB,
     NULL
 };
+
+#endif /* !__TIZENRT__ */
 
 // Samsung Mobile
 static char *mobileinferfaces[MOBILE_INTERFACES] = {
@@ -193,7 +196,7 @@ static CAIPErrorHandleCallback g_ipErrorHandler = NULL;
 
 static CAIPPacketReceivedCallback g_packetReceivedCallback = NULL;
 
-static void CAFindReadyMessage();
+static void CAFindReadyMessage(void);
 #if !defined(WSA_WAIT_EVENT_0)
 static void CASelectReturned(fd_set *readFds, int ret);
 #else
@@ -244,7 +247,7 @@ static void CAReceiveHandler(void *data)
     }
 
 
-static void CAFindReadyMessage()
+static void CAFindReadyMessage(void)
 {
     fd_set readFds;
     struct timeval timeout;
@@ -533,7 +536,7 @@ static void CAEventReturned(CASocketFd_t socket)
 
 #endif
 
-void CADeInitializeIPGlobals()
+void CADeInitializeIPGlobals(void)
 {
     CLOSE_SOCKET(u6);
     CLOSE_SOCKET(u6s);
@@ -705,6 +708,7 @@ static CAResult_t CAReceiveMessage(CASocketFd_t fd, CATransportFlags_t flags)
 #ifdef __WITH_DTLS__
         int ret = CAdecryptSsl(&sep, (uint8_t *)recvBuffer, recvLen);
         OIC_LOG_V(INFO, TAG, "CAdecryptSsl returns [%d]", ret);
+        (void)ret; /* Logging may be compiled out. */
 #else
         OIC_LOG(ERROR, TAG, "Encrypted message but no DTLS");
 #endif
@@ -723,7 +727,7 @@ static CAResult_t CAReceiveMessage(CASocketFd_t fd, CATransportFlags_t flags)
 
 }
 
-void CAIPPullData()
+void CAIPPullData(void)
 {
     OIC_LOG(DEBUG, TAG, "IN");
     OIC_LOG(DEBUG, TAG, "OUT");
@@ -853,7 +857,7 @@ static CASocketFd_t CACreateSocket(int family, uint16_t *port, bool isMulticast)
     }   \
     CHECKFD(caglobals.ip.NAME.fd)
 
-static void CAInitializeNetlink()
+static void CAInitializeNetlink(void)
 {
     caglobals.ip.netlinkFd = OC_INVALID_SOCKET;
 #ifdef __linux__
@@ -895,7 +899,7 @@ static void CAInitializeNetlink()
 #endif
 }
 
-static void CAInitializeFastShutdownMechanism()
+static void CAInitializeFastShutdownMechanism(void)
 {
     caglobals.ip.selectTimeout = -1; // don't poll for shutdown
     int ret = -1;
@@ -1057,7 +1061,7 @@ CAResult_t CAIPStartServer(const ca_thread_pool_t threadPool)
     return CA_STATUS_OK;
 }
 
-void CAIPStopServer()
+void CAIPStopServer(void)
 {
     caglobals.ip.started = false;
     caglobals.ip.terminate = true;
@@ -1087,7 +1091,7 @@ void CAIPStopServer()
     OIC_LOG(INFO, TAG, "Adapter terminated successfully");
 }
 
-void CAWakeUpForChange()
+void CAWakeUpForChange(void)
 {
 #if !defined(WSA_WAIT_EVENT_0)
 #ifndef __TIZENRT__
@@ -1201,7 +1205,7 @@ static void applyMulticastToInterface6(uint32_t ifindex)
     //applyMulticast6(caglobals.ip.m6s.fd, &IPv6MulticastAddressGlb, ifindex);
 }
 
-CAResult_t CAIPStartListenServer()
+CAResult_t CAIPStartListenServer(void)
 {
     u_arraylist_t *iflist = CAIPGetInterfaceInformation(0);
     if (!iflist)
@@ -1241,7 +1245,7 @@ CAResult_t CAIPStartListenServer()
     return CA_STATUS_OK;
 }
 
-CAResult_t CAIPStopListenServer()
+CAResult_t CAIPStopListenServer(void)
 {
     u_arraylist_t *iflist = CAIPGetInterfaceInformation(0);
     if (!iflist)

@@ -172,7 +172,7 @@
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER) && !defined(__clang__) && \
     (__GNUC__ * 100 + __GNUC_MINOR__ >= 404)
-#  pragma GCC optimize("-ffunction-sections")
+/* Function sections must be selected with compiler flags, not optimize pragmas. */
 #endif
 
 static inline bool add_check_overflow(size_t v1, size_t v2, size_t *r)

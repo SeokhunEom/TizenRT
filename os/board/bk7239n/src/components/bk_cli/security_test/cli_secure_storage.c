@@ -242,7 +242,6 @@ void sec_ss_key_command(char *pcWriteBuffer, int xWriteBufferLen, int argc, char
 	int ret = 0;
 	uint8_t *key = NULL, *key_2 = NULL;
 	uint32_t key_len = 0;
-	hal_data key_out = {0};
 
 	if (argc < 2) {
 		cli_sec_help();

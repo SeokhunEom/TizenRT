@@ -575,7 +575,7 @@ static OCEntityHandlerResult CRLEntityHandler(OCEntityHandlerFlag flag,
 /**
  * This internal method is used to create '/oic/sec/crl' resource.
  */
-static OCStackResult CreateCRLResource()
+static OCStackResult CreateCRLResource(void)
 {
     OCStackResult ret = OCCreateResource(&gCrlHandle,
                                          OIC_RSRC_TYPE_SEC_CRL,
@@ -597,7 +597,7 @@ static OCStackResult CreateCRLResource()
  * Get the default value.
  * @return defaultCrl for now.
  */
-static OicSecCrl_t *GetCrlDefault()
+static OicSecCrl_t *GetCrlDefault(void)
 {
     OicSecCrl_t *defaultCrl = (OicSecCrl_t *)OICCalloc(1, sizeof(OicSecCrl_t));
     if (NULL == defaultCrl)
@@ -634,7 +634,7 @@ static OicSecCrl_t *GetCrlDefault()
  *     OC_STACK_OK    - no errors
  *     OC_STACK_ERROR - stack process error
  */
-OCStackResult InitCRLResource()
+OCStackResult InitCRLResource(void)
 {
     OCStackResult ret = OC_STACK_ERROR;
     // Read Crl resource from PS
@@ -670,7 +670,7 @@ OCStackResult InitCRLResource()
 /**
  * Perform cleanup for ACL resources.
  */
-OCStackResult DeInitCRLResource()
+OCStackResult DeInitCRLResource(void)
 {
     OCStackResult result = OCDeleteResource(gCrlHandle);
     gCrlHandle = NULL;
@@ -679,7 +679,7 @@ OCStackResult DeInitCRLResource()
     return result;
 }
 
-OicSecCrl_t *GetCRLResource()
+OicSecCrl_t *GetCRLResource(void)
 {
     OicSecCrl_t *crl =  NULL;
 
@@ -753,7 +753,7 @@ exit:
     return result;
 }
 
-uint8_t *GetCrl()
+uint8_t *GetCrl(void)
 {
     uint8_t *data = NULL;
     size_t size = 0;
@@ -785,17 +785,17 @@ void GetDerCrl(ByteArray_t* out)
     if (OIC_ENCODING_BASE64 == crl->encoding)
     {
         size_t outSize = B64DECODE_OUT_SAFESIZE((crl->len + 1));
-        uint8_t *out = OICCalloc(1, outSize);
-        if (!out)
+        uint8_t *decoded = OICCalloc(1, outSize);
+        if (!decoded)
         {
             OIC_LOG(ERROR, TAG, "Can't allocate memory for base64 str");
             return;
         }
         uint32_t len = 0;
 
-        if(B64_OK == b64Decode((char*)crl->data, crl->len, out, outSize, &len))
+        if(B64_OK == b64Decode((char*)crl->data, crl->len, decoded, outSize, &len))
         {
-            memcpy(crl->data, out, len);
+            memcpy(crl->data, decoded, len);
             crl->len = (size_t)len;
 
             OIC_LOG (ERROR, TAG, "Crl successfully decoded to base64.");
@@ -804,7 +804,7 @@ void GetDerCrl(ByteArray_t* out)
         {
             OIC_LOG (ERROR, TAG, "Base64 decoding failed.");
         }
-        OICFree(out);
+        OICFree(decoded);
     }
 
     out->len = 0;

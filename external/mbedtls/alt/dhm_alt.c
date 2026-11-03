@@ -154,7 +154,7 @@ static int dhm_param_convert_mode_alt(hal_dh_data *d_param, int x_size)
 }
 
 static int dhm_make_common_alt(mbedtls_dhm_context *ctx, hal_dh_data *d_param, 
-								int x_size, int is_calc_secret)
+								int is_calc_secret)
 {
 	int ret = 0;
 	unsigned int moduler = 0;
@@ -166,7 +166,7 @@ static int dhm_make_common_alt(mbedtls_dhm_context *ctx, hal_dh_data *d_param,
 	 */
 	moduler = mbedtls_mpi_size(&ctx->P);
 	generator = mbedtls_mpi_size(&ctx->G);
-	pubkey = x_size;
+	pubkey = is_calc_secret ? mbedtls_mpi_size(&ctx->GY) : moduler;
 
 	d_param->P->data_len = moduler;
 	d_param->P->data = (unsigned char *)malloc(moduler);
@@ -194,11 +194,11 @@ static int dhm_make_common_alt(mbedtls_dhm_context *ctx, hal_dh_data *d_param,
 		MBEDTLS_MPI_CHK(mbedtls_mpi_write_binary(&ctx->G, d_param->G->data, generator));
 		MBEDTLS_MPI_CHK(mbedtls_mpi_write_binary(&ctx->GY, d_param->pubkey->data, pubkey));
 	} else {
-		MBEDTLS_MPI_CHK(mbedtls_mpi_write_binary(&ctx->P, d_param->P->data, x_size));
+		MBEDTLS_MPI_CHK(mbedtls_mpi_write_binary(&ctx->P, d_param->P->data, moduler));
 		MBEDTLS_MPI_CHK(mbedtls_mpi_write_binary(&ctx->G, d_param->G->data, generator));
 	}
 
-	if (ret = dhm_param_convert_mode_alt(&d_param, mbedtls_dhm_get_len(ctx)) != 0) {
+	if ((ret = dhm_param_convert_mode_alt(d_param, mbedtls_dhm_get_len(ctx))) != 0) {
 		goto cleanup;
 	}
 
@@ -206,20 +206,21 @@ cleanup:
 	return ret;
 }
 
-static int mbedtls_dhm_make_params_alt(mbedtls_dhm_context *ctx, int x_size,
+static int mbedtls_dhm_make_params_alt(mbedtls_dhm_context *ctx,
 										unsigned char *output, size_t *olen)
 {
 	int ret = 0;
 	unsigned char *p;
-	hal_dh_data d_param;
-	sl_ctx shnd;
-
-	memset(&d_param, 0, sizeof(hal_dh_data));
+	hal_data prime = {0};
+	hal_data generator = {0};
+	hal_data public_key = {0};
+	hal_dh_data d_param = {HAL_DH_UNKNOWN, &generator, &prime, &public_key};
+	sl_ctx shnd = NULL;
 
 	/*
 	 *  1. Initialize SecLink
 	 */
-	if (sl_init(shnd) != SECLINK_OK) {
+	if (sl_init(&shnd) != SECLINK_OK) {
 		ret = MBEDTLS_ERR_DHM_FILE_IO_ERROR;
 		return ret;
 	}
@@ -227,7 +228,7 @@ static int mbedtls_dhm_make_params_alt(mbedtls_dhm_context *ctx, int x_size,
 	/*
 	 *  2. Initialize common DHM parameters using shared function
 	 */
-	if (ret = dhm_make_common_alt(ctx, &d_param, x_size, 0) != 0) {
+	if ((ret = dhm_make_common_alt(ctx, &d_param, 0)) != 0) {
 		goto cleanup;
 	}
 
@@ -276,19 +277,20 @@ cleanup:
 	return ret;
 }
 
-static int mbedtls_dhm_make_public_alt(mbedtls_dhm_context *ctx, int x_size,
+static int mbedtls_dhm_make_public_alt(mbedtls_dhm_context *ctx,
 									unsigned char *output, size_t olen)
 {
 	int ret = 0;
-	hal_dh_data d_param;
-	sl_ctx shnd;
-
-	memset(&d_param, 0, sizeof(hal_dh_data));
+	hal_data prime = {0};
+	hal_data generator = {0};
+	hal_data public_key = {0};
+	hal_dh_data d_param = {HAL_DH_UNKNOWN, &generator, &prime, &public_key};
+	sl_ctx shnd = NULL;
 
 	/*
 	 *  1. Initialize SecLink
 	 */
-	if (sl_init(shnd) != SECLINK_OK) {
+	if (sl_init(&shnd) != SECLINK_OK) {
 		ret = MBEDTLS_ERR_DHM_FILE_IO_ERROR;
 		return ret;
 	}
@@ -296,7 +298,7 @@ static int mbedtls_dhm_make_public_alt(mbedtls_dhm_context *ctx, int x_size,
 	/*
 	 *  2. Initialize common DHM parameters using shared function
 	 */
-	if (ret = dhm_make_common_alt(ctx, &d_param, x_size, 0) != 0) {
+	if ((ret = dhm_make_common_alt(ctx, &d_param, 0)) != 0) {
 		goto cleanup;
 	}
 
@@ -330,14 +332,17 @@ static int mbedtls_dhm_calc_secret_alt(mbedtls_dhm_context *ctx,
 								unsigned char *output, size_t output_size, size_t *olen)
 {
 	int ret = 0;
-	hal_dh_data d_param;
+	hal_data prime = {0};
+	hal_data generator = {0};
+	hal_data public_key = {0};
+	hal_dh_data d_param = {HAL_DH_UNKNOWN, &generator, &prime, &public_key};
 	hal_data shared_secret = {output, output_size, NULL, 0};
-	sl_ctx shnd;
+	sl_ctx shnd = NULL;
 
 	/*
 	 *  1. Initialize SecLink
 	 */
-	if (sl_init(shnd) != SECLINK_OK) {
+	if (sl_init(&shnd) != SECLINK_OK) {
 		ret = MBEDTLS_ERR_DHM_FILE_IO_ERROR;
 		return ret;
 	}
@@ -345,7 +350,7 @@ static int mbedtls_dhm_calc_secret_alt(mbedtls_dhm_context *ctx,
 	/*
 	 *  2. Initialize common DHM parameters using shared function
 	 */
-	if (ret = dhm_make_common_alt(ctx, &d_param, mbedtls_mpi_size(&ctx->GY), 1) != 0) {
+	if ((ret = dhm_make_common_alt(ctx, &d_param, 1)) != 0) {
 		goto cleanup;
 	}
 
@@ -394,7 +399,7 @@ int mbedtls_dhm_make_params(mbedtls_dhm_context *ctx, int x_size,
 		return MBEDTLS_ERR_DHM_HW_ACCEL_FAILED;
 	}
 
-	int ret = mbedtls_dhm_make_params_alt(&ctx, x_size, &output, &olen);
+	int ret = mbedtls_dhm_make_params_alt(ctx, output, olen);
 	if (ret != 0) {
 		return (MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED + ret);
 	}
@@ -411,9 +416,6 @@ int mbedtls_dhm_make_public(mbedtls_dhm_context *ctx, int x_size,
 							void *p_rng)
 {
 	int ret = 0;
-	int generator = 0;
-	hal_dh_data d_param;
-	sl_ctx shnd;
 
 	if (ctx == NULL || olen < 1 || olen > mbedtls_dhm_get_len(ctx)) {
 		return MBEDTLS_ERR_DHM_BAD_INPUT_DATA;
@@ -423,7 +425,7 @@ int mbedtls_dhm_make_public(mbedtls_dhm_context *ctx, int x_size,
 		return MBEDTLS_ERR_DHM_HW_ACCEL_FAILED;
 	}
 
-	ret = mbedtls_dhm_make_public_alt(&ctx, x_size, &output, olen);
+	ret = mbedtls_dhm_make_public_alt(ctx, output, olen);
 	if (ret != 0) {
 		return (MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED + ret);
 	}
@@ -448,7 +450,7 @@ int mbedtls_dhm_calc_secret(mbedtls_dhm_context *ctx,
 		return MBEDTLS_ERR_DHM_HW_ACCEL_FAILED;
 	}
 
-	int ret = mbedtls_dhm_calc_secret_alt(&ctx, &output, output_size, &olen);
+	int ret = mbedtls_dhm_calc_secret_alt(ctx, output, output_size, olen);
 	if (ret != 0) {
 		return (MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED + ret);
 	}

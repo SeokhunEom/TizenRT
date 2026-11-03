@@ -149,7 +149,7 @@ static void spi2_isr(void);
 static void spi3_isr(void);
 #endif
 
-static inline uint32_t spi_enter_critical()
+static inline uint32_t spi_enter_critical(void)
 {
        uint32_t flags = rtos_disable_int();
 

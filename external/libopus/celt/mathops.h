@@ -38,7 +38,7 @@
 #include "entcode.h"
 #include "os_support.h"
 
-#define PI 3.141592653f
+#define CELT_PI 3.141592653f
 
 /* Multiplies two 16-bit fractional values. Bit-exactness of this macro is important */
 #define FRAC_MUL16(a,b) ((16384+((opus_int32)(opus_int16)(a)*(opus_int16)(b)))>>15)
@@ -50,7 +50,7 @@ unsigned isqrt32(opus_uint32 _val);
 #define cA 0.43157974f
 #define cB 0.67848403f
 #define cC 0.08595542f
-#define cE ((float)PI/2)
+#define cE ((float)CELT_PI/2)
 static OPUS_INLINE float fast_atan2f(float y, float x) {
    float x2, y2;
    x2 = x*x;
@@ -116,7 +116,7 @@ static OPUS_INLINE opus_val32 celt_maxabs32(const opus_val32 *x, int len)
 #define celt_sqrt(x) ((float)sqrt(x))
 #define celt_rsqrt(x) (1.f/celt_sqrt(x))
 #define celt_rsqrt_norm(x) (celt_rsqrt(x))
-#define celt_cos_norm(x) ((float)cos((.5f*PI)*(x)))
+#define celt_cos_norm(x) ((float)cos((.5f*CELT_PI)*(x)))
 #define celt_rcp(x) (1.f/(x))
 #define celt_div(a,b) ((a)/(b))
 #define frac_div32(a,b) ((float)(a)/(b))

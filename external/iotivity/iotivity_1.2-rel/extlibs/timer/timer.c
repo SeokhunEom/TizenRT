@@ -62,7 +62,7 @@ struct timelist_t
     int timeout_state;
     time_t timeout_seconds;
     time_t timeout_time;
-    void (*cb)();
+    void (*cb)(void);
 } timeout_list[TIMEOUTS];
 
 /*
@@ -225,7 +225,7 @@ void unregisterTimer(int idx)
         timeout_list[idx].timeout_state = TIMEOUT_UNUSED;
 }
 
-void checkTimeout()
+void checkTimeout(void)
 {
     time_t now;
     int i;
@@ -264,7 +264,7 @@ void *loop(void *threadid)
     return NULL ;
 }
 
-int initThread()
+int initThread(void)
 {
     int res = pthread_create(&thread_id, NULL, loop, NULL);
 

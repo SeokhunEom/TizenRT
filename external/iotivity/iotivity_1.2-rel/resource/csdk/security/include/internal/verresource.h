@@ -32,21 +32,21 @@ extern "C" {
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult InitVerResource();
+OCStackResult InitVerResource(void);
 
 /**
  * Perform cleanup for VER resources.
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult DeInitVerResource();
+OCStackResult DeInitVerResource(void);
 
 /**
  * This method is used by SRM to retrieve VER resource data..
  *
  * @return reference to @ref OicSecDoxm_t, binary format of Doxm resource data.
  */
-const OicSecVer_t* GetVerResourceData();
+const OicSecVer_t* GetVerResourceData(void);
 
 /**
  * This method converts CBOR VER into binary VER.
@@ -83,7 +83,7 @@ OCStackResult VerToCBORPayload(const OicSecVer_t * ver, uint8_t **cborPayload,
  *
  * @return the version string of security.
  */
-const char* GetSecVersion();
+const char* GetSecVersion(void);
 
 /** This function deallocates the memory for OicSecVer_t .
  *

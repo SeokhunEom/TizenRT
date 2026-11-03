@@ -143,7 +143,10 @@ context:
 # Create dependencies
 
 .depend: Makefile $(SRCS)
-	$(Q) $(MKDEP) $(ROOTDEPPATH) "$(CC)" -- $(CFLAGS) -- $(SRCS) >Make.dep
+	$(Q) $(MKDEP) $(ROOTDEPPATH) "$(CC)" -- $(CFLAGS) -- $(ASRCS) $(CSRCS) $(MAINSRC) >Make.dep
+ifneq ($(strip $(CXXSRCS)),)
+	$(Q) $(MKDEP) $(ROOTDEPPATH) "$(CXX)" -- $(CXXFLAGS) -- $(CXXSRCS) >>Make.dep
+endif
 	$(Q) touch $@
 
 depend: .depend

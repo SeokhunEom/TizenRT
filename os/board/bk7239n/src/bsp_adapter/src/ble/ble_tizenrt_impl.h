@@ -574,6 +574,9 @@ typedef struct {
     uint8_t app_connected;        /**< Flag indicating whether the application is connected. */
 } hal_ble_conn_t;
 
+hal_ble_conn_t *le_get_conn_info_ext(uint8_t conn_id);
+hal_ble_conn_t *le_get_conn_info_by_mac(uint8_t *mac, uint32_t *index);
+
 #define HAL_BLE_CON_NUM  8
 #define BLE_CON_INTERVAL_MIN 67
 #define BLE_CON_INTERVAL_MAX 67

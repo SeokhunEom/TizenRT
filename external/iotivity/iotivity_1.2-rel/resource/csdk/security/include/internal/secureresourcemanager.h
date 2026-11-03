@@ -41,7 +41,7 @@ OCStackResult SRMRegisterPersistentStorageHandler(OCPersistentStorage* persisten
  *
  * @return The pointer to Persistent Storage callback handler.
  */
-OCPersistentStorage* SRMGetPersistentStorageHandler();
+OCPersistentStorage* SRMGetPersistentStorageHandler(void);
 
 /**
  * Register request and response callbacks. Requests and responses are delivered in these callbacks.
@@ -60,24 +60,24 @@ OCStackResult SRMRegisterHandler(CARequestCallback reqHandler,
  * Initialize all secure resources ( /oic/sec/cred, /oic/sec/acl, /oic/sec/pstat etc).
  * @return  ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult SRMInitSecureResources();
+OCStackResult SRMInitSecureResources(void);
 
 /**
  * Perform cleanup for secure resources ( /oic/sec/cred, /oic/sec/acl, /oic/sec/pstat etc).
  */
-void SRMDeInitSecureResources();
+void SRMDeInitSecureResources(void);
 
 /**
  * Initialize Policy Engine context.
  *
  * @return ::OC_STACK_OK for Success, otherwise some error value.
  */
-OCStackResult SRMInitPolicyEngine();
+OCStackResult SRMInitPolicyEngine(void);
 
 /**
  * Cleanup Policy Engine context.
  */
-void SRMDeInitPolicyEngine();
+void SRMDeInitPolicyEngine(void);
 
 /**
  * Provisioning API response callback.

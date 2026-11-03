@@ -37,7 +37,7 @@
 #ifdef max
 #undef max  // Visual Studio defines this macro
 #endif
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
 #include <google/protobuf/stubs/type_traits.h>
 #endif
 #if defined(_MSC_VER) && !_HAS_EXCEPTIONS
@@ -263,7 +263,7 @@ class LIBPROTOBUF_EXPORT Arena {
   //
   // This function also accepts any type T that satisfies the arena message
   // allocation protocol, documented above.
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
   template <typename T, typename... Args>
   GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE static T* CreateMessage(
       ::google::protobuf::Arena* arena, Args&&... args) {
@@ -279,7 +279,7 @@ class LIBPROTOBUF_EXPORT Arena {
 #endif
   template <typename T> GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE
   static T* CreateMessage(::google::protobuf::Arena* arena) {
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
     static_assert(
         InternalHelper<T>::is_arena_constructable::value,
         "CreateMessage can only construct types that are ArenaConstructable");
@@ -296,7 +296,7 @@ class LIBPROTOBUF_EXPORT Arena {
   // take additional constructor arguments.
   template <typename T, typename Arg> GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE
   static T* CreateMessage(::google::protobuf::Arena* arena, const Arg& arg) {
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
     static_assert(
         InternalHelper<T>::is_arena_constructable::value,
         "CreateMessage can only construct types that are ArenaConstructable");
@@ -316,7 +316,7 @@ class LIBPROTOBUF_EXPORT Arena {
   static T* CreateMessage(::google::protobuf::Arena* arena,
                           const Arg1& arg1,
                           const Arg2& arg2) {
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
     static_assert(
         InternalHelper<T>::is_arena_constructable::value,
         "CreateMessage can only construct types that are ArenaConstructable");
@@ -343,7 +343,7 @@ class LIBPROTOBUF_EXPORT Arena {
   // (unless the destructor is trivial). Hence, from T's point of view, it is as
   // if the object were allocated on the heap (except that the underlying memory
   // is obtained from the arena).
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
   template <typename T, typename... Args>
   GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE
   static T* Create(::google::protobuf::Arena* arena, Args&&... args) {
@@ -600,7 +600,7 @@ class LIBPROTOBUF_EXPORT Arena {
                                               sizeof(char)>
         is_arena_constructable;
 
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
     template <typename... Args>
     static T* Construct(void* ptr, Args&&... args) {
       return new (ptr) T(std::forward<Args>(args)...);
@@ -694,7 +694,7 @@ class LIBPROTOBUF_EXPORT Arena {
     return static_cast<T*>(impl_.AllocateAligned(n));
   }
 
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
   template <typename T, typename... Args>
   GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE
   T* CreateInternal(bool skip_explicit_ownership, Args&&... args) {
@@ -801,7 +801,7 @@ class LIBPROTOBUF_EXPORT Arena {
         T(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
   }
 #endif
-#if LANG_CXX11
+#if defined(LANG_CXX11) && LANG_CXX11
   template <typename T, typename... Args>
   GOOGLE_PROTOBUF_ATTRIBUTE_ALWAYS_INLINE T* CreateMessageInternal(
       Args&&... args) {

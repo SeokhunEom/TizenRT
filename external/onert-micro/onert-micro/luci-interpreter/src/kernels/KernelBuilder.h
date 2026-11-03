@@ -30,7 +30,7 @@ namespace luci_interpreter
 
 enum class BuilderID
 {
-#if USE_GENERATED_LIST
+#if defined(USE_GENERATED_LIST) && USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
 #else
 #include "KernelsToBuild.lst"
@@ -48,7 +48,7 @@ constexpr BuilderID get_builder_id(circle::BuiltinOperator opcode)
   case circle::BuiltinOperator_##builtin_operator: \
     return BuilderID::BuiltinOperator_##builtin_operator;
 
-#if USE_GENERATED_LIST
+#if defined(USE_GENERATED_LIST) && USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
 #else
 #include "KernelsToBuild.lst"
@@ -71,7 +71,7 @@ public:
   register_kernel_configure(BuilderID::BuiltinOperator_##builtin_operator, \
                             configure_kernel_Circle##name);
 
-#if USE_GENERATED_LIST
+#if defined(USE_GENERATED_LIST) && USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
 #else
 #include "KernelsToBuild.lst"
@@ -112,7 +112,7 @@ public:
   register_kernel_execute(BuilderID::BuiltinOperator_##builtin_operator, \
                           execute_kernel_Circle##name);
 
-#if USE_GENERATED_LIST
+#if defined(USE_GENERATED_LIST) && USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
 #else
 #include "KernelsToBuild.lst"
@@ -158,7 +158,7 @@ public:
 #define REGISTER_TRAIN_KERNEL(builtin_operator, name) \
   register_kernel_train(BuilderID::BuiltinOperator_##builtin_operator, train_kernel_Circle##name);
 
-#if USE_GENERATED_LIST
+#if defined(USE_GENERATED_LIST) && USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
 #else
 #include "KernelsToTrain.lst"
