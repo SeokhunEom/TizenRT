@@ -527,7 +527,11 @@ static int lwip_ns_vfcntl(int sockfd, int cmd, va_list ap)
 
 static int lwip_ns_poll(int fd, struct pollfd *fds, bool setup)
 {
+#ifndef CONFIG_DISABLE_POLL
 	return lwip_poll(fd, fds, setup);
+#else
+	return -ENOSYS;
+#endif
 }
 
 static int lwip_ns_socket(int domain, int type, int protocol)
