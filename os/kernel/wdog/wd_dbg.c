@@ -53,7 +53,6 @@ static inline void wd_dump(struct wdog_s *wdog)
 
 void wd_corruption_dbg(struct wdog_s *wdog)
 {
-	uint32_t wd_node;
 	lldbg("WDOG INFO\n");
 	wd_dump(wdog);
 
@@ -62,7 +61,7 @@ void wd_corruption_dbg(struct wdog_s *wdog)
 #ifdef CONFIG_DEBUG_MM_HEAPINFO
 		// Wdog struct is in heap
 		lldbg("WDOG is in HEAP. Print neighbour heap nodes\n");
-		wd_node = (uint32_t)wdog - SIZEOF_MM_ALLOCNODE;
+		uint32_t wd_node = (uint32_t)wdog - SIZEOF_MM_ALLOCNODE;
 		lldbg("PREV WDOG INFO\n");
 		mm_dump_node((struct mm_allocnode_s *)(wd_node - (((struct mm_allocnode_s *)wd_node)->preceding & ~MM_ALLOC_BIT)), "PREV HEAP NODE");
 		lldbg("NEXT WDOG INFO\n");
