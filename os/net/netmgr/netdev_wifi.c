@@ -350,11 +350,13 @@ void *_trwifi_event_handler(void *arg)
 			assert(0);
 		}
 
+#ifdef CONFIG_LWNL80211
 		res = lwnl_postmsg(LWNL_DEV_WIFI, evt->evt, evt->buf, evt->buf_len);
 		if (res < 0) {
 			NET_LOGKE(TAG, "critical error network stack is not enabled\n");
 			assert(0);
 		}
+#endif
 		if (evt->buf) {
 			kmm_free(evt->buf);
 			evt->buf_len = 0;

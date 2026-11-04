@@ -64,7 +64,7 @@ CXXSRCS =
 
 ifeq ($(CONFIG_EXAMPLES_TESTCASE),y)
 
-CSRCS += tc_main.c
+CSRCS += tc_main.c tc_common.c
 DEPPATH = --dep-path .
 VPATH = .
 

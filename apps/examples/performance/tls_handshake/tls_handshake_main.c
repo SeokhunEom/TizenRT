@@ -30,8 +30,7 @@ extern int tls_handshake_client(char *ipaddr);
 int tls_handshake_main(int argc, char **argv)
 {
 	if (argc == 2 && !strncmp("-s", argv[1], 3)) {
-		tls_handshake_server();
-		return 0;
+		return tls_handshake_server();
 	} else if (argc == 3 && !strncmp("-c", argv[1], 3)) {
 		tls_handshake_client(argv[2]);
 		return 0;

@@ -125,6 +125,8 @@ void  operator delete[](void* ptr, void*) noexcept;
 # define _LIBCPP_HAS_NO_ALIGNED_ALLOCATION
 #endif
 
+// Preserve the ABI even on targets that give system headers implicit C linkage.
+extern "C++" {
 namespace std  // purposefully not using versioning namespace
 {
 
@@ -178,6 +180,7 @@ _LIBCPP_FUNC_VIS new_handler set_new_handler(new_handler) _NOEXCEPT;
 _LIBCPP_FUNC_VIS new_handler get_new_handler() _NOEXCEPT;
 
 }  // std
+}  // extern "C++"
 
 #if defined(_WIN32) && !defined(_LIBCPP_BUILDING_LIBRARY)
 # define _LIBCPP_NEW_DELETE_VIS

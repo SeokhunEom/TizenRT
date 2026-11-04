@@ -173,7 +173,7 @@ static tsi_ssl_ctx *SSL_CTX_init(tsi_mode_t mode) {
     goto error;
   }
 
-  ssl_ctx->out_ssl.buf_size = MBEDTLS_SSL_MAX_CONTENT_LEN;
+  ssl_ctx->out_ssl.buf_size = MBEDTLS_SSL_OUT_CONTENT_LEN;
   ssl_ctx->out_ssl.data = (unsigned char *)gpr_malloc(ssl_ctx->out_ssl.buf_size);
   ssl_ctx->out_ssl.len = 0;
   ssl_ctx->out_ssl.offset = 0;
@@ -589,7 +589,8 @@ static tsi_result ssl_ctx_use_private_key(tsi_ssl_ctx* ssl_ctx, const char* pem_
       result = TSI_INVALID_ARGUMENT;
       break;
     }
-    ret = mbedtls_pk_parse_key(pkey, (const unsigned char *)pem_key, pem_key_size, NULL, 0);
+    ret = mbedtls_pk_parse_key(pkey, (const unsigned char *)pem_key, pem_key_size, NULL, 0,
+                               mbedtls_ctr_drbg_random, &ssl_ctx->ctr_drbg);
     if (ret != 0) {
       gpr_log(GPR_ERROR, "mbedtls_pk_parse_key failed.[-0x%x]", -ret);
       result =  TSI_INVALID_ARGUMENT;

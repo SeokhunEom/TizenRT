@@ -1,0 +1,195 @@
+name: All defconfig builds
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: defconfig-build-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: Discover all defconfigs
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Generate build matrix
+        id: matrix
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+          import re
+
+          # Keep discovery here so this workflow can be copied on its own.
+          BOARDS = ("qemu", "rtl8721csm", "bk7239n", "rtl8730e")
+          DEFAULT_DOCKER_VERSION = "1.5.8"  # os/dbuild.sh default
+
+          def discover(config_root):
+              entries = []
+              for board in BOARDS:
+                  configs = sorted((config_root / board).rglob("defconfig"))
+                  if not configs:
+                      raise ValueError(f"No defconfigs found for {board}")
+                  for path in configs:
+                      config = path.parent.relative_to(config_root).as_posix()
+                      # configure.sh expects exactly <board>/<configuration>.
+                      if not re.fullmatch(r"[a-z0-9_-]+/[a-zA-Z0-9_-]+", config):
+                          raise ValueError(f"Unsupported configuration path: {config}")
+                      versions = re.findall(r"^CONFIG_DOCKER_VERSION=(.*)$", path.read_text(), re.M)
+                      if len(versions) > 1:
+                          raise ValueError(f"Duplicate CONFIG_DOCKER_VERSION: {config}")
+                      version = DEFAULT_DOCKER_VERSION
+                      if versions:
+                          match = re.fullmatch(r'"([a-zA-Z0-9_][a-zA-Z0-9_.-]*)"', versions[0])
+                          if not match:
+                              raise ValueError(f"Invalid CONFIG_DOCKER_VERSION: {config}")
+                          version = match.group(1)
+                      entries.append({
+                          "config": config,
+                          "id": config.replace("/", "--"),
+                          "image": f"tizenrt/tizenrt:{version}",
+                      })
+              if len(entries) > 256:
+                  raise ValueError("GitHub Actions supports at most 256 jobs per matrix")
+              if len({entry["id"] for entry in entries}) != len(entries):
+                  raise ValueError("Artifact names must be unique")
+              return {"include": entries}
+
+          def main():
+              root = Path(os.environ["GITHUB_WORKSPACE"])
+              matrix = discover(root / "build/configs")
+              payload = json.dumps(matrix, separators=(",", ":"))
+              print(payload)
+              with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+                  output.write(f"matrix={payload}\n")
+              with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as summary:
+                  summary.write(f"Building all {len(matrix['include'])} defconfigs.\n\n")
+                  summary.write("| Configuration | Docker image |\n| --- | --- |\n")
+                  for entry in matrix["include"]:
+                      summary.write(f"| {entry['config']} | {entry['image']} |\n")
+
+          if __name__ == "__main__":
+              main()
+
+  build:
+    name: Build ${{ matrix.config }}
+    needs: discover
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    env:
+      DEFCONFIG: ${{ matrix.config }}
+      BUILD_IMAGE: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Configure and build firmware
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          root="${GITHUB_WORKSPACE:?Missing workspace}"
+          config="${DEFCONFIG:?Missing configuration}"
+          image="${BUILD_IMAGE:?Missing Docker image}"
+          if [[ ! "$config" =~ ^(rtl8730e|bk7239n|rtl8721csm|qemu)/[a-zA-Z0-9_-]+$ ]] ||
+             [[ ! "$image" =~ ^tizenrt/tizenrt:[a-zA-Z0-9_][a-zA-Z0-9_.-]*$ ]] ||
+             [[ ! -f "$root/build/configs/$config/defconfig" ]]; then
+              echo "Invalid configuration or image: $config $image" >&2
+              exit 2
+          fi
+          if [[ -e "$root/os/.config" ]] ||
+             [[ -d "$root/build/output/bin" && -n "$(find "$root/build/output/bin" -mindepth 1 ! -name .gitignore -print -quit)" ]]; then
+              echo "Use a fresh checkout; refusing to reuse existing build outputs" >&2
+              exit 2
+          fi
+
+          output="$root/tmp/defconfig-ci"
+          mkdir -p "$output"
+          builder="defconfig-ci-${GITHUB_RUN_ID:-local}-${GITHUB_JOB:-build}-$$"
+          finish() {
+              status=$?
+              trap - EXIT
+              docker rm -f "$builder" >/dev/null 2>&1 || true
+              printf '%s\n' "$status" > "$output/exit-code.txt"
+              if [[ -f "$root/os/.config" ]]; then
+                  cp "$root/os/.config" "$output/effective.config" || true
+              fi
+              if [[ -d "$root/build/output/bin" ]]; then
+                  # Preserve partial firmware on failure as well as successful output.
+                  tar -czf "$output/firmware.tar.gz" -C "$root/build/output" bin || true
+              fi
+              if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+                  printf '### %s\n\nImage: `%s`\n\nBuild exit code: `%s`\n' \
+                      "$config" "$image" "$status" >> "$GITHUB_STEP_SUMMARY"
+              fi
+              exit "$status"
+          }
+          trap finish EXIT
+          trap 'exit 130' INT
+          trap 'exit 143' TERM
+
+          git -C "$root" rev-parse HEAD > "$output/source-commit.txt"
+          printf '%s\n' "$config" > "$output/configuration.txt"
+          printf '%s\n' "$image" > "$output/image.txt"
+          cp "$root/build/configs/$config/defconfig" "$output/requested.config"
+          docker pull --platform linux/amd64 "$image" 2>&1 | tee "$output/image-pull.log"
+          docker image inspect "$image" > "$output/image-inspect.json"
+          image_id="$(docker image inspect --format '{{.Id}}' "$image")"
+
+          # Keep the normal dbuild.sh mount for vendor packaging scripts.
+          docker run --rm --pull=never --platform linux/amd64 --name "$builder" \
+              -v "$root:/root/tizenrt" -w /root/tizenrt/os "$image_id" \
+              bash -eo pipefail -c '
+                  arm-none-eabi-gcc --version
+                  make --version
+                  cd tools
+                  ./configure.sh "$1"
+                  cd ..
+                  # Keep compilation, linking and packaging in their serial order.
+                  make
+                  case "$1" in
+                      qemu/*) test -s ../build/output/bin/tinyara ;;
+                      *) test -s ../build/output/bin/tinyara.axf ;;
+                  esac
+              ' -- "$config" </dev/null 2>&1 | tee "$output/build.log"
+      - name: Upload build evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: defconfig-${{ matrix.id }}-${{ github.run_attempt }}
+          path: tmp/defconfig-ci/
+          retention-days: 7
+          if-no-files-found: warn
+
+  result:
+    name: All defconfigs passed
+    if: always()
+    needs: [discover, build]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every build to succeed
+        env:
+          DISCOVERY_RESULT: ${{ needs.discover.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+        run: |
+          printf 'Discovery: %s\nBuild matrix: %s\n' "$DISCOVERY_RESULT" "$BUILD_RESULT" >> "$GITHUB_STEP_SUMMARY"
+          test "$DISCOVERY_RESULT" = success
+          test "$BUILD_RESULT" = success

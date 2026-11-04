@@ -25,7 +25,9 @@
 
 #define PACKAGE  "c-ares"
 
-#define ioctlsocket(x,y,z) ioctl(x,y,z)
+#include <stdint.h>
+
+#define ioctlsocket(x,y,z) ioctl((x),(y),(unsigned long)(uintptr_t)(z))
 #define HAVE_ERRNO_H           1
 #define HAVE_GETENV            1
 #define HAVE_GETTIMEOFDAY      1

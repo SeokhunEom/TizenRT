@@ -25,11 +25,13 @@
 
 #define TAG "[NETMGR]"
 
+#ifdef CONFIG_LWNL80211
 struct tr_netmgr {
 	void *dev;
 };
 
 static struct tr_netmgr g_netmgr;
+#endif
 
 extern int netdev_mgr_start(void);
 #ifdef CONFIG_VIRTUAL_WLAN
