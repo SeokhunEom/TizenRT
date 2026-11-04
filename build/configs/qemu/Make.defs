@@ -160,6 +160,13 @@ CXXPICFLAGS = $(ARCHPICFLAGS) $(CXXFLAGS)
 CPPFLAGS = $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRADEFINES)
 AFLAGS = $(CFLAGS) -D__ASSEMBLY__
 
+# Keep the original 256 KiB flash / 64 KiB SRAM target usable as tests grow.
+ifeq ($(CONFIG_QEMU_NONE),y)
+CFLAGS += -ffunction-sections -fdata-sections
+CXXFLAGS += -ffunction-sections -fdata-sections
+LDFLAGS += --gc-sections
+endif
+
 OBJEXT = .o
 LIBEXT = .a
 EXEEXT =

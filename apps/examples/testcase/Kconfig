@@ -10,6 +10,14 @@ menuconfig EXAMPLES_TESTCASE
 		Enable the TestCase Example
 
 if EXAMPLES_TESTCASE
+config TESTCASE_COMPACT_RESULT
+	bool "Compact assertion failure output"
+	default n
+	---help---
+		Keep the function, source line and API name in assertion failures,
+		but omit operand expressions and values to save flash space.
+		Comparisons, result counters, cleanup and return behavior are unchanged.
+
 config DISABLE_MANUAL_TESTCASE
 	bool "Disable Manual Testcase"
 	default n
